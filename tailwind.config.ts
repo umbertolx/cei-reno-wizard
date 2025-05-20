@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,7 +19,18 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Bricolage Grotesque', 'Arial', 'Helvetica', 'sans-serif'],
+			},
 			colors: {
+				// Colori CEI
+				'cei-white': '#ffffff',
+				'cei-gray': '#f4f4f4',
+				'cei-red': '#d8010c',
+				'cei-yellow': '#fbe12e',
+				'cei-black': '#1c1c1c',
+				'cei-pink': '#d8797a',
+				
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
