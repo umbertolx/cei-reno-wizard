@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Input } from "@/components/ui/input";
@@ -96,7 +95,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     });
     setShowSuggestions(false);
   };
-
+  
   const handleSubmit = () => {
     if (validateForm()) {
       onNext();
@@ -133,11 +132,11 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           onValueChange={(value) => updateFormData({ tipologiaAbitazione: value })}
           className="flex flex-col sm:flex-row gap-4"
         >
-          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#f4f4f4] transition-colors ${formData.tipologiaAbitazione === 'appartamento' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-[#1c1c1c] transition-colors ${formData.tipologiaAbitazione === 'appartamento' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
             <RadioGroupItem value="appartamento" id="appartamento" className={formData.tipologiaAbitazione === 'appartamento' ? 'text-white border-white' : ''} />
             <Label htmlFor="appartamento" className={`cursor-pointer text-lg ${formData.tipologiaAbitazione === 'appartamento' ? 'text-white' : ''}`}>Appartamento</Label>
           </div>
-          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#f4f4f4] transition-colors ${formData.tipologiaAbitazione === 'casa indipendente' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-[#1c1c1c] transition-colors ${formData.tipologiaAbitazione === 'casa indipendente' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
             <RadioGroupItem value="casa indipendente" id="casa" className={formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white border-white' : ''} />
             <Label htmlFor="casa" className={`cursor-pointer text-lg ${formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white' : ''}`}>Casa indipendente</Label>
           </div>
@@ -234,7 +233,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
         >
           {["Terra", "Rialzato", "Primo", "Secondo", "Terzo", "Quarto", "Quinto o superiore"].map((piano) => (
-            <div key={piano} className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#f4f4f4] transition-colors ${formData.piano === piano.toLowerCase() ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+            <div key={piano} className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-[#1c1c1c] transition-colors ${formData.piano === piano.toLowerCase() ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
               <RadioGroupItem value={piano.toLowerCase()} id={piano.toLowerCase()} className={formData.piano === piano.toLowerCase() ? 'text-white border-white' : ''} />
               <Label htmlFor={piano.toLowerCase()} className={`cursor-pointer ${formData.piano === piano.toLowerCase() ? 'text-white' : ''}`}>{piano}</Label>
             </div>
