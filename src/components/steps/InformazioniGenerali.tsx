@@ -296,7 +296,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       {/* Pulsante Continua */}
       <Button 
         onClick={handleSubmit}
-        className="w-full p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl flex items-center justify-center gap-2 mt-6 transition-all duration-300"
+        className="w-full p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl flex items-center justify-center gap-2 mt-6 transition-all duration-300 focus:bg-[#d8010c] focus:text-white active:bg-[#d8010c] active:text-white"
       >
         Continua e calcola il preventivo
         <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
