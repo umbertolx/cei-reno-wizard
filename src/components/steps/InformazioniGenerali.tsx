@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Input } from "@/components/ui/input";
@@ -6,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { Home, Ruler, MapPin, ChevronDown } from "lucide-react";
+import { Home, Ruler, MapPin, Building, ChevronDown } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -37,10 +36,19 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       return false;
     }
     
-    if (!formData.indirizzo) {
+    if (!formData.indirizzo || !formData.citta || !formData.cap) {
       toast({
         title: "Attenzione",
-        description: "Inserisci l'indirizzo dell'immobile",
+        description: "Inserisci l'indirizzo completo",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    if (!formData.piano) {
+      toast({
+        title: "Attenzione",
+        description: "Seleziona il piano dell'abitazione",
         variant: "destructive",
       });
       return false;
@@ -50,7 +58,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     if (cucina + camera + bagno + soggiorno + altro === 0) {
       toast({
         title: "Attenzione",
-        description: "Inserisci la suddivisione degli spazi",
+        description: "Inserisci la composizione dell'abitazione",
         variant: "destructive",
       });
       return false;
@@ -112,90 +120,80 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
 
       {/* Tipologia abitazione */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <div className="text-[#1F67A3] text-lg font-semibold flex items-center">
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#FFB800] text-white mr-2">
-              ✦
-            </span>
-            Che tipo di immobile stai ristrutturando?
+        <div className="flex items-center">
+          <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
+            <Home className="h-8 w-8 text-[#1c1c1c]" />
           </div>
+          <h2 className="ml-4 text-xl md:text-2xl font-medium text-[#1c1c1c]">Tipologia abitazione</h2>
         </div>
-        <p className="text-sm text-[#6B7280]">Seleziona il tipo di abitazione per cui vuoi progettare l'impianto elettrico</p>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div 
-            className={`flex flex-col items-center border rounded-lg p-6 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors ${formData.tipologiaAbitazione === 'appartamento' ? 'bg-[#d8010c] text-white border-[#d8010c]' : 'bg-white border-[#E5E7EB]'}`}
-            onClick={() => updateFormData({ tipologiaAbitazione: 'appartamento' })}
-          >
-            <div className={`mb-3 text-[#1F67A3] ${formData.tipologiaAbitazione === 'appartamento' ? 'text-white' : ''} ${formData.tipologiaAbitazione !== 'appartamento' && 'hover:bg-[#fbe12e]:text-black'}`}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="20" height="20" rx="2" stroke="currentColor" strokeWidth="2"/>
-                <rect x="6" y="6" width="4" height="4" fill="currentColor"/>
-                <rect x="14" y="6" width="4" height="4" fill="currentColor"/>
-                <rect x="6" y="14" width="4" height="4" fill="currentColor"/>
-                <rect x="14" y="14" width="4" height="4" fill="currentColor"/>
-              </svg>
-            </div>
-            <span className={`font-medium text-lg ${formData.tipologiaAbitazione === 'appartamento' ? 'text-white' : 'text-[#1c1c1c]'} ${formData.tipologiaAbitazione !== 'appartamento' && 'hover:bg-[#fbe12e]:text-black'}`}>Appartamento</span>
-            <span className={`text-sm ${formData.tipologiaAbitazione === 'appartamento' ? 'text-white' : 'text-[#6B7280]'} ${formData.tipologiaAbitazione !== 'appartamento' && 'hover:bg-[#fbe12e]:text-black'}`}>Condomini, residence, attici</span>
+        <RadioGroup 
+          value={formData.tipologiaAbitazione} 
+          onValueChange={(value) => updateFormData({ tipologiaAbitazione: value })}
+          className="flex flex-col sm:flex-row gap-4"
+        >
+          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors ${formData.tipologiaAbitazione === 'appartamento' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+            <RadioGroupItem 
+              value="appartamento" 
+              id="appartamento" 
+              className={`${formData.tipologiaAbitazione === 'appartamento' ? 'text-white border-white' : ''} hover:bg-[#fbe12e]:text-black`} 
+            />
+            <Label 
+              htmlFor="appartamento" 
+              className={`cursor-pointer text-lg ${formData.tipologiaAbitazione === 'appartamento' ? 'text-white' : ''} hover:bg-[#fbe12e]:text-black`}
+            >
+              Appartamento
+            </Label>
           </div>
-          
-          <div 
-            className={`flex flex-col items-center border rounded-lg p-6 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors ${formData.tipologiaAbitazione === 'casa indipendente' ? 'bg-[#d8010c] text-white border-[#d8010c]' : 'bg-white border-[#E5E7EB]'}`}
-            onClick={() => updateFormData({ tipologiaAbitazione: 'casa indipendente' })}
-          >
-            <div className={`mb-3 text-[#1F67A3] ${formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white' : ''} ${formData.tipologiaAbitazione !== 'casa indipendente' && 'hover:bg-[#fbe12e]:text-black'}`}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 21V8L12 2L21 8V21H3Z" stroke="currentColor" strokeWidth="2"/>
-                <path d="M9 21V12H15V21" stroke="currentColor" strokeWidth="2"/>
-              </svg>
-            </div>
-            <span className={`font-medium text-lg ${formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white' : 'text-[#1c1c1c]'} ${formData.tipologiaAbitazione !== 'casa indipendente' && 'hover:bg-[#fbe12e]:text-black'}`}>Casa indipendente</span>
-            <span className={`text-sm ${formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white' : 'text-[#6B7280]'} ${formData.tipologiaAbitazione !== 'casa indipendente' && 'hover:bg-[#fbe12e]:text-black'}`}>Ville, villette a schiera</span>
+          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors ${formData.tipologiaAbitazione === 'casa indipendente' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+            <RadioGroupItem 
+              value="casa indipendente" 
+              id="casa" 
+              className={`${formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white border-white' : ''} hover:bg-[#fbe12e]:text-black`} 
+            />
+            <Label 
+              htmlFor="casa" 
+              className={`cursor-pointer text-lg ${formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white' : ''} hover:bg-[#fbe12e]:text-black`}
+            >
+              Casa indipendente
+            </Label>
           </div>
-        </div>
+        </RadioGroup>
       </div>
 
       {/* Superficie */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <div className="text-[#1F67A3] text-lg font-semibold flex items-center">
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#FFB800] text-white mr-2">
-              ✦
-            </span>
-            Superficie in mq
+        <div className="flex items-center">
+          <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
+            <Ruler className="h-8 w-8 text-[#1c1c1c]" />
           </div>
+          <h2 className="ml-4 text-xl md:text-2xl font-medium text-[#1c1c1c]">Superficie in mq</h2>
         </div>
         
         <div className="flex flex-col gap-2">
-          <div className="flex gap-2 items-center">
-            <Input
-              type="number"
-              placeholder="Es. 80"
-              value={formData.superficie || ""}
-              onChange={(e) => updateFormData({ superficie: parseInt(e.target.value) || 0 })}
-              className="text-lg p-6 rounded-lg w-28"
-            />
-            <span className="text-lg">mq</span>
-          </div>
-          <p className="text-sm text-[#6B7280]">Inserisci una stima approssimativa se non hai una misura precisa.</p>
+          <Input
+            type="number"
+            placeholder="Inserisci i metri quadri (anche approssimativi)"
+            value={formData.superficie || ""}
+            onChange={(e) => updateFormData({ superficie: parseInt(e.target.value) || 0 })}
+            className="text-lg p-6 rounded-lg"
+          />
+          <p className="text-sm text-[#1c1c1c] opacity-60">Va bene anche una stima approssimativa</p>
         </div>
       </div>
 
       {/* Indirizzo */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <div className="text-[#1F67A3] text-lg font-semibold flex items-center">
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#FFB800] text-white mr-2">
-              ✦
-            </span>
-            Indirizzo dell'immobile
+        <div className="flex items-center">
+          <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
+            <MapPin className="h-8 w-8 text-[#1c1c1c]" />
           </div>
+          <h2 className="ml-4 text-xl md:text-2xl font-medium text-[#1c1c1c]">Indirizzo</h2>
         </div>
         
         <div className="flex flex-col gap-2 relative">
           <Input
-            placeholder="Via, numero civico, città"
+            placeholder="Via, numero civico"
             value={formData.indirizzo}
             onChange={(e) => handleSearchAddress(e.target.value)}
             className="text-lg p-6 rounded-lg"
@@ -214,84 +212,86 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
               ))}
             </div>
           )}
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            <Input
+              placeholder="Città"
+              value={formData.citta}
+              onChange={(e) => updateFormData({ citta: e.target.value })}
+              className="text-lg p-6 rounded-lg"
+            />
+            <Input
+              placeholder="CAP"
+              value={formData.cap}
+              onChange={(e) => updateFormData({ cap: e.target.value })}
+              className="text-lg p-6 rounded-lg"
+            />
+            <Input
+              placeholder="Regione"
+              value={formData.regione}
+              onChange={(e) => updateFormData({ regione: e.target.value })}
+              className="text-lg p-6 rounded-lg"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Suddivisione degli spazi */}
+      {/* Piano */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="text-[#1F67A3] text-lg font-semibold flex items-center">
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#FFB800] text-white mr-2">
-              ✦
-            </span>
-            Suddivisione degli spazi
+        <div className="flex items-center">
+          <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
+            <Building className="h-8 w-8 text-[#1c1c1c]" />
           </div>
-          <div className="text-sm text-[#1F67A3]">
-            Totale: {Object.values(formData.composizione).reduce((a, b) => a + b, 0)} stanze
-          </div>
+          <h2 className="ml-4 text-xl md:text-2xl font-medium text-[#1c1c1c]">Piano dell'abitazione</h2>
         </div>
         
-        <div className="flex flex-col space-y-2">
+        <RadioGroup 
+          value={formData.piano} 
+          onValueChange={(value) => updateFormData({ piano: value })}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+        >
+          {["Terra", "Rialzato", "Primo", "Secondo", "Terzo", "Quarto", "Quinto o superiore"].map((piano) => (
+            <div key={piano} className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors ${formData.piano === piano.toLowerCase() ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+              <RadioGroupItem 
+                value={piano.toLowerCase()} 
+                id={piano.toLowerCase()} 
+                className={`${formData.piano === piano.toLowerCase() ? 'text-white border-white' : ''} hover:bg-[#fbe12e]:text-black`} 
+              />
+              <Label 
+                htmlFor={piano.toLowerCase()} 
+                className={`cursor-pointer ${formData.piano === piano.toLowerCase() ? 'text-white' : ''} hover:bg-[#fbe12e]:text-black`}
+              >
+                {piano}
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+
+      {/* Composizione */}
+      <div className="space-y-4">
+        <div className="flex items-center">
+          <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
+            <Home className="h-8 w-8 text-[#1c1c1c]" />
+          </div>
+          <h2 className="ml-4 text-xl md:text-2xl font-medium text-[#1c1c1c]">Composizione interna</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[
-            { key: 'soggiorno', label: 'Sala/Living', description: 'Soggiorno, sala da pranzo o spazi living aperti' },
-            { key: 'cucina', label: 'Cucina', description: 'Cucina o angolo cottura' },
-            { key: 'camera', label: 'Camera doppia', description: 'Camera matrimoniale o camera principale' },
-            { key: 'altro', label: 'Camera singola', description: 'Camera singola, studio o camera ospiti' },
-            { key: 'bagno', label: 'Bagno', description: 'Bagno completo o di servizio' },
-            { key: 'altro', label: 'Altro', description: 'Altri spazi come corridoi, ripostigli, etc.' }
-          ].map((item, index) => (
-            <div key={`${item.key}-${index}`} className="flex items-center justify-between border-b border-[#E5E7EB] py-3">
-              <div className="flex items-center gap-3">
-                {index === 0 && (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#1F67A3]">
-                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M3 12H21" stroke="currentColor" strokeWidth="2"/>
-                  </svg>
-                )}
-                {index === 1 && (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#1F67A3]">
-                    <path d="M6 19L6 9C6 7.34315 7.34315 6 9 6L15 6C16.6569 6 18 7.34315 18 9V19" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M4 19L20 19" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13V19H11V13Z" fill="currentColor"/>
-                  </svg>
-                )}
-                {index === 2 && (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#1F67A3]">
-                    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M3 10H21" stroke="currentColor" strokeWidth="2"/>
-                    <circle cx="7" cy="15" r="1" fill="currentColor"/>
-                  </svg>
-                )}
-                {index === 3 && (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#1F67A3]">
-                    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M3 10H21" stroke="currentColor" strokeWidth="2"/>
-                    <circle cx="7" cy="15" r="1" fill="currentColor"/>
-                  </svg>
-                )}
-                {index === 4 && (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#1F67A3]">
-                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M8 16C8 14.3431 9.34315 13 11 13H13C14.6569 13 16 14.3431 16 16V21H8V16Z" stroke="currentColor" strokeWidth="2"/>
-                    <circle cx="12" cy="8" r="2" stroke="currentColor" strokeWidth="2"/>
-                  </svg>
-                )}
-                {index === 5 && (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#1F67A3]">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8V12L14 14" stroke="currentColor" strokeWidth="2"/>
-                  </svg>
-                )}
-                <div>
-                  <div className="font-medium text-[#1c1c1c]">{item.label}</div>
-                  <div className="text-xs text-[#6B7280]">{item.description}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
+            { key: 'cucina', label: 'Cucina' },
+            { key: 'camera', label: 'Camere da letto' },
+            { key: 'bagno', label: 'Bagni' },
+            { key: 'soggiorno', label: 'Soggiorni' },
+            { key: 'altro', label: 'Altri locali' }
+          ].map((item) => (
+            <div key={item.key} className="flex flex-col space-y-2">
+              <Label htmlFor={item.key} className="text-lg">{item.label}</Label>
+              <div className="flex items-center border rounded-lg hover:border-[#1c1c1c] transition-colors">
                 <Button 
                   type="button" 
                   variant="ghost" 
-                  className="w-8 h-8 rounded-full border border-[#E5E7EB] p-0 text-xl flex items-center justify-center hover:bg-[#fbe12e] hover:text-black"
+                  className="text-xl h-12 px-6 hover:bg-[#fbe12e] hover:text-black"
                   onClick={() => handleChangeComposizione(
                     item.key as keyof FormData['composizione'], 
                     Math.max(0, (formData.composizione[item.key as keyof FormData['composizione']] || 0) - 1)
@@ -299,13 +299,13 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
                 >
                   -
                 </Button>
-                <div className="w-5 text-center">
+                <div className="flex-1 text-center text-lg">
                   {formData.composizione[item.key as keyof FormData['composizione']] || 0}
                 </div>
                 <Button 
                   type="button" 
                   variant="ghost" 
-                  className="w-8 h-8 rounded-full border border-[#E5E7EB] p-0 text-xl flex items-center justify-center hover:bg-[#fbe12e] hover:text-black"
+                  className="text-xl h-12 px-6 hover:bg-[#fbe12e] hover:text-black"
                   onClick={() => handleChangeComposizione(
                     item.key as keyof FormData['composizione'], 
                     (formData.composizione[item.key as keyof FormData['composizione']] || 0) + 1
