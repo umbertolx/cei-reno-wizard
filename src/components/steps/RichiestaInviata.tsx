@@ -28,7 +28,7 @@ export const RichiestaInviata = ({ onReset }: Props) => {
       
       <Button 
         onClick={onReset}
-        className="mt-8 p-6 text-lg bg-[#d8010c] hover:bg-[#b80109] text-white rounded-xl"
+        className="mt-8 p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl transition-all duration-300"
       >
         Ricomincia configurazione
       </Button>

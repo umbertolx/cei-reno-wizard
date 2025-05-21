@@ -238,7 +238,7 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
         
         <Button 
           onClick={handleSubmit}
-          className="flex-1 p-6 text-lg bg-[#d8010c] hover:bg-[#b80109] text-white rounded-xl flex items-center justify-center gap-2"
+          className="flex-1 p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
         >
           Richiedi sopralluogo
           <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
