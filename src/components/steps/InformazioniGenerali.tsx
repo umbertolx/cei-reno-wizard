@@ -132,13 +132,31 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           onValueChange={(value) => updateFormData({ tipologiaAbitazione: value })}
           className="flex flex-col sm:flex-row gap-4"
         >
-          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-[#1c1c1c] transition-colors ${formData.tipologiaAbitazione === 'appartamento' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
-            <RadioGroupItem value="appartamento" id="appartamento" className={formData.tipologiaAbitazione === 'appartamento' ? 'text-white border-white' : ''} />
-            <Label htmlFor="appartamento" className={`cursor-pointer text-lg ${formData.tipologiaAbitazione === 'appartamento' ? 'text-white' : ''}`}>Appartamento</Label>
+          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors ${formData.tipologiaAbitazione === 'appartamento' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+            <RadioGroupItem 
+              value="appartamento" 
+              id="appartamento" 
+              className={`${formData.tipologiaAbitazione === 'appartamento' ? 'text-white border-white' : ''} hover:bg-[#fbe12e]:text-black`} 
+            />
+            <Label 
+              htmlFor="appartamento" 
+              className={`cursor-pointer text-lg ${formData.tipologiaAbitazione === 'appartamento' ? 'text-white' : ''} hover:bg-[#fbe12e]:text-black`}
+            >
+              Appartamento
+            </Label>
           </div>
-          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-[#1c1c1c] transition-colors ${formData.tipologiaAbitazione === 'casa indipendente' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
-            <RadioGroupItem value="casa indipendente" id="casa" className={formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white border-white' : ''} />
-            <Label htmlFor="casa" className={`cursor-pointer text-lg ${formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white' : ''}`}>Casa indipendente</Label>
+          <div className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors ${formData.tipologiaAbitazione === 'casa indipendente' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+            <RadioGroupItem 
+              value="casa indipendente" 
+              id="casa" 
+              className={`${formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white border-white' : ''} hover:bg-[#fbe12e]:text-black`} 
+            />
+            <Label 
+              htmlFor="casa" 
+              className={`cursor-pointer text-lg ${formData.tipologiaAbitazione === 'casa indipendente' ? 'text-white' : ''} hover:bg-[#fbe12e]:text-black`}
+            >
+              Casa indipendente
+            </Label>
           </div>
         </RadioGroup>
       </div>
@@ -186,7 +204,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
               {suggestedLocations.map((location, index) => (
                 <div 
                   key={index} 
-                  className="p-3 hover:bg-[#f4f4f4] cursor-pointer border-b last:border-b-0"
+                  className="p-3 hover:bg-[#fbe12e] hover:text-black cursor-pointer border-b last:border-b-0"
                   onClick={() => selectLocation(location)}
                 >
                   {location}
@@ -233,9 +251,18 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
         >
           {["Terra", "Rialzato", "Primo", "Secondo", "Terzo", "Quarto", "Quinto o superiore"].map((piano) => (
-            <div key={piano} className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-[#1c1c1c] transition-colors ${formData.piano === piano.toLowerCase() ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
-              <RadioGroupItem value={piano.toLowerCase()} id={piano.toLowerCase()} className={formData.piano === piano.toLowerCase() ? 'text-white border-white' : ''} />
-              <Label htmlFor={piano.toLowerCase()} className={`cursor-pointer ${formData.piano === piano.toLowerCase() ? 'text-white' : ''}`}>{piano}</Label>
+            <div key={piano} className={`flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors ${formData.piano === piano.toLowerCase() ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+              <RadioGroupItem 
+                value={piano.toLowerCase()} 
+                id={piano.toLowerCase()} 
+                className={`${formData.piano === piano.toLowerCase() ? 'text-white border-white' : ''} hover:bg-[#fbe12e]:text-black`} 
+              />
+              <Label 
+                htmlFor={piano.toLowerCase()} 
+                className={`cursor-pointer ${formData.piano === piano.toLowerCase() ? 'text-white' : ''} hover:bg-[#fbe12e]:text-black`}
+              >
+                {piano}
+              </Label>
             </div>
           ))}
         </RadioGroup>
@@ -260,11 +287,11 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           ].map((item) => (
             <div key={item.key} className="flex flex-col space-y-2">
               <Label htmlFor={item.key} className="text-lg">{item.label}</Label>
-              <div className="flex items-center border rounded-lg">
+              <div className="flex items-center border rounded-lg hover:border-[#1c1c1c] transition-colors">
                 <Button 
                   type="button" 
                   variant="ghost" 
-                  className="text-xl h-12 px-6"
+                  className="text-xl h-12 px-6 hover:bg-[#fbe12e] hover:text-black"
                   onClick={() => handleChangeComposizione(
                     item.key as keyof FormData['composizione'], 
                     Math.max(0, (formData.composizione[item.key as keyof FormData['composizione']] || 0) - 1)
@@ -278,7 +305,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
                 <Button 
                   type="button" 
                   variant="ghost" 
-                  className="text-xl h-12 px-6"
+                  className="text-xl h-12 px-6 hover:bg-[#fbe12e] hover:text-black"
                   onClick={() => handleChangeComposizione(
                     item.key as keyof FormData['composizione'], 
                     (formData.composizione[item.key as keyof FormData['composizione']] || 0) + 1
@@ -295,7 +322,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       {/* Pulsante Continua */}
       <Button 
         onClick={handleSubmit}
-        className="w-full p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl flex items-center justify-center gap-2 mt-6 transition-all duration-300 focus:bg-[#d8010c] focus:text-white active:bg-[#d8010c] active:text-white"
+        className="w-full p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-black hover:text-white rounded-xl flex items-center justify-center gap-2 mt-6 transition-all duration-300 focus:bg-[#d8010c] focus:text-white active:bg-[#d8010c] active:text-white"
       >
         Continua e calcola il preventivo
         <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
