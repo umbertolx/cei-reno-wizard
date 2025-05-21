@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
@@ -16,7 +15,8 @@ export type FormData = {
   piano: string;
   composizione: {
     cucina: number;
-    camera: number;
+    cameraDoppia: number;
+    cameraSingola: number;
     bagno: number;
     soggiorno: number;
     altro: number;
@@ -40,7 +40,8 @@ export const Configuratore = () => {
     piano: "",
     composizione: {
       cucina: 0,
-      camera: 0,
+      cameraDoppia: 0,
+      cameraSingola: 0,
       bagno: 0,
       soggiorno: 0,
       altro: 0,
@@ -69,8 +70,8 @@ export const Configuratore = () => {
       : costoBase["casa indipendente"];
     
     // Calcolo stanza per stanza
-    const { cucina, camera, bagno, soggiorno, altro } = formData.composizione;
-    const costoStanze = (cucina * 5000) + (camera * 3000) + (bagno * 5500) + (soggiorno * 3500) + (altro * 2000);
+    const { cucina, cameraDoppia, cameraSingola, bagno, soggiorno, altro } = formData.composizione;
+    const costoStanze = (cucina * 5000) + (cameraDoppia * 3000) + (cameraSingola * 2500) + (bagno * 5500) + (soggiorno * 3500) + (altro * 2000);
     
     // Calcolo totale con superficie
     const costoTotale = (costoBaseMetroQuadro * formData.superficie) + costoStanze;
@@ -102,7 +103,8 @@ export const Configuratore = () => {
       piano: "",
       composizione: {
         cucina: 0,
-        camera: 0,
+        cameraDoppia: 0,
+        cameraSingola: 0,
         bagno: 0,
         soggiorno: 0,
         altro: 0,
