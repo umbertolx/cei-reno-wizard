@@ -1,7 +1,8 @@
 
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { MapPin } from "lucide-react";
+import { Loader } from "@googlemaps/js-api-loader";
 
 type IndirizzoFieldProps = {
   value: string;
@@ -9,27 +10,94 @@ type IndirizzoFieldProps = {
   onSelectLocation: (location: string) => void;
 };
 
-export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoFieldProps) => {
-  const [suggestedLocations, setSuggestedLocations] = useState<string[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+// L'API key dovrebbe essere gestita in modo sicuro tramite variabili d'ambiente
+// Per questioni di esempio, la definiamo qui
+// In produzione, sarebbe meglio utilizzare Supabase per gestire questa chiave
+const GOOGLE_MAPS_API_KEY = "INSERISCI_QUI_API_KEY_GOOGLE_MAPS";
 
-  const handleSearchAddress = (query: string) => {
-    onChange(query);
-    
-    if (query.length > 3) {
-      // Simulazione di richiesta API per autocompletamento indirizzi
-      const mockResults = [
-        `${query}, Milano, 20100, Lombardia`,
-        `${query}, Roma, 00100, Lazio`,
-        `${query}, Napoli, 80100, Campania`,
-      ];
-      setSuggestedLocations(mockResults);
-      setShowSuggestions(true);
-    } else {
-      setSuggestedLocations([]);
-      setShowSuggestions(false);
+export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoFieldProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+
+  useEffect(() => {
+    if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "INSERISCI_QUI_API_KEY_GOOGLE_MAPS") {
+      setError("API key di Google Maps non configurata");
+      return;
     }
-  };
+
+    setIsLoading(true);
+    const initGoogleMaps = async () => {
+      try {
+        const loader = new Loader({
+          apiKey: GOOGLE_MAPS_API_KEY,
+          version: "weekly",
+          libraries: ["places"]
+        });
+
+        await loader.load();
+        
+        if (inputRef.current) {
+          // Crea l'autocomplete con opzioni specifiche per l'Italia
+          const options = {
+            componentRestrictions: { country: "it" },
+            fields: ["address_components", "formatted_address", "geometry", "name"],
+            types: ["address"]
+          };
+          
+          autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, options);
+          
+          // Gestisci l'evento di selezione di un indirizzo
+          autocompleteRef.current.addListener("place_changed", () => {
+            const place = autocompleteRef.current?.getPlace();
+            
+            if (place && place.formatted_address) {
+              // Estrae componenti dell'indirizzo
+              let citta = "";
+              let cap = "";
+              let regione = "";
+              
+              place.address_components?.forEach((component) => {
+                if (component.types.includes("locality")) {
+                  citta = component.long_name;
+                }
+                if (component.types.includes("postal_code")) {
+                  cap = component.long_name;
+                }
+                if (component.types.includes("administrative_area_level_1")) {
+                  regione = component.long_name;
+                }
+              });
+              
+              // Formatta l'indirizzo nel formato richiesto
+              const formattedAddress = place.formatted_address;
+              onChange(formattedAddress);
+              
+              // Crea stringa formattata con le componenti dell'indirizzo
+              const locationString = `${formattedAddress}`;
+              onSelectLocation(locationString);
+            }
+          });
+        }
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Errore nel caricamento di Google Maps API:", error);
+        setError("Impossibile caricare Google Maps");
+        setIsLoading(false);
+      }
+    };
+
+    initGoogleMaps();
+    
+    // Pulizia al dismount del componente
+    return () => {
+      if (autocompleteRef.current && window.google) {
+        google.maps.event.clearInstanceListeners(autocompleteRef.current);
+      }
+    };
+  }, [onChange, onSelectLocation]);
 
   return (
     <div className="space-y-4">
@@ -42,28 +110,27 @@ export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoF
       
       <div className="flex flex-col gap-2 relative">
         <Input
+          ref={inputRef}
           placeholder="Via, numero civico, città"
           value={value}
-          onChange={(e) => handleSearchAddress(e.target.value)}
-          className="text-lg p-6 rounded-lg"
+          onChange={(e) => onChange(e.target.value)}
+          className={`text-lg p-6 rounded-lg ${isLoading ? 'bg-gray-50' : ''}`}
+          disabled={isLoading}
         />
         
-        {showSuggestions && suggestedLocations.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-            {suggestedLocations.map((location, index) => (
-              <div 
-                key={index} 
-                className="p-3 hover:bg-[#fbe12e] hover:text-black cursor-pointer border-b last:border-b-0"
-                onClick={() => {
-                  onSelectLocation(location);
-                  setShowSuggestions(false);
-                }}
-              >
-                {location}
-              </div>
-            ))}
+        {isLoading && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            <div className="animate-spin h-5 w-5 border-2 border-[#d8010c] border-t-transparent rounded-full"></div>
           </div>
         )}
+        
+        {error && (
+          <p className="text-sm text-red-500 mt-1">{error}</p>
+        )}
+        
+        <p className="text-sm text-gray-500 mt-1">
+          Inserisci il tuo indirizzo per iniziare a digitare e seleziona dai suggerimenti
+        </p>
       </div>
     </div>
   );
