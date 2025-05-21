@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { toast } from "@/hooks/use-toast";
 import { Home, Ruler, MapPin, LayoutDashboard, Plus, Minus } from "lucide-react";
 
@@ -168,7 +169,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         </RadioGroup>
       </div>
 
-      {/* Superficie */}
+      {/* Superficie - Sostituito input testuale con slider */}
       <div className="space-y-4">
         <div className="flex items-center">
           <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
@@ -177,14 +178,23 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           <h2 className="ml-4 text-xl md:text-2xl font-medium text-[#1c1c1c]">Superficie in mq</h2>
         </div>
         
-        <div className="flex flex-col gap-2">
-          <Input
-            type="number"
-            placeholder="Es. 80"
-            value={formData.superficie || ""}
-            onChange={(e) => updateFormData({ superficie: parseInt(e.target.value) || 0 })}
-            className="text-lg p-6 rounded-lg"
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="superficie" className="text-base font-medium">Superficie in mq</Label>
+            <span className="text-lg font-bold">{formData.superficie} mq</span>
+          </div>
+          
+          <Slider
+            id="superficie"
+            min={20}
+            max={500}
+            step={1}
+            defaultValue={[formData.superficie || 20]}
+            value={[formData.superficie || 20]}
+            onValueChange={(values) => updateFormData({ superficie: values[0] })}
+            className="py-4"
           />
+          
           <p className="text-sm text-[#1c1c1c] opacity-60">Inserisci una stima approssimativa se non hai una misura precisa.</p>
         </div>
       </div>
