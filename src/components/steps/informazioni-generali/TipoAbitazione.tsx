@@ -1,0 +1,69 @@
+
+import { FormData } from "../../Configuratore";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Home } from "lucide-react";
+
+type TipoAbitazioneProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
+
+export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center">
+        <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
+          <Home className="h-8 w-8 text-[#1c1c1c]" />
+        </div>
+        <div className="ml-4">
+          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Che tipo di immobile stai ristrutturando?</h2>
+          <p className="text-base text-[#1c1c1c] opacity-80">Seleziona il tipo di abitazione per cui vuoi progettare l'impianto elettrico</p>
+        </div>
+      </div>
+      
+      <RadioGroup 
+        value={value} 
+        onValueChange={onChange}
+        className="flex flex-col sm:flex-row gap-4"
+      >
+        <div className={`flex flex-col items-start space-y-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors flex-1 ${value === 'appartamento' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+          <div className="flex items-center space-x-2 w-full">
+            <RadioGroupItem 
+              value="appartamento" 
+              id="appartamento" 
+              className={`${value === 'appartamento' ? 'text-white border-white' : ''} hover:bg-[#fbe12e]:text-black`} 
+            />
+            <Label 
+              htmlFor="appartamento" 
+              className={`cursor-pointer text-lg font-bold ${value === 'appartamento' ? 'text-white' : ''} hover:bg-[#fbe12e]:text-black`}
+            >
+              Appartamento
+            </Label>
+          </div>
+          <p className={`pl-6 text-sm ${value === 'appartamento' ? 'text-white' : 'text-gray-600'} hover:bg-[#fbe12e]:text-black`}>
+            Condomini, residence, attici
+          </p>
+        </div>
+        <div className={`flex flex-col items-start space-y-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors flex-1 ${value === 'casa indipendente' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+          <div className="flex items-center space-x-2 w-full">
+            <RadioGroupItem 
+              value="casa indipendente" 
+              id="casa" 
+              className={`${value === 'casa indipendente' ? 'text-white border-white' : ''} hover:bg-[#fbe12e]:text-black`} 
+            />
+            <Label 
+              htmlFor="casa" 
+              className={`cursor-pointer text-lg font-bold ${value === 'casa indipendente' ? 'text-white' : ''} hover:bg-[#fbe12e]:text-black`}
+            >
+              Casa indipendente
+            </Label>
+          </div>
+          <p className={`pl-6 text-sm ${value === 'casa indipendente' ? 'text-white' : 'text-gray-600'} hover:bg-[#fbe12e]:text-black`}>
+            Ville, villette a schiera
+          </p>
+        </div>
+      </RadioGroup>
+    </div>
+  );
+};
