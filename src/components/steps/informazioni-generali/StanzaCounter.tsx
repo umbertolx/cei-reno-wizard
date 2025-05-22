@@ -54,10 +54,6 @@ export const StanzaCounter = ({
         >
           <Plus className="h-4 w-4" />
         </Button>
-        
-        {maxValue !== Infinity && (
-          <span className="text-xs text-[#d8010c] ml-1">(max: {maxValue})</span>
-        )}
       </div>
     </div>
   );
