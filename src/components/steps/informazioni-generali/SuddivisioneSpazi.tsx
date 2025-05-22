@@ -1,7 +1,6 @@
 
 import { FormData } from "../../Configuratore";
 import { StanzaCounter } from "./StanzaCounter";
-import { LayoutDashboard } from "lucide-react";
 
 type SuddivisioneProps = {
   composizione: FormData['composizione'];
@@ -61,10 +60,9 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
         </div>
         <div>
           <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Suddivisione degli spazi</h2>
-          <p className="text-base text-[#1c1c1c] opacity-80">Indica quante stanze di ciascun tipo sono presenti nell'immobile</p>
         </div>
-        <div className="ml-auto text-base font-medium px-4 py-2 bg-white rounded-lg border-2 border-[#fbe12e] shadow-sm">
-          Totale: <span className="text-[#d8010c]">{totalRooms}</span> {totalRooms === 1 ? 'stanza' : 'stanze'}
+        <div className="ml-auto text-sm font-medium px-3 py-1.5 bg-white rounded-md border border-[#fbe12e]">
+          {totalRooms} {totalRooms === 1 ? 'stanza' : 'stanze'}
         </div>
       </div>
       
