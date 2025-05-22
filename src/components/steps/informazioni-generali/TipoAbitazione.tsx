@@ -11,8 +11,8 @@ type TipoAbitazioneProps = {
 export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-6">
-        <div className="w-[80px] h-[80px] flex-shrink-0 flex items-center justify-center">
+      <div className="flex items-center gap-4">
+        <div className="w-[100px] h-[100px] flex-shrink-0 flex items-center justify-center">
           <img 
             src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
             alt="House icon" 
