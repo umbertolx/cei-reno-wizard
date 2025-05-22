@@ -173,7 +173,7 @@ export const Configuratore = () => {
 
   return (
     <Card className="w-full max-w-4xl rounded-[20px] shadow-lg overflow-hidden">
-      <CardContent className="p-6 md:p-10 lg:p-[72px]">
+      <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10 xl:p-[72px]">
         <div className="flex flex-col">
           {renderStep()}
         </div>

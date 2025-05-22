@@ -86,45 +86,45 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
   };
 
   return (
-    <div className="space-y-8">
-      <div className="space-y-6">
-        {/* Timeline centrata e responsive */}
-        <div className="flex justify-center mb-6">
-          <div className="flex items-center w-full max-w-2xl justify-between">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="space-y-4 sm:space-y-6">
+        {/* Timeline migliorata e responsive */}
+        <div className="flex justify-center mb-4 sm:mb-6 -mx-2 sm:mx-0">
+          <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl justify-between">
             {/* Punto 1: Info generali (attivo) */}
             <div className="flex flex-col items-center relative">
-              <div className="bg-[#fbe12e] rounded-full p-2 z-10">
-                <CircleDot className="h-5 w-5 text-black" />
+              <div className="bg-[#fbe12e] rounded-full p-1.5 sm:p-2 z-10">
+                <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-black" />
               </div>
-              <span className="text-sm font-medium mt-2">Info generali</span>
+              <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Info generali</span>
             </div>
             
             {/* Linea di collegamento 1-2 */}
-            <div className="h-[2px] flex-grow bg-[#fbe12e] mx-2 relative top-[10px]"></div>
+            <div className="h-[2px] flex-grow bg-[#fbe12e] mx-0.5 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
             
             {/* Punto 2: Configuratore (inattivo) */}
             <div className="flex flex-col items-center relative">
-              <div className="bg-gray-200 rounded-full p-2 z-10">
-                <CircleDot className="h-5 w-5 text-gray-400" />
+              <div className="bg-gray-200 rounded-full p-1.5 sm:p-2 z-10">
+                <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400" />
               </div>
-              <span className="text-sm font-medium mt-2 text-gray-500">Configuratore</span>
+              <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center text-gray-500">Configuratore</span>
             </div>
             
             {/* Linea di collegamento 2-3 */}
-            <div className="h-[2px] flex-grow bg-gray-300 mx-2 relative top-[10px]"></div>
+            <div className="h-[2px] flex-grow bg-gray-300 mx-0.5 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
             
             {/* Punto 3: Stima dei costi (inattivo) */}
             <div className="flex flex-col items-center relative">
-              <div className="bg-gray-200 rounded-full p-2 z-10">
-                <CircleDot className="h-5 w-5 text-gray-400" />
+              <div className="bg-gray-200 rounded-full p-1.5 sm:p-2 z-10">
+                <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400" />
               </div>
-              <span className="text-sm font-medium mt-2 text-gray-500">Stima dei costi</span>
+              <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center text-gray-500">Stima costi</span>
             </div>
           </div>
         </div>
 
         {/* Messaggio migliorato */}
-        <p className="text-center text-gray-600 italic px-4">
+        <p className="text-center text-sm sm:text-base text-gray-600 italic px-2 sm:px-4">
           Iniziamo insieme il tuo progetto di ristrutturazione. Completa i pochi campi richiesti con attenzione: ogni dettaglio ci aiuterà a fornirti una stima più precisa per il tuo preventivo.
         </p>
       </div>
@@ -158,7 +158,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       {/* Pulsante Continua */}
       <Button 
         onClick={handleSubmit}
-        className="w-full p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-black hover:text-white rounded-xl flex items-center justify-center gap-2 mt-6 transition-all duration-300 focus:bg-[#d8010c] focus:text-white active:bg-[#d8010c] active:text-white"
+        className="w-full py-4 sm:py-6 text-base sm:text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-black hover:text-white rounded-xl flex items-center justify-center gap-2 mt-6 transition-all duration-300 focus:bg-[#d8010c] focus:text-white active:bg-[#d8010c] active:text-white"
       >
         Continua e calcola il preventivo
       </Button>
