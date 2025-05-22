@@ -50,15 +50,20 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
   ];
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between bg-gradient-to-r from-[#fde1d3] to-[#f4f4f4] p-5 rounded-xl border border-[#f0f0f0] shadow-sm">
-        <div className="flex items-center gap-4">
-          <div className="bg-[rgba(216,121,122,0.2)] p-3 rounded-full">
-            <LayoutDashboard className="h-6 w-6 text-[#d8010c]" />
-          </div>
-          <h2 className="text-2xl font-medium text-[#1c1c1c]">Suddivisione degli spazi</h2>
+    <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <div className="w-[100px] h-[100px] flex-shrink-0 flex items-center justify-center">
+          <img 
+            src="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png" 
+            alt="Floor plan icon" 
+            className="w-full h-full object-contain"
+          />
         </div>
-        <div className="text-base font-medium px-4 py-2 bg-white rounded-lg border-2 border-[#fbe12e] shadow-sm">
+        <div>
+          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Suddivisione degli spazi</h2>
+          <p className="text-base text-[#1c1c1c] opacity-80">Indica quante stanze di ciascun tipo sono presenti nell'immobile</p>
+        </div>
+        <div className="ml-auto text-base font-medium px-4 py-2 bg-white rounded-lg border-2 border-[#fbe12e] shadow-sm">
           Totale: <span className="text-[#d8010c]">{totalRooms}</span> {totalRooms === 1 ? 'stanza' : 'stanze'}
         </div>
       </div>
