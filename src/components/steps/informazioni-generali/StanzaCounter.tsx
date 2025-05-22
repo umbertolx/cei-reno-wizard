@@ -30,11 +30,11 @@ export const StanzaCounter = ({
         <span className="text-xs text-gray-500">{description}</span>
       </div>
       
-      <div className="flex items-center gap-2">
+      <div className="flex items-center space-x-3">
         <Button 
           variant="outline" 
           size="icon"
-          className={`rounded-full ${isAtMin ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#fbe12e] hover:text-black'}`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center ${isAtMin ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#fbe12e] hover:text-black'}`}
           onClick={() => onChange(Math.max(0, value - 1))}
           disabled={isAtMin}
         >
@@ -48,7 +48,7 @@ export const StanzaCounter = ({
         <Button 
           variant="outline" 
           size="icon"
-          className={`rounded-full ${isAtMax ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#fbe12e] hover:text-black'}`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center ${isAtMax ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#fbe12e] hover:text-black'}`}
           onClick={() => onChange(value + 1)}
           disabled={isAtMax}
         >
