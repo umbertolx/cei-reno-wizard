@@ -1,7 +1,7 @@
 
 import { FormData } from "../../Configuratore";
 import { StanzaCounter } from "./StanzaCounter";
-import { LayoutDashboard } from "lucide-react";
+import { CircuitBoard } from "lucide-react";
 
 type SuddivisioneProps = {
   composizione: FormData['composizione'];
@@ -54,7 +54,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
       <div className="flex items-center justify-between bg-gradient-to-r from-[#fde1d3] to-[#f4f4f4] p-5 rounded-xl border border-[#f0f0f0] shadow-sm">
         <div className="flex items-center gap-4">
           <div className="bg-[rgba(216,121,122,0.2)] p-3 rounded-full">
-            <LayoutDashboard className="h-6 w-6 text-[#d8010c]" />
+            <CircuitBoard className="h-6 w-6 text-[#d8010c] stroke-[1.5]" />
           </div>
           <h2 className="text-2xl font-medium text-[#1c1c1c]">Suddivisione degli spazi</h2>
         </div>

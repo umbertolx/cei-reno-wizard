@@ -13,7 +13,7 @@ export const SuperficieSlider = ({ value, onChange }: SuperficieSliderProps) => 
     <div className="space-y-4">
       <div className="flex items-center">
         <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
-          <Ruler className="h-8 w-8 text-[#1c1c1c]" />
+          <Ruler className="h-8 w-8 text-[#1c1c1c] stroke-[1.5]" />
         </div>
         <h2 className="ml-4 text-xl md:text-2xl font-medium text-[#1c1c1c]">Superficie in mq</h2>
       </div>
