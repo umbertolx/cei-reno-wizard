@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -86,42 +87,45 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
 
   return (
     <div className="space-y-8">
-      <div className="space-y-4">
-        {/* Timeline di 3 punti */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-2">
-          <div className="flex flex-col md:flex-row items-center w-full">
-            <div className="flex flex-col items-center mb-4 md:mb-0">
-              <div className="bg-[#fbe12e] rounded-full p-2 flex items-center justify-center">
+      <div className="space-y-6">
+        {/* Timeline centrata e responsive */}
+        <div className="flex justify-center mb-6">
+          <div className="flex items-center w-full max-w-2xl justify-between">
+            {/* Punto 1: Info generali (attivo) */}
+            <div className="flex flex-col items-center relative">
+              <div className="bg-[#fbe12e] rounded-full p-2 z-10">
                 <CircleDot className="h-5 w-5 text-black" />
               </div>
-              <span className="text-sm font-medium mt-1">Info generali</span>
-              <div className="hidden md:block h-[2px] w-16 bg-[#fbe12e] absolute left-[calc(50%+40px)]"></div>
+              <span className="text-sm font-medium mt-2">Info generali</span>
             </div>
-
-            <div className="w-[2px] h-10 md:w-16 md:h-[2px] bg-gray-300 md:mx-4 my-1 md:my-0"></div>
-
-            <div className="flex flex-col items-center mb-4 md:mb-0">
-              <div className="bg-gray-200 rounded-full p-2 flex items-center justify-center">
+            
+            {/* Linea di collegamento 1-2 */}
+            <div className="h-[2px] flex-grow bg-[#fbe12e] mx-2 relative top-[10px]"></div>
+            
+            {/* Punto 2: Configuratore (inattivo) */}
+            <div className="flex flex-col items-center relative">
+              <div className="bg-gray-200 rounded-full p-2 z-10">
                 <CircleDot className="h-5 w-5 text-gray-400" />
               </div>
-              <span className="text-sm font-medium mt-1 text-gray-500">Configuratore</span>
-              <div className="hidden md:block h-[2px] w-16 bg-gray-300 absolute left-[calc(50%+140px)]"></div>
+              <span className="text-sm font-medium mt-2 text-gray-500">Configuratore</span>
             </div>
-
-            <div className="w-[2px] h-10 md:w-16 md:h-[2px] bg-gray-300 md:mx-4 my-1 md:my-0"></div>
-
-            <div className="flex flex-col items-center">
-              <div className="bg-gray-200 rounded-full p-2 flex items-center justify-center">
+            
+            {/* Linea di collegamento 2-3 */}
+            <div className="h-[2px] flex-grow bg-gray-300 mx-2 relative top-[10px]"></div>
+            
+            {/* Punto 3: Stima dei costi (inattivo) */}
+            <div className="flex flex-col items-center relative">
+              <div className="bg-gray-200 rounded-full p-2 z-10">
                 <CircleDot className="h-5 w-5 text-gray-400" />
               </div>
-              <span className="text-sm font-medium mt-1 text-gray-500">Stima dei costi</span>
+              <span className="text-sm font-medium mt-2 text-gray-500">Stima dei costi</span>
             </div>
           </div>
         </div>
 
-        {/* Frase incoraggiante */}
-        <p className="text-center text-gray-600 italic">
-          Ci vorrà poco tempo, ma ricorda: più precise saranno le informazioni, più accurata sarà la stima dei costi.
+        {/* Messaggio migliorato */}
+        <p className="text-center text-gray-600 italic px-4">
+          Iniziamo insieme il tuo progetto di ristrutturazione. Completa i pochi campi richiesti con attenzione: ogni dettaglio ci aiuterà a fornirti una stima più precisa per il tuo preventivo.
         </p>
       </div>
 
