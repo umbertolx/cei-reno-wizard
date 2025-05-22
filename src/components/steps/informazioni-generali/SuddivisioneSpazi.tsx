@@ -53,7 +53,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
       <div className="flex items-center gap-4">
         <div className="w-[100px] h-[100px] flex-shrink-0 flex items-center justify-center">
           <img 
-            src="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png" 
+            src="/lovable-uploads/417ced15-f2dc-47e1-8b8c-d0faf5b9717e.png" 
             alt="Floor plan icon" 
             className="w-full h-full object-contain"
           />
