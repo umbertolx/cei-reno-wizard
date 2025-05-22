@@ -38,7 +38,7 @@ export const StanzaCounter = ({
           onClick={() => onChange(Math.max(0, value - 1))}
           disabled={isAtMin}
         >
-          <Minus className="h-4 w-4 stroke-[1.5]" />
+          <Minus className="h-4 w-4" />
         </Button>
         
         <span className="w-6 text-center font-medium">
@@ -52,7 +52,7 @@ export const StanzaCounter = ({
           onClick={() => onChange(value + 1)}
           disabled={isAtMax}
         >
-          <Plus className="h-4 w-4 stroke-[1.5]" />
+          <Plus className="h-4 w-4" />
         </Button>
         
         {maxValue !== Infinity && (

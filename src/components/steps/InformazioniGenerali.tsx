@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -14,8 +15,9 @@ type Props = {
 };
 
 export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props) => {
-  const [indirizzoValue, setIndirizzoValue] = useState(formData.indirizzo || "");
-
+  // Calcola il totale delle stanze
+  const totalRooms = Object.values(formData.composizione).reduce((sum, count) => sum + count, 0);
+  
   const validateForm = () => {
     if (!formData.tipologiaAbitazione) {
       toast({
@@ -56,7 +58,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     
     return true;
   };
-  
+
   const selectLocation = (location: string) => {
     const [indirizzo, citta, cap, regione] = location.split(", ");
     updateFormData({
@@ -81,9 +83,6 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       }
     });
   };
-
-  // Calcola il totale delle stanze
-  const totalRooms = Object.values(formData.composizione).reduce((sum, count) => sum + count, 0);
 
   return (
     <div className="space-y-8">
