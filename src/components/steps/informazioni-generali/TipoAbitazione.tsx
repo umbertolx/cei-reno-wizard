@@ -10,16 +10,16 @@ type TipoAbitazioneProps = {
 
 export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center">
-        <div className="w-[100px] h-[100px] flex items-center justify-center">
+    <div className="space-y-6">
+      <div className="flex items-center gap-6">
+        <div className="w-[80px] h-[80px] flex-shrink-0 flex items-center justify-center">
           <img 
             src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
             alt="House icon" 
             className="w-full h-full object-contain"
           />
         </div>
-        <div className="ml-4">
+        <div>
           <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Che tipo di immobile stai ristrutturando?</h2>
           <p className="text-base text-[#1c1c1c] opacity-80">Seleziona il tipo di abitazione per cui vuoi progettare l'impianto elettrico</p>
         </div>
@@ -28,10 +28,10 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
       <RadioGroup 
         value={value} 
         onValueChange={onChange}
-        className="flex flex-col sm:flex-row gap-4"
+        className="flex flex-col sm:flex-row gap-5"
       >
-        <div className={`flex flex-col items-start space-y-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors flex-1 ${value === 'appartamento' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
-          <div className="flex items-center space-x-2 w-full">
+        <div className={`flex flex-col items-start space-y-2 border rounded-lg p-5 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors flex-1 ${value === 'appartamento' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+          <div className="flex items-center space-x-3 w-full">
             <RadioGroupItem 
               value="appartamento" 
               id="appartamento" 
@@ -44,12 +44,12 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
               Appartamento
             </Label>
           </div>
-          <p className={`pl-6 text-sm ${value === 'appartamento' ? 'text-white' : 'text-gray-600'} hover:bg-[#fbe12e]:text-black`}>
+          <p className={`pl-7 text-sm ${value === 'appartamento' ? 'text-white' : 'text-gray-600'} hover:bg-[#fbe12e]:text-black`}>
             Condomini, residence, attici
           </p>
         </div>
-        <div className={`flex flex-col items-start space-y-2 border rounded-lg p-4 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors flex-1 ${value === 'casa indipendente' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
-          <div className="flex items-center space-x-2 w-full">
+        <div className={`flex flex-col items-start space-y-2 border rounded-lg p-5 cursor-pointer hover:bg-[#fbe12e] hover:text-black transition-colors flex-1 ${value === 'casa indipendente' ? 'bg-[#d8010c] text-white border-[#d8010c]' : ''}`}>
+          <div className="flex items-center space-x-3 w-full">
             <RadioGroupItem 
               value="casa indipendente" 
               id="casa" 
@@ -62,7 +62,7 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
               Casa indipendente
             </Label>
           </div>
-          <p className={`pl-6 text-sm ${value === 'casa indipendente' ? 'text-white' : 'text-gray-600'} hover:bg-[#fbe12e]:text-black`}>
+          <p className={`pl-7 text-sm ${value === 'casa indipendente' ? 'text-white' : 'text-gray-600'} hover:bg-[#fbe12e]:text-black`}>
             Ville, villette a schiera
           </p>
         </div>
