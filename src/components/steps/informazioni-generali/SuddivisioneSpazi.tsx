@@ -51,14 +51,14 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between bg-[#f8f8f8] p-4 rounded-xl">
-        <div className="flex items-center">
+      <div className="flex items-center justify-between bg-gradient-to-r from-[#fde1d3] to-[#f4f4f4] p-5 rounded-xl border border-[#f0f0f0] shadow-sm">
+        <div className="flex items-center gap-4">
           <div className="bg-[rgba(216,121,122,0.2)] p-3 rounded-full">
-            <LayoutDashboard className="h-6 w-6 text-[#1c1c1c]" />
+            <LayoutDashboard className="h-6 w-6 text-[#d8010c]" />
           </div>
-          <h2 className="ml-4 text-xl font-medium text-[#1c1c1c]">Suddivisione degli spazi</h2>
+          <h2 className="text-2xl font-medium text-[#1c1c1c]">Suddivisione degli spazi</h2>
         </div>
-        <div className="text-base font-medium px-3 py-1.5 bg-white rounded-md border shadow-sm">
+        <div className="text-base font-medium px-4 py-2 bg-white rounded-lg border-2 border-[#fbe12e] shadow-sm">
           Totale: <span className="text-[#d8010c]">{totalRooms}</span> {totalRooms === 1 ? 'stanza' : 'stanze'}
         </div>
       </div>
