@@ -1,7 +1,6 @@
 
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Ruler } from "lucide-react";
 
 type SuperficieSliderProps = {
   value: number;
@@ -10,12 +9,19 @@ type SuperficieSliderProps = {
 
 export const SuperficieSlider = ({ value, onChange }: SuperficieSliderProps) => {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center">
-        <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
-          <Ruler className="h-8 w-8 text-[#1c1c1c]" />
+    <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <div className="w-[100px] h-[100px] flex-shrink-0 flex items-center justify-center">
+          <img 
+            src="/lovable-uploads/22297941-d292-41c8-a9a7-e8ceec9287c1.png" 
+            alt="Measuring tape icon" 
+            className="w-full h-full object-contain"
+          />
         </div>
-        <h2 className="ml-4 text-xl md:text-2xl font-medium text-[#1c1c1c]">Superficie in mq</h2>
+        <div>
+          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Superficie in mq</h2>
+          <p className="text-base text-[#1c1c1c] opacity-80">Inserisci una stima approssimativa se non hai una misura precisa</p>
+        </div>
       </div>
       
       <div className="flex flex-col gap-4">
@@ -34,8 +40,6 @@ export const SuperficieSlider = ({ value, onChange }: SuperficieSliderProps) => 
           onValueChange={(values) => onChange(values[0])}
           className="py-4"
         />
-        
-        <p className="text-sm text-[#1c1c1c] opacity-60">Inserisci una stima approssimativa se non hai una misura precisa.</p>
       </div>
     </div>
   );
