@@ -16,7 +16,7 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
           <img 
             src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
             alt="House icon" 
-            className="w-[75px] h-[75px]"
+            className="w-full h-full object-contain"
           />
         </div>
         <div className="ml-4">
