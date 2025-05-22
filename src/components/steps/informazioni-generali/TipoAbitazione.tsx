@@ -2,7 +2,6 @@
 import { FormData } from "../../Configuratore";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Home } from "lucide-react";
 
 type TipoAbitazioneProps = {
   value: string;
@@ -13,8 +12,17 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center">
-        <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
-          <Home className="h-8 w-8 text-[#1c1c1c]" />
+        <div className="relative">
+          {/* Pink background circle positioned slightly to the top-left */}
+          <div className="absolute -top-1 -left-1 w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]"></div>
+          {/* House icon */}
+          <div className="relative z-10 w-[75px] h-[75px] flex items-center justify-center">
+            <img 
+              src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
+              alt="House icon" 
+              className="w-14 h-14"
+            />
+          </div>
         </div>
         <div className="ml-4">
           <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Che tipo di immobile stai ristrutturando?</h2>
