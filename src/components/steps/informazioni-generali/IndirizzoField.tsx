@@ -1,7 +1,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
-import { MapPin } from "lucide-react";
 import { Loader } from "@googlemaps/js-api-loader";
 
 type IndirizzoFieldProps = {
@@ -100,12 +99,19 @@ export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoF
   }, [onChange, onSelectLocation]);
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center">
-        <div className="icon-cei flex items-center justify-center w-[75px] h-[75px] rounded-full bg-[rgba(216,121,122,0.2)]">
-          <MapPin className="h-8 w-8 text-[#1c1c1c]" />
+    <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <div className="w-[100px] h-[100px] flex-shrink-0 flex items-center justify-center">
+          <img 
+            src="/lovable-uploads/14822282-293b-4be9-93a5-cbc34e07f6c6.png" 
+            alt="Location map icon" 
+            className="w-full h-full object-contain"
+          />
         </div>
-        <h2 className="ml-4 text-xl md:text-2xl font-medium text-[#1c1c1c]">Indirizzo dell'immobile</h2>
+        <div>
+          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Indirizzo dell'immobile</h2>
+          <p className="text-base text-[#1c1c1c] opacity-80">Inserisci il tuo indirizzo per iniziare a digitare e seleziona dai suggerimenti</p>
+        </div>
       </div>
       
       <div className="flex flex-col gap-2 relative">
@@ -127,10 +133,6 @@ export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoF
         {error && (
           <p className="text-sm text-red-500 mt-1">{error}</p>
         )}
-        
-        <p className="text-sm text-gray-500 mt-1">
-          Inserisci il tuo indirizzo per iniziare a digitare e seleziona dai suggerimenti
-        </p>
       </div>
     </div>
   );
