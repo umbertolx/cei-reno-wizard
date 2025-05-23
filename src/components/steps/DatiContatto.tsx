@@ -1,4 +1,3 @@
-
 import { FormData } from "../Configuratore";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -162,6 +161,13 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext }: Props
       {/* Form di contatto */}
       <div className="space-y-6">
         <h2 className="text-2xl font-medium text-[#1c1c1c]">Inserisci i tuoi dati per continuare</h2>
+        
+        {/* Aggiunto messaggio che indica la stima immediata */}
+        <div className="bg-[#fbe12e] bg-opacity-40 p-4 rounded-lg text-center">
+          <p className="text-md text-[#1c1c1c] font-medium">
+            Completando questo form riceverai immediatamente una stima del costo della ristrutturazione
+          </p>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
