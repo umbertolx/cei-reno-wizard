@@ -1,9 +1,12 @@
+
 import { useState } from "react";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
+import { DatiContatto } from "./steps/DatiContatto";
+import { StimaFinale } from "./steps/StimaFinale";
 
 export type FormData = {
   tipologiaAbitazione: string;
@@ -26,6 +29,9 @@ export type FormData = {
   email: string;
   telefono: string;
   accettoTermini: boolean;
+  dataRichiestaSopralluogo?: string;
+  orarioSopralluogo?: string;
+  note?: string;
 };
 
 export const Configuratore = () => {
@@ -154,17 +160,26 @@ export const Configuratore = () => {
           />
         );
       case 1:
+        return (
+          <DatiContatto
+            formData={formData}
+            updateFormData={updateFormData}
+            onBack={handleBack}
+            onNext={handleNext}
+          />
+        );
+      case 2:
         const stima = calcolaStima();
         return (
-          <RiepilogoFinale 
-            formData={formData} 
+          <StimaFinale
+            formData={formData}
             updateFormData={updateFormData}
             stima={stima}
             onBack={handleBack}
             onSubmit={handleInviaDati}
           />
         );
-      case 2:
+      case 3:
         return <RichiestaInviata onReset={handleReset} />;
       default:
         return <div>Step non valido</div>;

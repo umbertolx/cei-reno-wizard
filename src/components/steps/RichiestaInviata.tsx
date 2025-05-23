@@ -16,13 +16,13 @@ export const RichiestaInviata = ({ onReset }: Props) => {
       <div className="space-y-4">
         <h1 className="text-3xl md:text-5xl font-medium text-[#1c1c1c]">Richiesta inviata!</h1>
         <p className="text-lg md:text-xl text-[#1c1c1c] opacity-80">
-          Grazie per aver utilizzato il nostro configuratore. Ti contatteremo al più presto per il sopralluogo e il preventivo dettagliato.
+          Grazie per aver richiesto il sopralluogo. Ti contatteremo presto per confermare l'appuntamento.
         </p>
       </div>
       
       <div className="bg-[#f4f4f4] p-6 rounded-2xl w-full max-w-md">
         <p className="text-lg text-[#1c1c1c]">
-          Un nostro esperto ti contatterà entro 24-48 ore lavorative per organizzare un sopralluogo gratuito.
+          Un nostro esperto ti contatterà entro 24-48 ore lavorative per confermare la data e l'orario del sopralluogo.
         </p>
       </div>
       
