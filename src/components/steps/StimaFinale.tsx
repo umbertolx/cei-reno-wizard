@@ -68,7 +68,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
 
       {/* Stima dei costi */}
       <div className="bg-[#fbe12e] p-6 rounded-2xl space-y-4">
-        <h2 className="text-2xl font-medium text-[#1c1c1c]">La tua stima</h2>
+        <h2 className="text-2xl font-medium text-[#1c1c1c]">La tua stima <span className="text-base font-normal italic">(immediata)</span></h2>
         
         <div className="text-center py-6">
           <span className="text-xl">da </span>
@@ -79,7 +79,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
         
         <div className="bg-white bg-opacity-50 p-4 rounded-lg text-center">
           <p className="text-lg text-[#1c1c1c]">
-            È una prima stima, per un preventivo preciso serve un sopralluogo
+            È una stima immediata calcolata in tempo reale. Per un preventivo preciso richiedi un sopralluogo.
           </p>
         </div>
       </div>
