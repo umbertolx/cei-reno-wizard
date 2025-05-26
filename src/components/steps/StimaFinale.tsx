@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ChevronDown, CircleDot, Calendar, Clock } from "lucide-react";
+import { ChevronDown, CircleDot, Calendar, Clock, Calculator, Percent } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
@@ -23,6 +23,13 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
   const formatPrice = (price: number) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+
+  // Calcola i valori per IVA e detrazioni basati sulla media della stima
+  const costoMedio = (stima.min + stima.max) / 2;
+  const iva = costoMedio * 0.22;
+  const detrazione50 = costoMedio * 0.5;
+  const detrazione36 = costoMedio * 0.36;
+  const detrazione65 = costoMedio * 0.65;
 
   return (
     <div className="space-y-8">
@@ -68,7 +75,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
 
       {/* Stima dei costi */}
       <div className="bg-[#fbe12e] p-6 rounded-2xl space-y-4">
-        <h2 className="text-2xl font-medium text-[#1c1c1c]">La tua stima <span className="text-base font-normal italic">(immediata)</span></h2>
+        <h2 className="text-2xl font-medium text-[#1c1c1c]">La tua stima</h2>
         
         <div className="text-center py-6">
           <span className="text-xl">da </span>
@@ -79,26 +86,69 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
         
         <div className="bg-white bg-opacity-50 p-4 rounded-lg text-center">
           <p className="text-lg text-[#1c1c1c]">
-            È una stima immediata calcolata in tempo reale. Per un preventivo preciso richiedi un sopralluogo.
+            È una stima calcolata in tempo reale. Per un preventivo preciso richiedi un sopralluogo.
           </p>
         </div>
       </div>
 
-      {/* Riepilogo informazioni personali */}
-      <div className="bg-[#f4f4f4] p-6 rounded-2xl space-y-4">
-        <h2 className="text-2xl font-medium text-[#1c1c1c]">Riepilogo dati personali</h2>
+      {/* Box IVA e Detrazioni Fiscali */}
+      <div className="bg-[#f4f4f4] p-6 rounded-2xl space-y-6">
+        <div className="flex items-center gap-2">
+          <Calculator className="h-6 w-6 text-[#d8010c]" />
+          <h2 className="text-2xl font-medium text-[#1c1c1c]">IVA e Detrazioni Fiscali</h2>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <p className="text-sm text-[#1c1c1c] opacity-70">Nome e Cognome</p>
-            <p className="text-lg font-medium">{formData.nome} {formData.cognome}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* IVA */}
+          <div className="bg-white p-4 rounded-lg border-l-4 border-[#d8010c]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-[#1c1c1c] opacity-70">IVA (22%)</p>
+                <p className="text-lg font-bold text-[#d8010c]">€ {formatPrice(Math.round(iva))}</p>
+              </div>
+              <Percent className="h-5 w-5 text-[#d8010c]" />
+            </div>
           </div>
-          
-          <div>
-            <p className="text-sm text-[#1c1c1c] opacity-70">Contatti</p>
-            <p className="text-lg font-medium">{formData.email}</p>
-            <p className="text-lg font-medium">{formData.telefono}</p>
+
+          {/* Detrazione 50% - Prima casa */}
+          <div className="bg-white p-4 rounded-lg border-l-4 border-[#fbe12e]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-[#1c1c1c] opacity-70">Bonus Casa 1ª casa (50%)</p>
+                <p className="text-lg font-bold text-[#1c1c1c]">€ {formatPrice(Math.round(detrazione50))}</p>
+              </div>
+              <Percent className="h-5 w-5 text-[#fbe12e]" />
+            </div>
           </div>
+
+          {/* Detrazione 36% - Seconda casa */}
+          <div className="bg-white p-4 rounded-lg border-l-4 border-[#d8797a]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-[#1c1c1c] opacity-70">Bonus Casa 2ª casa (36%)</p>
+                <p className="text-lg font-bold text-[#1c1c1c]">€ {formatPrice(Math.round(detrazione36))}</p>
+              </div>
+              <Percent className="h-5 w-5 text-[#d8797a]" />
+            </div>
+          </div>
+
+          {/* Detrazione 65% - Ecobonus */}
+          <div className="bg-white p-4 rounded-lg border-l-4 border-green-500">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-[#1c1c1c] opacity-70">Ecobonus (65%)</p>
+                <p className="text-lg font-bold text-[#1c1c1c]">€ {formatPrice(Math.round(detrazione65))}</p>
+              </div>
+              <Percent className="h-5 w-5 text-green-500" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-60 p-4 rounded-lg">
+          <p className="text-sm text-[#1c1c1c] opacity-80">
+            <strong>Nota:</strong> Le detrazioni fiscali sono indicative e soggette a verifica dei requisiti previsti dalla normativa vigente. 
+            Consulta un commercialista per informazioni dettagliate.
+          </p>
         </div>
       </div>
 
