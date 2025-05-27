@@ -1,11 +1,10 @@
-
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, CircleDot, Calendar, Clock, Info } from "lucide-react";
+import { ChevronDown, CircleDot, Calendar, Clock } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
@@ -60,7 +59,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
           {/* Punto 2: Dati di contatto (completato) */}
           <div className="flex flex-col items-center relative">
             <div className="bg-[#d8010c] rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
+              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:h-5 text-white" />
             </div>
             <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Dati contatto</span>
           </div>
@@ -106,18 +105,14 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
             <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">🏠</span>
                   <span className="text-lg font-medium text-[#1c1c1c]">Bonus Ristrutturazione - Prima Casa</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">€ {formatPrice(detrazionePrimaCasa50)}</div>
-                    <div className="text-sm text-green-600">detrazione fiscale IRPEF</div>
+                    <div className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazionePrimaCasa50)}</div>
+                    <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Info className="h-5 w-5 text-[#d8010c]" />
-                    <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-prima-casa" ? "rotate-180" : ""}`} />
-                  </div>
+                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-prima-casa" ? "rotate-180" : ""}`} />
                 </div>
               </div>
             </CollapsibleTrigger>
@@ -145,18 +140,14 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
             <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">🏡</span>
                   <span className="text-lg font-medium text-[#1c1c1c]">Bonus Ristrutturazione - Seconda Casa</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">€ {formatPrice(detrazioneSecondaCasa36)}</div>
-                    <div className="text-sm text-green-600">detrazione fiscale IRPEF</div>
+                    <div className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazioneSecondaCasa36)}</div>
+                    <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Info className="h-5 w-5 text-[#d8010c]" />
-                    <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-seconda-casa" ? "rotate-180" : ""}`} />
-                  </div>
+                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-seconda-casa" ? "rotate-180" : ""}`} />
                 </div>
               </div>
             </CollapsibleTrigger>
@@ -184,18 +175,14 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
             <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">🌿</span>
                   <span className="text-lg font-medium text-[#1c1c1c]">Ecobonus 2025 - Prima Casa</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">€ {formatPrice(detrazionePrimaCasa50)}</div>
-                    <div className="text-sm text-green-600">detrazione fiscale IRPEF</div>
+                    <div className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazionePrimaCasa50)}</div>
+                    <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Info className="h-5 w-5 text-[#d8010c]" />
-                    <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus-prima-casa" ? "rotate-180" : ""}`} />
-                  </div>
+                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus-prima-casa" ? "rotate-180" : ""}`} />
                 </div>
               </div>
             </CollapsibleTrigger>
@@ -230,18 +217,14 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
             <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">🌱</span>
                   <span className="text-lg font-medium text-[#1c1c1c]">Ecobonus 2025 - Seconda Casa</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">€ {formatPrice(detrazioneSecondaCasa36)}</div>
-                    <div className="text-sm text-green-600">detrazione fiscale IRPEF</div>
+                    <div className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazioneSecondaCasa36)}</div>
+                    <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Info className="h-5 w-5 text-[#d8010c]" />
-                    <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus-seconda-casa" ? "rotate-180" : ""}`} />
-                  </div>
+                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus-seconda-casa" ? "rotate-180" : ""}`} />
                 </div>
               </div>
             </CollapsibleTrigger>
@@ -275,13 +258,9 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
           <Collapsible open={openAccordion === "iva-agevolata"} onOpenChange={() => toggleAccordion("iva-agevolata")}>
             <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-xl">🧾</span>
                 <span className="text-lg font-medium text-[#1c1c1c]">IVA agevolata 10%</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Info className="h-5 w-5 text-[#d8010c]" />
-                <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "iva-agevolata" ? "rotate-180" : ""}`} />
-              </div>
+              <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "iva-agevolata" ? "rotate-180" : ""}`} />
             </CollapsibleTrigger>
             <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
               <div className="p-4 space-y-3">
