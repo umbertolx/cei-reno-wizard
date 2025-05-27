@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
@@ -35,28 +34,31 @@ export type FormData = {
 };
 
 export const Configuratore = () => {
-  const [step, setStep] = useState<number>(0);
+  // TEMPORANEO: Step iniziale impostato a 2 per testare StimaFinale
+  const [step, setStep] = useState<number>(2);
+  
+  // TEMPORANEO: Dati precompilati per il testing
   const [formData, setFormData] = useState<FormData>({
-    tipologiaAbitazione: "",
-    superficie: 0,
-    indirizzo: "",
-    citta: "",
-    cap: "",
-    regione: "",
-    piano: "",
+    tipologiaAbitazione: "appartamento",
+    superficie: 85,
+    indirizzo: "Via Roma 123",
+    citta: "Milano",
+    cap: "20121",
+    regione: "Lombardia",
+    piano: "secondo piano",
     composizione: {
-      cucina: 0,
-      cameraDoppia: 0,
-      cameraSingola: 0,
-      bagno: 0,
-      soggiorno: 0,
+      cucina: 1,
+      cameraDoppia: 2,
+      cameraSingola: 1,
+      bagno: 2,
+      soggiorno: 1,
       altro: 0,
     },
-    nome: "",
-    cognome: "",
-    email: "",
-    telefono: "",
-    accettoTermini: false
+    nome: "Mario",
+    cognome: "Rossi",
+    email: "mario.rossi@email.com",
+    telefono: "3331234567",
+    accettoTermini: true
   });
   
   const updateFormData = (data: Partial<FormData>) => {
