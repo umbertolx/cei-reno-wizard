@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
@@ -124,7 +123,8 @@ export const Configuratore = () => {
       cognome: "",
       email: "",
       telefono: "",
-      accettoTermini: false
+      accettoTermini: false,
+      tipoProprietà: "prima casa"
     });
   };
 
