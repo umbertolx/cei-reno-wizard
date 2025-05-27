@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
@@ -28,6 +29,7 @@ export type FormData = {
   email: string;
   telefono: string;
   accettoTermini: boolean;
+  tipoProprietà: string;
   dataRichiestaSopralluogo?: string;
   orarioSopralluogo?: string;
   note?: string;
@@ -58,7 +60,8 @@ export const Configuratore = () => {
     cognome: "Rossi",
     email: "mario.rossi@email.com",
     telefono: "3331234567",
-    accettoTermini: true
+    accettoTermini: true,
+    tipoProprietà: "prima casa"
   });
   
   const updateFormData = (data: Partial<FormData>) => {

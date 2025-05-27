@@ -1,4 +1,3 @@
-
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, CircleDot, Calendar, Clock, Info } from "lucide-react";
 import { useState } from "react";
+import { TipoProprietaSelector } from "./stimafinale/TipoProprietaSelector";
 
 type Props = {
   formData: FormData;
@@ -35,6 +35,8 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
   const toggleAccordion = (value: string) => {
     setOpenAccordion(openAccordion === value ? null : value);
   };
+
+  const isPrimaCasa = formData.tipoProprietà === 'prima casa';
 
   return (
     <div className="space-y-8">
@@ -96,38 +98,48 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
         </div>
       </div>
 
+      {/* Selezione tipo proprietà */}
+      <TipoProprietaSelector 
+        value={formData.tipoProprietà || "prima casa"}
+        onChange={(value) => updateFormData({ tipoProprietà: value })}
+      />
+
       {/* Box Bonus e Detrazioni Fiscali */}
       <div className="bg-[#f4f4f4] p-6 rounded-2xl space-y-6">
         <h2 className="text-2xl font-medium text-[#1c1c1c]">Bonus e Detrazioni Fiscali</h2>
         
         <div className="space-y-4">
-          {/* Bonus Ristrutturazione - Prima Casa */}
-          <Collapsible open={openAccordion === "bonus-prima-casa"} onOpenChange={() => toggleAccordion("bonus-prima-casa")}>
+          {/* Bonus Ristrutturazione */}
+          <Collapsible open={openAccordion === "bonus-ristrutturazione"} onOpenChange={() => toggleAccordion("bonus-ristrutturazione")}>
             <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-medium text-[#1c1c1c]">Bonus Ristrutturazione - Prima Casa</span>
+                  <span className="text-lg font-medium text-[#1c1c1c]">
+                    Bonus Ristrutturazione - {isPrimaCasa ? 'Prima Casa' : 'Seconda Casa'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazionePrimaCasa50)}</div>
+                    <div className="text-lg font-bold text-green-600">
+                      Fino a € {formatPrice(isPrimaCasa ? detrazionePrimaCasa50 : detrazioneSecondaCasa36)}
+                    </div>
                     <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
                   </div>
-                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-prima-casa" ? "rotate-180" : ""}`} />
+                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-ristrutturazione" ? "rotate-180" : ""}`} />
                 </div>
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
               <div className="p-4 space-y-3">
                 <p className="text-[#1c1c1c]">
-                  <strong>Descrizione:</strong> Detrazione del 50% su molti lavori edili in immobili residenziali utilizzati come abitazione principale.
+                  <strong>Descrizione:</strong> Detrazione del {isPrimaCasa ? '50%' : '36%'} su molti lavori edili in immobili residenziali {isPrimaCasa ? 'utilizzati come abitazione principale' : 'non utilizzati come abitazione principale'}.
                 </p>
                 <div className="space-y-2">
                   <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
                   <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>50% per abitazione principale</li>
+                    <li>{isPrimaCasa ? '50% per abitazione principale' : '36% per altri immobili'}</li>
                     <li>Detrazione in 10 anni</li>
-                    <li>Massimale di spesa: 96.000 €</li>
+                    <li>Massimale di spesa: {isPrimaCasa ? '96.000 €' : '48.000 €'}</li>
                     <li>Si applica in automatico con bonifico e fattura corretti</li>
                     <li>Include: bagni, impianti, pavimenti, infissi</li>
                   </ul>
@@ -136,61 +148,30 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
             </CollapsibleContent>
           </Collapsible>
 
-          {/* Bonus Ristrutturazione - Seconda Casa */}
-          <Collapsible open={openAccordion === "bonus-seconda-casa"} onOpenChange={() => toggleAccordion("bonus-seconda-casa")}>
+          {/* Ecobonus */}
+          <Collapsible open={openAccordion === "ecobonus"} onOpenChange={() => toggleAccordion("ecobonus")}>
             <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-medium text-[#1c1c1c]">Bonus Ristrutturazione - Seconda Casa</span>
+                  <span className="text-lg font-medium text-[#1c1c1c]">
+                    Ecobonus 2025 - {isPrimaCasa ? 'Prima Casa' : 'Seconda Casa'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazioneSecondaCasa36)}</div>
+                    <div className="text-lg font-bold text-green-600">
+                      Fino a € {formatPrice(isPrimaCasa ? detrazionePrimaCasa50 : detrazioneSecondaCasa36)}
+                    </div>
                     <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
                   </div>
-                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-seconda-casa" ? "rotate-180" : ""}`} />
+                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus" ? "rotate-180" : ""}`} />
                 </div>
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
               <div className="p-4 space-y-3">
                 <p className="text-[#1c1c1c]">
-                  <strong>Descrizione:</strong> Detrazione del 36% su molti lavori edili in immobili residenziali non utilizzati come abitazione principale.
-                </p>
-                <div className="space-y-2">
-                  <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>36% per altri immobili</li>
-                    <li>Detrazione in 10 anni</li>
-                    <li>Massimale di spesa: 48.000 €</li>
-                    <li>Si applica in automatico con bonifico e fattura corretti</li>
-                    <li>Include: bagni, impianti, pavimenti, infissi</li>
-                  </ul>
-                </div>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-
-          {/* Ecobonus - Prima Casa */}
-          <Collapsible open={openAccordion === "ecobonus-prima-casa"} onOpenChange={() => toggleAccordion("ecobonus-prima-casa")}>
-            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-medium text-[#1c1c1c]">Ecobonus 2025 - Prima Casa</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazionePrimaCasa50)}</div>
-                    <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
-                  </div>
-                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus-prima-casa" ? "rotate-180" : ""}`} />
-                </div>
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-              <div className="p-4 space-y-3">
-                <p className="text-[#1c1c1c]">
-                  <strong>Descrizione:</strong> Detrazione del 50% per lavori di efficientamento energetico, cumulabile con il Bonus Casa.
+                  <strong>Descrizione:</strong> Detrazione del {isPrimaCasa ? '50%' : '36%'} per lavori di efficientamento energetico, cumulabile con il Bonus Casa.
                 </p>
                 <div className="space-y-2">
                   <p className="text-[#1c1c1c]"><strong>Interventi ammessi:</strong></p>
@@ -209,55 +190,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
                   </ul>
                   <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
                   <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>50% per abitazione principale</li>
-                    <li>Valido solo su edifici esistenti</li>
-                    <li>Detrazione in 10 anni</li>
-                    <li>Cumulabile con il Bonus Ristrutturazione (massimali separati)</li>
-                  </ul>
-                </div>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-
-          {/* Ecobonus - Seconda Casa */}
-          <Collapsible open={openAccordion === "ecobonus-seconda-casa"} onOpenChange={() => toggleAccordion("ecobonus-seconda-casa")}>
-            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-medium text-[#1c1c1c]">Ecobonus 2025 - Seconda Casa</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazioneSecondaCasa36)}</div>
-                    <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
-                  </div>
-                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus-seconda-casa" ? "rotate-180" : ""}`} />
-                </div>
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-              <div className="p-4 space-y-3">
-                <p className="text-[#1c1c1c]">
-                  <strong>Descrizione:</strong> Detrazione del 36% per lavori di efficientamento energetico, cumulabile con il Bonus Casa.
-                </p>
-                <div className="space-y-2">
-                  <p className="text-[#1c1c1c]"><strong>Interventi ammessi:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>Infissi e serramenti</li>
-                    <li>Schermature solari</li>
-                    <li>Pompe di calore</li>
-                    <li>Caldaie non a combustibili fossili</li>
-                    <li>Impianti elettrici: solo domotica</li>
-                  </ul>
-                  <p className="text-[#1c1c1c]"><strong>Requisiti obbligatori:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>Certificazione energetica APE prima e dopo i lavori</li>
-                    <li>Miglioramento di almeno 2 classi energetiche</li>
-                    <li>Asseverazione di un tecnico abilitato</li>
-                  </ul>
-                  <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>36% per altri immobili</li>
+                    <li>{isPrimaCasa ? '50% per abitazione principale' : '36% per altri immobili'}</li>
                     <li>Valido solo su edifici esistenti</li>
                     <li>Detrazione in 10 anni</li>
                     <li>Cumulabile con il Bonus Ristrutturazione (massimali separati)</li>
@@ -274,6 +207,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
                 <span className="text-lg font-medium text-[#1c1c1c]">IVA agevolata 10%</span>
               </div>
               <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "iva-agevolata" ? "rotate-180" : ""}`} />
+            </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
               <div className="p-4 space-y-3">
