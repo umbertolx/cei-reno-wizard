@@ -161,7 +161,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
                   <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
                     <li>36% per altri immobili</li>
                     <li>Detrazione in 10 anni</li>
-                    <li>Massimale di spesa: 96.000 €</li>
+                    <li>Massimale di spesa: 48.000 €</li>
                     <li>Si applica in automatico con bonifico e fattura corretti</li>
                     <li>Include: bagni, impianti, pavimenti, infissi</li>
                   </ul>
