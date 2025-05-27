@@ -1,3 +1,4 @@
+
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -202,12 +203,13 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
 
           {/* IVA agevolata 10% */}
           <Collapsible open={openAccordion === "iva-agevolata"} onOpenChange={() => toggleAccordion("iva-agevolata")}>
-            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-lg font-medium text-[#1c1c1c]">IVA agevolata 10%</span>
+            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-lg font-medium text-[#1c1c1c]">IVA agevolata 10%</span>
+                </div>
+                <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "iva-agevolata" ? "rotate-180" : ""}`} />
               </div>
-              <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "iva-agevolata" ? "rotate-180" : ""}`} />
-            </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
               <div className="p-4 space-y-3">
