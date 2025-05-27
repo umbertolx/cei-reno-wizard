@@ -109,7 +109,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
                 <span className="text-lg font-medium text-[#1c1c1c]">Bonus Ristrutturazione - Prima Casa</span>
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-lg font-bold text-green-600">€ {formatPrice(detrazionePrimaCasa50)}</span>
+                <span className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazionePrimaCasa50)} in detrazione fiscale IRPEF</span>
                 <div className="flex items-center gap-2">
                   <Info className="h-5 w-5 text-[#d8010c]" />
                   <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-prima-casa" ? "rotate-180" : ""}`} />
@@ -143,7 +143,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
                 <span className="text-lg font-medium text-[#1c1c1c]">Bonus Ristrutturazione - Seconda Casa</span>
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-lg font-bold text-green-600">€ {formatPrice(detrazioneSecondaCasa36)}</span>
+                <span className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazioneSecondaCasa36)} in detrazione fiscale IRPEF</span>
                 <div className="flex items-center gap-2">
                   <Info className="h-5 w-5 text-[#d8010c]" />
                   <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-seconda-casa" ? "rotate-180" : ""}`} />
@@ -177,7 +177,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
                 <span className="text-lg font-medium text-[#1c1c1c]">Ecobonus 2025 - Prima Casa</span>
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-lg font-bold text-green-600">€ {formatPrice(detrazionePrimaCasa50)}</span>
+                <span className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazionePrimaCasa50)} in detrazione fiscale IRPEF</span>
                 <div className="flex items-center gap-2">
                   <Info className="h-5 w-5 text-[#d8010c]" />
                   <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus-prima-casa" ? "rotate-180" : ""}`} />
@@ -218,7 +218,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
                 <span className="text-lg font-medium text-[#1c1c1c]">Ecobonus 2025 - Seconda Casa</span>
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-lg font-bold text-green-600">€ {formatPrice(detrazioneSecondaCasa36)}</span>
+                <span className="text-lg font-bold text-green-600">Fino a € {formatPrice(detrazioneSecondaCasa36)} in detrazione fiscale IRPEF</span>
                 <div className="flex items-center gap-2">
                   <Info className="h-5 w-5 text-[#d8010c]" />
                   <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus-seconda-casa" ? "rotate-180" : ""}`} />
