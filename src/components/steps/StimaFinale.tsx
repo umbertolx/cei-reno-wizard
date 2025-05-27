@@ -51,7 +51,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
         <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl justify-between">
           {/* Punto 1: Info generali (completato) */}
           <div className="flex flex-col items-center relative">
-            <div className="bg-[#d8010c] rounded-full p-1.5 sm:p-2 z-10">
+            <div className="bg-[#d8010c] rounded-full w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 flex items-center justify-center z-10">
               <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
             </div>
             <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Info generali</span>
@@ -62,8 +62,8 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
           
           {/* Punto 2: Dati di contatto (completato) */}
           <div className="flex flex-col items-center relative">
-            <div className="bg-[#d8010c] rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:h-5 text-white" />
+            <div className="bg-[#d8010c] rounded-full w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 flex items-center justify-center z-10">
+              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
             </div>
             <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Dati contatto</span>
           </div>
@@ -73,7 +73,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
           
           {/* Punto 3: Stima finale (attivo) */}
           <div className="flex flex-col items-center relative">
-            <div className="bg-[#fbe12e] rounded-full p-1.5 sm:p-2 z-10">
+            <div className="bg-[#fbe12e] rounded-full w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 flex items-center justify-center z-10">
               <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-black" />
             </div>
             <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Stima finale</span>
