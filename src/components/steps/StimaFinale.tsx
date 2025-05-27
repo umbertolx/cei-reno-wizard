@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ChevronDown, CircleDot, Calendar, Clock, Calculator, Percent } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown, CircleDot, Calendar, Clock, Info } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
@@ -19,17 +20,16 @@ type Props = {
 };
 
 export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit }: Props) => {
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
   // Formatta il prezzo con separatore migliaia
   const formatPrice = (price: number) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  // Calcola i valori per IVA e detrazioni basati sulla media della stima
-  const costoMedio = (stima.min + stima.max) / 2;
-  const iva = costoMedio * 0.22;
-  const detrazione50 = costoMedio * 0.5;
-  const detrazione36 = costoMedio * 0.36;
-  const detrazione65 = costoMedio * 0.65;
+  const toggleAccordion = (value: string) => {
+    setOpenAccordion(openAccordion === value ? null : value);
+  };
 
   return (
     <div className="space-y-8">
@@ -91,63 +91,116 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
         </div>
       </div>
 
-      {/* Box IVA e Detrazioni Fiscali */}
+      {/* Box Bonus e Detrazioni Fiscali */}
       <div className="bg-[#f4f4f4] p-6 rounded-2xl space-y-6">
-        <div className="flex items-center gap-2">
-          <Calculator className="h-6 w-6 text-[#d8010c]" />
-          <h2 className="text-2xl font-medium text-[#1c1c1c]">IVA e Detrazioni Fiscali</h2>
-        </div>
+        <h2 className="text-2xl font-medium text-[#1c1c1c]">Bonus e Detrazioni Fiscali</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* IVA */}
-          <div className="bg-white p-4 rounded-lg border-l-4 border-[#d8010c]">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-[#1c1c1c] opacity-70">IVA (22%)</p>
-                <p className="text-lg font-bold text-[#d8010c]">€ {formatPrice(Math.round(iva))}</p>
+        <div className="space-y-4">
+          {/* Bonus Ristrutturazione */}
+          <Collapsible open={openAccordion === "bonus-ristrutturazione"} onOpenChange={() => toggleAccordion("bonus-ristrutturazione")}>
+            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-xl">🏠</span>
+                <span className="text-lg font-medium text-[#1c1c1c]">Bonus Ristrutturazione</span>
               </div>
-              <Percent className="h-5 w-5 text-[#d8010c]" />
-            </div>
-          </div>
+              <div className="flex items-center gap-2">
+                <Info className="h-5 w-5 text-[#d8010c]" />
+                <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-ristrutturazione" ? "rotate-180" : ""}`} />
+              </div>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+              <div className="p-4 space-y-3">
+                <p className="text-[#1c1c1c]">
+                  <strong>Descrizione:</strong> Detrazione del 50% o 36% su molti lavori edili in immobili residenziali, come bagni, impianti, pavimenti, infissi.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
+                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
+                    <li>50% per abitazione principale</li>
+                    <li>36% per altri immobili</li>
+                    <li>Detrazione in 10 anni</li>
+                    <li>Massimale di spesa: 96.000 €</li>
+                    <li>Si applica in automatico con bonifico e fattura corretti</li>
+                  </ul>
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
 
-          {/* Detrazione 50% - Prima casa */}
-          <div className="bg-white p-4 rounded-lg border-l-4 border-[#fbe12e]">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-[#1c1c1c] opacity-70">Bonus Casa 1ª casa (50%)</p>
-                <p className="text-lg font-bold text-[#1c1c1c]">€ {formatPrice(Math.round(detrazione50))}</p>
+          {/* Ecobonus 2025 */}
+          <Collapsible open={openAccordion === "ecobonus"} onOpenChange={() => toggleAccordion("ecobonus")}>
+            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-xl">🌿</span>
+                <span className="text-lg font-medium text-[#1c1c1c]">Ecobonus 2025</span>
               </div>
-              <Percent className="h-5 w-5 text-[#fbe12e]" />
-            </div>
-          </div>
+              <div className="flex items-center gap-2">
+                <Info className="h-5 w-5 text-[#d8010c]" />
+                <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus" ? "rotate-180" : ""}`} />
+              </div>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+              <div className="p-4 space-y-3">
+                <p className="text-[#1c1c1c]">
+                  <strong>Descrizione:</strong> Detrazione per lavori di efficientamento energetico, separata e non cumulabile con il Bonus Casa.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-[#1c1c1c]"><strong>Interventi ammessi:</strong></p>
+                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
+                    <li>Infissi e serramenti</li>
+                    <li>Schermature solari</li>
+                    <li>Pompe di calore</li>
+                    <li>Caldaie non a combustibili fossili</li>
+                    <li>Impianti ad alta efficienza</li>
+                  </ul>
+                  <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
+                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
+                    <li>50% per abitazione principale</li>
+                    <li>36% per altri immobili</li>
+                    <li>Valido solo su edifici esistenti</li>
+                    <li>Detrazione in 10 anni</li>
+                    <li>Non si cumula al massimale del Bonus Ristrutturazione</li>
+                  </ul>
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
 
-          {/* Detrazione 36% - Seconda casa */}
-          <div className="bg-white p-4 rounded-lg border-l-4 border-[#d8797a]">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-[#1c1c1c] opacity-70">Bonus Casa 2ª casa (36%)</p>
-                <p className="text-lg font-bold text-[#1c1c1c]">€ {formatPrice(Math.round(detrazione36))}</p>
+          {/* IVA agevolata 10% */}
+          <Collapsible open={openAccordion === "iva-agevolata"} onOpenChange={() => toggleAccordion("iva-agevolata")}>
+            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-xl">🧾</span>
+                <span className="text-lg font-medium text-[#1c1c1c]">IVA agevolata 10%</span>
               </div>
-              <Percent className="h-5 w-5 text-[#d8797a]" />
-            </div>
-          </div>
-
-          {/* Detrazione 65% - Ecobonus */}
-          <div className="bg-white p-4 rounded-lg border-l-4 border-green-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-[#1c1c1c] opacity-70">Ecobonus (65%)</p>
-                <p className="text-lg font-bold text-[#1c1c1c]">€ {formatPrice(Math.round(detrazione65))}</p>
+              <div className="flex items-center gap-2">
+                <Info className="h-5 w-5 text-[#d8010c]" />
+                <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "iva-agevolata" ? "rotate-180" : ""}`} />
               </div>
-              <Percent className="h-5 w-5 text-green-500" />
-            </div>
-          </div>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+              <div className="p-4 space-y-3">
+                <p className="text-[#1c1c1c]">
+                  <strong>Descrizione:</strong> Per i lavori eseguiti da impresa con fornitura di materiali e manodopera, l'IVA scende al 10%.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
+                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
+                    <li>Non si applica su acquisti diretti del cliente</li>
+                    <li>Non si applica interamente su beni "significativi" (es. caldaie, infissi)</li>
+                    <li>È già considerata nella stima</li>
+                  </ul>
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
         </div>
 
-        <div className="bg-white bg-opacity-60 p-4 rounded-lg">
-          <p className="text-sm text-[#1c1c1c] opacity-80">
-            <strong>Nota:</strong> Le detrazioni fiscali sono indicative e soggette a verifica dei requisiti previsti dalla normativa vigente. 
-            Consulta un commercialista per informazioni dettagliate.
+        {/* Frase finale sempre visibile */}
+        <div className="bg-white bg-opacity-60 p-4 rounded-lg border-l-4 border-[#d8010c]">
+          <p className="text-sm text-[#1c1c1c] flex items-start gap-2">
+            <Info className="h-4 w-4 text-[#d8010c] mt-0.5 flex-shrink-0" />
+            <span>Le detrazioni sono indicative e soggette a verifica fiscale. Parlane con il tuo commercialista per conferma.</span>
           </p>
         </div>
       </div>
