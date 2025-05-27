@@ -1,3 +1,4 @@
+
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -189,7 +190,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
             <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
               <div className="p-4 space-y-3">
                 <p className="text-[#1c1c1c]">
-                  <strong>Descrizione:</strong> Detrazione del 50% per lavori di efficientamento energetico, separata e non cumulabile con il Bonus Casa.
+                  <strong>Descrizione:</strong> Detrazione del 50% per lavori di efficientamento energetico, cumulabile con il Bonus Casa.
                 </p>
                 <div className="space-y-2">
                   <p className="text-[#1c1c1c]"><strong>Interventi ammessi:</strong></p>
@@ -198,14 +199,20 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
                     <li>Schermature solari</li>
                     <li>Pompe di calore</li>
                     <li>Caldaie non a combustibili fossili</li>
-                    <li>Impianti ad alta efficienza</li>
+                    <li>Impianti elettrici: solo domotica</li>
+                  </ul>
+                  <p className="text-[#1c1c1c]"><strong>Requisiti obbligatori:</strong></p>
+                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
+                    <li>Certificazione energetica APE prima e dopo i lavori</li>
+                    <li>Miglioramento di almeno 2 classi energetiche</li>
+                    <li>Asseverazione di un tecnico abilitato</li>
                   </ul>
                   <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
                   <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
                     <li>50% per abitazione principale</li>
                     <li>Valido solo su edifici esistenti</li>
                     <li>Detrazione in 10 anni</li>
-                    <li>Non si cumula al massimale del Bonus Ristrutturazione</li>
+                    <li>Cumulabile con il Bonus Ristrutturazione (massimali separati)</li>
                   </ul>
                 </div>
               </div>
@@ -231,7 +238,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
             <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
               <div className="p-4 space-y-3">
                 <p className="text-[#1c1c1c]">
-                  <strong>Descrizione:</strong> Detrazione del 36% per lavori di efficientamento energetico, separata e non cumulabile con il Bonus Casa.
+                  <strong>Descrizione:</strong> Detrazione del 36% per lavori di efficientamento energetico, cumulabile con il Bonus Casa.
                 </p>
                 <div className="space-y-2">
                   <p className="text-[#1c1c1c]"><strong>Interventi ammessi:</strong></p>
@@ -240,14 +247,20 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
                     <li>Schermature solari</li>
                     <li>Pompe di calore</li>
                     <li>Caldaie non a combustibili fossili</li>
-                    <li>Impianti ad alta efficienza</li>
+                    <li>Impianti elettrici: solo domotica</li>
+                  </ul>
+                  <p className="text-[#1c1c1c]"><strong>Requisiti obbligatori:</strong></p>
+                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
+                    <li>Certificazione energetica APE prima e dopo i lavori</li>
+                    <li>Miglioramento di almeno 2 classi energetiche</li>
+                    <li>Asseverazione di un tecnico abilitato</li>
                   </ul>
                   <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
                   <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
                     <li>36% per altri immobili</li>
                     <li>Valido solo su edifici esistenti</li>
                     <li>Detrazione in 10 anni</li>
-                    <li>Non si cumula al massimale del Bonus Ristrutturazione</li>
+                    <li>Cumulabile con il Bonus Ristrutturazione (massimali separati)</li>
                   </ul>
                 </div>
               </div>
