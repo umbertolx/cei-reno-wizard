@@ -20,14 +20,18 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: lead.id });
+  } = useSortable({ 
+    id: lead.id,
+    data: {
+      type: 'lead',
+      lead
+    }
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.8 : 1,
-    rotate: isDragging ? '5deg' : '0deg',
-    scale: isDragging ? 1.05 : 1,
+    opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 1000 : 1,
   };
 
@@ -49,11 +53,11 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={`mb-3 cursor-grab hover:shadow-lg transition-all duration-200 h-80 ${
-        isDragging ? 'shadow-2xl ring-2 ring-blue-500 bg-white' : 'hover:shadow-md'
+      className={`cursor-grab hover:shadow-lg transition-all duration-200 ${
+        isDragging ? 'shadow-2xl ring-2 ring-blue-500 bg-white rotate-3' : 'hover:shadow-md'
       }`}
     >
-      <CardContent className="p-4 h-full flex flex-col">
+      <CardContent className="p-4">
         {/* Header con avatar e nome */}
         <div className="flex items-center space-x-3 mb-3">
           <div className="w-10 h-10 bg-[#d8010c] rounded-full flex items-center justify-center text-white font-medium text-sm flex-shrink-0">
@@ -71,7 +75,7 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
         </div>
 
         {/* Dettagli immobile */}
-        <div className="space-y-2 mb-3 flex-1">
+        <div className="space-y-2 mb-3">
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center text-gray-600">
               <Home className="h-3 w-3 mr-1" />
@@ -142,7 +146,7 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
             e.stopPropagation();
             onViewDetails();
           }}
-          className="w-full mt-auto"
+          className="w-full"
         >
           Visualizza dettagli
         </Button>

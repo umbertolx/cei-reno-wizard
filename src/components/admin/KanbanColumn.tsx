@@ -1,19 +1,22 @@
 
 import { useState } from "react";
-import { Lead, leadStates } from "@/data/mockLeads";
+import { Lead, leadStates, CustomColumn } from "@/data/mockLeads";
 import { LeadCard } from "./LeadCard";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Edit2, Check, X } from "lucide-react";
+import { Edit2, Check, X, Trash2 } from "lucide-react";
 
 interface KanbanColumnProps {
-  stato: keyof typeof leadStates;
+  stato: string;
   leads: Lead[];
   onViewDetails: (lead: Lead) => void;
   customTitle?: string;
-  onTitleChange?: (stato: keyof typeof leadStates, title: string) => void;
+  onTitleChange?: (stato: string, title: string) => void;
+  customColumn?: CustomColumn;
+  onDeleteColumn?: (columnId: string) => void;
+  isDefaultColumn?: boolean;
 }
 
 export const KanbanColumn = ({ 
@@ -21,17 +24,21 @@ export const KanbanColumn = ({
   leads, 
   onViewDetails, 
   customTitle, 
-  onTitleChange 
+  onTitleChange,
+  customColumn,
+  onDeleteColumn,
+  isDefaultColumn = false
 }: KanbanColumnProps) => {
   const { setNodeRef } = useDroppable({
     id: stato,
   });
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(customTitle || leadStates[stato].label);
+  const [editedTitle, setEditedTitle] = useState(customTitle || customColumn?.label || leadStates[stato as keyof typeof leadStates]?.label || stato);
 
-  const stateInfo = leadStates[stato];
-  const displayTitle = customTitle || stateInfo.label;
+  const stateInfo = customColumn || leadStates[stato as keyof typeof leadStates];
+  const displayTitle = customTitle || customColumn?.label || stateInfo?.label || stato;
+  const columnColor = customColumn?.color || stateInfo?.color || "bg-gray-500";
 
   const handleSaveTitle = () => {
     if (onTitleChange && editedTitle.trim()) {
@@ -41,13 +48,19 @@ export const KanbanColumn = ({
   };
 
   const handleCancelEdit = () => {
-    setEditedTitle(customTitle || stateInfo.label);
+    setEditedTitle(customTitle || customColumn?.label || stateInfo?.label || stato);
     setIsEditingTitle(false);
   };
 
+  const handleDeleteColumn = () => {
+    if (onDeleteColumn && customColumn && !isDefaultColumn) {
+      onDeleteColumn(customColumn.id);
+    }
+  };
+
   return (
-    <div className="flex-1 min-w-80">
-      {/* Header della colonna compatto */}
+    <div className="flex-1 min-w-80 max-w-80">
+      {/* Header della colonna */}
       <div className="mb-4 bg-white rounded-lg p-3 shadow-sm border">
         <div className="flex items-center justify-between">
           {isEditingTitle ? (
@@ -80,18 +93,28 @@ export const KanbanColumn = ({
               >
                 <Edit2 className="h-3 w-3" />
               </Button>
+              {customColumn && !isDefaultColumn && (
+                <Button 
+                  size="sm" 
+                  variant="ghost" 
+                  onClick={handleDeleteColumn}
+                  className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              )}
             </div>
           )}
-          <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-sm font-medium ${stateInfo.color}`}>
+          <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-sm font-medium ${columnColor}`}>
             {leads.length}
           </span>
         </div>
       </div>
 
-      {/* Zona drop per le card */}
+      {/* Zona drop per le card con scroll */}
       <div
         ref={setNodeRef}
-        className="min-h-96 bg-gray-50 rounded-lg p-4"
+        className="bg-gray-50 rounded-lg p-4 h-[calc(100vh-280px)] overflow-y-auto"
       >
         <SortableContext
           items={leads.map(lead => lead.id)}
@@ -102,13 +125,15 @@ export const KanbanColumn = ({
               <p>Nessun lead in questo stato</p>
             </div>
           ) : (
-            leads.map((lead) => (
-              <LeadCard
-                key={lead.id}
-                lead={lead}
-                onViewDetails={() => onViewDetails(lead)}
-              />
-            ))
+            <div className="space-y-3">
+              {leads.map((lead) => (
+                <LeadCard
+                  key={lead.id}
+                  lead={lead}
+                  onViewDetails={() => onViewDetails(lead)}
+                />
+              ))}
+            </div>
           )}
         </SortableContext>
       </div>

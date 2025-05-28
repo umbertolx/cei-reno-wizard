@@ -1,14 +1,28 @@
+
 import { useState } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
 import { LeadDetails } from "@/components/admin/LeadDetails";
-import { mockLeads, leadStates, Lead } from "@/data/mockLeads";
+import { AddColumnDialog } from "@/components/admin/AddColumnDialog";
+import { mockLeads, leadStates, Lead, CustomColumn } from "@/data/mockLeads";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Filter, Download } from "lucide-react";
+import { Search, Filter, Download, Plus } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from "@dnd-kit/core";
+import { 
+  DndContext, 
+  DragEndEvent, 
+  DragOverlay, 
+  DragStartEvent,
+  closestCorners,
+  DragOverEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors
+} from "@dnd-kit/core";
 import { LeadCard } from "@/components/admin/LeadCard";
+import { arrayMove } from "@dnd-kit/sortable";
 
 const AdminLeads = () => {
   const [leads, setLeads] = useState<Lead[]>(mockLeads);
@@ -16,6 +30,14 @@ const AdminLeads = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [customTitles, setCustomTitles] = useState<Record<string, string>>({});
+  const [customColumns, setCustomColumns] = useState<CustomColumn[]>([]);
+  const [isAddColumnOpen, setIsAddColumnOpen] = useState(false);
+  const [leadPositions, setLeadPositions] = useState<Record<string, string[]>>({});
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor)
+  );
 
   // Filtra i lead in base al termine di ricerca
   const filteredLeads = leads.filter(lead => 
@@ -25,44 +47,119 @@ const AdminLeads = () => {
     lead.citta.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Raggruppa i lead per stato
-  const leadsByState = Object.keys(leadStates).reduce((acc, state) => {
-    acc[state as keyof typeof leadStates] = filteredLeads.filter(lead => lead.stato === state);
+  // Combina stati predefiniti e colonne personalizzate
+  const allColumns = [
+    ...Object.keys(leadStates).map(state => ({ id: state, type: 'default' as const })),
+    ...customColumns.map(col => ({ id: col.id, type: 'custom' as const, column: col }))
+  ];
+
+  // Raggruppa i lead per stato mantenendo l'ordine personalizzato
+  const leadsByState = allColumns.reduce((acc, col) => {
+    const columnLeads = filteredLeads.filter(lead => lead.stato === col.id);
+    const positions = leadPositions[col.id] || [];
+    
+    // Ordina i lead secondo le posizioni salvate
+    const orderedLeads = [...columnLeads].sort((a, b) => {
+      const posA = positions.indexOf(a.id);
+      const posB = positions.indexOf(b.id);
+      if (posA === -1 && posB === -1) return 0;
+      if (posA === -1) return 1;
+      if (posB === -1) return -1;
+      return posA - posB;
+    });
+    
+    acc[col.id] = orderedLeads;
     return acc;
-  }, {} as Record<keyof typeof leadStates, Lead[]>);
+  }, {} as Record<string, Lead[]>);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
   };
 
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active.id as string;
+    const overId = over.id as string;
+
+    // Se stiamo trascinando su una colonna diversa
+    if (activeId !== overId) {
+      const activeLead = leads.find(lead => lead.id === activeId);
+      if (!activeLead) return;
+
+      // Se stiamo trascinando su un'altra card, ottieni la colonna di quella card
+      const overLead = leads.find(lead => lead.id === overId);
+      const targetColumn = overLead ? overLead.stato : overId;
+
+      if (activeLead.stato !== targetColumn) {
+        setLeads(prev => prev.map(lead =>
+          lead.id === activeId 
+            ? { ...lead, stato: targetColumn, dataUltimoContatto: new Date().toISOString() }
+            : lead
+        ));
+      }
+    }
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     
-    if (!over) return;
+    if (!over) {
+      setActiveId(null);
+      return;
+    }
 
-    const leadId = active.id as string;
-    const newState = over.id as keyof typeof leadStates;
+    const activeId = active.id as string;
+    const overId = over.id as string;
 
-    // Trova il lead e aggiorna il suo stato
-    const leadToUpdate = leads.find(lead => lead.id === leadId);
-    if (leadToUpdate && leadToUpdate.stato !== newState) {
-      const updatedLeads = leads.map(lead =>
-        lead.id === leadId 
-          ? { ...lead, stato: newState, dataUltimoContatto: new Date().toISOString() }
-          : lead
-      );
+    const activeLead = leads.find(lead => lead.id === activeId);
+    if (!activeLead) {
+      setActiveId(null);
+      return;
+    }
+
+    // Determina la colonna di destinazione
+    const overLead = leads.find(lead => lead.id === overId);
+    const targetColumn = overLead ? overLead.stato : overId;
+
+    // Aggiorna lo stato del lead se necessario
+    if (activeLead.stato !== targetColumn) {
+      const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
+                        customColumns.find(col => col.id === targetColumn);
+      const displayName = customTitles[targetColumn] || columnInfo?.label || targetColumn;
       
-      setLeads(updatedLeads);
       toast({
         title: "Lead aggiornato",
-        description: `${leadToUpdate.nome} ${leadToUpdate.cognome} è stato spostato in "${customTitles[newState] || leadStates[newState].label}"`,
+        description: `${activeLead.nome} ${activeLead.cognome} è stato spostato in "${displayName}"`,
       });
+    }
+
+    // Gestisci il riordinamento all'interno della stessa colonna
+    if (overLead && activeLead.stato === overLead.stato) {
+      const columnLeads = leadsByState[activeLead.stato];
+      const activeIndex = columnLeads.findIndex(lead => lead.id === activeId);
+      const overIndex = columnLeads.findIndex(lead => lead.id === overId);
+
+      if (activeIndex !== overIndex) {
+        const newOrder = arrayMove(columnLeads, activeIndex, overIndex);
+        setLeadPositions(prev => ({
+          ...prev,
+          [activeLead.stato]: newOrder.map(lead => lead.id)
+        }));
+      }
+    } else {
+      // Se il lead è stato spostato in una nuova colonna, aggiornalo alla fine
+      setLeadPositions(prev => ({
+        ...prev,
+        [targetColumn]: [...(prev[targetColumn] || []).filter(id => id !== activeId), activeId]
+      }));
     }
 
     setActiveId(null);
   };
 
-  const handleTitleChange = (stato: keyof typeof leadStates, title: string) => {
+  const handleTitleChange = (stato: string, title: string) => {
     setCustomTitles(prev => ({
       ...prev,
       [stato]: title
@@ -73,8 +170,44 @@ const AdminLeads = () => {
     });
   };
 
+  const handleAddColumn = (columnData: Omit<CustomColumn, 'id'>) => {
+    const newColumn: CustomColumn = {
+      ...columnData,
+      id: `custom_${Date.now()}`
+    };
+    setCustomColumns(prev => [...prev, newColumn]);
+    toast({
+      title: "Colonna aggiunta",
+      description: `La colonna "${columnData.label}" è stata aggiunta con successo`,
+    });
+  };
+
+  const handleDeleteColumn = (columnId: string) => {
+    // Sposta tutti i lead di questa colonna nella colonna "nuovo"
+    const leadsToMove = leads.filter(lead => lead.stato === columnId);
+    if (leadsToMove.length > 0) {
+      setLeads(prev => prev.map(lead =>
+        lead.stato === columnId 
+          ? { ...lead, stato: 'nuovo', dataUltimoContatto: new Date().toISOString() }
+          : lead
+      ));
+    }
+
+    setCustomColumns(prev => prev.filter(col => col.id !== columnId));
+    setLeadPositions(prev => {
+      const { [columnId]: removed, ...rest } = prev;
+      return rest;
+    });
+    
+    toast({
+      title: "Colonna eliminata",
+      description: leadsToMove.length > 0 
+        ? `Colonna eliminata. ${leadsToMove.length} lead spostati in "Nuovo"`
+        : "Colonna eliminata",
+    });
+  };
+
   const handleExport = () => {
-    // Simula export CSV
     toast({
       title: "Export completato",
       description: "I dati sono stati esportati in formato CSV",
@@ -115,21 +248,34 @@ const AdminLeads = () => {
                 <Download className="h-4 w-4 mr-2" />
                 Esporta CSV
               </Button>
+              <Button variant="outline" size="sm" onClick={() => setIsAddColumnOpen(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Aggiungi Colonna
+              </Button>
             </div>
           </div>
         </div>
 
         {/* Kanban Board */}
-        <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+        <DndContext 
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragStart={handleDragStart} 
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+        >
           <div className="flex gap-6 overflow-x-auto pb-4">
-            {Object.entries(leadStates).map(([state]) => (
+            {allColumns.map((col) => (
               <KanbanColumn
-                key={state}
-                stato={state as keyof typeof leadStates}
-                leads={leadsByState[state as keyof typeof leadStates]}
+                key={col.id}
+                stato={col.id}
+                leads={leadsByState[col.id] || []}
                 onViewDetails={setSelectedLead}
-                customTitle={customTitles[state]}
+                customTitle={customTitles[col.id]}
                 onTitleChange={handleTitleChange}
+                customColumn={col.type === 'custom' ? col.column : undefined}
+                onDeleteColumn={handleDeleteColumn}
+                isDefaultColumn={col.type === 'default'}
               />
             ))}
           </div>
@@ -149,6 +295,14 @@ const AdminLeads = () => {
           lead={selectedLead}
           isOpen={!!selectedLead}
           onClose={() => setSelectedLead(null)}
+        />
+
+        {/* Dialog Aggiungi Colonna */}
+        <AddColumnDialog
+          isOpen={isAddColumnOpen}
+          onClose={() => setIsAddColumnOpen(false)}
+          onAdd={handleAddColumn}
+          existingColumns={customColumns}
         />
       </div>
     </AdminLayout>
