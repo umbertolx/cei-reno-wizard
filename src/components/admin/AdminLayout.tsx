@@ -23,7 +23,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 w-full">
+    <div className="min-h-screen bg-gray-50 w-full overflow-hidden">
       {/* Header */}
       <header className="bg-white shadow-sm border-b w-full">
         <div className="px-6 py-4 flex items-center justify-between">
@@ -43,9 +43,9 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
         </div>
       </header>
 
-      <div className="flex w-full">
+      <div className="flex w-full h-[calc(100vh-73px)]">
         {/* Sidebar */}
-        <aside className={`${sidebarCollapsed ? 'w-16' : 'w-64'} bg-white shadow-sm h-[calc(100vh-73px)] border-r transition-all duration-300 flex flex-col`}>
+        <aside className={`${sidebarCollapsed ? 'w-16' : 'w-64'} bg-white shadow-sm h-full border-r transition-all duration-300 flex flex-col flex-shrink-0`}>
           <div className="p-4 flex-1">
             <nav>
               <ul className="space-y-2">
@@ -80,8 +80,10 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 w-full max-w-none">
-          {children}
+        <main className="flex-1 min-w-0 overflow-hidden">
+          <div className="h-full overflow-y-auto p-6">
+            {children}
+          </div>
         </main>
       </div>
     </div>
