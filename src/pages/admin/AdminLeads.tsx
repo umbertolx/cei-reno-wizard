@@ -6,7 +6,7 @@ import { LeadDetails } from "@/components/admin/LeadDetails";
 import { mockLeads, leadStates, Lead } from "@/data/mockLeads";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Filter, Download } from "lucide-react";
+import { Search, Filter, Download, BarChart3, TrendingUp, Users, Clock } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from "@dnd-kit/core";
 import { LeadCard } from "@/components/admin/LeadCard";
@@ -63,7 +63,6 @@ const AdminLeads = () => {
   };
 
   const handleExport = () => {
-    // Simula export CSV
     toast({
       title: "Export completato",
       description: "I dati sono stati esportati in formato CSV",
@@ -72,57 +71,95 @@ const AdminLeads = () => {
 
   const activeLead = activeId ? leads.find(lead => lead.id === activeId) : null;
 
+  // Calcola statistiche
+  const totalLeads = leads.length;
+  const todayLeads = leads.filter(lead => {
+    const today = new Date().toDateString();
+    return new Date(lead.dataRichiesta).toDateString() === today;
+  }).length;
+
+  const totalValue = leads.reduce((sum, lead) => sum + ((lead.stimaMin + lead.stimaMax) / 2), 0);
+
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Gestione Lead</h1>
-            <p className="text-gray-600">Visualizza e gestisci tutti i preventivi richiesti</p>
+      <div className="space-y-8">
+        {/* Header con gradiente */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 rounded-2xl p-8 text-white">
+          <div className="relative z-10">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-bold mb-2">Gestione Lead</h1>
+                <p className="text-blue-100 text-lg">Dashboard CRM per la gestione dei preventivi</p>
+              </div>
+              <div className="hidden md:flex items-center space-x-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold">{totalLeads}</div>
+                  <div className="text-blue-200 text-sm">Lead Totali</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold">{todayLeads}</div>
+                  <div className="text-blue-200 text-sm">Oggi</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold">€{Math.round(totalValue / 1000)}k</div>
+                  <div className="text-blue-200 text-sm">Valore Totale</div>
+                </div>
+              </div>
+            </div>
           </div>
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-16 translate-x-16"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-16 -translate-x-16"></div>
         </div>
 
-        {/* Filtri e Ricerca */}
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <div className="flex flex-col sm:flex-row gap-4">
+        {/* Filtri e Ricerca con design moderno */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
                 placeholder="Cerca per nome, email o città..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-12 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20"
               />
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">
+            <div className="flex gap-3">
+              <Button variant="outline" size="lg" className="border-gray-200 hover:bg-gray-50">
                 <Filter className="h-4 w-4 mr-2" />
-                Filtri
+                Filtri Avanzati
               </Button>
-              <Button variant="outline" size="sm" onClick={handleExport}>
+              <Button variant="outline" size="lg" onClick={handleExport} className="border-gray-200 hover:bg-gray-50">
                 <Download className="h-4 w-4 mr-2" />
-                Esporta CSV
+                Esporta
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Statistiche veloci */}
+        {/* Statistiche veloci con icone e colori */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {Object.entries(leadStates).map(([state, info]) => (
-            <div key={state} className="bg-white p-4 rounded-lg shadow-sm border text-center">
-              <div className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-bold mb-2 ${info.color}`}>
-                {leadsByState[state as keyof typeof leadStates].length}
+          {Object.entries(leadStates).map(([state, info]) => {
+            const count = leadsByState[state as keyof typeof leadStates].length;
+            const percentage = totalLeads > 0 ? Math.round((count / totalLeads) * 100) : 0;
+            
+            return (
+              <div key={state} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                <div className="text-center">
+                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl text-white font-bold text-xl mb-3 ${info.color}`}>
+                    {count}
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-1">{info.label}</h3>
+                  <p className="text-sm text-gray-500">{percentage}% del totale</p>
+                </div>
               </div>
-              <p className="text-sm font-medium text-gray-900">{info.label}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Kanban Board */}
+        {/* Kanban Board con miglioramenti */}
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-          <div className="flex gap-6 overflow-x-auto pb-4">
+          <div className="flex gap-6 overflow-x-auto pb-6">
             {Object.entries(leadStates).map(([state]) => (
               <KanbanColumn
                 key={state}
@@ -135,10 +172,12 @@ const AdminLeads = () => {
           
           <DragOverlay>
             {activeLead ? (
-              <LeadCard 
-                lead={activeLead} 
-                onViewDetails={() => {}} 
-              />
+              <div className="transform rotate-6 scale-105">
+                <LeadCard 
+                  lead={activeLead} 
+                  onViewDetails={() => {}} 
+                />
+              </div>
             ) : null}
           </DragOverlay>
         </DndContext>
