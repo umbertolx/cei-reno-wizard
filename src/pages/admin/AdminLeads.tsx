@@ -16,6 +16,7 @@ const AdminLeads = () => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [customTitles, setCustomTitles] = useState<Record<string, string>>({});
 
   // Filtra i lead in base al termine di ricerca
   const filteredLeads = leads.filter(lead => 
@@ -55,11 +56,22 @@ const AdminLeads = () => {
       setLeads(updatedLeads);
       toast({
         title: "Lead aggiornato",
-        description: `${leadToUpdate.nome} ${leadToUpdate.cognome} è stato spostato in "${leadStates[newState].label}"`,
+        description: `${leadToUpdate.nome} ${leadToUpdate.cognome} è stato spostato in "${customTitles[newState] || leadStates[newState].label}"`,
       });
     }
 
     setActiveId(null);
+  };
+
+  const handleTitleChange = (stato: keyof typeof leadStates, title: string) => {
+    setCustomTitles(prev => ({
+      ...prev,
+      [stato]: title
+    }));
+    toast({
+      title: "Titolo aggiornato",
+      description: `Il titolo della colonna è stato aggiornato a "${title}"`,
+    });
   };
 
   const handleExport = () => {
@@ -74,7 +86,7 @@ const AdminLeads = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 w-full">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
@@ -115,7 +127,9 @@ const AdminLeads = () => {
               <div className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-bold mb-2 ${info.color}`}>
                 {leadsByState[state as keyof typeof leadStates].length}
               </div>
-              <p className="text-sm font-medium text-gray-900">{info.label}</p>
+              <p className="text-sm font-medium text-gray-900">
+                {customTitles[state] || info.label}
+              </p>
             </div>
           ))}
         </div>
@@ -129,6 +143,8 @@ const AdminLeads = () => {
                 stato={state as keyof typeof leadStates}
                 leads={leadsByState[state as keyof typeof leadStates]}
                 onViewDetails={setSelectedLead}
+                customTitle={customTitles[state]}
+                onTitleChange={handleTitleChange}
               />
             ))}
           </div>

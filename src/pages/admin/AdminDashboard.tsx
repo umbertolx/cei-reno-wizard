@@ -1,25 +1,66 @@
 
+import { useState } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { mockLeads, leadStates } from "@/data/mockLeads";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { TrendingUp, Users, DollarSign, Calendar } from "lucide-react";
 
+type TimeFrame = 'oggi' | 'settimana' | 'mese' | 'anno';
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const [timeFrame, setTimeFrame] = useState<TimeFrame>('mese');
 
-  // Calcola statistiche
-  const totalLeads = mockLeads.length;
+  // Simula dati diversi per diversi periodi
+  const getKPIData = (timeFrame: TimeFrame) => {
+    const baseData = {
+      oggi: {
+        totalLeads: 2,
+        totalValue: 120000,
+        avgValue: 60000,
+        acquired: 0,
+        comparison: { total: '+15%', value: '+8%', avg: '+3%', acquired: '+0%' },
+        benchmark: 'rispetto a ieri'
+      },
+      settimana: {
+        totalLeads: 8,
+        totalValue: 450000,
+        avgValue: 56250,
+        acquired: 1,
+        comparison: { total: '+25%', value: '+12%', avg: '-5%', acquired: '+100%' },
+        benchmark: 'rispetto alla settimana scorsa'
+      },
+      mese: {
+        totalLeads: mockLeads.length,
+        totalValue: mockLeads.reduce((sum, lead) => sum + lead.stimaMax, 0),
+        avgValue: mockLeads.reduce((sum, lead) => sum + lead.stimaMax, 0) / mockLeads.length,
+        acquired: mockLeads.filter(lead => lead.stato === 'acquisito').length,
+        comparison: { total: '+12%', value: '+8%', avg: '+5%', acquired: '+20%' },
+        benchmark: 'rispetto al mese scorso'
+      },
+      anno: {
+        totalLeads: 145,
+        totalValue: 8500000,
+        avgValue: 58620,
+        acquired: 28,
+        comparison: { total: '+35%', value: '+42%', avg: '+8%', acquired: '+25%' },
+        benchmark: 'rispetto all\'anno scorso'
+      }
+    };
+    return baseData[timeFrame];
+  };
+
+  const data = getKPIData(timeFrame);
+
   const leadsByState = Object.keys(leadStates).map(state => ({
     stato: leadStates[state as keyof typeof leadStates].label,
     count: mockLeads.filter(lead => lead.stato === state).length,
     color: leadStates[state as keyof typeof leadStates].color
   }));
-
-  const totalValue = mockLeads.reduce((sum, lead) => sum + lead.stimaMax, 0);
-  const avgValue = totalValue / totalLeads;
 
   const recentLeads = mockLeads
     .sort((a, b) => new Date(b.dataRichiesta).getTime() - new Date(a.dataRichiesta).getTime())
@@ -27,19 +68,32 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 w-full">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
             <p className="text-gray-600">Panoramica generale dei preventivi</p>
           </div>
-          <Button 
-            onClick={() => navigate("/admin/leads")}
-            className="bg-[#d8010c] hover:bg-[#b8010a]"
-          >
-            Gestisci Leads
-          </Button>
+          <div className="flex items-center space-x-4">
+            <Select value={timeFrame} onValueChange={(value: TimeFrame) => setTimeFrame(value)}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Seleziona periodo" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="oggi">Oggi</SelectItem>
+                <SelectItem value="settimana">Questa settimana</SelectItem>
+                <SelectItem value="mese">Questo mese</SelectItem>
+                <SelectItem value="anno">Quest'anno</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button 
+              onClick={() => navigate("/admin/leads")}
+              className="bg-[#d8010c] hover:bg-[#b8010a]"
+            >
+              Gestisci Leads
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -50,9 +104,9 @@ const AdminDashboard = () => {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{totalLeads}</div>
+              <div className="text-2xl font-bold">{data.totalLeads}</div>
               <p className="text-xs text-muted-foreground">
-                +12% rispetto al mese scorso
+                {data.comparison.total} {data.benchmark}
               </p>
             </CardContent>
           </Card>
@@ -63,9 +117,9 @@ const AdminDashboard = () => {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">€{totalValue.toLocaleString()}</div>
+              <div className="text-2xl font-bold">€{data.totalValue.toLocaleString()}</div>
               <p className="text-xs text-muted-foreground">
-                +8% rispetto al mese scorso
+                {data.comparison.value} {data.benchmark}
               </p>
             </CardContent>
           </Card>
@@ -76,9 +130,9 @@ const AdminDashboard = () => {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">€{Math.round(avgValue).toLocaleString()}</div>
+              <div className="text-2xl font-bold">€{Math.round(data.avgValue).toLocaleString()}</div>
               <p className="text-xs text-muted-foreground">
-                +5% rispetto al mese scorso
+                {data.comparison.avg} {data.benchmark}
               </p>
             </CardContent>
           </Card>
@@ -89,11 +143,9 @@ const AdminDashboard = () => {
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {mockLeads.filter(lead => lead.stato === 'acquisito').length}
-              </div>
+              <div className="text-2xl font-bold">{data.acquired}</div>
               <p className="text-xs text-muted-foreground">
-                20% tasso di conversione
+                {data.comparison.acquired} {data.benchmark}
               </p>
             </CardContent>
           </Card>

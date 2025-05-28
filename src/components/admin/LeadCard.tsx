@@ -1,5 +1,5 @@
 
-import { Lead, leadStates } from "@/data/mockLeads";
+import { Lead, leadStates, moduliDisponibili } from "@/data/mockLeads";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,10 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.8 : 1,
+    rotate: isDragging ? '5deg' : '0deg',
+    scale: isDragging ? 1.05 : 1,
+    zIndex: isDragging ? 1000 : 1,
   };
 
   const formatDate = (dateString: string) => {
@@ -46,33 +49,34 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={`mb-3 cursor-grab hover:shadow-md transition-shadow ${
-        isDragging ? 'shadow-lg ring-2 ring-blue-500' : ''
+      className={`mb-3 cursor-grab hover:shadow-lg transition-all duration-200 h-80 ${
+        isDragging ? 'shadow-2xl ring-2 ring-blue-500 bg-white' : 'hover:shadow-md'
       }`}
     >
-      <CardContent className="p-4">
+      <CardContent className="p-4 h-full flex flex-col">
         {/* Header con avatar e nome */}
         <div className="flex items-center space-x-3 mb-3">
-          <div className="w-10 h-10 bg-[#d8010c] rounded-full flex items-center justify-center text-white font-medium text-sm">
+          <div className="w-10 h-10 bg-[#d8010c] rounded-full flex items-center justify-center text-white font-medium text-sm flex-shrink-0">
             {getInitials(lead.nome, lead.cognome)}
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-gray-900">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-gray-900 truncate">
               {lead.nome} {lead.cognome}
             </h3>
-            <p className="text-sm text-gray-600 flex items-center">
-              <MapPin className="h-3 w-3 mr-1" />
+            <p className="text-sm text-gray-600 flex items-center truncate">
+              <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
               {lead.citta}, {lead.cap}
             </p>
           </div>
         </div>
 
         {/* Dettagli immobile */}
-        <div className="space-y-2 mb-3">
+        <div className="space-y-2 mb-3 flex-1">
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center text-gray-600">
               <Home className="h-3 w-3 mr-1" />
-              {lead.tipologiaAbitazione === 'appartamento' ? 'Appartamento' : 'Casa indipendente'}
+              {lead.tipologiaAbitazione === 'appartamento' ? 'Appartamento' : 
+               lead.tipologiaAbitazione === 'casa indipendente' ? 'Casa indipendente' : 'Villa'}
             </span>
             <span className="font-medium">{lead.superficie} mq</span>
           </div>
@@ -82,7 +86,7 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
               <Euro className="h-3 w-3 mr-1" />
               Stima
             </span>
-            <span className="font-medium text-green-600">
+            <span className="font-medium text-green-600 text-xs">
               €{lead.stimaMin.toLocaleString()} - €{lead.stimaMax.toLocaleString()}
             </span>
           </div>
@@ -92,7 +96,7 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
               <Calendar className="h-3 w-3 mr-1" />
               Richiesta
             </span>
-            <span className="text-gray-600">
+            <span className="text-gray-600 text-xs">
               {formatDate(lead.dataRichiesta)}
             </span>
           </div>
@@ -100,9 +104,9 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
 
         {/* Contatti */}
         <div className="space-y-1 mb-3">
-          <p className="text-xs text-gray-600 flex items-center">
-            <Mail className="h-3 w-3 mr-1" />
-            {lead.email}
+          <p className="text-xs text-gray-600 flex items-center truncate">
+            <Mail className="h-3 w-3 mr-1 flex-shrink-0" />
+            <span className="truncate">{lead.email}</span>
           </p>
           <p className="text-xs text-gray-600 flex items-center">
             <Phone className="h-3 w-3 mr-1" />
@@ -110,17 +114,21 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
           </p>
         </div>
 
-        {/* Bonus applicabili */}
+        {/* Moduli completati */}
         <div className="mb-3">
           <div className="flex flex-wrap gap-1">
-            {lead.bonusApplicabili.slice(0, 2).map((bonus, index) => (
-              <Badge key={index} variant="secondary" className="text-xs">
-                {bonus}
+            {lead.moduliCompletati.slice(0, 2).map((modulo) => (
+              <Badge 
+                key={modulo} 
+                variant="secondary" 
+                className={`text-xs ${moduliDisponibili[modulo as keyof typeof moduliDisponibili]?.color}`}
+              >
+                {moduliDisponibili[modulo as keyof typeof moduliDisponibili]?.label}
               </Badge>
             ))}
-            {lead.bonusApplicabili.length > 2 && (
+            {lead.moduliCompletati.length > 2 && (
               <Badge variant="outline" className="text-xs">
-                +{lead.bonusApplicabili.length - 2}
+                +{lead.moduliCompletati.length - 2}
               </Badge>
             )}
           </div>
@@ -134,7 +142,7 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
             e.stopPropagation();
             onViewDetails();
           }}
-          className="w-full"
+          className="w-full mt-auto"
         >
           Visualizza dettagli
         </Button>
