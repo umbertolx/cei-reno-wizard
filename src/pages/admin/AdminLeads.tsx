@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
@@ -118,20 +117,6 @@ const AdminLeads = () => {
               </Button>
             </div>
           </div>
-        </div>
-
-        {/* Statistiche veloci */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {Object.entries(leadStates).map(([state, info]) => (
-            <div key={state} className="bg-white p-4 rounded-lg shadow-sm border text-center">
-              <div className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-bold mb-2 ${info.color}`}>
-                {leadsByState[state as keyof typeof leadStates].length}
-              </div>
-              <p className="text-sm font-medium text-gray-900">
-                {customTitles[state] || info.label}
-              </p>
-            </div>
-          ))}
         </div>
 
         {/* Kanban Board */}
