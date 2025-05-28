@@ -1,5 +1,5 @@
 
-import { Lead, leadStates } from "@/data/mockLeads";
+import { Lead, leadStates, moduliDisponibili } from "@/data/mockLeads";
 import {
   Dialog,
   DialogContent,
@@ -171,11 +171,11 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
 
         <Separator className="my-6" />
 
-        {/* Stima e Bonus */}
+        {/* Stima e Moduli */}
         <div className="space-y-4">
           <h3 className="text-lg font-semibold flex items-center">
             <Euro className="h-5 w-5 mr-2" />
-            Stima e Incentivi
+            Stima e Moduli Completati
           </h3>
           
           <div className="bg-green-50 p-4 rounded-lg border border-green-200">
@@ -188,13 +188,16 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
           </div>
 
           <div>
-            <h4 className="font-medium mb-2">Bonus applicabili:</h4>
+            <h4 className="font-medium mb-2">Moduli completati:</h4>
             <div className="flex flex-wrap gap-2">
-              {lead.bonusApplicabili.map((bonus, index) => (
-                <Badge key={index} variant="secondary" className="text-sm">
-                  {bonus}
-                </Badge>
-              ))}
+              {lead.moduliCompletati.map((modulo, index) => {
+                const moduloInfo = moduliDisponibili[modulo as keyof typeof moduliDisponibili];
+                return (
+                  <Badge key={index} variant="secondary" className={`text-sm ${moduloInfo?.color || 'bg-gray-100 text-gray-800'}`}>
+                    {moduloInfo?.label || modulo}
+                  </Badge>
+                );
+              })}
             </div>
           </div>
         </div>
