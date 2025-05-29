@@ -48,8 +48,11 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
   };
 
   const handleViewDetails = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
+    console.log("LeadCard: Button clicked - preventing default and stopping propagation");
     console.log("LeadCard: View details clicked for lead:", lead.id);
+    console.log("LeadCard: onViewDetails function:", onViewDetails);
     onViewDetails();
   };
 
@@ -57,15 +60,18 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
     <Card
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
-      className={`cursor-grab hover:shadow-lg transition-all duration-200 ${
+      className={`hover:shadow-lg transition-all duration-200 ${
         isDragging ? 'shadow-2xl ring-2 ring-blue-500 bg-white rotate-3' : 'hover:shadow-md'
       }`}
     >
+      {/* Card content without drag listeners */}
       <CardContent className="p-4">
-        {/* Header con avatar e nome */}
-        <div className="flex items-center space-x-3 mb-3">
+        {/* Header with drag handle */}
+        <div 
+          {...attributes}
+          {...listeners}
+          className="flex items-center space-x-3 mb-3 cursor-grab"
+        >
           <div className="w-10 h-10 bg-[#d8010c] rounded-full flex items-center justify-center text-white font-medium text-sm flex-shrink-0">
             {getInitials(lead.nome, lead.cognome)}
           </div>
@@ -144,12 +150,13 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
           </div>
         </div>
 
-        {/* Actions */}
+        {/* Actions - Outside drag listeners */}
         <Button
           variant="outline"
           size="sm"
           onClick={handleViewDetails}
           className="w-full"
+          type="button"
         >
           Visualizza dettagli
         </Button>

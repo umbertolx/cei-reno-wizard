@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
@@ -34,7 +35,11 @@ const AdminLeads = () => {
   const [leadPositions, setLeadPositions] = useState<Record<string, string[]>>({});
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor)
   );
 
@@ -72,8 +77,10 @@ const AdminLeads = () => {
   }, {} as Record<string, Lead[]>);
 
   const handleViewDetails = (lead: Lead) => {
-    console.log("AdminLeads: Setting selected lead:", lead);
+    console.log("AdminLeads: handleViewDetails called with lead:", lead);
+    console.log("AdminLeads: Setting selected lead:", lead.id);
     setSelectedLead(lead);
+    console.log("AdminLeads: selectedLead state should be updated");
   };
 
   const handleCloseDetails = () => {
@@ -217,6 +224,9 @@ const AdminLeads = () => {
   };
 
   const activeLead = activeId ? leads.find(lead => lead.id === activeId) : null;
+
+  console.log("AdminLeads render - selectedLead:", selectedLead);
+  console.log("AdminLeads render - isOpen:", !!selectedLead);
 
   return (
     <AdminLayout>
