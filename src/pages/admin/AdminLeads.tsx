@@ -95,7 +95,7 @@ const AdminLeads = () => {
       if (activeLead.stato !== targetColumn) {
         setLeads(prev => prev.map(lead =>
           lead.id === activeId 
-            ? { ...lead, stato: targetColumn, dataUltimoContatto: new Date().toISOString() }
+            ? { ...lead, stato: targetColumn as keyof typeof leadStates, dataUltimoContatto: new Date().toISOString() }
             : lead
         ));
       }

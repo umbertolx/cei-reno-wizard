@@ -1,3 +1,4 @@
+
 export interface Lead {
   id: string;
   nome: string;
@@ -14,6 +15,20 @@ export interface Lead {
   dataRichiesta: string;
   dataUltimoContatto: string;
   moduliCompletati: string[];
+  // Adding missing properties
+  composizione: {
+    cucina: number;
+    cameraDoppia: number;
+    cameraSingola: number;
+    bagno: number;
+    soggiorno: number;
+    altro: number;
+  };
+  piano: string;
+  tipoProprietà: string;
+  indirizzo: string;
+  regione: string;
+  note?: string;
 }
 
 export const mockLeads: Lead[] = [
@@ -33,6 +48,19 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-01-20T10:00:00.000Z",
     dataUltimoContatto: "2024-01-20T10:00:00.000Z",
     moduliCompletati: ["modulo1", "modulo2"],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 1,
+      cameraSingola: 1,
+      bagno: 1,
+      soggiorno: 1,
+      altro: 0
+    },
+    piano: "2°",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Roma 123",
+    regione: "Lazio",
+    note: "Cliente interessato a ristrutturazione completa"
   },
   {
     id: "2",
@@ -50,6 +78,18 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-02-15T14:30:00.000Z",
     dataUltimoContatto: "2024-02-16T16:00:00.000Z",
     moduliCompletati: ["modulo1", "modulo3"],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 2,
+      cameraSingola: 0,
+      bagno: 2,
+      soggiorno: 1,
+      altro: 1
+    },
+    piano: "Piano Terra",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Milano 45",
+    regione: "Lombardia"
   },
   {
     id: "3",
@@ -67,6 +107,19 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-03-01T09:15:00.000Z",
     dataUltimoContatto: "2024-03-05T11:00:00.000Z",
     moduliCompletati: ["modulo1", "modulo2", "modulo3"],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 3,
+      cameraSingola: 2,
+      bagno: 3,
+      soggiorno: 2,
+      altro: 2
+    },
+    piano: "Su due livelli",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Napoli 78",
+    regione: "Campania",
+    note: "Villa con giardino, richiede preventivo dettagliato"
   },
   {
     id: "4",
@@ -84,6 +137,18 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-03-10T16:45:00.000Z",
     dataUltimoContatto: "2024-03-12T18:00:00.000Z",
     moduliCompletati: ["modulo1"],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 1,
+      cameraSingola: 0,
+      bagno: 1,
+      soggiorno: 1,
+      altro: 0
+    },
+    piano: "3°",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Torino 12",
+    regione: "Piemonte"
   },
   {
     id: "5",
@@ -101,6 +166,19 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-04-01T11:30:00.000Z",
     dataUltimoContatto: "2024-04-05T15:00:00.000Z",
     moduliCompletati: ["modulo1", "modulo2", "modulo3", "modulo4"],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 2,
+      cameraSingola: 1,
+      bagno: 2,
+      soggiorno: 1,
+      altro: 1
+    },
+    piano: "Piano Terra + Primo",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Palermo 56",
+    regione: "Sicilia",
+    note: "Progetto completato con successo"
   },
   {
     id: "6",
@@ -118,6 +196,19 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-04-15T08:00:00.000Z",
     dataUltimoContatto: "2024-04-18T12:00:00.000Z",
     moduliCompletati: ["modulo1", "modulo2"],
+    composizione: {
+      cucina: 2,
+      cameraDoppia: 4,
+      cameraSingola: 2,
+      bagno: 4,
+      soggiorno: 2,
+      altro: 3
+    },
+    piano: "Su tre livelli",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Bologna 89",
+    regione: "Emilia-Romagna",
+    note: "Cliente non più interessato"
   },
   {
     id: "7",
@@ -135,6 +226,18 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-05-01T13:45:00.000Z",
     dataUltimoContatto: "2024-05-01T13:45:00.000Z",
     moduliCompletati: [],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 1,
+      cameraSingola: 1,
+      bagno: 1,
+      soggiorno: 1,
+      altro: 0
+    },
+    piano: "1°",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Firenze 34",
+    regione: "Toscana"
   },
   {
     id: "8",
@@ -152,6 +255,18 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-05-10T17:30:00.000Z",
     dataUltimoContatto: "2024-05-12T09:00:00.000Z",
     moduliCompletati: ["modulo1", "modulo3"],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 2,
+      cameraSingola: 1,
+      bagno: 2,
+      soggiorno: 1,
+      altro: 1
+    },
+    piano: "Piano Terra + Primo",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Genova 67",
+    regione: "Liguria"
   },
   {
     id: "9",
@@ -169,6 +284,18 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-05-15T10:15:00.000Z",
     dataUltimoContatto: "2024-05-18T14:00:00.000Z",
     moduliCompletati: ["modulo1", "modulo2", "modulo3"],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 3,
+      cameraSingola: 1,
+      bagno: 3,
+      soggiorno: 2,
+      altro: 2
+    },
+    piano: "Piano Terra + Primo",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Cagliari 23",
+    regione: "Sardegna"
   },
   {
     id: "10",
@@ -186,6 +313,18 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-06-01T19:00:00.000Z",
     dataUltimoContatto: "2024-06-03T11:00:00.000Z",
     moduliCompletati: ["modulo1"],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 1,
+      cameraSingola: 0,
+      bagno: 1,
+      soggiorno: 1,
+      altro: 0
+    },
+    piano: "2°",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Venezia 91",
+    regione: "Veneto"
   },
   {
     id: "11",
@@ -203,6 +342,18 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-06-10T14:45:00.000Z",
     dataUltimoContatto: "2024-06-15T16:00:00.000Z",
     moduliCompletati: ["modulo1", "modulo2", "modulo3", "modulo4"],
+    composizione: {
+      cucina: 1,
+      cameraDoppia: 2,
+      cameraSingola: 1,
+      bagno: 2,
+      soggiorno: 1,
+      altro: 1
+    },
+    piano: "Piano Terra + Primo",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Ancona 15",
+    regione: "Marche"
   },
   {
     id: "12",
@@ -220,6 +371,19 @@ export const mockLeads: Lead[] = [
     dataRichiesta: "2024-06-15T07:30:00.000Z",
     dataUltimoContatto: "2024-06-18T10:00:00.000Z",
     moduliCompletati: ["modulo1", "modulo2"],
+    composizione: {
+      cucina: 2,
+      cameraDoppia: 4,
+      cameraSingola: 1,
+      bagno: 4,
+      soggiorno: 2,
+      altro: 2
+    },
+    piano: "Su tre livelli",
+    tipoProprietà: "Proprietà",
+    indirizzo: "Via Trieste 88",
+    regione: "Friuli-Venezia Giulia",
+    note: "Budget non sufficiente per il progetto richiesto"
   },
 ];
 

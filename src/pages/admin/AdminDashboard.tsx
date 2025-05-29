@@ -38,7 +38,7 @@ const AdminDashboard = () => {
         totalLeads: mockLeads.length,
         totalValue: mockLeads.reduce((sum, lead) => sum + lead.stimaMax, 0),
         avgValue: mockLeads.reduce((sum, lead) => sum + lead.stimaMax, 0) / mockLeads.length,
-        acquired: mockLeads.filter(lead => lead.stato === 'acquisito').length,
+        acquired: mockLeads.filter(lead => lead.stato === 'chiuso').length,
         comparison: { total: '+12%', value: '+8%', avg: '+5%', acquired: '+20%' },
         benchmark: 'rispetto al mese scorso'
       },
