@@ -1,4 +1,3 @@
-
 import { Lead, leadStates, moduliDisponibili } from "@/data/mockLeads";
 import {
   Dialog,
@@ -17,7 +16,13 @@ interface LeadDetailsProps {
 }
 
 export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
-  if (!lead) return null;
+  console.log("LeadDetails render - lead:", lead);
+  console.log("LeadDetails render - isOpen:", isOpen);
+  
+  if (!lead) {
+    console.log("LeadDetails: No lead provided");
+    return null;
+  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('it-IT', {

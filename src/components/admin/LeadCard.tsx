@@ -47,6 +47,12 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
     return `${nome.charAt(0)}${cognome.charAt(0)}`.toUpperCase();
   };
 
+  const handleViewDetails = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log("LeadCard: View details clicked for lead:", lead.id);
+    onViewDetails();
+  };
+
   return (
     <Card
       ref={setNodeRef}
@@ -138,14 +144,11 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
           </div>
         </div>
 
-        {/* Azioni */}
+        {/* Actions */}
         <Button
           variant="outline"
           size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            onViewDetails();
-          }}
+          onClick={handleViewDetails}
           className="w-full"
         >
           Visualizza dettagli

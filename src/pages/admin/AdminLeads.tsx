@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
@@ -72,6 +71,16 @@ const AdminLeads = () => {
     return acc;
   }, {} as Record<string, Lead[]>);
 
+  const handleViewDetails = (lead: Lead) => {
+    console.log("AdminLeads: Setting selected lead:", lead);
+    setSelectedLead(lead);
+  };
+
+  const handleCloseDetails = () => {
+    console.log("AdminLeads: Closing lead details");
+    setSelectedLead(null);
+  };
+
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
   };
@@ -83,12 +92,10 @@ const AdminLeads = () => {
     const activeId = active.id as string;
     const overId = over.id as string;
 
-    // Se stiamo trascinando su una colonna diversa
     if (activeId !== overId) {
       const activeLead = leads.find(lead => lead.id === activeId);
       if (!activeLead) return;
 
-      // Se stiamo trascinando su un'altra card, ottieni la colonna di quella card
       const overLead = leads.find(lead => lead.id === overId);
       const targetColumn = overLead ? overLead.stato : overId;
 
@@ -119,11 +126,9 @@ const AdminLeads = () => {
       return;
     }
 
-    // Determina la colonna di destinazione
     const overLead = leads.find(lead => lead.id === overId);
     const targetColumn = overLead ? overLead.stato : overId;
 
-    // Aggiorna lo stato del lead se necessario
     if (activeLead.stato !== targetColumn) {
       const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
                         customColumns.find(col => col.id === targetColumn);
@@ -135,7 +140,6 @@ const AdminLeads = () => {
       });
     }
 
-    // Gestisci il riordinamento all'interno della stessa colonna
     if (overLead && activeLead.stato === overLead.stato) {
       const columnLeads = leadsByState[activeLead.stato];
       const activeIndex = columnLeads.findIndex(lead => lead.id === activeId);
@@ -149,7 +153,6 @@ const AdminLeads = () => {
         }));
       }
     } else {
-      // Se il lead è stato spostato in una nuova colonna, aggiornalo alla fine
       setLeadPositions(prev => ({
         ...prev,
         [targetColumn]: [...(prev[targetColumn] || []).filter(id => id !== activeId), activeId]
@@ -183,7 +186,6 @@ const AdminLeads = () => {
   };
 
   const handleDeleteColumn = (columnId: string) => {
-    // Sposta tutti i lead di questa colonna nella colonna "nuovo"
     const leadsToMove = leads.filter(lead => lead.stato === columnId);
     if (leadsToMove.length > 0) {
       setLeads(prev => prev.map(lead =>
@@ -270,7 +272,7 @@ const AdminLeads = () => {
                 key={col.id}
                 stato={col.id}
                 leads={leadsByState[col.id] || []}
-                onViewDetails={setSelectedLead}
+                onViewDetails={handleViewDetails}
                 customTitle={customTitles[col.id]}
                 onTitleChange={handleTitleChange}
                 customColumn={col.type === 'custom' ? col.column : undefined}
@@ -294,7 +296,7 @@ const AdminLeads = () => {
         <LeadDetails
           lead={selectedLead}
           isOpen={!!selectedLead}
-          onClose={() => setSelectedLead(null)}
+          onClose={handleCloseDetails}
         />
 
         {/* Dialog Aggiungi Colonna */}
