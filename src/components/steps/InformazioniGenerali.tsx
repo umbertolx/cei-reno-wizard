@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -104,7 +105,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
             {/* Punto 2: Configuratore (inattivo) */}
             <div className="flex flex-col items-center relative">
               <div className="bg-gray-200 rounded-full p-1.5 sm:p-2 z-10">
-                <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:h-5 text-gray-400" />
+                <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400" />
               </div>
               <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center text-gray-500">Configuratore</span>
             </div>
@@ -115,12 +116,17 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
             {/* Punto 3: Stima dei costi (inattivo) */}
             <div className="flex flex-col items-center relative">
               <div className="bg-gray-200 rounded-full p-1.5 sm:p-2 z-10">
-                <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:h-5 text-gray-400" />
+                <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400" />
               </div>
               <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center text-gray-500">Stima costi</span>
             </div>
           </div>
         </div>
+
+        {/* Messaggio migliorato */}
+        <p className="text-center text-sm sm:text-base text-gray-600 italic px-2 sm:px-4">
+          Iniziamo insieme il tuo progetto di ristrutturazione. Completa i pochi campi richiesti con attenzione: ogni dettaglio ci aiuterà a fornirti una stima più precisa per il tuo preventivo.
+        </p>
       </div>
 
       {/* Tipologia abitazione */}
