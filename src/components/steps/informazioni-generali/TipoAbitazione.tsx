@@ -1,4 +1,3 @@
-
 import { FormData } from "../../Configuratore";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -11,58 +10,57 @@ type TipoAbitazioneProps = {
 
 export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
   return (
-    <div className="space-y-8 px-4 py-6">
+    <div className="space-y-6 md:space-y-8 px-4 md:px-0 py-6">
       {/* Header */}
       <div className="text-center space-y-3">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+        <h2 className="text-lg md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 leading-tight">
           Che tipo di immobile stai ristrutturando?
         </h2>
-        <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+        <p className="hidden md:block text-base lg:text-lg text-gray-600 max-w-2xl mx-auto">
           Seleziona il tipo che meglio descrive il tuo progetto
         </p>
       </div>
       
-      {/* Mobile Layout */}
+      {/* Mobile Layout - Box simmetrici */}
       <div className="block md:hidden">
         <RadioGroup 
           value={value} 
           onValueChange={onChange}
-          className="space-y-4 max-w-sm mx-auto"
+          className="grid grid-cols-1 gap-4 max-w-sm mx-auto"
         >
           {/* Appartamento - Mobile */}
           <div 
-            className={`relative rounded-2xl border-2 p-6 transition-all duration-300 cursor-pointer ${
+            className={`relative rounded-2xl border-2 transition-all duration-300 cursor-pointer h-[120px] flex items-center ${
               value === 'appartamento' 
                 ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/10 to-[#d8010c]/5 shadow-lg' 
                 : 'border-gray-200 bg-white hover:border-[#d8010c]/30 hover:shadow-md'
             }`}
             onClick={() => onChange('appartamento')}
           >
-            <div className="flex items-start space-x-4">
-              <div className={`p-3 rounded-xl ${
-                value === 'appartamento' 
-                  ? 'bg-[#d8010c] text-white' 
-                  : 'bg-gray-100 text-gray-600'
-              }`}>
-                <Building className="h-6 w-6" />
-              </div>
-              
-              <div className="flex-1 min-w-0">
-                <Label 
-                  htmlFor="appartamento-mobile" 
-                  className="text-xl font-semibold text-gray-900 cursor-pointer block mb-2"
-                >
-                  Appartamento
-                </Label>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Condomini, attici e spazi condivisi
-                </p>
+            <div className="flex items-center justify-between w-full px-6">
+              <div className="flex items-center space-x-4 flex-1">
+                <div className={`p-3 rounded-xl ${
+                  value === 'appartamento' 
+                    ? 'bg-[#d8010c] text-white' 
+                    : 'bg-gray-100 text-gray-600'
+                }`}>
+                  <Building className="h-8 w-8" />
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <Label 
+                    htmlFor="appartamento-mobile" 
+                    className="text-lg font-semibold text-gray-900 cursor-pointer block"
+                  >
+                    Appartamento
+                  </Label>
+                </div>
               </div>
               
               <RadioGroupItem 
                 value="appartamento" 
                 id="appartamento-mobile" 
-                className={`w-6 h-6 mt-1 ${
+                className={`w-6 h-6 ${
                   value === 'appartamento' 
                     ? 'border-[#d8010c] text-[#d8010c]' 
                     : 'border-gray-300'
@@ -73,38 +71,37 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
           
           {/* Casa indipendente - Mobile */}
           <div 
-            className={`relative rounded-2xl border-2 p-6 transition-all duration-300 cursor-pointer ${
+            className={`relative rounded-2xl border-2 transition-all duration-300 cursor-pointer h-[120px] flex items-center ${
               value === 'casa indipendente' 
                 ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/10 to-[#d8010c]/5 shadow-lg' 
                 : 'border-gray-200 bg-white hover:border-[#d8010c]/30 hover:shadow-md'
             }`}
             onClick={() => onChange('casa indipendente')}
           >
-            <div className="flex items-start space-x-4">
-              <div className={`p-3 rounded-xl ${
-                value === 'casa indipendente' 
-                  ? 'bg-[#d8010c] text-white' 
-                  : 'bg-gray-100 text-gray-600'
-              }`}>
-                <Home className="h-6 w-6" />
-              </div>
-              
-              <div className="flex-1 min-w-0">
-                <Label 
-                  htmlFor="casa-mobile" 
-                  className="text-xl font-semibold text-gray-900 cursor-pointer block mb-2"
-                >
-                  Casa indipendente
-                </Label>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  Ville, villette e abitazioni autonome
-                </p>
+            <div className="flex items-center justify-between w-full px-6">
+              <div className="flex items-center space-x-4 flex-1">
+                <div className={`p-3 rounded-xl ${
+                  value === 'casa indipendente' 
+                    ? 'bg-[#d8010c] text-white' 
+                    : 'bg-gray-100 text-gray-600'
+                }`}>
+                  <Home className="h-8 w-8" />
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <Label 
+                    htmlFor="casa-mobile" 
+                    className="text-lg font-semibold text-gray-900 cursor-pointer block"
+                  >
+                    Casa indipendente
+                  </Label>
+                </div>
               </div>
               
               <RadioGroupItem 
                 value="casa indipendente" 
                 id="casa-mobile" 
-                className={`w-6 h-6 mt-1 ${
+                className={`w-6 h-6 ${
                   value === 'casa indipendente' 
                     ? 'border-[#d8010c] text-[#d8010c]' 
                     : 'border-gray-300'
