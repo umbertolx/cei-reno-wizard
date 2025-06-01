@@ -72,7 +72,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
       <div className="space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold text-[#1c1c1c] leading-tight">
           Progetta il tuo impianto,<br />
-          <span className="text-[#d8010c]">ottieni subito il preventivo</span>
+          <span className="text-[#d8010c]">ottieni subito la stima</span>
         </h1>
         
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
