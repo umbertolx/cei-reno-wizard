@@ -65,66 +65,6 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </p>
       </div>
 
-      {/* Selezione moduli */}
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#1c1c1c] mb-8">Seleziona i moduli ed inizia ora</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {moduli.map((modulo) => {
-            const Icon = modulo.icon;
-            const isSelected = moduloSelezionato === modulo.id;
-            
-            return (
-              <div
-                key={modulo.id}
-                onClick={() => setModuloSelezionato(modulo.id)}
-                className={`p-6 rounded-xl cursor-pointer transition-all duration-200 ${
-                  isSelected 
-                    ? 'bg-[#d8010c] text-white shadow-lg' 
-                    : 'bg-white border-2 border-gray-200 hover:border-[#d8010c] hover:shadow-md'
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-full ${
-                    isSelected ? 'bg-white text-[#d8010c]' : 'bg-gray-100 text-[#d8010c]'
-                  }`}>
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <div className="text-left">
-                    <div className={`font-semibold ${isSelected ? 'text-white' : 'text-[#1c1c1c]'}`}>
-                      {modulo.nome}
-                    </div>
-                    <div className={`text-sm ${isSelected ? 'text-white/80' : 'text-gray-600'}`}>
-                      {modulo.descrizione}
-                    </div>
-                  </div>
-                  {isSelected && (
-                    <div className="ml-auto">
-                      <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                        <Check className="h-4 w-4 text-[#d8010c]" />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Bottone inizia configurazione */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-[#1c1c1c]">Inizia configurazione</h3>
-        
-        <Button 
-          onClick={onStart}
-          className="px-8 py-4 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-black hover:text-white rounded-xl flex items-center justify-center gap-3 mx-auto transition-all duration-300"
-        >
-          Inizia ora
-          <ArrowRight className="h-5 w-5" />
-        </Button>
-      </div>
-
       {/* Box stima con sfondo pieno */}
       <div className="bg-[#fbe12e] p-8 rounded-2xl shadow-lg max-w-lg mx-auto">
         <div className="text-center">
@@ -176,6 +116,62 @@ export const BenvenutoTool = ({ onStart }: Props) => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Selezione moduli */}
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#1c1c1c] mb-8">Seleziona i moduli ed inizia ora</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {moduli.map((modulo) => {
+            const Icon = modulo.icon;
+            const isSelected = moduloSelezionato === modulo.id;
+            
+            return (
+              <div
+                key={modulo.id}
+                onClick={() => setModuloSelezionato(modulo.id)}
+                className={`p-6 rounded-xl cursor-pointer transition-all duration-200 ${
+                  isSelected 
+                    ? 'bg-[#d8010c] text-white shadow-lg' 
+                    : 'bg-white border-2 border-gray-200 hover:border-[#d8010c] hover:shadow-md'
+                }`}
+              >
+                <div className="flex items-center gap-4">
+                  <div className={`p-3 rounded-full ${
+                    isSelected ? 'bg-white text-[#d8010c]' : 'bg-gray-100 text-[#d8010c]'
+                  }`}>
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <div className="text-left">
+                    <div className={`font-semibold ${isSelected ? 'text-white' : 'text-[#1c1c1c]'}`}>
+                      {modulo.nome}
+                    </div>
+                    <div className={`text-sm ${isSelected ? 'text-white/80' : 'text-gray-600'}`}>
+                      {modulo.descrizione}
+                    </div>
+                  </div>
+                  {isSelected && (
+                    <div className="ml-auto">
+                      <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                        <Check className="h-4 w-4 text-[#d8010c]" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottone inizia ora */}
+        <Button 
+          onClick={onStart}
+          className="px-8 py-4 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-black hover:text-white rounded-xl flex items-center justify-center gap-3 mx-auto transition-all duration-300"
+        >
+          Inizia ora
+          <ArrowRight className="h-5 w-5" />
+        </Button>
       </div>
 
       <div className="text-sm text-gray-500">
