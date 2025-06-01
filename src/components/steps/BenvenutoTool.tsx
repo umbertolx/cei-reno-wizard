@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
@@ -76,17 +77,17 @@ export const BenvenutoTool = ({ onStart }: Props) => {
   };
 
   return (
-    <div className="space-y-6 md:space-y-8 px-4 md:px-0">
+    <div className="space-y-3 md:space-y-8 px-3 md:px-0">
       {/* Badge Impianti Civili */}
       <div className="flex justify-start md:justify-center">
-        <div className="bg-[#d8010c] text-white px-4 py-2 md:px-6 md:py-3 rounded-full text-sm font-medium">
+        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-medium">
           Impianti Civili
         </div>
       </div>
 
       {/* Header principale */}
-      <div className="space-y-3 md:space-y-4">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
+      <div className="space-y-2 md:space-y-4">
+        <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
           <span 
@@ -98,122 +99,122 @@ export const BenvenutoTool = ({ onStart }: Props) => {
           </span>
         </h1>
         
-        <p className="text-lg md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto">
+        <p className="text-base md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto">
           Configura, personalizza e scopri i costi del tuo progetto
         </p>
       </div>
 
-      {/* Redesigned Budget estimation box - elegant and clear */}
+      {/* Redesigned Budget estimation box - mobile optimized */}
       <div className="relative max-w-full md:max-w-3xl md:mx-auto">
         {/* Example badge */}
-        <div className="flex justify-start md:justify-center mb-4">
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-200">
-            <Sparkles className="h-4 w-4" />
+        <div className="flex justify-start md:justify-center mb-2 md:mb-4">
+          <div className="inline-flex items-center gap-1.5 md:gap-2 bg-blue-50 text-blue-700 px-2.5 py-1 md:px-3 md:py-1.5 rounded-full text-xs md:text-sm font-medium border border-blue-200">
+            <Sparkles className="h-3 w-3 md:h-4 md:w-4" />
             Esempio di progetto
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 rounded-2xl md:rounded-3xl shadow-xl overflow-hidden">
+        <div className="bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 rounded-xl md:rounded-3xl shadow-xl overflow-hidden">
           {/* Subtle decorative elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full opacity-50"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-50 to-transparent rounded-tr-full opacity-50"></div>
+          <div className="absolute top-0 right-0 w-20 h-20 md:w-32 md:h-32 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full opacity-50"></div>
+          <div className="absolute bottom-0 left-0 w-16 h-16 md:w-24 md:h-24 bg-gradient-to-tr from-indigo-50 to-transparent rounded-tr-full opacity-50"></div>
           
-          <div className="relative p-6 md:p-8">
+          <div className="relative p-4 md:p-8">
             {/* Header section */}
-            <div className="text-center mb-6">
-              <div className="text-sm text-gray-500 mb-2 font-medium">
+            <div className="text-center mb-4 md:mb-6">
+              <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 font-medium">
                 Budget stimato per questo progetto
               </div>
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              <div className="text-2xl md:text-5xl font-bold text-gray-900 mb-2 md:mb-4">
                 €47.385 - €58.742
               </div>
               
               {/* Tax deductions */}
-              <div className="text-lg md:text-xl text-green-700 font-semibold mb-6">
+              <div className="text-base md:text-xl text-green-700 font-semibold mb-3 md:mb-6">
                 €23.692 detrazioni Bonus Casa
               </div>
             </div>
 
             {/* Project details in a clean grid */}
-            <div className="border-t border-gray-200 pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="border-t border-gray-200 pt-3 md:pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 mb-3 md:mb-6">
                 {/* Left column */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 text-green-600" />
+                <div className="space-y-1.5 md:space-y-3">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-sm text-gray-700">Appartamento 83 m²</span>
+                    <span className="text-xs md:text-sm text-gray-700">Appartamento 83 m²</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 text-green-600" />
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-sm text-gray-700">Torino, Piemonte</span>
+                    <span className="text-xs md:text-sm text-gray-700">Torino, Piemonte</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 text-green-600" />
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-sm text-gray-700">4 locali + 2 bagni</span>
+                    <span className="text-xs md:text-sm text-gray-700">4 locali + 2 bagni</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 text-green-600" />
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-sm text-gray-700">Impianto elettrico completo</span>
+                    <span className="text-xs md:text-sm text-gray-700">Impianto elettrico completo</span>
                   </div>
                 </div>
                 
                 {/* Right column */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 text-green-600" />
+                <div className="space-y-1.5 md:space-y-3">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-sm text-gray-700">Sistema domotico avanzato</span>
+                    <span className="text-xs md:text-sm text-gray-700">Sistema domotico avanzato</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 text-green-600" />
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-sm text-gray-700">Pompa di calore ibrida</span>
+                    <span className="text-xs md:text-sm text-gray-700">Pompa di calore ibrida</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 text-green-600" />
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-sm text-gray-700">23 punti luce LED</span>
+                    <span className="text-xs md:text-sm text-gray-700">23 punti luce LED</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 text-green-600" />
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-sm text-gray-700">15 prese elettriche</span>
+                    <span className="text-xs md:text-sm text-gray-700">15 prese elettriche</span>
                   </div>
                 </div>
               </div>
 
               {/* Additional features */}
-              <div className="border-t border-gray-100 pt-4">
-                <div className="flex flex-wrap gap-4 justify-center">
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Check className="h-2.5 w-2.5 text-blue-600" />
+              <div className="border-t border-gray-100 pt-2 md:pt-4">
+                <div className="flex flex-wrap gap-2 md:gap-4 justify-center">
+                  <div className="flex items-center gap-1.5 md:gap-2">
+                    <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2 w-2 md:h-2.5 md:w-2.5 text-blue-600" />
                     </div>
-                    <span className="text-xs text-gray-600">Classe energetica A+</span>
+                    <span className="text-[10px] md:text-xs text-gray-600">Classe energetica A+</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Check className="h-2.5 w-2.5 text-blue-600" />
+                  <div className="flex items-center gap-1.5 md:gap-2">
+                    <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2 w-2 md:h-2.5 md:w-2.5 text-blue-600" />
                     </div>
-                    <span className="text-xs text-gray-600">Certificazione CEI</span>
+                    <span className="text-[10px] md:text-xs text-gray-600">Certificazione CEI</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Check className="h-2.5 w-2.5 text-blue-600" />
+                  <div className="flex items-center gap-1.5 md:gap-2">
+                    <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2 w-2 md:h-2.5 md:w-2.5 text-blue-600" />
                     </div>
-                    <span className="text-xs text-gray-600">Garanzia 10 anni</span>
+                    <span className="text-[10px] md:text-xs text-gray-600">Garanzia 10 anni</span>
                   </div>
                 </div>
               </div>
@@ -224,15 +225,15 @@ export const BenvenutoTool = ({ onStart }: Props) => {
 
       {/* Module selection */}
       <div className="max-w-4xl md:mx-auto">
-        <div className="mb-8 text-left md:text-center">
-          <h2 className="text-2xl md:text-2xl font-bold text-[#1c1c1c] mb-3">Seleziona i moduli per il tuo progetto</h2>
-          <p className="text-base text-gray-600">
+        <div className="mb-4 md:mb-8 text-left md:text-center">
+          <h2 className="text-xl md:text-2xl font-bold text-[#1c1c1c] mb-2 md:mb-3">Seleziona i moduli per il tuo progetto</h2>
+          <p className="text-sm md:text-base text-gray-600">
             Puoi selezionare 1 o più moduli ({moduliSelezionati.length}/4 selezionati)
           </p>
         </div>
         
-        {/* Mobile: più spazio tra i box, Desktop: grid normale */}
-        <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-2 md:gap-4 mb-10">
+        {/* Mobile: spazi ridotti, Desktop: grid normale */}
+        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4 mb-6 md:mb-10">
           {moduli.map((modulo) => {
             const Icon = modulo.icon;
             const isSelected = moduliSelezionati.includes(modulo.id);
@@ -244,7 +245,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                 key={modulo.id}
                 onClick={() => !isDisabled && !isLastSelected && toggleModulo(modulo.id)}
                 className={`
-                  p-6 md:p-6 rounded-xl transition-all duration-300
+                  p-4 md:p-6 rounded-xl transition-all duration-300
                   ${isSelected 
                     ? 'bg-[#d8010c]/5 border-2 border-[#d8010c] text-[#1c1c1c] shadow-lg' 
                     : isDisabled
@@ -253,28 +254,28 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                   } ${isLastSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
                 `}
               >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 md:gap-4">
                   <div className={`
-                    p-3 rounded-full flex-shrink-0 transition-all duration-300
+                    p-2.5 md:p-3 rounded-full flex-shrink-0 transition-all duration-300
                     ${isSelected 
                       ? 'bg-[#d8010c] text-white' 
                       : 'bg-gray-100 text-[#d8010c] group-hover:bg-[#d8010c]/10'
                     }
                   `}>
-                    <Icon className="h-6 w-6" />
+                    <Icon className="h-5 w-5 md:h-6 md:w-6" />
                   </div>
                   <div className="text-left flex-1 min-w-0">
-                    <div className={`font-semibold text-lg md:text-lg ${isSelected ? 'text-[#1c1c1c]' : 'text-[#1c1c1c]'}`}>
+                    <div className={`font-semibold text-base md:text-lg ${isSelected ? 'text-[#1c1c1c]' : 'text-[#1c1c1c]'}`}>
                       {modulo.nome}
                     </div>
-                    <div className={`text-sm ${isSelected ? 'text-gray-700' : 'text-gray-600'} hidden md:block`}>
+                    <div className={`text-xs md:text-sm ${isSelected ? 'text-gray-700' : 'text-gray-600'} hidden md:block`}>
                       {modulo.descrizione}
                     </div>
                   </div>
                   {isSelected && (
                     <div className="ml-auto flex-shrink-0">
-                      <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center">
-                        <Check className="h-4 w-4 text-white" />
+                      <div className="w-5 h-5 md:w-6 md:h-6 bg-[#d8010c] rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 md:h-4 md:w-4 text-white" />
                       </div>
                     </div>
                   )}
@@ -285,13 +286,13 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
 
         {/* CTA Button */}
-        <div className="space-y-6">
+        <div className="space-y-3 md:space-y-6">
           <Button 
             onClick={onStart}
             disabled={moduliSelezionati.length === 0}
             className="
-              w-full px-6 md:px-12 py-6 md:py-6 
-              text-xl md:text-xl 
+              w-full px-6 md:px-12 py-5 md:py-6 
+              text-lg md:text-xl 
               bg-[#d8010c] hover:bg-[#b8000a] md:hover:bg-[#b8000a] 
               text-white 
               rounded-xl 
@@ -302,10 +303,10 @@ export const BenvenutoTool = ({ onStart }: Props) => {
             "
           >
             <span>Inizia ora</span>
-            <ArrowRight className="h-6 w-6" />
+            <ArrowRight className="h-5 w-5 md:h-6 md:w-6" />
           </Button>
           
-          <div className="text-sm text-gray-500 text-left md:text-center">
+          <div className="text-xs md:text-sm text-gray-500 text-left md:text-center">
             Gratuito • Pochi minuti • Senza impegno
           </div>
         </div>
