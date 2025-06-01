@@ -1,12 +1,72 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Home, Users, MapPin } from "lucide-react";
+import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Home, Users, MapPin, Plus, Minus } from "lucide-react";
 
 type Props = {
   onStart: () => void;
 };
 
+type Ambiente = {
+  id: string;
+  nome: string;
+  count: number;
+  max?: number;
+};
+
 export const BenvenutoTool = ({ onStart }: Props) => {
+  const [ambienti, setAmbienti] = useState<Ambiente[]>([
+    { id: 'soggiorno', nome: 'Soggiorno', count: 1 },
+    { id: 'cucina', nome: 'Cucina', count: 1, max: 1 },
+    { id: 'camera-doppia', nome: 'Camera doppia', count: 1 },
+    { id: 'camera-singola', nome: 'Camera singola', count: 0 },
+    { id: 'bagno', nome: 'Bagno', count: 1 },
+    { id: 'altro', nome: 'Altro', count: 0 }
+  ]);
+
+  const [moduliSelezionati, setModuliSelezionati] = useState([
+    'Impianto elettrico',
+    'Sicurezza', 
+    'Domotica base'
+  ]);
+
+  const totalStanze = ambienti.reduce((sum, ambiente) => sum + ambiente.count, 0);
+
+  const updateAmbiente = (id: string, increment: boolean) => {
+    setAmbienti(prev => prev.map(ambiente => {
+      if (ambiente.id === id) {
+        const newCount = increment 
+          ? Math.min(ambiente.count + 1, ambiente.max || 10)
+          : Math.max(ambiente.count - 1, 0);
+        return { ...ambiente, count: newCount };
+      }
+      return ambiente;
+    }));
+  };
+
+  const calcolaStima = () => {
+    const costoBase = 80 * 400; // 80mq * 400€/mq
+    const costoAmbienti = ambienti.reduce((sum, ambiente) => {
+      const costi = {
+        'soggiorno': 3500,
+        'cucina': 5000,
+        'camera-doppia': 3000,
+        'camera-singola': 2500,
+        'bagno': 5500,
+        'altro': 2000
+      };
+      return sum + (ambiente.count * (costi[ambiente.id as keyof typeof costi] || 0));
+    }, 0);
+    
+    const costoTotale = costoBase + costoAmbienti;
+    return {
+      min: Math.round(costoTotale * 0.8),
+      max: Math.round(costoTotale * 1.2)
+    };
+  };
+
+  const stima = calcolaStima();
+
   return (
     <div className="space-y-12 text-center">
       {/* Header principale */}
@@ -49,8 +109,44 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Box stima semplificato */}
-      <div className="bg-white border border-gray-200 p-8 rounded-2xl shadow-sm max-w-2xl mx-auto">
+      {/* Selezione ambienti */}
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#1c1c1c] mb-6">Seleziona gli ambienti</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {ambienti.map((ambiente) => (
+            <div key={ambiente.id} className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-[#fbe12e] transition-colors">
+              <div className="flex flex-col text-left">
+                <span className="font-medium text-[#1c1c1c]">{ambiente.nome}</span>
+                <span className="text-sm text-gray-500">{ambiente.count} {ambiente.count === 1 ? 'ambiente' : 'ambienti'}</span>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => updateAmbiente(ambiente.id, false)}
+                  disabled={ambiente.count === 0}
+                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Minus className="h-4 w-4" />
+                </button>
+                
+                <span className="w-8 text-center font-medium">{ambiente.count}</span>
+                
+                <button
+                  onClick={() => updateAmbiente(ambiente.id, true)}
+                  disabled={ambiente.count === (ambiente.max || 10)}
+                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Box stima con contorno giallo */}
+      <div className="bg-white border-2 border-[#fbe12e] p-8 rounded-2xl shadow-sm max-w-2xl mx-auto">
         {/* Caratteristiche immobile */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="flex flex-col items-center">
@@ -61,7 +157,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
           <div className="flex flex-col items-center">
             <Users className="h-6 w-6 text-[#d8010c] mb-2" />
             <div className="text-sm text-gray-600">Composizione</div>
-            <div className="text-lg font-bold text-[#1c1c1c]">4 locali</div>
+            <div className="text-lg font-bold text-[#1c1c1c]">{totalStanze} {totalStanze === 1 ? 'locale' : 'locali'}</div>
           </div>
           <div className="flex flex-col items-center">
             <MapPin className="h-6 w-6 text-[#d8010c] mb-2" />
@@ -74,31 +170,19 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         <div className="mb-8">
           <div className="flex justify-center mb-4">
             <div className="bg-[#d8010c] text-white px-4 py-2 rounded-full text-sm font-medium">
-              3 di 4 moduli selezionati
+              {moduliSelezionati.length} di 4 moduli selezionati
             </div>
           </div>
           
           <div className="grid grid-cols-2 gap-3">
-            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                <Check className="h-3 w-3 text-white" />
+            {moduliSelezionati.map((modulo, index) => (
+              <div key={index} className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                  <Check className="h-3 w-3 text-white" />
+                </div>
+                <span className="text-sm font-medium text-green-700">{modulo}</span>
               </div>
-              <span className="text-sm font-medium text-green-700">Impianto elettrico</span>
-            </div>
-            
-            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                <Check className="h-3 w-3 text-white" />
-              </div>
-              <span className="text-sm font-medium text-green-700">Sicurezza</span>
-            </div>
-            
-            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                <Check className="h-3 w-3 text-white" />
-              </div>
-              <span className="text-sm font-medium text-green-700">Domotica base</span>
-            </div>
+            ))}
             
             <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
               <div className="w-5 h-5 bg-gray-300 rounded-full"></div>
@@ -107,11 +191,11 @@ export const BenvenutoTool = ({ onStart }: Props) => {
           </div>
         </div>
         
-        {/* Stima del budget - più prominente */}
+        {/* Stima del budget */}
         <div className="text-center">
           <div className="text-sm text-gray-600 mb-3">Budget stimato</div>
           <div className="text-4xl md:text-5xl font-bold text-[#1c1c1c] mb-4">
-            €4.500 - €6.800
+            €{stima.min.toLocaleString()} - €{stima.max.toLocaleString()}
           </div>
           <div className="bg-green-50 text-green-700 px-4 py-2 rounded-lg inline-block border border-green-200">
             <span className="text-sm font-medium">+ Detrazioni fiscali disponibili</span>
