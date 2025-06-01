@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Sun, Shield, Thermometer } from "lucide-react";
+import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Home, Users } from "lucide-react";
 
 type Props = {
   onStart: () => void;
@@ -49,12 +49,57 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Box stima allineato al design finale */}
-      <div className="bg-[#fbe12e] p-6 rounded-2xl space-y-4 max-w-lg mx-auto">
+      {/* Box stima migliorato con dettagli */}
+      <div className="bg-[#fbe12e] p-6 rounded-2xl space-y-6 max-w-lg mx-auto">
         <h2 className="text-2xl font-medium text-[#1c1c1c]">Esempio stima</h2>
         
-        <div className="text-center py-6">
-          <div className="text-sm text-[#1c1c1c] opacity-80 mb-2">Appartamento 80mq - Impianto elettrico</div>
+        {/* Dettagli configurazione */}
+        <div className="space-y-4">
+          {/* Tipo proprietà e superficie */}
+          <div className="flex items-center justify-between bg-white bg-opacity-50 p-3 rounded-lg">
+            <div className="flex items-center gap-2">
+              <Home className="h-4 w-4 text-[#1c1c1c]" />
+              <span className="text-sm font-medium text-[#1c1c1c]">Appartamento 80mq</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Users className="h-4 w-4 text-[#1c1c1c]" />
+              <span className="text-sm text-[#1c1c1c]">4 stanze</span>
+            </div>
+          </div>
+
+          {/* Moduli selezionati */}
+          <div className="bg-white bg-opacity-50 p-3 rounded-lg">
+            <div className="text-sm font-medium text-[#1c1c1c] mb-2">Moduli selezionati (3/4):</div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-[#d8010c] rounded-full flex items-center justify-center">
+                  <Check className="h-2.5 w-2.5 text-white" />
+                </div>
+                <span className="text-xs text-[#1c1c1c]">Impianto elettrico</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-[#d8010c] rounded-full flex items-center justify-center">
+                  <Check className="h-2.5 w-2.5 text-white" />
+                </div>
+                <span className="text-xs text-[#1c1c1c]">Sicurezza</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-[#d8010c] rounded-full flex items-center justify-center">
+                  <Check className="h-2.5 w-2.5 text-white" />
+                </div>
+                <span className="text-xs text-[#1c1c1c]">Domotica</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                <span className="text-xs text-gray-500">Termotecnico</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Prezzo */}
+        <div className="text-center py-4">
+          <div className="text-sm text-[#1c1c1c] opacity-80 mb-2">Stima personalizzata</div>
           <span className="text-xl">da </span>
           <span className="text-3xl md:text-5xl font-bold">€ 4.500</span>
           <span className="text-xl"> a </span>
