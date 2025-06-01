@@ -71,12 +71,12 @@ export const BenvenutoTool = ({ onStart }: Props) => {
       {/* Header principale */}
       <div className="space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold text-[#1c1c1c] leading-tight">
-          Configura il tuo impianto
+          Progetta il tuo impianto,<br />
+          <span className="text-[#d8010c]">ottieni subito il preventivo</span>
         </h1>
         
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          Elettrico, fotovoltaico, sicurezza e termotecnico con le tecnologie più avanzate. 
-          Scopri subito quanto costa il tuo progetto personalizzato e ottieni budget e vantaggi in tempo reale
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          Configura, personalizza e scopri i costi del tuo progetto
         </p>
       </div>
 
