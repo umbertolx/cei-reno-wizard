@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Home, Users, MapPin, Plus, Minus } from "lucide-react";
@@ -109,6 +108,64 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
+      {/* Box stima con contorno giallo */}
+      <div className="bg-white border-2 border-[#fbe12e] p-8 rounded-2xl shadow-sm max-w-2xl mx-auto">
+        {/* Caratteristiche immobile */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="flex flex-col items-center">
+            <Home className="h-6 w-6 text-[#d8010c] mb-2" />
+            <div className="text-sm text-gray-600">Appartamento</div>
+            <div className="text-lg font-bold text-[#1c1c1c]">80 m²</div>
+          </div>
+          <div className="flex flex-col items-center">
+            <Users className="h-6 w-6 text-[#d8010c] mb-2" />
+            <div className="text-sm text-gray-600">Composizione</div>
+            <div className="text-lg font-bold text-[#1c1c1c]">1 Sala + 1 Cucina + 2 Camere + 2 Bagni</div>
+          </div>
+          <div className="flex flex-col items-center">
+            <MapPin className="h-6 w-6 text-[#d8010c] mb-2" />
+            <div className="text-sm text-gray-600">Località</div>
+            <div className="text-lg font-bold text-[#1c1c1c]">Torino</div>
+          </div>
+        </div>
+
+        {/* Moduli selezionati */}
+        <div className="mb-8">
+          <div className="flex justify-center mb-4">
+            <div className="bg-[#d8010c] text-white px-4 py-2 rounded-full text-sm font-medium">
+              Moduli selezionati
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                <Check className="h-3 w-3 text-white" />
+              </div>
+              <span className="text-sm font-medium text-green-700">Impianto elettrico</span>
+            </div>
+            
+            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                <Check className="h-3 w-3 text-white" />
+              </div>
+              <span className="text-sm font-medium text-green-700">Sicurezza</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Stima del budget */}
+        <div className="text-center">
+          <div className="text-sm text-gray-600 mb-3">Budget stimato per questo progetto</div>
+          <div className="text-4xl md:text-5xl font-bold text-[#1c1c1c] mb-4">
+            €45.000 - €55.000
+          </div>
+          <div className="bg-green-50 text-green-700 px-4 py-2 rounded-lg inline-block border border-green-200">
+            <span className="text-sm font-medium">+ Detrazioni fiscali disponibili</span>
+          </div>
+        </div>
+      </div>
+
       {/* Selezione ambienti */}
       <div className="max-w-3xl mx-auto">
         <h2 className="text-2xl font-bold text-[#1c1c1c] mb-6">Seleziona gli ambienti</h2>
@@ -142,64 +199,6 @@ export const BenvenutoTool = ({ onStart }: Props) => {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Box stima con contorno giallo */}
-      <div className="bg-white border-2 border-[#fbe12e] p-8 rounded-2xl shadow-sm max-w-2xl mx-auto">
-        {/* Caratteristiche immobile */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="flex flex-col items-center">
-            <Home className="h-6 w-6 text-[#d8010c] mb-2" />
-            <div className="text-sm text-gray-600">Appartamento</div>
-            <div className="text-lg font-bold text-[#1c1c1c]">80 m²</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <Users className="h-6 w-6 text-[#d8010c] mb-2" />
-            <div className="text-sm text-gray-600">Composizione</div>
-            <div className="text-lg font-bold text-[#1c1c1c]">{totalStanze} {totalStanze === 1 ? 'locale' : 'locali'}</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <MapPin className="h-6 w-6 text-[#d8010c] mb-2" />
-            <div className="text-sm text-gray-600">Zona</div>
-            <div className="text-lg font-bold text-[#1c1c1c]">Nord Italia</div>
-          </div>
-        </div>
-
-        {/* Moduli selezionati */}
-        <div className="mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-[#d8010c] text-white px-4 py-2 rounded-full text-sm font-medium">
-              {moduliSelezionati.length} di 4 moduli selezionati
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-3">
-            {moduliSelezionati.map((modulo, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
-                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                  <Check className="h-3 w-3 text-white" />
-                </div>
-                <span className="text-sm font-medium text-green-700">{modulo}</span>
-              </div>
-            ))}
-            
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-              <div className="w-5 h-5 bg-gray-300 rounded-full"></div>
-              <span className="text-sm text-gray-500">Termotecnico</span>
-            </div>
-          </div>
-        </div>
-        
-        {/* Stima del budget */}
-        <div className="text-center">
-          <div className="text-sm text-gray-600 mb-3">Budget stimato</div>
-          <div className="text-4xl md:text-5xl font-bold text-[#1c1c1c] mb-4">
-            €{stima.min.toLocaleString()} - €{stima.max.toLocaleString()}
-          </div>
-          <div className="bg-green-50 text-green-700 px-4 py-2 rounded-lg inline-block border border-green-200">
-            <span className="text-sm font-medium">+ Detrazioni fiscali disponibili</span>
-          </div>
         </div>
       </div>
 
