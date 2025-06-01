@@ -85,9 +85,9 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Header principale */}
+      {/* Header principale - titolo più grande */}
       <div className="space-y-2 md:space-y-4">
-        <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
           <span 
@@ -137,7 +137,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
 
             {/* Project details in a clean grid */}
             <div className="border-t border-gray-200 pt-3 md:pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 mb-3 md:mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
                 {/* Left column */}
                 <div className="space-y-1.5 md:space-y-3">
                   <div className="flex items-center gap-2 md:gap-3">
@@ -194,39 +194,15 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                   </div>
                 </div>
               </div>
-
-              {/* Additional features */}
-              <div className="border-t border-gray-100 pt-2 md:pt-4">
-                <div className="flex flex-wrap gap-2 md:gap-4 justify-center">
-                  <div className="flex items-center gap-1.5 md:gap-2">
-                    <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Check className="h-2 w-2 md:h-2.5 md:w-2.5 text-blue-600" />
-                    </div>
-                    <span className="text-[10px] md:text-xs text-gray-600">Classe energetica A+</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 md:gap-2">
-                    <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Check className="h-2 w-2 md:h-2.5 md:w-2.5 text-blue-600" />
-                    </div>
-                    <span className="text-[10px] md:text-xs text-gray-600">Certificazione CEI</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 md:gap-2">
-                    <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Check className="h-2 w-2 md:h-2.5 md:w-2.5 text-blue-600" />
-                    </div>
-                    <span className="text-[10px] md:text-xs text-gray-600">Garanzia 10 anni</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Module selection */}
+      {/* Module selection - titolo più grande */}
       <div className="max-w-4xl md:mx-auto">
         <div className="mb-4 md:mb-8 text-left md:text-center">
-          <h2 className="text-xl md:text-2xl font-bold text-[#1c1c1c] mb-2 md:mb-3">Seleziona i moduli per il tuo progetto</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-[#1c1c1c] mb-2 md:mb-3">Seleziona i moduli per il tuo progetto</h2>
           <p className="text-sm md:text-base text-gray-600">
             Puoi selezionare 1 o più moduli ({moduliSelezionati.length}/4 selezionati)
           </p>
