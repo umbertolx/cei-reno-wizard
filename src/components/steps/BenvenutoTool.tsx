@@ -16,7 +16,7 @@ type Modulo = {
 export const BenvenutoTool = ({ onStart }: Props) => {
   const [moduliSelezionati, setModuliSelezionati] = useState<string[]>(['impianto-elettrico']);
   
-  // Animated text rotation
+  // Animated text rotation - more elegant
   const tipiImpianto = ["elettrico", "fotovoltaico", "di sicurezza", "termotecnico"];
   const [currentTypeIndex, setCurrentTypeIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
@@ -27,8 +27,8 @@ export const BenvenutoTool = ({ onStart }: Props) => {
       setTimeout(() => {
         setCurrentTypeIndex((prev) => (prev + 1) % tipiImpianto.length);
         setIsVisible(true);
-      }, 300);
-    }, 2500);
+      }, 500);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);
@@ -84,13 +84,13 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Header principale con animazione */}
+      {/* Header principale con animazione elegante */}
       <div className="space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold text-[#1c1c1c] leading-tight">
           Progetta il tuo impianto<br />
           <span 
-            className={`text-[#d8010c] transition-opacity duration-300 ${
-              isVisible ? 'opacity-100' : 'opacity-0'
+            className={`text-[#d8010c] transition-all duration-700 ease-in-out transform ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
             }`}
           >
             {tipiImpianto[currentTypeIndex]}
@@ -102,6 +102,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </p>
       </div>
 
+      {/* ... keep existing code (yellow box with budget estimation) */}
       <div className="bg-[#fbe12e] p-6 rounded-2xl shadow-lg max-w-lg mx-auto">
         <div className="text-center">
           <div className="text-sm text-gray-700 mb-2 font-medium">Budget stimato per questo progetto</div>
@@ -136,7 +137,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Selezione moduli */}
+      {/* ... keep existing code (module selection and button) */}
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-[#1c1c1c] mb-2">Seleziona i moduli per il tuo progetto</h2>
