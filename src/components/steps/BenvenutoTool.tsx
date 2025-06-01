@@ -47,13 +47,14 @@ export const BenvenutoTool = ({ onStart }: Props) => {
   const toggleModulo = (moduloId: string) => {
     setModuliSelezionati(prev => {
       if (prev.includes(moduloId)) {
-        // Rimuovi se già selezionato
+        // Non permettere di deselezionare se è l'ultimo rimasto
+        if (prev.length === 1) {
+          return prev;
+        }
         return prev.filter(id => id !== moduloId);
       } else if (prev.length < 4) {
-        // Aggiungi se non siamo al limite
         return [...prev, moduloId];
       }
-      // Se siamo al limite, non fare nulla
       return prev;
     });
   };
@@ -119,7 +120,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-[#1c1c1c] mb-2">Seleziona i moduli per il tuo progetto</h2>
           <p className="text-sm text-gray-600">
-            Puoi selezionare fino a {4 - moduliSelezionati.length} moduli aggiuntivi ({moduliSelezionati.length}/4 selezionati)
+            Puoi selezionare 1 o più moduli ({moduliSelezionati.length}/4 selezionati)
           </p>
         </div>
         
@@ -128,18 +129,19 @@ export const BenvenutoTool = ({ onStart }: Props) => {
             const Icon = modulo.icon;
             const isSelected = moduliSelezionati.includes(modulo.id);
             const isDisabled = !isSelected && moduliSelezionati.length >= 4;
+            const isLastSelected = isSelected && moduliSelezionati.length === 1;
             
             return (
               <div
                 key={modulo.id}
-                onClick={() => !isDisabled && toggleModulo(modulo.id)}
-                className={`p-6 rounded-xl cursor-pointer transition-all duration-200 ${
+                onClick={() => !isDisabled && !isLastSelected && toggleModulo(modulo.id)}
+                className={`p-6 rounded-xl transition-all duration-200 ${
                   isSelected 
                     ? 'bg-[#d8010c] text-white shadow-lg' 
                     : isDisabled
                     ? 'bg-gray-100 border-2 border-gray-200 cursor-not-allowed opacity-50'
-                    : 'bg-white border-2 border-gray-200 hover:border-[#d8010c] hover:shadow-md'
-                }`}
+                    : 'bg-white border-2 border-gray-200 hover:border-[#d8010c] hover:shadow-md cursor-pointer'
+                } ${isLastSelected ? 'cursor-not-allowed' : 'cursor-pointer'}`}
               >
                 <div className="flex items-center gap-4">
                   <div className={`p-3 rounded-full ${
@@ -168,14 +170,14 @@ export const BenvenutoTool = ({ onStart }: Props) => {
           })}
         </div>
 
-        {/* Bottone inizia ora prominente */}
+        {/* Bottone inizia ora */}
         <div className="space-y-4">
           <Button 
             onClick={onStart}
             disabled={moduliSelezionati.length === 0}
             className="px-12 py-6 text-xl bg-[#d8010c] hover:bg-[#b8000a] text-white rounded-xl flex items-center justify-center gap-3 mx-auto transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Inizia la configurazione
+            Inizia ora
             <ArrowRight className="h-6 w-6" />
           </Button>
           
