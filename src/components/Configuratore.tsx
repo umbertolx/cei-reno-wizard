@@ -1,4 +1,6 @@
+
 import { useState } from "react";
+import { LandingPage } from "./LandingPage";
 import { BenvenutoTool } from "./steps/BenvenutoTool";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
@@ -36,8 +38,8 @@ export type FormData = {
 };
 
 export const Configuratore = () => {
-  // Step iniziale ora è 0 (pagina di benvenuto)
-  const [step, setStep] = useState<number>(0);
+  // Step iniziale ora è -1 (landing page)
+  const [step, setStep] = useState<number>(-1);
   
   const [formData, setFormData] = useState<FormData>({
     tipologiaAbitazione: "",
@@ -74,19 +76,15 @@ export const Configuratore = () => {
       "casa indipendente": 550
     };
     
-    // Costo base per metro quadro
     const costoBaseMetroQuadro = formData.tipologiaAbitazione.toLowerCase() === "appartamento" 
       ? costoBase.appartamento 
       : costoBase["casa indipendente"];
     
-    // Calcolo stanza per stanza
     const { cucina, cameraDoppia, cameraSingola, bagno, soggiorno, altro } = formData.composizione;
     const costoStanze = (cucina * 5000) + (cameraDoppia * 3000) + (cameraSingola * 2500) + (bagno * 5500) + (soggiorno * 3500) + (altro * 2000);
     
-    // Calcolo totale con superficie
     const costoTotale = (costoBaseMetroQuadro * formData.superficie) + costoStanze;
     
-    // Range di stima con +/- 20%
     return {
       min: Math.round(costoTotale * 0.8),
       max: Math.round(costoTotale * 1.2)
@@ -98,11 +96,11 @@ export const Configuratore = () => {
   };
 
   const handleBack = () => {
-    setStep(prev => Math.max(0, prev - 1));
+    setStep(prev => Math.max(-1, prev - 1));
   };
 
   const handleReset = () => {
-    setStep(0);
+    setStep(-1);
     setFormData({
       tipologiaAbitazione: "",
       superficie: 0,
@@ -133,14 +131,12 @@ export const Configuratore = () => {
       // Qui andrebbe la logica di invio dei dati al backend
       console.log("Dati da inviare:", formData);
       
-      // Simula un invio dati riuscito
       toast({
         title: "Richiesta inviata con successo!",
         description: "Ti contatteremo al più presto.",
         duration: 5000,
       });
       
-      // Passa allo step di conferma
       setStep(prev => prev + 1);
       
     } catch (error) {
@@ -156,6 +152,12 @@ export const Configuratore = () => {
   // Renderizza il contenuto in base allo step corrente
   const renderStep = () => {
     switch (step) {
+      case -1:
+        return (
+          <LandingPage 
+            onStartConfigurator={handleNext} 
+          />
+        );
       case 0:
         return (
           <BenvenutoTool 
@@ -197,6 +199,12 @@ export const Configuratore = () => {
     }
   };
 
+  // Se siamo nella landing page, renderizza a tutto schermo
+  if (step === -1) {
+    return renderStep();
+  }
+
+  // Altrimenti renderizza nel card container come prima
   return (
     <Card className="w-full max-w-4xl rounded-[20px] shadow-lg overflow-hidden">
       <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10 xl:p-[72px]">
