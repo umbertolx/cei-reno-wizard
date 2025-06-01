@@ -17,7 +17,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </h1>
         
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Seleziona il tipo di intervento e ricevi un preventivo gratuito online
+          Seleziona il tipo di intervento e ricevi una stima gratuita online
         </p>
 
         <Button 
@@ -51,7 +51,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
 
       {/* Box stima allineato al design finale */}
       <div className="bg-[#fbe12e] p-6 rounded-2xl space-y-4 max-w-lg mx-auto">
-        <h2 className="text-2xl font-medium text-[#1c1c1c]">Esempio preventivo</h2>
+        <h2 className="text-2xl font-medium text-[#1c1c1c]">Esempio stima</h2>
         
         <div className="text-center py-6">
           <div className="text-sm text-[#1c1c1c] opacity-80 mb-2">Appartamento 80mq - Impianto elettrico</div>

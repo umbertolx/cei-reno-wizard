@@ -1,4 +1,3 @@
-
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -94,7 +93,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
         
         <div className="bg-white bg-opacity-50 p-4 rounded-lg text-center">
           <p className="text-lg text-[#1c1c1c]">
-            È una stima calcolata in tempo reale. Per un preventivo preciso richiedi un sopralluogo.
+            È una stima calcolata in tempo reale. Per un budget preciso richiedi un sopralluogo.
           </p>
         </div>
       </div>
@@ -242,7 +241,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
       <div className="space-y-6">
         <h2 className="text-2xl font-medium text-[#1c1c1c]">Richiedi un sopralluogo gratuito</h2>
         <p className="text-base text-[#1c1c1c] opacity-80">
-          Per un preventivo dettagliato, richiedi un sopralluogo. Inserisci la data e l'orario che preferisci.
+          Per un budget dettagliato, richiedi un sopralluogo. Inserisci la data e l'orario che preferisci.
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
