@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check } from "lucide-react";
 
@@ -16,6 +15,23 @@ type Modulo = {
 
 export const BenvenutoTool = ({ onStart }: Props) => {
   const [moduliSelezionati, setModuliSelezionati] = useState<string[]>(['impianto-elettrico']);
+  
+  // Animated text rotation
+  const tipiImpianto = ["elettrico", "fotovoltaico", "di sicurezza", "termotecnico"];
+  const [currentTypeIndex, setCurrentTypeIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsVisible(false);
+      setTimeout(() => {
+        setCurrentTypeIndex((prev) => (prev + 1) % tipiImpianto.length);
+        setIsVisible(true);
+      }, 300);
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const moduli: Modulo[] = [
     {
@@ -68,11 +84,17 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Header principale */}
+      {/* Header principale con animazione */}
       <div className="space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold text-[#1c1c1c] leading-tight">
-          Progetta il tuo impianto,<br />
-          <span className="text-[#d8010c]">ottieni subito la stima</span>
+          Progetta il tuo impianto<br />
+          <span 
+            className={`text-[#d8010c] transition-opacity duration-300 ${
+              isVisible ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            {tipiImpianto[currentTypeIndex]}
+          </span>
         </h1>
         
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -80,7 +102,6 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </p>
       </div>
 
-      {/* Box stima con sfondo pieno */}
       <div className="bg-[#fbe12e] p-6 rounded-2xl shadow-lg max-w-lg mx-auto">
         <div className="text-center">
           <div className="text-sm text-gray-700 mb-2 font-medium">Budget stimato per questo progetto</div>
