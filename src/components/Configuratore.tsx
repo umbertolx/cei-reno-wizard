@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BenvenutoTool } from "./steps/BenvenutoTool";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,31 +36,30 @@ export type FormData = {
 };
 
 export const Configuratore = () => {
-  // TEMPORANEO: Step iniziale impostato a 2 per testare StimaFinale
-  const [step, setStep] = useState<number>(2);
+  // Step iniziale ora è 0 (pagina di benvenuto)
+  const [step, setStep] = useState<number>(0);
   
-  // TEMPORANEO: Dati precompilati per il testing
   const [formData, setFormData] = useState<FormData>({
-    tipologiaAbitazione: "appartamento",
-    superficie: 85,
-    indirizzo: "Via Roma 123",
-    citta: "Milano",
-    cap: "20121",
-    regione: "Lombardia",
-    piano: "secondo piano",
+    tipologiaAbitazione: "",
+    superficie: 0,
+    indirizzo: "",
+    citta: "",
+    cap: "",
+    regione: "",
+    piano: "",
     composizione: {
-      cucina: 1,
-      cameraDoppia: 2,
-      cameraSingola: 1,
-      bagno: 2,
-      soggiorno: 1,
+      cucina: 0,
+      cameraDoppia: 0,
+      cameraSingola: 0,
+      bagno: 0,
+      soggiorno: 0,
       altro: 0,
     },
-    nome: "Mario",
-    cognome: "Rossi",
-    email: "mario.rossi@email.com",
-    telefono: "3331234567",
-    accettoTermini: true,
+    nome: "",
+    cognome: "",
+    email: "",
+    telefono: "",
+    accettoTermini: false,
     tipoProprietà: "prima casa"
   });
   
@@ -158,13 +158,19 @@ export const Configuratore = () => {
     switch (step) {
       case 0:
         return (
+          <BenvenutoTool 
+            onStart={handleNext} 
+          />
+        );
+      case 1:
+        return (
           <InformazioniGenerali 
             formData={formData} 
             updateFormData={updateFormData} 
             onNext={handleNext} 
           />
         );
-      case 1:
+      case 2:
         return (
           <DatiContatto
             formData={formData}
@@ -173,7 +179,7 @@ export const Configuratore = () => {
             onNext={handleNext}
           />
         );
-      case 2:
+      case 3:
         const stima = calcolaStima();
         return (
           <StimaFinale
@@ -184,7 +190,7 @@ export const Configuratore = () => {
             onSubmit={handleInviaDati}
           />
         );
-      case 3:
+      case 4:
         return <RichiestaInviata onReset={handleReset} />;
       default:
         return <div>Step non valido</div>;
