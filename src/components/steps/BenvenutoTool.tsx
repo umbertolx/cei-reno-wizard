@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check } from "lucide-react";
@@ -77,16 +76,16 @@ export const BenvenutoTool = ({ onStart }: Props) => {
   };
 
   return (
-    <div className="space-y-8 md:space-y-8 px-6 md:px-0">
-      {/* Badge Impianti Civili - Mobile: sinistra, Desktop: centro */}
+    <div className="space-y-6 md:space-y-8 px-4 md:px-0">
+      {/* Badge Impianti Civili */}
       <div className="flex justify-start md:justify-center">
         <div className="bg-[#d8010c] text-white px-4 py-2 md:px-6 md:py-3 rounded-full text-sm font-medium">
           Impianti Civili
         </div>
       </div>
 
-      {/* Header principale - Mobile: sinistra, più spazio */}
-      <div className="space-y-4 md:space-y-4">
+      {/* Header principale */}
+      <div className="space-y-3 md:space-y-4">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
@@ -104,42 +103,95 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </p>
       </div>
 
-      {/* Budget estimation box - Mobile: più spazio, allineato a sinistra */}
-      <div className="bg-[#fbe12e] p-6 md:p-6 rounded-xl md:rounded-2xl shadow-lg max-w-lg md:mx-auto">
-        <div className="text-left md:text-center">
-          <div className="text-sm text-gray-700 mb-3 font-medium">Budget stimato per questo progetto</div>
-          <div className="text-3xl md:text-3xl lg:text-4xl font-bold text-[#1c1c1c] mb-4">
-            €45.000 - €55.000
-          </div>
-          <div className="bg-green-600 text-white px-3 py-1.5 rounded-lg inline-block font-medium text-sm mb-4">
-            + Detrazioni fiscali disponibili
-          </div>
-          
-          {/* Dettagli configurazione */}
-          <div className="text-xs text-gray-600 pt-3 border-t border-gray-300/50">
-            <div className="flex items-center justify-start md:justify-center gap-2 md:gap-3 flex-wrap">
-              <span className="flex items-center gap-1">
-                <Check className="h-3 w-3 text-green-600" />
-                Appartamento 80 m²
-              </span>
-              <span className="flex items-center gap-1">
-                <Check className="h-3 w-3 text-green-600" />
-                Torino
-              </span>
-              <span className="flex items-center gap-1">
-                <Check className="h-3 w-3 text-green-600" />
-                4 locali
-              </span>
-              <span className="flex items-center gap-1">
-                <Check className="h-3 w-3 text-green-600" />
-                Impianto + Sicurezza
-              </span>
+      {/* Redesigned Budget estimation box */}
+      <div className="bg-[#fbe12e] relative overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl max-w-full md:max-w-2xl md:mx-auto">
+        {/* Futuristic background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-transparent via-white/20 to-transparent transform rotate-45"></div>
+          <div className="absolute -top-10 -right-10 w-32 h-32 border border-white/20 rounded-full"></div>
+          <div className="absolute -bottom-8 -left-8 w-24 h-24 border border-white/20 rounded-full"></div>
+        </div>
+        
+        <div className="relative p-6 md:p-8">
+          <div className="text-left md:text-center">
+            {/* Header */}
+            <div className="mb-4 md:mb-6">
+              <div className="text-sm md:text-base text-gray-700 mb-2 font-medium uppercase tracking-wider">
+                Budget stimato per questo progetto
+              </div>
+              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1c] mb-3 md:mb-4">
+                €47.385 - €58.742
+              </div>
+            </div>
+
+            {/* Tax deductions amount */}
+            <div className="mb-6 md:mb-8">
+              <div className="inline-flex items-center bg-[#1c1c1c] text-[#fbe12e] px-4 py-2 md:px-6 md:py-3 rounded-xl font-bold text-lg md:text-xl shadow-lg">
+                €23.692 detrazioni Bonus Casa
+              </div>
+            </div>
+            
+            {/* Enhanced configuration details */}
+            <div className="space-y-4 md:space-y-3">
+              <div className="text-xs md:text-sm text-gray-600 pt-4 border-t border-gray-300/50">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                  {/* Left column - mobile: stacked, desktop: left */}
+                  <div className="space-y-2 md:space-y-3">
+                    <div className="flex items-center justify-start gap-2">
+                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
+                      <span className="text-xs md:text-sm">Appartamento 83 m²</span>
+                    </div>
+                    <div className="flex items-center justify-start gap-2">
+                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
+                      <span className="text-xs md:text-sm">Torino, Piemonte</span>
+                    </div>
+                    <div className="flex items-center justify-start gap-2">
+                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
+                      <span className="text-xs md:text-sm">4 locali + 2 bagni</span>
+                    </div>
+                  </div>
+                  
+                  {/* Right column - mobile: continuation, desktop: right */}
+                  <div className="space-y-2 md:space-y-3">
+                    <div className="flex items-center justify-start gap-2">
+                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
+                      <span className="text-xs md:text-sm">Impianto elettrico</span>
+                    </div>
+                    <div className="flex items-center justify-start gap-2">
+                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
+                      <span className="text-xs md:text-sm">Sistema domotico</span>
+                    </div>
+                    <div className="flex items-center justify-start gap-2">
+                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
+                      <span className="text-xs md:text-sm">Pompa di calore</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Additional details row for mobile/desktop */}
+                <div className="pt-3 md:pt-4 mt-3 md:mt-4 border-t border-gray-300/30">
+                  <div className="flex flex-wrap items-center justify-start md:justify-center gap-2 md:gap-4">
+                    <div className="flex items-center gap-1">
+                      <Check className="h-3 w-3 text-green-600" />
+                      <span className="text-xs">23 punti luce</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Check className="h-3 w-3 text-green-600" />
+                      <span className="text-xs">15 prese elettriche</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Check className="h-3 w-3 text-green-600" />
+                      <span className="text-xs">Classe energetica A+</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Module selection - Mobile: più spazio tra i moduli */}
+      {/* Module selection */}
       <div className="max-w-4xl md:mx-auto">
         <div className="mb-8 text-left md:text-center">
           <h2 className="text-2xl md:text-2xl font-bold text-[#1c1c1c] mb-3">Seleziona i moduli per il tuo progetto</h2>
@@ -201,7 +253,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
           })}
         </div>
 
-        {/* CTA Button - Mobile: più spazio sopra */}
+        {/* CTA Button */}
         <div className="space-y-6">
           <Button 
             onClick={onStart}
