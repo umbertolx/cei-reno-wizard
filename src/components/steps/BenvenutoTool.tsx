@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Sun, Shield, Thermometer, Check } from "lucide-react";
+import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
 
 type Props = {
   onStart: () => void;
@@ -103,86 +103,117 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </p>
       </div>
 
-      {/* Redesigned Budget estimation box */}
-      <div className="bg-[#fbe12e] relative overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl max-w-full md:max-w-2xl md:mx-auto">
-        {/* Futuristic background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-transparent via-white/20 to-transparent transform rotate-45"></div>
-          <div className="absolute -top-10 -right-10 w-32 h-32 border border-white/20 rounded-full"></div>
-          <div className="absolute -bottom-8 -left-8 w-24 h-24 border border-white/20 rounded-full"></div>
+      {/* Redesigned Budget estimation box - elegant and clear */}
+      <div className="relative max-w-full md:max-w-3xl md:mx-auto">
+        {/* Example badge */}
+        <div className="flex justify-start md:justify-center mb-4">
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full text-sm font-medium border border-blue-200">
+            <Sparkles className="h-4 w-4" />
+            Esempio di progetto
+          </div>
         </div>
-        
-        <div className="relative p-6 md:p-8">
-          <div className="text-left md:text-center">
-            {/* Header */}
-            <div className="mb-4 md:mb-6">
-              <div className="text-sm md:text-base text-gray-700 mb-2 font-medium uppercase tracking-wider">
+
+        <div className="bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 rounded-2xl md:rounded-3xl shadow-xl overflow-hidden">
+          {/* Subtle decorative elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full opacity-50"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-50 to-transparent rounded-tr-full opacity-50"></div>
+          
+          <div className="relative p-6 md:p-8">
+            {/* Header section */}
+            <div className="text-center mb-6">
+              <div className="text-sm text-gray-500 mb-2 font-medium">
                 Budget stimato per questo progetto
               </div>
-              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1c1c1c] mb-3 md:mb-4">
+              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                 €47.385 - €58.742
               </div>
-            </div>
-
-            {/* Tax deductions amount */}
-            <div className="mb-6 md:mb-8">
-              <div className="inline-flex items-center bg-[#1c1c1c] text-[#fbe12e] px-4 py-2 md:px-6 md:py-3 rounded-xl font-bold text-lg md:text-xl shadow-lg">
+              
+              {/* Tax deductions */}
+              <div className="text-lg md:text-xl text-green-700 font-semibold mb-6">
                 €23.692 detrazioni Bonus Casa
               </div>
             </div>
-            
-            {/* Enhanced configuration details */}
-            <div className="space-y-4 md:space-y-3">
-              <div className="text-xs md:text-sm text-gray-600 pt-4 border-t border-gray-300/50">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-                  {/* Left column - mobile: stacked, desktop: left */}
-                  <div className="space-y-2 md:space-y-3">
-                    <div className="flex items-center justify-start gap-2">
-                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
-                      <span className="text-xs md:text-sm">Appartamento 83 m²</span>
+
+            {/* Project details in a clean grid */}
+            <div className="border-t border-gray-200 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {/* Left column */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-3 w-3 text-green-600" />
                     </div>
-                    <div className="flex items-center justify-start gap-2">
-                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
-                      <span className="text-xs md:text-sm">Torino, Piemonte</span>
-                    </div>
-                    <div className="flex items-center justify-start gap-2">
-                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
-                      <span className="text-xs md:text-sm">4 locali + 2 bagni</span>
-                    </div>
+                    <span className="text-sm text-gray-700">Appartamento 83 m²</span>
                   </div>
-                  
-                  {/* Right column - mobile: continuation, desktop: right */}
-                  <div className="space-y-2 md:space-y-3">
-                    <div className="flex items-center justify-start gap-2">
-                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
-                      <span className="text-xs md:text-sm">Impianto elettrico</span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-3 w-3 text-green-600" />
                     </div>
-                    <div className="flex items-center justify-start gap-2">
-                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
-                      <span className="text-xs md:text-sm">Sistema domotico</span>
+                    <span className="text-sm text-gray-700">Torino, Piemonte</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-3 w-3 text-green-600" />
                     </div>
-                    <div className="flex items-center justify-start gap-2">
-                      <Check className="h-3 w-3 md:h-4 md:w-4 text-green-600 flex-shrink-0" />
-                      <span className="text-xs md:text-sm">Pompa di calore</span>
+                    <span className="text-sm text-gray-700">4 locali + 2 bagni</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-3 w-3 text-green-600" />
                     </div>
+                    <span className="text-sm text-gray-700">Impianto elettrico completo</span>
                   </div>
                 </div>
                 
-                {/* Additional details row for mobile/desktop */}
-                <div className="pt-3 md:pt-4 mt-3 md:mt-4 border-t border-gray-300/30">
-                  <div className="flex flex-wrap items-center justify-start md:justify-center gap-2 md:gap-4">
-                    <div className="flex items-center gap-1">
+                {/* Right column */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="h-3 w-3 text-green-600" />
-                      <span className="text-xs">23 punti luce</span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <span className="text-sm text-gray-700">Sistema domotico avanzato</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="h-3 w-3 text-green-600" />
-                      <span className="text-xs">15 prese elettriche</span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <span className="text-sm text-gray-700">Pompa di calore ibrida</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="h-3 w-3 text-green-600" />
-                      <span className="text-xs">Classe energetica A+</span>
                     </div>
+                    <span className="text-sm text-gray-700">23 punti luce LED</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-3 w-3 text-green-600" />
+                    </div>
+                    <span className="text-sm text-gray-700">15 prese elettriche</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional features */}
+              <div className="border-t border-gray-100 pt-4">
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 text-blue-600" />
+                    </div>
+                    <span className="text-xs text-gray-600">Classe energetica A+</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 text-blue-600" />
+                    </div>
+                    <span className="text-xs text-gray-600">Certificazione CEI</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 text-blue-600" />
+                    </div>
+                    <span className="text-xs text-gray-600">Garanzia 10 anni</span>
                   </div>
                 </div>
               </div>
