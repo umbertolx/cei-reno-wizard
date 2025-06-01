@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Home, Users, MapPin, Plus, Minus } from "lucide-react";
@@ -163,42 +164,6 @@ export const BenvenutoTool = ({ onStart }: Props) => {
           <div className="bg-green-50 text-green-700 px-4 py-2 rounded-lg inline-block border border-green-200">
             <span className="text-sm font-medium">+ Detrazioni fiscali disponibili</span>
           </div>
-        </div>
-      </div>
-
-      {/* Selezione ambienti */}
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#1c1c1c] mb-6">Seleziona gli ambienti</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {ambienti.map((ambiente) => (
-            <div key={ambiente.id} className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-[#fbe12e] transition-colors">
-              <div className="flex flex-col text-left">
-                <span className="font-medium text-[#1c1c1c]">{ambiente.nome}</span>
-                <span className="text-sm text-gray-500">{ambiente.count} {ambiente.count === 1 ? 'ambiente' : 'ambienti'}</span>
-              </div>
-              
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => updateAmbiente(ambiente.id, false)}
-                  disabled={ambiente.count === 0}
-                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Minus className="h-4 w-4" />
-                </button>
-                
-                <span className="w-8 text-center font-medium">{ambiente.count}</span>
-                
-                <button
-                  onClick={() => updateAmbiente(ambiente.id, true)}
-                  disabled={ambiente.count === (ambiente.max || 10)}
-                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
 
