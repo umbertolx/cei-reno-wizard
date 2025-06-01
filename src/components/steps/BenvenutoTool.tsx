@@ -15,7 +15,7 @@ type Modulo = {
 };
 
 export const BenvenutoTool = ({ onStart }: Props) => {
-  const [moduloSelezionato, setModuloSelezionato] = useState<string>('impianto-elettrico');
+  const [moduliSelezionati, setModuliSelezionati] = useState<string[]>(['impianto-elettrico']);
 
   const moduli: Modulo[] = [
     {
@@ -44,8 +44,22 @@ export const BenvenutoTool = ({ onStart }: Props) => {
     }
   ];
 
+  const toggleModulo = (moduloId: string) => {
+    setModuliSelezionati(prev => {
+      if (prev.includes(moduloId)) {
+        // Rimuovi se già selezionato
+        return prev.filter(id => id !== moduloId);
+      } else if (prev.length < 4) {
+        // Aggiungi se non siamo al limite
+        return [...prev, moduloId];
+      }
+      // Se siamo al limite, non fare nulla
+      return prev;
+    });
+  };
+
   return (
-    <div className="space-y-12 text-center">
+    <div className="space-y-8 text-center">
       {/* Badge Impianti Civili */}
       <div className="flex justify-center">
         <div className="bg-[#d8010c] text-white px-6 py-3 rounded-full text-sm font-medium">
@@ -66,53 +80,35 @@ export const BenvenutoTool = ({ onStart }: Props) => {
       </div>
 
       {/* Box stima con sfondo pieno */}
-      <div className="bg-[#fbe12e] p-8 rounded-2xl shadow-lg max-w-lg mx-auto">
+      <div className="bg-[#fbe12e] p-6 rounded-2xl shadow-lg max-w-lg mx-auto">
         <div className="text-center">
-          <div className="text-sm text-gray-700 mb-3 font-medium">Budget stimato per questo progetto</div>
-          <div className="text-4xl md:text-5xl font-bold text-[#1c1c1c] mb-4">
+          <div className="text-sm text-gray-700 mb-2 font-medium">Budget stimato per questo progetto</div>
+          <div className="text-3xl md:text-4xl font-bold text-[#1c1c1c] mb-3">
             €45.000 - €55.000
           </div>
-          <div className="bg-green-600 text-white px-4 py-2 rounded-lg inline-block font-medium">
-            <span className="text-sm">+ Detrazioni fiscali disponibili</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Dettagli configurazione minimal */}
-      <div className="max-w-2xl mx-auto">
-        <div className="text-sm text-gray-600 mb-4">Dettagli configurazione esempio:</div>
-        
-        <div className="space-y-3">
-          <div className="flex items-center justify-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-green-600" />
-              <span>Appartamento 80 m²</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-green-600" />
-              <span>Torino</span>
-            </div>
+          <div className="bg-green-600 text-white px-3 py-1.5 rounded-lg inline-block font-medium text-sm mb-3">
+            + Detrazioni fiscali disponibili
           </div>
           
-          <div className="flex items-center justify-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-green-600" />
-              <span>1 Sala + 1 Cucina</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-green-600" />
-              <span>2 Camere + 2 Bagni</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-green-600" />
-              <span>Impianto elettrico</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-green-600" />
-              <span>Sistema sicurezza</span>
+          {/* Dettagli configurazione minimal */}
+          <div className="text-xs text-gray-600 pt-2 border-t border-gray-300/50">
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <span className="flex items-center gap-1">
+                <Check className="h-3 w-3 text-green-600" />
+                Appartamento 80 m²
+              </span>
+              <span className="flex items-center gap-1">
+                <Check className="h-3 w-3 text-green-600" />
+                Torino
+              </span>
+              <span className="flex items-center gap-1">
+                <Check className="h-3 w-3 text-green-600" />
+                4 locali
+              </span>
+              <span className="flex items-center gap-1">
+                <Check className="h-3 w-3 text-green-600" />
+                Impianto + Sicurezza
+              </span>
             </div>
           </div>
         </div>
@@ -120,20 +116,28 @@ export const BenvenutoTool = ({ onStart }: Props) => {
 
       {/* Selezione moduli */}
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-[#1c1c1c] mb-8">Seleziona i moduli ed inizia ora</h2>
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-[#1c1c1c] mb-2">Seleziona i moduli per il tuo progetto</h2>
+          <p className="text-sm text-gray-600">
+            Puoi selezionare fino a {4 - moduliSelezionati.length} moduli aggiuntivi ({moduliSelezionati.length}/4 selezionati)
+          </p>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {moduli.map((modulo) => {
             const Icon = modulo.icon;
-            const isSelected = moduloSelezionato === modulo.id;
+            const isSelected = moduliSelezionati.includes(modulo.id);
+            const isDisabled = !isSelected && moduliSelezionati.length >= 4;
             
             return (
               <div
                 key={modulo.id}
-                onClick={() => setModuloSelezionato(modulo.id)}
+                onClick={() => !isDisabled && toggleModulo(modulo.id)}
                 className={`p-6 rounded-xl cursor-pointer transition-all duration-200 ${
                   isSelected 
                     ? 'bg-[#d8010c] text-white shadow-lg' 
+                    : isDisabled
+                    ? 'bg-gray-100 border-2 border-gray-200 cursor-not-allowed opacity-50'
                     : 'bg-white border-2 border-gray-200 hover:border-[#d8010c] hover:shadow-md'
                 }`}
               >
@@ -143,7 +147,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                   }`}>
                     <Icon className="h-6 w-6" />
                   </div>
-                  <div className="text-left">
+                  <div className="text-left flex-1">
                     <div className={`font-semibold ${isSelected ? 'text-white' : 'text-[#1c1c1c]'}`}>
                       {modulo.nome}
                     </div>
@@ -164,18 +168,21 @@ export const BenvenutoTool = ({ onStart }: Props) => {
           })}
         </div>
 
-        {/* Bottone inizia ora */}
-        <Button 
-          onClick={onStart}
-          className="px-8 py-4 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-black hover:text-white rounded-xl flex items-center justify-center gap-3 mx-auto transition-all duration-300"
-        >
-          Inizia ora
-          <ArrowRight className="h-5 w-5" />
-        </Button>
-      </div>
-
-      <div className="text-sm text-gray-500">
-        Gratuito • Pochi minuti • Senza impegno
+        {/* Bottone inizia ora prominente */}
+        <div className="space-y-4">
+          <Button 
+            onClick={onStart}
+            disabled={moduliSelezionati.length === 0}
+            className="px-12 py-6 text-xl bg-[#d8010c] hover:bg-[#b8000a] text-white rounded-xl flex items-center justify-center gap-3 mx-auto transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Inizia la configurazione
+            <ArrowRight className="h-6 w-6" />
+          </Button>
+          
+          <div className="text-sm text-gray-500">
+            Gratuito • Pochi minuti • Senza impegno
+          </div>
+        </div>
       </div>
     </div>
   );
