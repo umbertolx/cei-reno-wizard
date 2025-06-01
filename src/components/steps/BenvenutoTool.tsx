@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check } from "lucide-react";
@@ -137,7 +138,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Module selection - box simmetrici per mobile */}
+      {/* Module selection - mobile optimized */}
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 px-2 md:px-0">
           <h2 className="text-lg md:text-2xl font-bold text-[#1c1c1c] mb-2">Seleziona i moduli per il tuo progetto</h2>
@@ -146,8 +147,8 @@ export const BenvenutoTool = ({ onStart }: Props) => {
           </p>
         </div>
         
-        {/* Mobile: Box simmetrici con altezza fissa */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-4 mb-8 md:mb-8">
+        {/* Mobile: Single column with optimized spacing */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-4 mb-8 md:mb-8">
           {moduli.map((modulo) => {
             const Icon = modulo.icon;
             const isSelected = moduliSelezionati.includes(modulo.id);
@@ -159,8 +160,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                 key={modulo.id}
                 onClick={() => !isDisabled && !isLastSelected && toggleModulo(modulo.id)}
                 className={`
-                  p-4 md:p-6 rounded-xl transition-all duration-200 
-                  h-[100px] md:min-h-auto flex items-center
+                  p-4 md:p-6 rounded-xl transition-all duration-200 min-h-[56px] md:min-h-auto
                   ${isSelected 
                     ? 'bg-[#d8010c]/5 border-2 border-[#d8010c] text-[#1c1c1c] shadow-lg' 
                     : isDisabled
@@ -169,25 +169,23 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                   } ${isLastSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
                 `}
               >
-                <div className="flex items-center justify-between w-full md:gap-4">
-                  <div className="flex items-center gap-4 flex-1 md:flex-col md:text-center">
-                    <div className={`
-                      p-3 md:p-3 rounded-full flex-shrink-0
-                      ${isSelected ? 'bg-[#d8010c] text-white' : 'bg-gray-100 text-[#d8010c]'}
-                    `}>
-                      <Icon className="h-7 w-7 md:h-6 md:w-6" />
+                <div className="flex items-center gap-4 md:gap-4">
+                  <div className={`
+                    p-3 md:p-3 rounded-full flex-shrink-0
+                    ${isSelected ? 'bg-[#d8010c] text-white' : 'bg-gray-100 text-[#d8010c]'}
+                  `}>
+                    <Icon className="h-7 w-7 md:h-6 md:w-6" />
+                  </div>
+                  <div className="text-left flex-1 min-w-0">
+                    <div className={`font-semibold text-base md:text-lg ${isSelected ? 'text-[#1c1c1c]' : 'text-[#1c1c1c]'}`}>
+                      {modulo.nome}
                     </div>
-                    <div className="text-left md:text-center flex-1 min-w-0">
-                      <div className={`font-semibold text-base md:text-lg ${isSelected ? 'text-[#1c1c1c]' : 'text-[#1c1c1c]'}`}>
-                        {modulo.nome}
-                      </div>
-                      <div className={`text-sm hidden md:block ${isSelected ? 'text-gray-700' : 'text-gray-600'}`}>
-                        {modulo.descrizione}
-                      </div>
+                    <div className={`text-sm ${isSelected ? 'text-gray-700' : 'text-gray-600'}`}>
+                      {modulo.descrizione}
                     </div>
                   </div>
                   {isSelected && (
-                    <div className="ml-auto md:ml-0 flex-shrink-0">
+                    <div className="ml-auto flex-shrink-0">
                       <div className="w-6 h-6 md:w-6 md:h-6 bg-[#d8010c] rounded-full flex items-center justify-center">
                         <Check className="h-4 w-4 md:h-4 md:w-4 text-white" />
                       </div>
