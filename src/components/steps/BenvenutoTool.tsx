@@ -49,13 +49,22 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Esempio budget semplificato */}
-      <div className="bg-gradient-to-br from-[#fbe12e]/10 to-[#d8010c]/5 rounded-2xl p-8 max-w-lg mx-auto border border-[#fbe12e]/30">
-        <div className="text-sm text-gray-600 mb-2">Esempio: Appartamento 80mq</div>
-        <div className="text-sm text-gray-600 mb-4">Impianto elettrico completo</div>
-        <div className="text-3xl font-bold text-[#d8010c] mb-2">€ 4.500 - € 6.800</div>
-        <div className="text-sm text-green-600 font-medium">
-          + Panoramica detrazioni fiscali
+      {/* Box stima allineato al design finale */}
+      <div className="bg-[#fbe12e] p-6 rounded-2xl space-y-4 max-w-lg mx-auto">
+        <h2 className="text-2xl font-medium text-[#1c1c1c]">Esempio preventivo</h2>
+        
+        <div className="text-center py-6">
+          <div className="text-sm text-[#1c1c1c] opacity-80 mb-2">Appartamento 80mq - Impianto elettrico</div>
+          <span className="text-xl">da </span>
+          <span className="text-3xl md:text-5xl font-bold">€ 4.500</span>
+          <span className="text-xl"> a </span>
+          <span className="text-3xl md:text-5xl font-bold">€ 6.800</span>
+        </div>
+        
+        <div className="bg-white bg-opacity-50 p-4 rounded-lg text-center">
+          <p className="text-sm text-green-600 font-medium">
+            + Panoramica detrazioni fiscali
+          </p>
         </div>
       </div>
 
