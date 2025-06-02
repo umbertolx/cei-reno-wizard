@@ -1,7 +1,6 @@
 
 import { FormData } from "../../Configuratore";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Check } from "lucide-react";
 
 type TipoAbitazioneProps = {
@@ -67,11 +66,6 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
                       </div>
                     </div>
                   )}
-                  <RadioGroupItem 
-                    value={tipo.id} 
-                    id={tipo.id}
-                    className="sr-only"
-                  />
                 </div>
               </div>
             );
