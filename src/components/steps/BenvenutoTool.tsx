@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
@@ -82,7 +83,7 @@ export const BenvenutoTool = ({
 
       {/* Header principale */}
       <div className="space-y-2 md:space-y-3">
-        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
+        <h1 className="text-[22px] sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
           <span className={`text-[#d8010c] transition-all duration-700 ease-in-out transform block md:inline ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
@@ -90,7 +91,7 @@ export const BenvenutoTool = ({
           </span>
         </h1>
         
-        <p className="text-sm md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
+        <p className="text-base md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
           Configura, personalizza e scopri i costi del tuo progetto
         </p>
       </div>
@@ -182,8 +183,8 @@ export const BenvenutoTool = ({
 
       <div className="max-w-4xl md:mx-auto">
         <div className="mb-4 md:mb-6 text-left md:text-center">
-          <h2 className="text-xl md:text-3xl font-bold text-[#1c1c1c] mb-1 md:mb-2 p-1">Seleziona i moduli per il tuo progetto</h2>
-          <p className="text-sm md:text-base text-gray-600 p-1">
+          <h2 className="text-[22px] md:text-3xl font-bold text-[#1c1c1c] mb-1 md:mb-2 p-1">Seleziona i moduli per il tuo progetto</h2>
+          <p className="text-base md:text-base text-gray-600 p-1">
             Puoi selezionare 1 o più moduli ({moduliSelezionati.length}/4 selezionati)
           </p>
         </div>
