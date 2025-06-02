@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -94,7 +93,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       </div>
 
       {/* Timeline riprogettata */}
-      <div className="flex justify-center mb-8 md:mb-12">
+      <div className="flex justify-center mb-8 md:mb-12 px-3 md:px-0">
         <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg justify-between px-2 md:px-4">
           {/* Step 1: Info (attivo) */}
           <div className="flex flex-col items-center group">
@@ -146,7 +145,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       </div>
 
       {/* Header principale */}
-      <div className="space-y-2 md:space-y-3 mt-7">
+      <div className="space-y-2 md:space-y-3 mt-7 px-3 md:px-0">
         <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
           <span className="md:inline">Informazioni</span>
           <span className="text-[#d8010c] md:inline"> generali</span>
@@ -158,28 +157,34 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       </div>
 
       {/* Contenuto principale */}
-      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 px-3 md:px-0">
+      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8">
         <TipoAbitazione 
           value={formData.tipologiaAbitazione}
           onChange={(value) => updateFormData({ tipologiaAbitazione: value })}
         />
 
-        <SuperficieSlider
-          value={formData.superficie || 20}
-          onChange={(value) => updateFormData({ superficie: value })}
-        />
+        <div className="px-3 md:px-0">
+          <SuperficieSlider
+            value={formData.superficie || 20}
+            onChange={(value) => updateFormData({ superficie: value })}
+          />
+        </div>
 
-        <IndirizzoField
-          value={formData.indirizzo}
-          onChange={(value) => updateFormData({ indirizzo: value })}
-          onSelectLocation={selectLocation}
-        />
+        <div className="px-3 md:px-0">
+          <IndirizzoField
+            value={formData.indirizzo}
+            onChange={(value) => updateFormData({ indirizzo: value })}
+            onSelectLocation={selectLocation}
+          />
+        </div>
 
-        <SuddivisioneSpazi
-          composizione={formData.composizione}
-          onChangeStanza={handleChangeComposizione}
-          totalRooms={totalRooms}
-        />
+        <div className="px-3 md:px-0">
+          <SuddivisioneSpazi
+            composizione={formData.composizione}
+            onChangeStanza={handleChangeComposizione}
+            totalRooms={totalRooms}
+          />
+        </div>
       </div>
 
       {/* Pulsante Avanti */}
