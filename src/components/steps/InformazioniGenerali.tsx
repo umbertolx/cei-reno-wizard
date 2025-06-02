@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -106,8 +104,8 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         </p>
 
         {/* Linea divisoria */}
-        <div className="flex justify-center pt-4">
-          <div className="linea_divisoria w-16 h-1 bg-[#fbe12e] rounded-full"></div>
+        <div className="flex justify-center pt-4 px-5">
+          <div className="linea_divisoria w-full h-[3px] bg-[#fbe12e] rounded-full"></div>
         </div>
       </div>
 
