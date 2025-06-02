@@ -173,7 +173,7 @@ export const BenvenutoTool = ({
       </div>
 
       {/* Module selection - margini ridotti a 12px su mobile */}
-      <div className="max-w-4xl md:mx-auto px-3 md:px-0">
+      <div className="max-w-4xl md:mx-auto md:px-0 px-0">
         <div className="mb-4 md:mb-6 text-left md:text-center">
           <h2 className="text-xl md:text-3xl font-bold text-[#1c1c1c] mb-1 md:mb-2">Seleziona i moduli per il tuo progetto</h2>
           <p className="text-sm md:text-base text-gray-600">
