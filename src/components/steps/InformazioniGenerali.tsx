@@ -104,6 +104,11 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         <p className="text-sm md:text-base text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
           Per offrirti una stima realistica, servono solo pochi dati di base. <br className="hidden md:block" />Il resto lo calcoliamo noi, in pochi minuti.
         </p>
+
+        {/* Linea divisoria */}
+        <div className="flex justify-center pt-4">
+          <div className="linea_divisoria w-16 h-1 bg-[#fbe12e] rounded-full"></div>
+        </div>
       </div>
 
       {/* Contenuto principale */}
@@ -160,4 +165,3 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     </div>
   );
 };
-
