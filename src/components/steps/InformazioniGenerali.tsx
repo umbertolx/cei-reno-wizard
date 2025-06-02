@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -86,20 +87,20 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
   return (
     <div className="space-y-4">
       {/* Badge Impianti Civili */}
-      <div className="flex justify-start md:justify-center px-3 md:px-0">
+      <div className="flex justify-center">
         <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
           Impianti Civili
         </div>
       </div>
 
       {/* Header principale */}
-      <div className="space-y-2 md:space-y-3 mt-7">
-        <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
+      <div className="space-y-2 md:space-y-3 mt-7 text-center">
+        <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05]">
           <span className="md:inline">Informazioni</span>
           <span className="text-[#d8010c] md:inline"> generali</span>
         </h1>
         
-        <p className="text-sm md:text-base text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
+        <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
           Per offrirti una stima realistica, servono solo pochi dati di base. <br className="hidden md:block" />Il resto lo calcoliamo noi, in pochi minuti.
         </p>
 
