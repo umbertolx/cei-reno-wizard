@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
@@ -174,7 +175,7 @@ export const BenvenutoTool = ({
 
       <div className="max-w-4xl md:mx-auto">
         <div className="mb-4 md:mb-6 text-left md:text-center">
-          <h2 className="text-[24px] md:text-3xl font-bold text-[#1c1c1c] leading-tight mb-1 md:mb-2 p-1">Seleziona gli impianti per il tuo progetto:</h2>
+          <h2 className="text-[24px] md:text-3xl font-bold text-[#1c1c1c] leading-tight mb-1 md:mb-2 p-1">Seleziona gli impianti:</h2>
           <p className="text-[16px] md:text-base text-gray-600 p-1">
             Puoi selezionare 1 o più impianti
           </p>
