@@ -126,12 +126,12 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                 Budget stimato per questo progetto
               </div>
               <div className="text-2xl md:text-5xl font-bold text-gray-900 mb-2 md:mb-4">
-                €47.385 - €58.742
+                €28.350 - €34.550
               </div>
               
               {/* Tax deductions */}
               <div className="text-base md:text-xl text-green-700 font-semibold mb-3 md:mb-6">
-                €23.692 detrazioni Bonus Casa
+                €14.175 detrazioni Bonus Casa
               </div>
             </div>
 
@@ -144,25 +144,25 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                     <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-xs md:text-sm text-gray-700">Appartamento 83 m²</span>
+                    <span className="text-xs md:text-sm text-gray-700">Appartamento</span>
                   </div>
                   <div className="flex items-center gap-2 md:gap-3">
                     <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-xs md:text-sm text-gray-700">Torino, Piemonte</span>
+                    <span className="text-xs md:text-sm text-gray-700">83 mq</span>
+                  </div>
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
+                    </div>
+                    <span className="text-xs md:text-sm text-gray-700">Torino</span>
                   </div>
                   <div className="flex items-center gap-2 md:gap-3">
                     <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
                     <span className="text-xs md:text-sm text-gray-700">4 locali + 2 bagni</span>
-                  </div>
-                  <div className="flex items-center gap-2 md:gap-3">
-                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
-                    </div>
-                    <span className="text-xs md:text-sm text-gray-700">Impianto elettrico completo</span>
                   </div>
                 </div>
                 
@@ -172,25 +172,19 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                     <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-xs md:text-sm text-gray-700">Sistema domotico avanzato</span>
+                    <span className="text-xs md:text-sm text-gray-700">Impianto elettrico</span>
                   </div>
                   <div className="flex items-center gap-2 md:gap-3">
                     <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-xs md:text-sm text-gray-700">Pompa di calore ibrida</span>
+                    <span className="text-xs md:text-sm text-gray-700">Domotica KNX</span>
                   </div>
                   <div className="flex items-center gap-2 md:gap-3">
                     <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
                       <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
                     </div>
-                    <span className="text-xs md:text-sm text-gray-700">23 punti luce LED</span>
-                  </div>
-                  <div className="flex items-center gap-2 md:gap-3">
-                    <div className="w-4 h-4 md:w-5 md:h-5 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-2.5 w-2.5 md:h-3 md:w-3 text-green-600" />
-                    </div>
-                    <span className="text-xs md:text-sm text-gray-700">15 prese elettriche</span>
+                    <span className="text-xs md:text-sm text-gray-700">Impianto di sicurezza</span>
                   </div>
                 </div>
               </div>
