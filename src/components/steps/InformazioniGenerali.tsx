@@ -86,44 +86,44 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
   };
 
   return (
-    <div className="space-y-6 sm:space-y-8">
-      {/* Timeline ottimizzata per mobile */}
-      <div className="flex justify-center mb-6 sm:mb-8">
+    <div className="space-y-4 md:space-y-8">
+      {/* Timeline compatta per mobile */}
+      <div className="flex justify-center mb-4 md:mb-8">
         <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl justify-between px-2 sm:px-0">
           {/* Punto 1: Info generali (attivo) */}
           <div className="flex flex-col items-center relative">
-            <div className="bg-[#fbe12e] rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-black" />
+            <div className="bg-[#fbe12e] rounded-full p-1 sm:p-1.5 md:p-2 z-10">
+              <CircleDot className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4 lg:h-5 lg:w-5 text-black" />
             </div>
-            <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center max-w-[60px] sm:max-w-none leading-tight">Info generali</span>
+            <span className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium mt-0.5 sm:mt-1 md:mt-2 text-center max-w-[50px] sm:max-w-[60px] md:max-w-none leading-tight">Info generali</span>
           </div>
           
           {/* Linea di collegamento 1-2 */}
-          <div className="h-[2px] flex-grow bg-[#fbe12e] mx-1 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
+          <div className="h-[1.5px] md:h-[2px] flex-grow bg-[#fbe12e] mx-1 sm:mx-2 relative top-[6px] sm:top-[8px] md:top-[10px]"></div>
           
           {/* Punto 2: Configuratore (inattivo) */}
           <div className="flex flex-col items-center relative">
-            <div className="bg-gray-200 rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400" />
+            <div className="bg-gray-200 rounded-full p-1 sm:p-1.5 md:p-2 z-10">
+              <CircleDot className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4 lg:h-5 lg:w-5 text-gray-400" />
             </div>
-            <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center text-gray-500 max-w-[60px] sm:max-w-none leading-tight">Configuratore</span>
+            <span className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium mt-0.5 sm:mt-1 md:mt-2 text-center text-gray-500 max-w-[50px] sm:max-w-[60px] md:max-w-none leading-tight">Configuratore</span>
           </div>
           
           {/* Linea di collegamento 2-3 */}
-          <div className="h-[2px] flex-grow bg-gray-300 mx-1 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
+          <div className="h-[1.5px] md:h-[2px] flex-grow bg-gray-300 mx-1 sm:mx-2 relative top-[6px] sm:top-[8px] md:top-[10px]"></div>
           
           {/* Punto 3: Stima dei costi (inattivo) */}
           <div className="flex flex-col items-center relative">
-            <div className="bg-gray-200 rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400" />
+            <div className="bg-gray-200 rounded-full p-1 sm:p-1.5 md:p-2 z-10">
+              <CircleDot className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4 lg:h-5 lg:w-5 text-gray-400" />
             </div>
-            <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center text-gray-500 max-w-[60px] sm:max-w-none leading-tight">Stima costi</span>
+            <span className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium mt-0.5 sm:mt-1 md:mt-2 text-center text-gray-500 max-w-[50px] sm:max-w-[60px] md:max-w-none leading-tight">Stima costi</span>
           </div>
         </div>
       </div>
 
-      {/* Contenuto principale con spaziatura ottimizzata */}
-      <div className="space-y-6 sm:space-y-8">
+      {/* Contenuto principale con spaziatura ridotta per mobile */}
+      <div className="space-y-5 md:space-y-8">
         {/* Tipologia abitazione */}
         <TipoAbitazione 
           value={formData.tipologiaAbitazione}
@@ -151,11 +151,11 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         />
       </div>
 
-      {/* Pulsante Continua con margine ottimizzato */}
-      <div className="pt-4 sm:pt-6">
+      {/* Pulsante Continua compatto per mobile */}
+      <div className="pt-3 md:pt-6">
         <Button 
           onClick={handleSubmit}
-          className="w-full py-4 sm:py-6 text-base sm:text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-black hover:text-white rounded-xl flex items-center justify-center gap-2 transition-all duration-300 focus:bg-[#d8010c] focus:text-white active:bg-[#d8010c] active:text-white"
+          className="w-full py-3 sm:py-4 md:py-6 text-sm sm:text-base md:text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-black hover:text-white rounded-xl flex items-center justify-center gap-2 transition-all duration-300 focus:bg-[#d8010c] focus:text-white active:bg-[#d8010c] active:text-white"
         >
           Continua e calcola il preventivo
         </Button>
