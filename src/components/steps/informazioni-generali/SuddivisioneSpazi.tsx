@@ -62,13 +62,11 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
           <h2 className="text-lg md:text-2xl font-medium text-[#1c1c1c]">Suddivisione spazi</h2>
           <p className="text-sm md:text-base text-[#1c1c1c] opacity-70 hidden md:block">Indica il numero di stanze per ogni tipologia</p>
         </div>
-        <div className={`text-sm font-medium px-3 py-1.5 rounded-lg border ${
-          totalRooms === 0 
-            ? 'bg-orange-50 text-orange-600 border-orange-200' 
-            : 'bg-[#d8010c]/5 text-[#d8010c] border-[#d8010c]/20'
-        }`}>
-          {totalRooms === 0 ? 'Nessuna stanza' : `${totalRooms} ${totalRooms === 1 ? 'stanza' : 'stanze'}`}
-        </div>
+        {totalRooms > 0 && (
+          <div className="text-sm font-medium px-3 py-1.5 rounded-lg border bg-[#d8010c]/5 text-[#d8010c] border-[#d8010c]/20">
+            {`${totalRooms} ${totalRooms === 1 ? 'stanza' : 'stanze'}`}
+          </div>
+        )}
       </div>
       
       <div className="bg-white border-2 border-gray-200 rounded-xl p-4 md:p-6 space-y-3 md:space-y-4">
