@@ -37,52 +37,47 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
         </div>
       </div>
       
-      <RadioGroup 
-        value={value} 
-        onValueChange={onChange}
-        className="space-y-3 md:space-y-4"
-      >
-        {tipiAbitazione.map((tipo) => {
-          const isSelected = value === tipo.id;
-          
-          return (
-            <div
-              key={tipo.id}
-              onClick={() => onChange(tipo.id)}
-              className={`
-                p-4 md:p-6 rounded-xl transition-all duration-300 cursor-pointer
-                ${isSelected 
-                  ? 'bg-[#d8010c]/5 border-2 border-[#d8010c] text-[#1c1c1c] shadow-lg' 
-                  : 'bg-white border-2 border-gray-200 hover:border-[#d8010c] hover:shadow-lg'
-                }
-              `}
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-left flex-1 min-w-0">
-                  <Label 
-                    htmlFor={tipo.id}
-                    className="font-semibold text-base md:text-lg text-[#1c1c1c] cursor-pointer block"
-                  >
-                    {tipo.label}
-                  </Label>
-                </div>
-                {isSelected && (
-                  <div className="ml-auto flex-shrink-0">
-                    <div className="w-5 h-5 md:w-6 md:h-6 bg-[#d8010c] rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 md:h-4 md:w-4 text-white" />
+      <div className="max-w-4xl md:mx-auto">
+        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
+          {tipiAbitazione.map((tipo) => {
+            const isSelected = value === tipo.id;
+            
+            return (
+              <div
+                key={tipo.id}
+                onClick={() => onChange(tipo.id)}
+                className={`
+                  p-4 rounded-xl transition-all duration-300 border cursor-pointer
+                  ${isSelected 
+                    ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                    : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                  }
+                `}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="text-left flex-1 min-w-0">
+                    <div className="font-semibold text-base text-[#1c1c1c] mb-0.5 p-1">
+                      {tipo.label}
                     </div>
                   </div>
-                )}
-                <RadioGroupItem 
-                  value={tipo.id} 
-                  id={tipo.id}
-                  className="sr-only"
-                />
+                  {isSelected && (
+                    <div className="ml-3 flex-shrink-0">
+                      <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-white" />
+                      </div>
+                    </div>
+                  )}
+                  <RadioGroupItem 
+                    value={tipo.id} 
+                    id={tipo.id}
+                    className="sr-only"
+                  />
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </RadioGroup>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
