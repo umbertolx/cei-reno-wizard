@@ -85,51 +85,51 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
   };
 
   return (
-    <div className="space-y-3 md:space-y-8 px-3 md:px-0">
+    <div className="space-y-6 md:space-y-8 px-3 md:px-0">
       {/* Badge Impianti Civili */}
       <div className="flex justify-start md:justify-center">
-        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-medium">
+        <div className="bg-[#d8010c] text-white px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-sm font-medium">
           Impianti Civili
         </div>
       </div>
 
-      {/* Timeline ultra-compatta */}
-      <div className="flex justify-center mb-3 md:mb-8">
-        <div className="flex items-center w-full max-w-xs justify-between px-2">
+      {/* Timeline migliorata */}
+      <div className="flex justify-center mb-6 md:mb-8">
+        <div className="flex items-center w-full max-w-md justify-between px-4">
           {/* Punto 1: Info generali (attivo) */}
           <div className="flex flex-col items-center">
-            <div className="bg-[#fbe12e] rounded-full p-1 z-10">
-              <CircleDot className="h-2 w-2 md:h-4 md:w-4 text-black" />
+            <div className="bg-[#fbe12e] rounded-full p-2 z-10 shadow-sm">
+              <CircleDot className="h-3 w-3 md:h-4 md:w-4 text-black" />
             </div>
-            <span className="text-[8px] md:text-xs font-medium mt-1 text-center max-w-[40px] md:max-w-none leading-tight">Info</span>
+            <span className="text-xs md:text-sm font-medium mt-2 text-center">Info</span>
           </div>
           
           {/* Linea 1-2 */}
-          <div className="h-[1px] md:h-[2px] flex-grow bg-[#fbe12e] mx-1 relative top-[-8px] md:top-[-6px]"></div>
+          <div className="h-[2px] flex-grow bg-[#fbe12e] mx-3 rounded"></div>
           
           {/* Punto 2: Configuratore */}
           <div className="flex flex-col items-center">
-            <div className="bg-gray-200 rounded-full p-1 z-10">
-              <CircleDot className="h-2 w-2 md:h-4 md:w-4 text-gray-400" />
+            <div className="bg-gray-200 rounded-full p-2 z-10">
+              <CircleDot className="h-3 w-3 md:h-4 md:w-4 text-gray-400" />
             </div>
-            <span className="text-[8px] md:text-xs font-medium mt-1 text-center text-gray-500 max-w-[40px] md:max-w-none leading-tight">Config</span>
+            <span className="text-xs md:text-sm font-medium mt-2 text-center text-gray-500">Contatti</span>
           </div>
           
           {/* Linea 2-3 */}
-          <div className="h-[1px] md:h-[2px] flex-grow bg-gray-300 mx-1 relative top-[-8px] md:top-[-6px]"></div>
+          <div className="h-[2px] flex-grow bg-gray-300 mx-3 rounded"></div>
           
           {/* Punto 3: Stima */}
           <div className="flex flex-col items-center">
-            <div className="bg-gray-200 rounded-full p-1 z-10">
-              <CircleDot className="h-2 w-2 md:h-4 md:w-4 text-gray-400" />
+            <div className="bg-gray-200 rounded-full p-2 z-10">
+              <CircleDot className="h-3 w-3 md:h-4 md:w-4 text-gray-400" />
             </div>
-            <span className="text-[8px] md:text-xs font-medium mt-1 text-center text-gray-500 max-w-[40px] md:max-w-none leading-tight">Stima</span>
+            <span className="text-xs md:text-sm font-medium mt-2 text-center text-gray-500">Stima</span>
           </div>
         </div>
       </div>
 
       {/* Header principale */}
-      <div className="space-y-2 md:space-y-4 mb-4 md:mb-8">
+      <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
           <span className="block md:inline">Informazioni</span>
           <br className="hidden md:block" />
@@ -166,14 +166,14 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         />
       </div>
 
-      {/* Pulsante Continua */}
-      <div className="pt-3 md:pt-6">
+      {/* Pulsante Avanti */}
+      <div className="pt-6 md:pt-8">
         <Button 
           onClick={handleSubmit}
           className="
             w-full px-6 md:px-12 py-5 md:py-6 
             text-lg md:text-xl 
-            bg-[#d8010c] hover:bg-[#b8000a] md:hover:bg-[#b8000a] 
+            bg-[#d8010c] hover:bg-[#b8000a] 
             text-white 
             rounded-xl 
             flex items-center justify-center gap-3 
@@ -181,12 +181,8 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
             shadow-lg
           "
         >
-          Continua e calcola il preventivo
+          Avanti
         </Button>
-        
-        <div className="text-xs md:text-sm text-gray-500 text-left md:text-center mt-2 md:mt-4">
-          Gratuito • Pochi minuti • Senza impegno
-        </div>
       </div>
     </div>
   );

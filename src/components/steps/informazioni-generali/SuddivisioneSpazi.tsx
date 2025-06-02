@@ -51,7 +51,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
   return (
     <div className="space-y-4 md:space-y-6">
       <div className="flex items-center gap-4">
-        <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
+        <div className="w-[60px] h-[60px] md:w-[80px] md:h-[80px] flex-shrink-0 flex items-center justify-center">
           <img 
             src="/lovable-uploads/417ced15-f2dc-47e1-8b8c-d0faf5b9717e.png" 
             alt="Floor plan icon" 
@@ -59,11 +59,15 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
           />
         </div>
         <div className="flex-1">
-          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Suddivisione spazi</h2>
-          <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Indica il numero di stanze per ogni tipologia</p>
+          <h2 className="text-lg md:text-2xl font-medium text-[#1c1c1c]">Suddivisione spazi</h2>
+          <p className="text-sm md:text-base text-[#1c1c1c] opacity-70 hidden md:block">Indica il numero di stanze per ogni tipologia</p>
         </div>
-        <div className="text-sm font-medium px-3 py-1.5 bg-[#d8010c]/5 text-[#d8010c] rounded-lg border border-[#d8010c]/20">
-          {totalRooms} {totalRooms === 1 ? 'stanza' : 'stanze'}
+        <div className={`text-sm font-medium px-3 py-1.5 rounded-lg border ${
+          totalRooms === 0 
+            ? 'bg-orange-50 text-orange-600 border-orange-200' 
+            : 'bg-[#d8010c]/5 text-[#d8010c] border-[#d8010c]/20'
+        }`}>
+          {totalRooms === 0 ? 'Nessuna stanza' : `${totalRooms} ${totalRooms === 1 ? 'stanza' : 'stanze'}`}
         </div>
       </div>
       
