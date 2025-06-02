@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
@@ -106,7 +105,7 @@ export const WelcomePage = ({
         </div>
 
         <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-          <div className="p-4 md:p-6">
+          <div className="p-4 md:p-6 hover:shadow-[inset_0_0_0_2px_#fbe12e] transition-shadow duration-300">
             {/* Header section */}
             <div className="text-center mb-4">
               <div className="text-xs text-gray-500 mb-1 font-medium p-1">
