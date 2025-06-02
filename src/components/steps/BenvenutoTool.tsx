@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
@@ -82,7 +83,7 @@ export const BenvenutoTool = ({
 
       {/* Header principale */}
       <div className="space-y-2 md:space-y-3 px-3 md:px-0">
-        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
+        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
           <span className={`text-[#d8010c] transition-all duration-700 ease-in-out transform block md:inline ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
@@ -90,7 +91,7 @@ export const BenvenutoTool = ({
           </span>
         </h1>
         
-        <p className="text-sm md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed">
+        <p className="text-sm md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
           Configura, personalizza e scopri i costi del tuo progetto
         </p>
       </div>
@@ -99,7 +100,7 @@ export const BenvenutoTool = ({
       <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6 md:mb-12 px-3 md:px-0">
         {/* Example badge */}
         <div className="flex justify-start md:justify-center mb-2">
-          <div className="inline-flex items-center gap-1.5 bg-[#fbe12e] text-[#1c1c1c] px-2.5 py-1 rounded-full text-xs font-medium border border-yellow-300">
+          <div className="inline-flex items-center gap-1.5 bg-[#fcec3c] text-[#1c1c1c] px-2.5 py-1 rounded-full text-xs font-medium border border-yellow-300">
             <Sparkles className="h-3 w-3" />
             Esempio di progetto
           </div>
@@ -109,15 +110,15 @@ export const BenvenutoTool = ({
           <div className="p-4 md:p-6">
             {/* Header section */}
             <div className="text-center mb-4">
-              <div className="text-xs text-gray-500 mb-1 font-medium">
+              <div className="text-xs text-gray-500 mb-1 font-medium p-1">
                 Budget stimato per questo progetto
               </div>
-              <div className="text-xl md:text-4xl font-bold text-gray-900 mb-2">
+              <div className="text-xl md:text-4xl font-bold text-gray-900 mb-2 p-1">
                 €28.350 - €34.550
               </div>
               
               {/* Tax deductions */}
-              <div className="text-sm md:text-lg text-green-700 font-semibold mb-3">
+              <div className="text-sm md:text-lg text-green-700 font-semibold mb-3 p-1">
                 Fino a €14.175 Bonus Casa (1ª)
               </div>
             </div>
@@ -182,8 +183,8 @@ export const BenvenutoTool = ({
 
       <div className="max-w-4xl md:mx-auto px-3 md:px-0">
         <div className="mb-4 md:mb-6 text-left md:text-center">
-          <h2 className="text-xl md:text-3xl font-bold text-[#1c1c1c] mb-1 md:mb-2">Seleziona i moduli per il tuo progetto</h2>
-          <p className="text-sm md:text-base text-gray-600">
+          <h2 className="text-xl md:text-3xl font-bold text-[#1c1c1c] mb-1 md:mb-2 p-1">Seleziona i moduli per il tuo progetto</h2>
+          <p className="text-sm md:text-base text-gray-600 p-1">
             Puoi selezionare 1 o più moduli ({moduliSelezionati.length}/4 selezionati)
           </p>
         </div>
@@ -211,10 +212,10 @@ export const BenvenutoTool = ({
               >
                 <div className="flex items-center justify-between">
                   <div className="text-left flex-1 min-w-0">
-                    <div className="font-semibold text-base text-[#1c1c1c] mb-0.5">
+                    <div className="font-semibold text-base text-[#1c1c1c] mb-0.5 p-1">
                       {modulo.nome}
                     </div>
-                    <div className="text-sm text-gray-600 hidden md:block">
+                    <div className="text-sm text-gray-600 hidden md:block p-1">
                       {modulo.descrizione}
                     </div>
                   </div>
