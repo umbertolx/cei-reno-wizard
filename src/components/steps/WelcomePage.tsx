@@ -82,7 +82,7 @@ export const WelcomePage = ({
 
       {/* Header principale */}
       <div className="space-y-2 md:space-y-3">
-        <h1 className="text-[24px] sm:text-3xl md:text-5xl lg:text-5xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
+        <h1 className="text-base md:text-lg font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
           <span className={`text-[#d8010c] transition-all duration-700 ease-in-out transform block md:inline ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
@@ -90,7 +90,7 @@ export const WelcomePage = ({
           </span>
         </h1>
         
-        <p className="text-base md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
+        <p className="text-sm md:text-base text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
           Configura, esplora le opzioni ed ottieni <br className="hidden sm:block" />un budget su misura, gratis ed online.
         </p>
       </div>
@@ -112,12 +112,12 @@ export const WelcomePage = ({
               <div className="text-xs text-gray-500 mb-1 font-medium p-1">
                 Budget stimato per questo progetto
               </div>
-              <div className="text-xl md:text-4xl font-bold text-gray-900 mb-2 p-1">
+              <div className="text-lg md:text-xl font-bold text-gray-900 mb-2 p-1">
                 €28.350 - €34.550
               </div>
               
               {/* Tax deductions */}
-              <div className="text-sm md:text-lg text-green-700 font-semibold mb-3 p-1">
+              <div className="text-sm md:text-base text-green-700 font-semibold mb-3 p-1">
                 Fino a €14.175 Bonus Casa (1ª)
               </div>
             </div>
@@ -182,8 +182,8 @@ export const WelcomePage = ({
 
       <div className="max-w-4xl md:mx-auto">
         <div className="mb-4 md:mb-6 text-left md:text-center">
-          <h2 className="text-[24px] md:text-3xl font-bold text-[#1c1c1c] leading-tight mb-1 md:mb-2 p-1">Seleziona gli impianti:</h2>
-          <p className="text-[16px] md:text-base text-gray-600 p-1">
+          <h2 className="text-base md:text-lg font-bold text-[#1c1c1c] leading-tight mb-1 md:mb-2 p-1">Seleziona gli impianti:</h2>
+          <p className="text-sm md:text-base text-gray-600 p-1">
             Puoi selezionare 1 o più impianti
           </p>
         </div>
