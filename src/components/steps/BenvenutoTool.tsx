@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
+
 type Props = {
   onStart: () => void;
 };
+
 type Modulo = {
   id: string;
   nome: string;
   icon: React.ComponentType<any>;
   descrizione: string;
 };
+
 export const BenvenutoTool = ({
   onStart
 }: Props) => {
@@ -19,6 +22,7 @@ export const BenvenutoTool = ({
   const tipiImpianto = ["elettrico", "fotovoltaico", "di sicurezza", "termotecnico"];
   const [currentTypeIndex, setCurrentTypeIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIsVisible(false);
@@ -29,6 +33,7 @@ export const BenvenutoTool = ({
     }, 4000);
     return () => clearInterval(interval);
   }, []);
+
   const moduli: Modulo[] = [{
     id: 'impianto-elettrico',
     nome: 'Impianto elettrico',
@@ -50,6 +55,7 @@ export const BenvenutoTool = ({
     icon: Thermometer,
     descrizione: 'Riscaldamento e climatizzazione'
   }];
+
   const toggleModulo = (moduloId: string) => {
     setModuliSelezionati(prev => {
       if (prev.includes(moduloId)) {
@@ -64,16 +70,18 @@ export const BenvenutoTool = ({
       return prev;
     });
   };
-  return <div className="space-y-4 px-4 md:px-0">
+
+  return (
+    <div className="space-y-4 px-3 md:px-0">
       {/* Badge Impianti Civili */}
-      <div className="flex justify-start md:justify-center">
+      <div className="flex justify-start md:justify-center px-3 md:px-0">
         <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
           Impianti Civili
         </div>
       </div>
 
-      {/* Header principale - margini ridotti a 12px su mobile */}
-      <div className="space-y-2 md:space-y-3 md:px-0 px-0">
+      {/* Header principale */}
+      <div className="space-y-2 md:space-y-3 px-3 md:px-0">
         <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
@@ -87,11 +95,11 @@ export const BenvenutoTool = ({
         </p>
       </div>
 
-      {/* Budget estimation box - ottimizzato per mobile con margini ridotti */}
+      {/* Budget estimation box */}
       <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6 md:mb-12 px-3 md:px-0">
         {/* Example badge */}
         <div className="flex justify-start md:justify-center mb-2">
-          <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full text-xs font-medium border border-blue-200">
+          <div className="inline-flex items-center gap-1.5 bg-[#fbe12e] text-[#1c1c1c] px-2.5 py-1 rounded-full text-xs font-medium border border-yellow-300">
             <Sparkles className="h-3 w-3" />
             Esempio di progetto
           </div>
@@ -172,8 +180,7 @@ export const BenvenutoTool = ({
         </div>
       </div>
 
-      {/* Module selection - margini ridotti a 12px su mobile */}
-      <div className="max-w-4xl md:mx-auto md:px-0 px-0">
+      <div className="max-w-4xl md:mx-auto px-3 md:px-0">
         <div className="mb-4 md:mb-6 text-left md:text-center">
           <h2 className="text-xl md:text-3xl font-bold text-[#1c1c1c] mb-1 md:mb-2">Seleziona i moduli per il tuo progetto</h2>
           <p className="text-sm md:text-base text-gray-600">
@@ -183,13 +190,25 @@ export const BenvenutoTool = ({
         
         <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4 mb-6 md:mb-8">
           {moduli.map(modulo => {
-          const isSelected = moduliSelezionati.includes(modulo.id);
-          const isDisabled = !isSelected && moduliSelezionati.length >= 4;
-          const isLastSelected = isSelected && moduliSelezionati.length === 1;
-          return <div key={modulo.id} onClick={() => !isDisabled && !isLastSelected && toggleModulo(modulo.id)} className={`
+            const isSelected = moduliSelezionati.includes(modulo.id);
+            const isDisabled = !isSelected && moduliSelezionati.length >= 4;
+            const isLastSelected = isSelected && moduliSelezionati.length === 1;
+            
+            return (
+              <div 
+                key={modulo.id} 
+                onClick={() => !isDisabled && !isLastSelected && toggleModulo(modulo.id)} 
+                className={`
                   p-4 rounded-xl transition-all duration-300 border
-                  ${isSelected ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' : isDisabled ? 'bg-gray-50 border-gray-200 cursor-not-allowed opacity-50' : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm cursor-pointer'} ${isLastSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
-                `}>
+                  ${isSelected 
+                    ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                    : isDisabled 
+                      ? 'bg-gray-50 border-gray-200 cursor-not-allowed opacity-50' 
+                      : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm cursor-pointer'
+                  } 
+                  ${isLastSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
+                `}
+              >
                 <div className="flex items-center justify-between">
                   <div className="text-left flex-1 min-w-0">
                     <div className="font-semibold text-base text-[#1c1c1c] mb-0.5">
@@ -199,19 +218,25 @@ export const BenvenutoTool = ({
                       {modulo.descrizione}
                     </div>
                   </div>
-                  {isSelected && <div className="ml-3 flex-shrink-0">
+                  {isSelected && (
+                    <div className="ml-3 flex-shrink-0">
                       <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
                         <Check className="h-3 w-3 text-white" />
                       </div>
-                    </div>}
+                    </div>
+                  )}
                 </div>
-              </div>;
-        })}
+              </div>
+            );
+          })}
         </div>
 
         {/* CTA Button */}
         <div className="space-y-3">
-          <Button onClick={onStart} disabled={moduliSelezionati.length === 0} className="
+          <Button 
+            onClick={onStart} 
+            disabled={moduliSelezionati.length === 0} 
+            className="
               w-full px-6 py-4 md:py-5
               text-base md:text-lg 
               bg-[#d8010c] hover:bg-[#b8000a]
@@ -222,11 +247,13 @@ export const BenvenutoTool = ({
               shadow-sm hover:shadow-md
               disabled:opacity-50 disabled:cursor-not-allowed
               min-h-[48px]
-            ">
+            "
+          >
             <span>Inizia ora</span>
             <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
           </Button>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
