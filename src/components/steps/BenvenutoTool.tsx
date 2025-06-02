@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
@@ -77,7 +76,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
   };
 
   return (
-    <div className="space-y-3 md:space-y-8 px-3 md:px-0">
+    <div className="space-y-8 md:space-y-12 px-3 md:px-0">
       {/* Badge Impianti Civili */}
       <div className="flex justify-start md:justify-center">
         <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-medium">
@@ -104,8 +103,8 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </p>
       </div>
 
-      {/* Redesigned Budget estimation box - mobile optimized */}
-      <div className="relative max-w-full md:max-w-3xl md:mx-auto">
+      {/* Redesigned Budget estimation box - mobile optimized con più spazio sotto */}
+      <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-8 md:mb-16">
         {/* Example badge */}
         <div className="flex justify-start md:justify-center mb-2 md:mb-4">
           <div className="inline-flex items-center gap-1.5 md:gap-2 bg-blue-50 text-blue-700 px-2.5 py-1 md:px-3 md:py-1.5 rounded-full text-xs md:text-sm font-medium border border-blue-200">
@@ -195,7 +194,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
 
       {/* Module selection - titolo più grande */}
       <div className="max-w-4xl md:mx-auto">
-        <div className="mb-4 md:mb-8 text-left md:text-center">
+        <div className="mb-6 md:mb-10 text-left md:text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-[#1c1c1c] mb-2 md:mb-3">Seleziona i moduli per il tuo progetto</h2>
           <p className="text-sm md:text-base text-gray-600">
             Puoi selezionare 1 o più moduli ({moduliSelezionati.length}/4 selezionati)
@@ -203,7 +202,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
         
         {/* Mobile: spazi ridotti, Desktop: grid normale */}
-        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4 mb-6 md:mb-10">
+        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4 mb-8 md:mb-12">
           {moduli.map((modulo) => {
             const isSelected = moduliSelezionati.includes(modulo.id);
             const isDisabled = !isSelected && moduliSelezionati.length >= 4;
