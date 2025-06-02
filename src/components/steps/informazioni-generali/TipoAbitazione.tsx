@@ -1,4 +1,5 @@
 
+
 import { FormData } from "../../Configuratore";
 import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
@@ -36,7 +37,7 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
         </div>
       </div>
       
-      <div className="max-w-4xl md:mx-auto">
+      <div className="max-w-4xl md:mx-auto px-3 md:px-0">
         <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
           {tipiAbitazione.map((tipo) => {
             const isSelected = value === tipo.id;
@@ -75,3 +76,4 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
     </div>
   );
 };
+
