@@ -85,8 +85,8 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Header principale */}
-      <div className="space-y-2 md:space-y-3">
+      {/* Header principale - margini ridotti a 12px su mobile */}
+      <div className="space-y-2 md:space-y-3 px-3 md:px-0">
         <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
@@ -104,8 +104,8 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </p>
       </div>
 
-      {/* Budget estimation box - ottimizzato per mobile */}
-      <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6 md:mb-12">
+      {/* Budget estimation box - ottimizzato per mobile con margini ridotti */}
+      <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6 md:mb-12 px-3 md:px-0">
         {/* Example badge */}
         <div className="flex justify-start md:justify-center mb-2">
           <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full text-xs font-medium border border-blue-200">
@@ -189,8 +189,8 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         </div>
       </div>
 
-      {/* Module selection */}
-      <div className="max-w-4xl md:mx-auto">
+      {/* Module selection - margini ridotti a 12px su mobile */}
+      <div className="max-w-4xl md:mx-auto px-3 md:px-0">
         <div className="mb-4 md:mb-6 text-left md:text-center">
           <h2 className="text-xl md:text-3xl font-bold text-[#1c1c1c] mb-1 md:mb-2">Seleziona i moduli per il tuo progetto</h2>
           <p className="text-sm md:text-base text-gray-600">
