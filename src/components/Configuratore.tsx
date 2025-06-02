@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { BenvenutoTool } from "./steps/BenvenutoTool";
+import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
 import { Card, CardContent } from "@/components/ui/card";
@@ -159,7 +158,7 @@ export const Configuratore = () => {
     switch (step) {
       case 0:
         return (
-          <BenvenutoTool 
+          <WelcomePage 
             onStart={handleNext} 
           />
         );

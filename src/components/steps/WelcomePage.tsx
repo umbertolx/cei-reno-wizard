@@ -2,16 +2,19 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
+
 type Props = {
   onStart: () => void;
 };
+
 type Modulo = {
   id: string;
   nome: string;
   icon: React.ComponentType<any>;
   descrizione: string;
 };
-export const BenvenutoTool = ({
+
+export const WelcomePage = ({
   onStart
 }: Props) => {
   const [moduliSelezionati, setModuliSelezionati] = useState<string[]>(['impianto-elettrico']);
@@ -20,6 +23,7 @@ export const BenvenutoTool = ({
   const tipiImpianto = ["elettrico", "fotovoltaico", "di sicurezza", "termotecnico"];
   const [currentTypeIndex, setCurrentTypeIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setIsVisible(false);
@@ -30,6 +34,7 @@ export const BenvenutoTool = ({
     }, 4000);
     return () => clearInterval(interval);
   }, []);
+
   const moduli: Modulo[] = [{
     id: 'impianto-elettrico',
     nome: 'Impianto elettrico',
@@ -51,6 +56,7 @@ export const BenvenutoTool = ({
     icon: Thermometer,
     descrizione: 'Riscaldamento e climatizzazione'
   }];
+
   const toggleModulo = (moduloId: string) => {
     setModuliSelezionati(prev => {
       if (prev.includes(moduloId)) {
@@ -65,6 +71,7 @@ export const BenvenutoTool = ({
       return prev;
     });
   };
+
   return <div className="space-y-4">
       {/* Badge Impianti Civili */}
       <div className="flex justify-start md:justify-center px-3 md:px-0">
