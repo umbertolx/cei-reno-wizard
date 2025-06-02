@@ -13,13 +13,11 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
   const tipiAbitazione = [
     {
       id: 'appartamento',
-      label: 'Appartamento',
-      desc: 'Condomini, attici e spazi condivisi'
+      label: 'Appartamento'
     },
     {
       id: 'casa indipendente',
-      label: 'Casa indipendente', 
-      desc: 'Ville, villette e abitazioni autonome'
+      label: 'Casa indipendente'
     }
   ];
 
@@ -67,11 +65,6 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
                   >
                     {tipo.label}
                   </Label>
-                  {!isSelected && (
-                    <div className="text-xs md:text-sm text-gray-600 md:block">
-                      {tipo.desc}
-                    </div>
-                  )}
                 </div>
                 {isSelected && (
                   <div className="ml-auto flex-shrink-0">

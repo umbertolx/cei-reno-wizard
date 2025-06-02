@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -132,8 +131,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       <div className="space-y-2 md:space-y-3">
         <h1 className="text-[24px] md:text-[36px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
           <span className="block md:inline">Informazioni</span>
-          <br className="hidden md:block" />
-          <span className="text-[#d8010c] block md:inline">generali</span>
+          <span className="text-[#d8010c] block md:inline"> generali</span>
         </h1>
         
         <p className="text-sm md:text-base text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
