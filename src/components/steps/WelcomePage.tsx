@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
@@ -90,7 +91,7 @@ export const WelcomePage = ({
         </h1>
         
         <p className="text-base md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
-          Configura, esplora le opzioni e ricevi <br className="hidden sm:block" />un budget su misura, gratis e online.
+          Configura, esplora le opzioni ed ottieni <br className="hidden sm:block" />un budget su misura, gratis ed online.
         </p>
       </div>
 
