@@ -77,21 +77,21 @@ export const BenvenutoTool = ({ onStart }: Props) => {
   };
 
   return (
-    <div className="space-y-4 px-4">
+    <div className="space-y-4 px-4 md:px-0">
       {/* Badge Impianti Civili */}
-      <div className="flex justify-center">
-        <div className="bg-[#d8010c] text-white px-4 py-2 rounded-full text-xs font-medium">
+      <div className="flex justify-start md:justify-center">
+        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
           Impianti Civili
         </div>
       </div>
 
       {/* Header principale */}
-      <div className="space-y-2 text-center">
-        <h1 className="text-xs font-bold text-[#1c1c1c] leading-tight">
-          <span className="block">Progetta il tuo impianto</span>
-          <br />
+      <div className="space-y-2 md:space-y-3">
+        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
+          <span className="block md:inline">Progetta il tuo impianto</span>
+          <br className="hidden md:block" />
           <span 
-            className={`text-[#d8010c] transition-all duration-700 ease-in-out transform block ${
+            className={`text-[#d8010c] transition-all duration-700 ease-in-out transform block md:inline ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
             }`}
           >
@@ -99,34 +99,34 @@ export const BenvenutoTool = ({ onStart }: Props) => {
           </span>
         </h1>
         
-        <p className="text-xs text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-sm md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed">
           Configura, personalizza e scopri i costi del tuo progetto
         </p>
       </div>
 
-      {/* Budget estimation box - card style */}
-      <div className="relative max-w-full mx-auto mb-8">
+      {/* Budget estimation box - ottimizzato per mobile */}
+      <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6 md:mb-12">
         {/* Example badge */}
-        <div className="flex justify-center mb-2">
-          <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full text-xs font-medium border border-blue-200">
+        <div className="flex justify-start md:justify-center mb-2">
+          <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full text-xs font-medium border border-blue-200">
             <Sparkles className="h-3 w-3" />
             Esempio di progetto
           </div>
         </div>
 
         <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-          <div className="p-4">
+          <div className="p-4 md:p-6">
             {/* Header section */}
             <div className="text-center mb-4">
               <div className="text-xs text-gray-500 mb-1 font-medium">
                 Budget stimato per questo progetto
               </div>
-              <div className="text-xs font-bold text-gray-900 mb-2">
+              <div className="text-xl md:text-4xl font-bold text-gray-900 mb-2">
                 €28.350 - €34.550
               </div>
               
               {/* Tax deductions */}
-              <div className="text-xs text-green-700 font-semibold mb-3">
+              <div className="text-sm md:text-lg text-green-700 font-semibold mb-3">
                 Fino a €14.175 Bonus Casa (1ª)
               </div>
             </div>
@@ -140,25 +140,25 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                     <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="h-2.5 w-2.5 text-green-600" />
                     </div>
-                    <span className="text-xs text-gray-700">Appartamento</span>
+                    <span className="text-sm text-gray-700">Appartamento</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="h-2.5 w-2.5 text-green-600" />
                     </div>
-                    <span className="text-xs text-gray-700">83 mq</span>
+                    <span className="text-sm text-gray-700">83 mq</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="h-2.5 w-2.5 text-green-600" />
                     </div>
-                    <span className="text-xs text-gray-700">Torino</span>
+                    <span className="text-sm text-gray-700">Torino</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="h-2.5 w-2.5 text-green-600" />
                     </div>
-                    <span className="text-xs text-gray-700">4 locali + 2 bagni</span>
+                    <span className="text-sm text-gray-700">4 locali + 2 bagni</span>
                   </div>
                 </div>
                 
@@ -168,19 +168,19 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                     <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="h-2.5 w-2.5 text-green-600" />
                     </div>
-                    <span className="text-xs text-gray-700">Impianto elettrico</span>
+                    <span className="text-sm text-gray-700">Impianto elettrico</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="h-2.5 w-2.5 text-green-600" />
                     </div>
-                    <span className="text-xs text-gray-700">Domotica KNX</span>
+                    <span className="text-sm text-gray-700">Domotica KNX</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="h-2.5 w-2.5 text-green-600" />
                     </div>
-                    <span className="text-xs text-gray-700">Impianto di sicurezza</span>
+                    <span className="text-sm text-gray-700">Impianto di sicurezza</span>
                   </div>
                 </div>
               </div>
@@ -190,15 +190,15 @@ export const BenvenutoTool = ({ onStart }: Props) => {
       </div>
 
       {/* Module selection */}
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-4 text-center">
-          <h2 className="text-xs font-bold text-[#1c1c1c] mb-1">Seleziona i moduli per il tuo progetto</h2>
-          <p className="text-xs text-gray-600">
+      <div className="max-w-4xl md:mx-auto">
+        <div className="mb-4 md:mb-6 text-left md:text-center">
+          <h2 className="text-xl md:text-3xl font-bold text-[#1c1c1c] mb-1 md:mb-2">Seleziona i moduli per il tuo progetto</h2>
+          <p className="text-sm md:text-base text-gray-600">
             Puoi selezionare 1 o più moduli ({moduliSelezionati.length}/4 selezionati)
           </p>
         </div>
         
-        <div className="space-y-3 mb-6">
+        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4 mb-6 md:mb-8">
           {moduli.map((modulo) => {
             const isSelected = moduliSelezionati.includes(modulo.id);
             const isDisabled = !isSelected && moduliSelezionati.length >= 4;
@@ -209,21 +209,21 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                 key={modulo.id}
                 onClick={() => !isDisabled && !isLastSelected && toggleModulo(modulo.id)}
                 className={`
-                  p-4 rounded-xl transition-all duration-300 border bg-white shadow-sm
+                  p-4 rounded-xl transition-all duration-300 border
                   ${isSelected 
-                    ? 'border-[#d8010c] bg-[#d8010c]/5' 
+                    ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
                     : isDisabled
-                    ? 'border-gray-200 cursor-not-allowed opacity-50'
-                    : 'border-gray-200 hover:border-[#d8010c] hover:shadow-md cursor-pointer'
+                    ? 'bg-gray-50 border-gray-200 cursor-not-allowed opacity-50'
+                    : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm cursor-pointer'
                   } ${isLastSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
                 `}
               >
                 <div className="flex items-center justify-between">
                   <div className="text-left flex-1 min-w-0">
-                    <div className="font-semibold text-xs text-[#1c1c1c] mb-0.5">
+                    <div className="font-semibold text-base text-[#1c1c1c] mb-0.5">
                       {modulo.nome}
                     </div>
-                    <div className="text-xs text-gray-600">
+                    <div className="text-sm text-gray-600 hidden md:block">
                       {modulo.descrizione}
                     </div>
                   </div>
@@ -246,8 +246,8 @@ export const BenvenutoTool = ({ onStart }: Props) => {
             onClick={onStart}
             disabled={moduliSelezionati.length === 0}
             className="
-              w-full px-6 py-4
-              text-xs 
+              w-full px-6 py-4 md:py-5
+              text-base md:text-lg 
               bg-[#d8010c] hover:bg-[#b8000a]
               text-white 
               rounded-xl 
@@ -259,7 +259,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
             "
           >
             <span>Inizia ora</span>
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
           </Button>
         </div>
       </div>
