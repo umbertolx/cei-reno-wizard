@@ -131,7 +131,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
               
               {/* Tax deductions */}
               <div className="text-base md:text-xl text-green-700 font-semibold mb-3 md:mb-6">
-                €14.175 detrazioni Bonus Casa
+                Fino a €14.175 Bonus Casa (1ª)
               </div>
             </div>
 
@@ -205,7 +205,6 @@ export const BenvenutoTool = ({ onStart }: Props) => {
         {/* Mobile: spazi ridotti, Desktop: grid normale */}
         <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4 mb-6 md:mb-10">
           {moduli.map((modulo) => {
-            const Icon = modulo.icon;
             const isSelected = moduliSelezionati.includes(modulo.id);
             const isDisabled = !isSelected && moduliSelezionati.length >= 4;
             const isLastSelected = isSelected && moduliSelezionati.length === 1;
@@ -224,16 +223,7 @@ export const BenvenutoTool = ({ onStart }: Props) => {
                   } ${isLastSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
                 `}
               >
-                <div className="flex items-center gap-3 md:gap-4">
-                  <div className={`
-                    p-2.5 md:p-3 rounded-full flex-shrink-0 transition-all duration-300
-                    ${isSelected 
-                      ? 'bg-[#d8010c] text-white' 
-                      : 'bg-gray-100 text-[#d8010c] group-hover:bg-[#d8010c]/10'
-                    }
-                  `}>
-                    <Icon className="h-5 w-5 md:h-6 md:w-6" />
-                  </div>
+                <div className="flex items-center justify-between">
                   <div className="text-left flex-1 min-w-0">
                     <div className={`font-semibold text-base md:text-lg ${isSelected ? 'text-[#1c1c1c]' : 'text-[#1c1c1c]'}`}>
                       {modulo.nome}
@@ -275,10 +265,6 @@ export const BenvenutoTool = ({ onStart }: Props) => {
             <span>Inizia ora</span>
             <ArrowRight className="h-5 w-5 md:h-6 md:w-6" />
           </Button>
-          
-          <div className="text-xs md:text-sm text-gray-500 text-left md:text-center">
-            Gratuito • Pochi minuti • Senza impegno
-          </div>
         </div>
       </div>
     </div>
