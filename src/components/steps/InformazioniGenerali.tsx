@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -101,7 +102,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         </h1>
         
         <p className="text-sm md:text-base text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
-          Inserisci i dettagli del tuo progetto per <br className="hidden sm:block" />ottenere una stima accurata
+          Per offrirti una stima realistica, servono solo pochi dati di base. Il resto lo calcoliamo noi, in pochi minuti.
         </p>
       </div>
 
@@ -159,3 +160,4 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     </div>
   );
 };
+
