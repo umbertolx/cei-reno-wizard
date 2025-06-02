@@ -24,35 +24,45 @@ export const StanzaCounter = ({
   const isAtMin = value <= 0;
 
   return (
-    <div className="flex items-center justify-between p-4 border rounded-lg bg-white hover:border-[#1c1c1c] transition-all">
-      <div className="flex flex-col">
-        <Label htmlFor={type} className="text-lg font-medium">{label}</Label>
-        <span className="text-xs text-gray-500">{description}</span>
+    <div className="flex items-center justify-between py-2 md:py-3">
+      <div className="flex flex-col flex-1 min-w-0 pr-3">
+        <Label htmlFor={type} className="text-base md:text-lg font-medium text-[#1c1c1c]">
+          {label}
+        </Label>
+        <span className="text-xs md:text-sm text-gray-600">{description}</span>
       </div>
       
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-2 md:space-x-3">
         <Button 
           variant="outline" 
           size="icon"
-          className={`w-8 h-8 rounded-full flex items-center justify-center ${isAtMin ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#fbe12e] hover:text-black'}`}
+          className={`w-8 h-8 md:w-10 md:h-10 rounded-full border-2 ${
+            isAtMin 
+              ? 'opacity-40 cursor-not-allowed border-gray-200' 
+              : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white'
+          }`}
           onClick={() => onChange(Math.max(0, value - 1))}
           disabled={isAtMin}
         >
-          <Minus className="h-4 w-4" />
+          <Minus className="h-3 w-3 md:h-4 md:w-4" />
         </Button>
         
-        <span className="w-6 text-center font-medium">
+        <span className="w-8 md:w-10 text-center font-bold text-lg md:text-xl text-[#d8010c]">
           {value || 0}
         </span>
         
         <Button 
           variant="outline" 
           size="icon"
-          className={`w-8 h-8 rounded-full flex items-center justify-center ${isAtMax ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#fbe12e] hover:text-black'}`}
+          className={`w-8 h-8 md:w-10 md:h-10 rounded-full border-2 ${
+            isAtMax 
+              ? 'opacity-40 cursor-not-allowed border-gray-200' 
+              : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white'
+          }`}
           onClick={() => onChange(value + 1)}
           disabled={isAtMax}
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-3 w-3 md:h-4 md:w-4" />
         </Button>
       </div>
     </div>

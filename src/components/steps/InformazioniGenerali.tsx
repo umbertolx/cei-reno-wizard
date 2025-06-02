@@ -16,7 +16,6 @@ type Props = {
 };
 
 export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props) => {
-  // Calcola il totale delle stanze
   const totalRooms = Object.values(formData.composizione).reduce((sum, count) => sum + count, 0);
   
   const validateForm = () => {
@@ -94,42 +93,42 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         </div>
       </div>
 
-      {/* Timeline compatta per mobile */}
+      {/* Timeline ultra-compatta */}
       <div className="flex justify-center mb-3 md:mb-8">
-        <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl justify-between px-2 sm:px-0">
+        <div className="flex items-center w-full max-w-xs justify-between px-2">
           {/* Punto 1: Info generali (attivo) */}
-          <div className="flex flex-col items-center relative">
-            <div className="bg-[#fbe12e] rounded-full p-1 sm:p-1.5 md:p-2 z-10">
-              <CircleDot className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4 lg:h-5 lg:w-5 text-black" />
+          <div className="flex flex-col items-center">
+            <div className="bg-[#fbe12e] rounded-full p-1 z-10">
+              <CircleDot className="h-2 w-2 md:h-4 md:w-4 text-black" />
             </div>
-            <span className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium mt-0.5 sm:mt-1 md:mt-2 text-center max-w-[50px] sm:max-w-[60px] md:max-w-none leading-tight">Info generali</span>
+            <span className="text-[8px] md:text-xs font-medium mt-1 text-center max-w-[40px] md:max-w-none leading-tight">Info</span>
           </div>
           
-          {/* Linea di collegamento 1-2 */}
-          <div className="h-[1.5px] md:h-[2px] flex-grow bg-[#fbe12e] mx-1 sm:mx-2 relative top-[6px] sm:top-[8px] md:top-[10px]"></div>
+          {/* Linea 1-2 */}
+          <div className="h-[1px] md:h-[2px] flex-grow bg-[#fbe12e] mx-1 relative top-[-8px] md:top-[-6px]"></div>
           
-          {/* Punto 2: Configuratore (inattivo) */}
-          <div className="flex flex-col items-center relative">
-            <div className="bg-gray-200 rounded-full p-1 sm:p-1.5 md:p-2 z-10">
-              <CircleDot className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4 lg:h-5 lg:w-5 text-gray-400" />
+          {/* Punto 2: Configuratore */}
+          <div className="flex flex-col items-center">
+            <div className="bg-gray-200 rounded-full p-1 z-10">
+              <CircleDot className="h-2 w-2 md:h-4 md:w-4 text-gray-400" />
             </div>
-            <span className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium mt-0.5 sm:mt-1 md:mt-2 text-center text-gray-500 max-w-[50px] sm:max-w-[60px] md:max-w-none leading-tight">Configuratore</span>
+            <span className="text-[8px] md:text-xs font-medium mt-1 text-center text-gray-500 max-w-[40px] md:max-w-none leading-tight">Config</span>
           </div>
           
-          {/* Linea di collegamento 2-3 */}
-          <div className="h-[1.5px] md:h-[2px] flex-grow bg-gray-300 mx-1 sm:mx-2 relative top-[6px] sm:top-[8px] md:top-[10px]"></div>
+          {/* Linea 2-3 */}
+          <div className="h-[1px] md:h-[2px] flex-grow bg-gray-300 mx-1 relative top-[-8px] md:top-[-6px]"></div>
           
-          {/* Punto 3: Stima dei costi (inattivo) */}
-          <div className="flex flex-col items-center relative">
-            <div className="bg-gray-200 rounded-full p-1 sm:p-1.5 md:p-2 z-10">
-              <CircleDot className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4 lg:h-5 lg:w-5 text-gray-400" />
+          {/* Punto 3: Stima */}
+          <div className="flex flex-col items-center">
+            <div className="bg-gray-200 rounded-full p-1 z-10">
+              <CircleDot className="h-2 w-2 md:h-4 md:w-4 text-gray-400" />
             </div>
-            <span className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium mt-0.5 sm:mt-1 md:mt-2 text-center text-gray-500 max-w-[50px] sm:max-w-[60px] md:max-w-none leading-tight">Stima costi</span>
+            <span className="text-[8px] md:text-xs font-medium mt-1 text-center text-gray-500 max-w-[40px] md:max-w-none leading-tight">Stima</span>
           </div>
         </div>
       </div>
 
-      {/* Header principale - stesso stile della prima pagina */}
+      {/* Header principale */}
       <div className="space-y-2 md:space-y-4 mb-4 md:mb-8">
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
           <span className="block md:inline">Informazioni</span>
@@ -142,28 +141,24 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         </p>
       </div>
 
-      {/* Contenuto principale con spaziatura ridotta per mobile */}
-      <div className="space-y-4 md:space-y-8">
-        {/* Tipologia abitazione */}
+      {/* Contenuto principale */}
+      <div className="space-y-6 md:space-y-8">
         <TipoAbitazione 
           value={formData.tipologiaAbitazione}
           onChange={(value) => updateFormData({ tipologiaAbitazione: value })}
         />
 
-        {/* Superficie */}
         <SuperficieSlider
           value={formData.superficie || 20}
           onChange={(value) => updateFormData({ superficie: value })}
         />
 
-        {/* Indirizzo */}
         <IndirizzoField
           value={formData.indirizzo}
           onChange={(value) => updateFormData({ indirizzo: value })}
           onSelectLocation={selectLocation}
         />
 
-        {/* Suddivisione degli spazi */}
         <SuddivisioneSpazi
           composizione={formData.composizione}
           onChangeStanza={handleChangeComposizione}
@@ -171,7 +166,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         />
       </div>
 
-      {/* Pulsante Continua - stesso stile della prima pagina */}
+      {/* Pulsante Continua */}
       <div className="pt-3 md:pt-6">
         <Button 
           onClick={handleSubmit}
