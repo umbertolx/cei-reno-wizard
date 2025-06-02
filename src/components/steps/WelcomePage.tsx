@@ -82,7 +82,7 @@ export const WelcomePage = ({
 
       {/* Header principale */}
       <div className="space-y-2 md:space-y-3">
-        <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.1] text-left md:text-center p-1">
+        <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
           <span className={`text-[#d8010c] transition-all duration-700 ease-in-out transform block md:inline ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
@@ -113,12 +113,12 @@ export const WelcomePage = ({
                 Budget stimato per questo progetto
               </div>
               <div className="text-lg md:text-3xl font-bold text-gray-900 mb-2 p-1">
-                €28.350 - €34.550
+                €13.450 - €19.330
               </div>
               
               {/* Tax deductions */}
               <div className="text-sm md:text-base text-green-700 font-semibold mb-3 p-1">
-                Fino a €14.175 Bonus Casa (1ª)
+                Fino a €8.195 Bonus Casa (1ª)
               </div>
             </div>
 
@@ -182,7 +182,7 @@ export const WelcomePage = ({
 
       <div className="max-w-4xl md:mx-auto">
         <div className="mb-4 md:mb-6 text-left md:text-center">
-          <h2 className="text-2xl md:text-4xl font-bold text-[#1c1c1c] leading-[1.1] mb-1 md:mb-2 p-1">Seleziona gli impianti:</h2>
+          <h2 className="text-2xl md:text-4xl font-bold text-[#1c1c1c] leading-[1.05] mb-1 md:mb-2 p-1">Seleziona gli impianti:</h2>
           <p className="text-sm md:text-base text-gray-600 p-1">
             Puoi selezionare 1 o più impianti
           </p>
