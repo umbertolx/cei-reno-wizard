@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,7 @@ import { TipoAbitazione } from "./informazioni-generali/TipoAbitazione";
 import { SuperficieSlider } from "./informazioni-generali/SuperficieSlider";
 import { IndirizzoField } from "./informazioni-generali/IndirizzoField";
 import { SuddivisioneSpazi } from "./informazioni-generali/SuddivisioneSpazi";
-import { CircleDot, ArrowRight } from "lucide-react";
+import { CircleDot, ArrowRight, Home, Settings, Calculator } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -92,37 +93,54 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         </div>
       </div>
 
-      {/* Timeline migliorata */}
-      <div className="flex justify-center mb-6 md:mb-12">
-        <div className="flex items-center w-full max-w-md justify-between px-4">
-          {/* Punto 1: Info generali (attivo) */}
-          <div className="flex flex-col items-center">
-            <div className="bg-[#fbe12e] rounded-full p-2 z-10 shadow-sm">
-              <CircleDot className="h-3 w-3 md:h-4 md:w-4 text-black" />
+      {/* Timeline riprogettata */}
+      <div className="flex justify-center mb-8 md:mb-12">
+        <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg justify-between px-2 md:px-4">
+          {/* Step 1: Info (attivo) */}
+          <div className="flex flex-col items-center group">
+            <div className="relative">
+              <div className="bg-[#fbe12e] rounded-full p-3 md:p-4 shadow-lg transform group-hover:scale-105 transition-all duration-300">
+                <Home className="h-4 w-4 md:h-5 md:w-5 text-[#1c1c1c]" />
+              </div>
+              <div className="absolute -inset-1 bg-[#fbe12e] rounded-full opacity-20 animate-pulse"></div>
             </div>
-            <span className="text-xs md:text-sm font-medium mt-2 text-center">Info</span>
+            <div className="mt-2 md:mt-3">
+              <span className="text-xs md:text-sm font-semibold text-[#1c1c1c] block">Info</span>
+              <span className="text-[10px] md:text-xs text-gray-600 hidden md:block">Dettagli casa</span>
+            </div>
           </div>
           
-          {/* Linea 1-2 */}
-          <div className="h-[2px] flex-grow bg-[#fbe12e] mx-3 rounded"></div>
-          
-          {/* Punto 2: Configuratore */}
-          <div className="flex flex-col items-center">
-            <div className="bg-gray-200 rounded-full p-2 z-10">
-              <CircleDot className="h-3 w-3 md:h-4 md:w-4 text-gray-400" />
-            </div>
-            <span className="text-xs md:text-sm font-medium mt-2 text-center text-gray-500">Contatti</span>
+          {/* Connettore 1-2 */}
+          <div className="flex-1 mx-2 md:mx-4 relative">
+            <div className="h-1 bg-gradient-to-r from-[#fbe12e] via-gray-300 to-gray-300 rounded-full"></div>
+            <div className="absolute top-1/2 left-1/4 transform -translate-y-1/2 w-2 h-2 bg-[#fbe12e] rounded-full animate-pulse"></div>
           </div>
           
-          {/* Linea 2-3 */}
-          <div className="h-[2px] flex-grow bg-gray-300 mx-3 rounded"></div>
-          
-          {/* Punto 3: Stima */}
-          <div className="flex flex-col items-center">
-            <div className="bg-gray-200 rounded-full p-2 z-10">
-              <CircleDot className="h-3 w-3 md:h-4 md:w-4 text-gray-400" />
+          {/* Step 2: Configuratore */}
+          <div className="flex flex-col items-center group">
+            <div className="bg-gray-200 rounded-full p-3 md:p-4 shadow-sm group-hover:bg-gray-300 transition-all duration-300">
+              <Settings className="h-4 w-4 md:h-5 md:w-5 text-gray-500" />
             </div>
-            <span className="text-xs md:text-sm font-medium mt-2 text-center text-gray-500">Stima</span>
+            <div className="mt-2 md:mt-3">
+              <span className="text-xs md:text-sm font-medium text-gray-500 block">Configuratore</span>
+              <span className="text-[10px] md:text-xs text-gray-400 hidden md:block">Personalizza</span>
+            </div>
+          </div>
+          
+          {/* Connettore 2-3 */}
+          <div className="flex-1 mx-2 md:mx-4">
+            <div className="h-1 bg-gray-300 rounded-full"></div>
+          </div>
+          
+          {/* Step 3: Stima */}
+          <div className="flex flex-col items-center group">
+            <div className="bg-gray-200 rounded-full p-3 md:p-4 shadow-sm group-hover:bg-gray-300 transition-all duration-300">
+              <Calculator className="h-4 w-4 md:h-5 md:w-5 text-gray-500" />
+            </div>
+            <div className="mt-2 md:mt-3">
+              <span className="text-xs md:text-sm font-medium text-gray-500 block">Stima</span>
+              <span className="text-[10px] md:text-xs text-gray-400 hidden md:block">Preventivo</span>
+            </div>
           </div>
         </div>
       </div>
