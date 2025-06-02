@@ -37,41 +37,39 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
         </div>
       </div>
       
-      <div className="max-w-4xl md:mx-auto px-3 md:px-0">
-        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
-          {tipiAbitazione.map((tipo) => {
-            const isSelected = value === tipo.id;
-            
-            return (
-              <div
-                key={tipo.id}
-                onClick={() => onChange(tipo.id)}
-                className={`
-                  p-4 rounded-xl transition-all duration-300 border cursor-pointer
-                  ${isSelected 
-                    ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
-                    : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
-                  }
-                `}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="text-left flex-1 min-w-0">
-                    <div className="font-semibold text-base text-[#1c1c1c] mb-0.5 p-1">
-                      {tipo.label}
+      <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
+        {tipiAbitazione.map((tipo) => {
+          const isSelected = value === tipo.id;
+          
+          return (
+            <div
+              key={tipo.id}
+              onClick={() => onChange(tipo.id)}
+              className={`
+                p-4 rounded-xl transition-all duration-300 border cursor-pointer
+                ${isSelected 
+                  ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                  : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                }
+              `}
+            >
+              <div className="flex items-center justify-between">
+                <div className="text-left flex-1 min-w-0">
+                  <div className="font-semibold text-base text-[#1c1c1c] mb-0.5 p-1">
+                    {tipo.label}
+                  </div>
+                </div>
+                {isSelected && (
+                  <div className="ml-3 flex-shrink-0">
+                    <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
+                      <Check className="h-3 w-3 text-white" />
                     </div>
                   </div>
-                  {isSelected && (
-                    <div className="ml-3 flex-shrink-0">
-                      <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-white" />
-                      </div>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
