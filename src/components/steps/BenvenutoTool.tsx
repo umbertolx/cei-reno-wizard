@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
@@ -73,7 +72,7 @@ export const BenvenutoTool = ({
   };
 
   return (
-    <div className="space-y-4 px-3 md:px-0">
+    <div className="space-y-4">
       {/* Badge Impianti Civili */}
       <div className="flex justify-start md:justify-center px-3 md:px-0">
         <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
@@ -82,7 +81,7 @@ export const BenvenutoTool = ({
       </div>
 
       {/* Header principale */}
-      <div className="space-y-2 md:space-y-3 px-3 md:px-0">
+      <div className="space-y-2 md:space-y-3">
         <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
@@ -181,7 +180,7 @@ export const BenvenutoTool = ({
         </div>
       </div>
 
-      <div className="max-w-4xl md:mx-auto px-3 md:px-0">
+      <div className="max-w-4xl md:mx-auto">
         <div className="mb-4 md:mb-6 text-left md:text-center">
           <h2 className="text-xl md:text-3xl font-bold text-[#1c1c1c] mb-1 md:mb-2 p-1">Seleziona i moduli per il tuo progetto</h2>
           <p className="text-sm md:text-base text-gray-600 p-1">
