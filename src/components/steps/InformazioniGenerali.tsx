@@ -1,5 +1,4 @@
 
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,7 @@ import { TipoAbitazione } from "./informazioni-generali/TipoAbitazione";
 import { SuperficieSlider } from "./informazioni-generali/SuperficieSlider";
 import { IndirizzoField } from "./informazioni-generali/IndirizzoField";
 import { SuddivisioneSpazi } from "./informazioni-generali/SuddivisioneSpazi";
-import { CircleDot } from "lucide-react";
+import { CircleDot, ArrowRight } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -86,16 +85,16 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
   };
 
   return (
-    <div className="space-y-6 md:space-y-8 px-3 md:px-0">
+    <div className="space-y-4">
       {/* Badge Impianti Civili */}
-      <div className="flex justify-start md:justify-center">
-        <div className="bg-[#d8010c] text-white px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-sm font-medium">
+      <div className="flex justify-start md:justify-center px-3 md:px-0">
+        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
           Impianti Civili
         </div>
       </div>
 
       {/* Timeline migliorata */}
-      <div className="flex justify-center mb-6 md:mb-8">
+      <div className="flex justify-center mb-6 md:mb-12">
         <div className="flex items-center w-full max-w-md justify-between px-4">
           {/* Punto 1: Info generali (attivo) */}
           <div className="flex flex-col items-center">
@@ -130,20 +129,20 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       </div>
 
       {/* Header principale */}
-      <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-4xl font-bold text-[#1c1c1c] leading-[1.1] text-left md:text-center">
+      <div className="space-y-2 md:space-y-3">
+        <h1 className="text-[24px] md:text-[36px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
           <span className="block md:inline">Informazioni</span>
           <br className="hidden md:block" />
           <span className="text-[#d8010c] block md:inline">generali</span>
         </h1>
         
-        <p className="text-base md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto">
-          Inserisci i dettagli del tuo progetto per ottenere una stima accurata
+        <p className="text-sm md:text-base text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
+          Inserisci i dettagli del tuo progetto per <br className="hidden sm:block" />ottenere una stima accurata
         </p>
       </div>
 
       {/* Contenuto principale */}
-      <div className="space-y-6 md:space-y-8">
+      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 px-3 md:px-0">
         <TipoAbitazione 
           value={formData.tipologiaAbitazione}
           onChange={(value) => updateFormData({ tipologiaAbitazione: value })}
@@ -168,21 +167,23 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       </div>
 
       {/* Pulsante Avanti */}
-      <div className="pt-6 md:pt-8">
+      <div className="max-w-4xl md:mx-auto px-3 md:px-0">
         <Button 
           onClick={handleSubmit}
           className="
-            w-full px-6 md:px-12 py-5 md:py-6 
-            text-lg md:text-xl 
-            bg-[#d8010c] hover:bg-[#b8000a] 
+            w-full px-6 py-4 md:py-5
+            text-base md:text-lg 
+            bg-[#d8010c] hover:bg-[#b8000a]
             text-white 
             rounded-xl 
-            flex items-center justify-center gap-3 
+            flex items-center justify-center gap-2
             transition-all duration-300 
-            shadow-lg
+            shadow-sm hover:shadow-md
+            min-h-[48px]
           "
         >
-          Avanti
+          <span>Avanti</span>
+          <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
         </Button>
       </div>
     </div>
