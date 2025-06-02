@@ -86,9 +86,16 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
   };
 
   return (
-    <div className="space-y-4 md:space-y-8">
+    <div className="space-y-3 md:space-y-8 px-3 md:px-0">
+      {/* Badge Impianti Civili */}
+      <div className="flex justify-start md:justify-center">
+        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-medium">
+          Impianti Civili
+        </div>
+      </div>
+
       {/* Timeline compatta per mobile */}
-      <div className="flex justify-center mb-4 md:mb-8">
+      <div className="flex justify-center mb-3 md:mb-8">
         <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl justify-between px-2 sm:px-0">
           {/* Punto 1: Info generali (attivo) */}
           <div className="flex flex-col items-center relative">
@@ -122,8 +129,21 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         </div>
       </div>
 
+      {/* Header principale - stesso stile della prima pagina */}
+      <div className="space-y-2 md:space-y-4 mb-4 md:mb-8">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
+          <span className="block md:inline">Informazioni</span>
+          <br className="hidden md:block" />
+          <span className="text-[#d8010c] block md:inline">generali</span>
+        </h1>
+        
+        <p className="text-base md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto">
+          Inserisci i dettagli del tuo progetto per ottenere una stima accurata
+        </p>
+      </div>
+
       {/* Contenuto principale con spaziatura ridotta per mobile */}
-      <div className="space-y-5 md:space-y-8">
+      <div className="space-y-4 md:space-y-8">
         {/* Tipologia abitazione */}
         <TipoAbitazione 
           value={formData.tipologiaAbitazione}
@@ -151,14 +171,27 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         />
       </div>
 
-      {/* Pulsante Continua compatto per mobile */}
+      {/* Pulsante Continua - stesso stile della prima pagina */}
       <div className="pt-3 md:pt-6">
         <Button 
           onClick={handleSubmit}
-          className="w-full py-3 sm:py-4 md:py-6 text-sm sm:text-base md:text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-black hover:text-white rounded-xl flex items-center justify-center gap-2 transition-all duration-300 focus:bg-[#d8010c] focus:text-white active:bg-[#d8010c] active:text-white"
+          className="
+            w-full px-6 md:px-12 py-5 md:py-6 
+            text-lg md:text-xl 
+            bg-[#d8010c] hover:bg-[#b8000a] md:hover:bg-[#b8000a] 
+            text-white 
+            rounded-xl 
+            flex items-center justify-center gap-3 
+            transition-all duration-300 
+            shadow-lg
+          "
         >
           Continua e calcola il preventivo
         </Button>
+        
+        <div className="text-xs md:text-sm text-gray-500 text-left md:text-center mt-2 md:mt-4">
+          Gratuito • Pochi minuti • Senza impegno
+        </div>
       </div>
     </div>
   );
