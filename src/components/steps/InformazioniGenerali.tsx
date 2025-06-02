@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -89,58 +90,6 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       <div className="flex justify-start md:justify-center px-3 md:px-0">
         <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
           Impianti Civili
-        </div>
-      </div>
-
-      {/* Timeline riprogettata */}
-      <div className="flex justify-center mb-8 md:mb-12 px-3 md:px-0">
-        <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg justify-between px-2 md:px-4">
-          {/* Step 1: Info (attivo) */}
-          <div className="flex flex-col items-center group">
-            <div className="relative">
-              <div className="bg-[#fbe12e] rounded-full p-3 md:p-4 shadow-lg transform group-hover:scale-105 transition-all duration-300">
-                <Home className="h-4 w-4 md:h-5 md:w-5 text-[#1c1c1c]" />
-              </div>
-              <div className="absolute -inset-1 bg-[#fbe12e] rounded-full opacity-20 animate-pulse"></div>
-            </div>
-            <div className="mt-2 md:mt-3">
-              <span className="text-xs md:text-sm font-semibold text-[#1c1c1c] block">Info</span>
-              <span className="text-[10px] md:text-xs text-gray-600 hidden md:block">Dettagli casa</span>
-            </div>
-          </div>
-          
-          {/* Connettore 1-2 */}
-          <div className="flex-1 mx-2 md:mx-4 relative">
-            <div className="h-1 bg-gradient-to-r from-[#fbe12e] via-gray-300 to-gray-300 rounded-full"></div>
-            <div className="absolute top-1/2 left-1/4 transform -translate-y-1/2 w-2 h-2 bg-[#fbe12e] rounded-full animate-pulse"></div>
-          </div>
-          
-          {/* Step 2: Configuratore */}
-          <div className="flex flex-col items-center group">
-            <div className="bg-gray-200 rounded-full p-3 md:p-4 shadow-sm group-hover:bg-gray-300 transition-all duration-300">
-              <Settings className="h-4 w-4 md:h-5 md:w-5 text-gray-500" />
-            </div>
-            <div className="mt-2 md:mt-3">
-              <span className="text-xs md:text-sm font-medium text-gray-500 block">Configuratore</span>
-              <span className="text-[10px] md:text-xs text-gray-400 hidden md:block">Personalizza</span>
-            </div>
-          </div>
-          
-          {/* Connettore 2-3 */}
-          <div className="flex-1 mx-2 md:mx-4">
-            <div className="h-1 bg-gray-300 rounded-full"></div>
-          </div>
-          
-          {/* Step 3: Stima */}
-          <div className="flex flex-col items-center group">
-            <div className="bg-gray-200 rounded-full p-3 md:p-4 shadow-sm group-hover:bg-gray-300 transition-all duration-300">
-              <Calculator className="h-4 w-4 md:h-5 md:w-5 text-gray-500" />
-            </div>
-            <div className="mt-2 md:mt-3">
-              <span className="text-xs md:text-sm font-medium text-gray-500 block">Stima</span>
-              <span className="text-[10px] md:text-xs text-gray-400 hidden md:block">Preventivo</span>
-            </div>
-          </div>
         </div>
       </div>
 
