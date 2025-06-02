@@ -93,7 +93,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       </div>
 
       {/* Header principale */}
-      <div className="space-y-2 md:space-y-3 mt-7 px-3 md:px-0">
+      <div className="space-y-2 md:space-y-3 mt-7">
         <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
           <span className="md:inline">Informazioni</span>
           <span className="text-[#d8010c] md:inline"> generali</span>
