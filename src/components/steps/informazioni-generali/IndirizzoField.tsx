@@ -24,12 +24,12 @@ export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoF
         </div>
       </div>
       
-      <div className="bg-white border-2 border-gray-200 rounded-xl p-4 md:p-6">
+      <div className="bg-white border border-gray-200 rounded-xl p-4 transition-all duration-300 hover:border-[#d8010c] hover:shadow-sm">
         <Input
           placeholder="Via, numero civico, città"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="text-base md:text-lg p-4 md:p-6 rounded-lg border-0 shadow-none"
+          className="text-base font-semibold text-[#1c1c1c] border-0 shadow-none p-0 h-auto bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
         />
       </div>
     </div>
