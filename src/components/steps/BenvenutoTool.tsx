@@ -82,8 +82,8 @@ export const BenvenutoTool = ({
           </span>
         </h1>
         
-        <p className="text-[16px] md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
-          Configura, personalizza e scopri i costi del tuo progetto
+        <p className="text-base md:text-xl text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
+          Configura, esplora le opzioni e ricevi un budget su misura, gratis e online.
         </p>
       </div>
 
