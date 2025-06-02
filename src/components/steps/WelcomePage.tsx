@@ -82,7 +82,7 @@ export const WelcomePage = ({
 
       {/* Header principale */}
       <div className="space-y-2 md:space-y-3">
-        <h1 className="text-lg md:text-2xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
+        <h1 className="text-2xl md:text-4xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
           <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
           <span className={`text-[#d8010c] transition-all duration-700 ease-in-out transform block md:inline ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
@@ -182,7 +182,7 @@ export const WelcomePage = ({
 
       <div className="max-w-4xl md:mx-auto">
         <div className="mb-4 md:mb-6 text-left md:text-center">
-          <h2 className="text-lg md:text-2xl font-bold text-[#1c1c1c] leading-tight mb-1 md:mb-2 p-1">Seleziona gli impianti:</h2>
+          <h2 className="text-2xl md:text-4xl font-bold text-[#1c1c1c] leading-tight mb-1 md:mb-2 p-1">Seleziona gli impianti:</h2>
           <p className="text-sm md:text-base text-gray-600 p-1">
             Puoi selezionare 1 o più impianti
           </p>

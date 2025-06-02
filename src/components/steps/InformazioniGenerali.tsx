@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -129,7 +130,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
 
       {/* Header principale */}
       <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
-        <h1 className="text-lg md:text-2xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
+        <h1 className="text-2xl md:text-4xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center">
           <span className="block md:inline">Informazioni</span>
           <br className="hidden md:block" />
           <span className="text-[#d8010c] block md:inline">generali</span>
