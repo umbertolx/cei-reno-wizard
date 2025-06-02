@@ -1,6 +1,4 @@
 
-import { Input } from "@/components/ui/input";
-
 type IndirizzoFieldProps = {
   value: string;
   onChange: (value: string) => void;
@@ -24,13 +22,18 @@ export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoF
         </div>
       </div>
       
-      <div className="bg-white border border-gray-200 rounded-xl p-4 transition-all duration-300 hover:border-[#d8010c] hover:shadow-sm">
-        <Input
-          placeholder="Via, numero civico, città"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="text-base font-semibold text-[#1c1c1c] border-0 shadow-none p-0 h-auto bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
-        />
+      <div className="p-4 rounded-xl transition-all duration-300 border cursor-pointer bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="text-left flex-1 min-w-0">
+            <input
+              type="text"
+              placeholder="Via, numero civico, città"
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              className="w-full font-semibold text-base text-[#1c1c1c] bg-transparent border-0 outline-none placeholder:text-gray-400"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
