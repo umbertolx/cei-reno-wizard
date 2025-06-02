@@ -36,17 +36,17 @@ export const BenvenutoTool = ({
     descrizione: 'Rifacimento completo impianto'
   }, {
     id: 'fotovoltaico',
-    nome: 'Fotovoltaico',
+    nome: 'Impianto fotovoltaico',
     icon: Sun,
     descrizione: 'Pannelli solari e storage'
   }, {
     id: 'sicurezza',
-    nome: 'Sicurezza',
+    nome: 'Impianto di sicurezza',
     icon: Shield,
     descrizione: 'Allarmi e videosorveglianza'
   }, {
     id: 'termotecnico',
-    nome: 'Termotecnico',
+    nome: 'Impianto termotecnico',
     icon: Thermometer,
     descrizione: 'Riscaldamento e climatizzazione'
   }];
@@ -174,9 +174,9 @@ export const BenvenutoTool = ({
 
       <div className="max-w-4xl md:mx-auto">
         <div className="mb-4 md:mb-6 text-left md:text-center">
-          <h2 className="text-[24px] md:text-3xl font-bold text-[#1c1c1c] leading-tight mb-1 md:mb-2 p-1">Seleziona i moduli per il tuo progetto</h2>
+          <h2 className="text-[24px] md:text-3xl font-bold text-[#1c1c1c] leading-tight mb-1 md:mb-2 p-1">Seleziona gli impianti per il tuo progetto:</h2>
           <p className="text-[16px] md:text-base text-gray-600 p-1">
-            Puoi selezionare 1 o più moduli ({moduliSelezionati.length}/4 selezionati)
+            Puoi selezionare 1 o più impianti
           </p>
         </div>
         
