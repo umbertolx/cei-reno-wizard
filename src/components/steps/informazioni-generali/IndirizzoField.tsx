@@ -1,4 +1,3 @@
-
 type IndirizzoFieldProps = {
   value: string;
   onChange: (value: string) => void;
@@ -22,7 +21,7 @@ export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoF
         </div>
       </div>
       
-      <div className="p-4 rounded-xl transition-all duration-300 border cursor-pointer bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm mx-3 md:mx-0">
+      <div className="p-4 rounded-xl transition-all duration-300 border cursor-pointer bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm">
         <div className="flex items-center justify-between">
           <div className="text-left flex-1 min-w-0">
             <input
