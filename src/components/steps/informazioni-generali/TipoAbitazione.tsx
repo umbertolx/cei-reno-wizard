@@ -2,7 +2,7 @@
 import { FormData } from "../../Configuratore";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Home, Building, Check } from "lucide-react";
+import { Check } from "lucide-react";
 
 type TipoAbitazioneProps = {
   value: string;
@@ -14,14 +14,12 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
     {
       id: 'appartamento',
       label: 'Appartamento',
-      desc: 'Condomini, attici e spazi condivisi',
-      icon: Building
+      desc: 'Condomini, attici e spazi condivisi'
     },
     {
       id: 'casa indipendente',
       label: 'Casa indipendente', 
-      desc: 'Ville, villette e abitazioni autonome',
-      icon: Home
+      desc: 'Ville, villette e abitazioni autonome'
     }
   ];
 
@@ -47,7 +45,6 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
         className="space-y-3 md:space-y-4"
       >
         {tipiAbitazione.map((tipo) => {
-          const Icon = tipo.icon;
           const isSelected = value === tipo.id;
           
           return (
@@ -62,16 +59,7 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
                 }
               `}
             >
-              <div className="flex items-center gap-3 md:gap-4">
-                <div className={`
-                  p-2.5 md:p-3 rounded-full flex-shrink-0 transition-all duration-300
-                  ${isSelected 
-                    ? 'bg-[#d8010c] text-white' 
-                    : 'bg-gray-100 text-[#d8010c]'
-                  }
-                `}>
-                  <Icon className="h-5 w-5 md:h-6 md:w-6" />
-                </div>
+              <div className="flex items-center justify-between">
                 <div className="text-left flex-1 min-w-0">
                   <Label 
                     htmlFor={tipo.id}
@@ -79,9 +67,11 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
                   >
                     {tipo.label}
                   </Label>
-                  <div className="text-xs md:text-sm text-gray-600 md:block">
-                    {tipo.desc}
-                  </div>
+                  {!isSelected && (
+                    <div className="text-xs md:text-sm text-gray-600 md:block">
+                      {tipo.desc}
+                    </div>
+                  )}
                 </div>
                 {isSelected && (
                   <div className="ml-auto flex-shrink-0">
