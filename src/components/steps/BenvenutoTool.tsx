@@ -74,8 +74,8 @@ export const BenvenutoTool = ({
 
       {/* Header principale */}
       <div className="space-y-2 md:space-y-3">
-        <h1 className="text-[24px] sm:text-3xl md:text-5xl lg:text-6xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
-          <span className="block md:inline text-2xl">Progetta il tuo impianto</span>
+        <h1 className="text-[24px] sm:text-3xl md:text-5xl lg:text-5xl font-bold text-[#1c1c1c] leading-tight text-left md:text-center p-1">
+          <span className="block md:inline">Progetta il tuo impianto</span>
           <br className="hidden md:block" />
           <span className={`text-[#d8010c] transition-all duration-700 ease-in-out transform block md:inline ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
             {tipiImpianto[currentTypeIndex]}
@@ -184,7 +184,7 @@ export const BenvenutoTool = ({
           {moduli.map(modulo => {
           const isSelected = moduliSelezionati.includes(modulo.id);
           const isDisabled = !isSelected && moduliSelezionati.length >= 4;
-          const isLastSelected = isSelected && moduliSelezionati.length === 1;
+          const isLastSelected = isSelected && isSelected && moduliSelezionati.length === 1;
           return <div key={modulo.id} onClick={() => !isDisabled && !isLastSelected && toggleModulo(modulo.id)} className={`
                   p-4 rounded-xl transition-all duration-300 border
                   ${isSelected ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' : isDisabled ? 'bg-gray-50 border-gray-200 cursor-not-allowed opacity-50' : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm cursor-pointer'} 
