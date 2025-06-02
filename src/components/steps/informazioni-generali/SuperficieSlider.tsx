@@ -24,26 +24,28 @@ export const SuperficieSlider = ({ value, onChange }: SuperficieSliderProps) => 
         </div>
       </div>
       
-      <div className="bg-white border-2 border-gray-200 rounded-xl p-4 md:p-6 space-y-4">
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <Label htmlFor="superficie" className="text-base font-medium">Superficie</Label>
-          <span className="text-xl md:text-2xl font-bold text-[#d8010c]">{value} mq</span>
+          <Label htmlFor="superficie" className="text-lg md:text-xl font-medium text-[#1c1c1c]">Superficie</Label>
+          <span className="text-2xl md:text-3xl font-bold text-[#d8010c]">{value} mq</span>
         </div>
         
-        <Slider
-          id="superficie"
-          min={20}
-          max={500}
-          step={1}
-          defaultValue={[value || 20]}
-          value={[value || 20]}
-          onValueChange={(values) => onChange(values[0])}
-          className="py-4"
-        />
-        
-        <div className="flex justify-between text-xs md:text-sm text-gray-500">
-          <span>20 mq</span>
-          <span>500 mq</span>
+        <div className="space-y-4">
+          <Slider
+            id="superficie"
+            min={20}
+            max={500}
+            step={1}
+            defaultValue={[value || 20]}
+            value={[value || 20]}
+            onValueChange={(values) => onChange(values[0])}
+            className="py-2"
+          />
+          
+          <div className="flex justify-between text-sm text-gray-500">
+            <span>20 mq</span>
+            <span>500 mq</span>
+          </div>
         </div>
       </div>
     </div>
