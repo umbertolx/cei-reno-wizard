@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -45,8 +46,8 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       return false;
     }
     
-    const { cucina, cameraDoppia, cameraSingola, soggiorno, bagno, altro } = formData.composizione;
-    if (cucina + cameraDoppia + cameraSingola + soggiorno + bagno + altro === 0) {
+    const { cucina, cameraDoppia, cameraSingola, soggiorno, bagno } = formData.composizione;
+    if (cucina + cameraDoppia + cameraSingola + soggiorno + bagno === 0) {
       toast({
         title: "Attenzione",
         description: "Inserisci almeno una stanza nella suddivisione degli spazi",
@@ -111,12 +112,10 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           onChange={(value) => updateFormData({ tipologiaAbitazione: value })}
         />
 
-        <div className="px-3 md:px-0">
-          <SuperficieSlider
-            value={formData.superficie || 20}
-            onChange={(value) => updateFormData({ superficie: value })}
-          />
-        </div>
+        <SuperficieSlider
+          value={formData.superficie || 20}
+          onChange={(value) => updateFormData({ superficie: value })}
+        />
 
         <IndirizzoField
           value={formData.indirizzo}
@@ -124,13 +123,11 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           onSelectLocation={selectLocation}
         />
 
-        <div className="px-3 md:px-0">
-          <SuddivisioneSpazi
-            composizione={formData.composizione}
-            onChangeStanza={handleChangeComposizione}
-            totalRooms={totalRooms}
-          />
-        </div>
+        <SuddivisioneSpazi
+          composizione={formData.composizione}
+          onChangeStanza={handleChangeComposizione}
+          totalRooms={totalRooms}
+        />
       </div>
 
       {/* Pulsante Avanti */}

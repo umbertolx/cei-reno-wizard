@@ -63,7 +63,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
         )}
       </div>
       
-      <div className="bg-white border-2 border-gray-200 rounded-xl p-4 md:p-6 space-y-4 md:space-y-6">
+      <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6 space-y-4 md:space-y-6">
         {stanze.map((stanza) => (
           <StanzaCounter
             key={stanza.key}
