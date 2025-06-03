@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -94,7 +93,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       </div>
 
       {/* Header principale */}
-      <div className="space-y-2 md:space-y-3 mt-7 text-center">
+      <div className="space-y-2 md:space-y-3 mt-7 text-center mb-12 md:mb-16">
         <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05]">
           <span className="md:inline">Informazioni</span>
           <span className="text-[#d8010c] md:inline"> generali</span>
@@ -103,11 +102,6 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
           Per offrirti una stima realistica, servono solo pochi dati di base. <br className="hidden md:block" />Il resto lo calcoliamo noi, in pochi minuti.
         </p>
-
-        {/* Linea divisoria */}
-        <div className="flex justify-center pt-4 px-5">
-          <div className="linea_divisoria w-full h-[3px] bg-[#fbe12e] rounded-full"></div>
-        </div>
       </div>
 
       {/* Contenuto principale */}
