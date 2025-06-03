@@ -44,8 +44,8 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
 
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="flex items-center gap-3 md:gap-4 px-3 md:px-0">
-        <div className="w-[60px] h-[60px] md:w-[80px] md:h-[80px] flex-shrink-0 flex items-center justify-center">
+      <div className="flex items-center gap-4 px-3 md:px-0">
+        <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
           <img 
             src="/lovable-uploads/417ced15-f2dc-47e1-8b8c-d0faf5b9717e.png" 
             alt="Floor plan icon" 
@@ -53,7 +53,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
           />
         </div>
         <div className="flex-1">
-          <h2 className="text-lg md:text-2xl font-medium text-[#1c1c1c]">Suddivisione spazi</h2>
+          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Suddivisione spazi</h2>
           <p className="text-xs md:text-base text-[#1c1c1c] opacity-70 hidden sm:block">Indica il numero di stanze per ogni tipologia</p>
         </div>
         {totalRooms > 0 && (
@@ -63,7 +63,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
         )}
       </div>
       
-      <div className="bg-white border-2 border-gray-200 rounded-xl p-3 md:p-6 space-y-3 md:space-y-6">
+      <div className="bg-white border-2 border-gray-200 rounded-xl p-4 md:p-6 space-y-4 md:space-y-6">
         {stanze.map((stanza) => (
           <StanzaCounter
             key={stanza.key}

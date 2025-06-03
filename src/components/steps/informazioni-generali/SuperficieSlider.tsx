@@ -10,7 +10,7 @@ type SuperficieSliderProps = {
 export const SuperficieSlider = ({ value, onChange }: SuperficieSliderProps) => {
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 px-3 md:px-0">
         <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
           <img 
             src="/lovable-uploads/22297941-d292-41c8-a9a7-e8ceec9287c1.png" 
