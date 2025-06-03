@@ -118,13 +118,11 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           />
         </div>
 
-        <div className="px-3 md:px-0">
-          <IndirizzoField
-            value={formData.indirizzo}
-            onChange={(value) => updateFormData({ indirizzo: value })}
-            onSelectLocation={selectLocation}
-          />
-        </div>
+        <IndirizzoField
+          value={formData.indirizzo}
+          onChange={(value) => updateFormData({ indirizzo: value })}
+          onSelectLocation={selectLocation}
+        />
 
         <div className="px-3 md:px-0">
           <SuddivisioneSpazi
