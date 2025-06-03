@@ -1,18 +1,16 @@
 
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { CheckCircle } from "lucide-react";
 
 type SuperficieSliderProps = {
   value: number;
   onChange: (value: number) => void;
-  isComplete?: boolean;
 };
 
-export const SuperficieSlider = ({ value, onChange, isComplete }: SuperficieSliderProps) => {
+export const SuperficieSlider = ({ value, onChange }: SuperficieSliderProps) => {
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 px-3 md:px-0">
         <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
           <img 
             src="/lovable-uploads/22297941-d292-41c8-a9a7-e8ceec9287c1.png" 
@@ -20,16 +18,9 @@ export const SuperficieSlider = ({ value, onChange, isComplete }: SuperficieSlid
             className="w-full h-full object-contain"
           />
         </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Superficie in mq</h2>
-            {isComplete && (
-              <CheckCircle className="h-5 w-5 text-green-600" />
-            )}
-          </div>
-          <p className="text-sm md:text-base text-[#1c1c1c] opacity-90">
-            Inserisci una stima <span className="hidden md:inline">approssimativa se non hai una misura precisa</span>
-          </p>
+        <div>
+          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Superficie in mq</h2>
+          <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Inserisci una stima approssimativa se non hai una misura precisa</p>
         </div>
       </div>
       
