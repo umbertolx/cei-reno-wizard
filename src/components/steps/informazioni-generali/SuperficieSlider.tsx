@@ -27,7 +27,7 @@ export const SuperficieSlider = ({ value, onChange }: SuperficieSliderProps) => 
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <Label htmlFor="superficie" className="text-lg md:text-xl font-medium text-[#1c1c1c]">Superficie</Label>
-          <span className="text-2xl md:text-3xl font-bold text-[#d8010c]">{value} mq</span>
+          <span className="text-lg md:text-xl font-bold text-[#d8010c]">{value} mq</span>
         </div>
         
         <div className="space-y-4">
