@@ -8,7 +8,7 @@ type IndirizzoFieldProps = {
 export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoFieldProps) => {
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="flex items-center gap-4 px-3 md:px-0">
+      <div className="flex items-center gap-3 md:gap-4 px-3 md:px-0">
         <div className="w-[60px] h-[60px] md:w-[80px] md:h-[80px] flex-shrink-0 flex items-center justify-center">
           <img 
             src="/lovable-uploads/14822282-293b-4be9-93a5-cbc34e07f6c6.png" 
