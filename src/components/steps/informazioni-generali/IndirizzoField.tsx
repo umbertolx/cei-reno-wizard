@@ -22,18 +22,16 @@ export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoF
         </div>
       </div>
       
-      <div className="mx-3 md:mx-0">
-        <div className="p-4 rounded-xl transition-all duration-300 border cursor-pointer bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm">
-          <div className="flex items-center justify-between">
-            <div className="text-left flex-1 min-w-0">
-              <input
-                type="text"
-                placeholder="Via, numero civico, città"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                className="w-full font-semibold text-base text-[#1c1c1c] bg-transparent border-0 outline-none placeholder:text-gray-400"
-              />
-            </div>
+      <div className="p-4 rounded-xl transition-all duration-300 border cursor-pointer bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="text-left flex-1 min-w-0">
+            <input
+              type="text"
+              placeholder="Via, numero civico, città"
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              className="w-full font-semibold text-base text-[#1c1c1c] bg-transparent border-0 outline-none placeholder:text-gray-400"
+            />
           </div>
         </div>
       </div>
