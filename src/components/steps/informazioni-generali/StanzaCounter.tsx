@@ -29,7 +29,7 @@ export const StanzaCounter = ({
         <Label htmlFor={type} className="text-sm md:text-lg font-medium text-[#1c1c1c] mb-0.5 md:mb-1">
           {label}
         </Label>
-        <span className="text-xs md:text-sm text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis">
+        <span className="text-xs md:text-sm text-gray-600">
           {description}
         </span>
       </div>
@@ -38,10 +38,10 @@ export const StanzaCounter = ({
         <Button 
           variant="outline" 
           size="icon"
-          className={`w-8 h-8 md:w-10 md:h-10 rounded-full border-2 ${
+          className={`w-9 h-9 md:w-10 md:h-10 rounded-full border-2 transition-all duration-200 ${
             isAtMin 
               ? 'opacity-40 cursor-not-allowed border-gray-200' 
-              : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white'
+              : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white hover:scale-105'
           }`}
           onClick={() => onChange(Math.max(0, value - 1))}
           disabled={isAtMin}
@@ -56,10 +56,10 @@ export const StanzaCounter = ({
         <Button 
           variant="outline" 
           size="icon"
-          className={`w-8 h-8 md:w-10 md:h-10 rounded-full border-2 ${
+          className={`w-9 h-9 md:w-10 md:h-10 rounded-full border-2 transition-all duration-200 ${
             isAtMax 
               ? 'opacity-40 cursor-not-allowed border-gray-200' 
-              : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white'
+              : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white hover:scale-105'
           }`}
           onClick={() => onChange(value + 1)}
           disabled={isAtMax}
