@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
@@ -175,6 +174,15 @@ export const Configuratore = () => {
         );
       case 2:
         return (
+          <ConfiguratoreElettrico 
+            formData={formData} 
+            updateFormData={updateFormData} 
+            onNext={handleNext} 
+            onBack={handleBack}
+          />
+        );
+      case 3:
+        return (
           <DatiContatto
             formData={formData}
             updateFormData={updateFormData}
@@ -182,7 +190,7 @@ export const Configuratore = () => {
             onNext={handleNext}
           />
         );
-      case 3:
+      case 4:
         const stima = calcolaStima();
         return (
           <StimaFinale
@@ -193,7 +201,7 @@ export const Configuratore = () => {
             onSubmit={handleInviaDati}
           />
         );
-      case 4:
+      case 5:
         return <RichiestaInviata onReset={handleReset} />;
       default:
         return <div>Step non valido</div>;
