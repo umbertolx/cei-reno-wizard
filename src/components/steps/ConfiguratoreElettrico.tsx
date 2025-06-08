@@ -3,7 +3,8 @@ import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ArrowRight, ArrowLeft, Zap } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
+import { Check } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -24,6 +25,21 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
 
   const isFormValid = tipoRistrutturazione !== "";
 
+  const tipiIntervento = [
+    {
+      id: 'completa',
+      label: 'Ristrutturazione completa'
+    },
+    {
+      id: 'nuova',
+      label: 'Nuova costruzione'
+    },
+    {
+      id: 'parziale',
+      label: 'Intervento parziale'
+    }
+  ];
+
   return (
     <div className="space-y-4">
       {/* Badge Impianto Elettrico */}
@@ -35,12 +51,6 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
 
       {/* Header principale */}
       <div className="space-y-2 md:space-y-3 mt-7 text-center mb-12 md:mb-16">
-        <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 md:w-20 md:h-20 bg-[#d8010c] bg-opacity-20 rounded-full flex items-center justify-center">
-            <Zap className="h-8 w-8 md:h-10 md:w-10 text-[#d8010c]" />
-          </div>
-        </div>
-        
         <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05]">
           Che tipo di <span className="text-[#d8010c]">intervento</span> stai pianificando?
         </h1>
@@ -50,75 +60,58 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
         </p>
       </div>
 
-      {/* Opzioni di risposta */}
-      <div className="max-w-2xl mx-auto space-y-4 mb-8">
-        <RadioGroup value={tipoRistrutturazione} onValueChange={setTipoRistrutturazione}>
-          <div 
-            className={`
-              border-2 rounded-xl p-6 cursor-pointer transition-all duration-200
-              ${tipoRistrutturazione === 'completa' 
-                ? 'border-[#d8010c] bg-red-50' 
-                : 'border-gray-200 hover:border-gray-300 bg-white'
-              }
-            `}
-            onClick={() => setTipoRistrutturazione('completa')}
-          >
-            <div className="flex items-center space-x-4">
-              <RadioGroupItem 
-                value="completa" 
-                id="completa" 
-                className={`${tipoRistrutturazione === 'completa' ? 'border-[#d8010c] text-[#d8010c]' : ''}`}
+      {/* Contenuto principale */}
+      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8">
+        <div className="space-y-4 md:space-y-6">
+          <div className="flex items-center gap-4 px-3 md:px-0">
+            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
+              <img 
+                src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
+                alt="Electrical work icon" 
+                className="w-full h-full object-contain"
               />
-              <label htmlFor="completa" className="text-lg font-medium text-[#1c1c1c] cursor-pointer flex-1">
-                Ristrutturazione completa
-              </label>
+            </div>
+            <div>
+              <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Tipo di intervento</h2>
+              <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Seleziona il tipo che meglio descrive il tuo progetto</p>
             </div>
           </div>
-
-          <div 
-            className={`
-              border-2 rounded-xl p-6 cursor-pointer transition-all duration-200
-              ${tipoRistrutturazione === 'nuova' 
-                ? 'border-[#d8010c] bg-red-50' 
-                : 'border-gray-200 hover:border-gray-300 bg-white'
-              }
-            `}
-            onClick={() => setTipoRistrutturazione('nuova')}
-          >
-            <div className="flex items-center space-x-4">
-              <RadioGroupItem 
-                value="nuova" 
-                id="nuova" 
-                className={`${tipoRistrutturazione === 'nuova' ? 'border-[#d8010c] text-[#d8010c]' : ''}`}
-              />
-              <label htmlFor="nuova" className="text-lg font-medium text-[#1c1c1c] cursor-pointer flex-1">
-                Nuova costruzione
-              </label>
-            </div>
+          
+          <div className="space-y-3 md:space-y-4">
+            {tipiIntervento.map((tipo) => {
+              const isSelected = tipoRistrutturazione === tipo.id;
+              
+              return (
+                <div
+                  key={tipo.id}
+                  onClick={() => setTipoRistrutturazione(tipo.id)}
+                  className={`
+                    p-4 rounded-xl transition-all duration-300 border cursor-pointer
+                    ${isSelected 
+                      ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                      : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                    }
+                  `}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="text-left flex-1 min-w-0">
+                      <div className="font-semibold text-base text-[#1c1c1c]">
+                        {tipo.label}
+                      </div>
+                    </div>
+                    {isSelected && (
+                      <div className="ml-3 flex-shrink-0">
+                        <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
+                          <Check className="h-3 w-3 text-white" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
-
-          <div 
-            className={`
-              border-2 rounded-xl p-6 cursor-pointer transition-all duration-200
-              ${tipoRistrutturazione === 'parziale' 
-                ? 'border-[#d8010c] bg-red-50' 
-                : 'border-gray-200 hover:border-gray-300 bg-white'
-              }
-            `}
-            onClick={() => setTipoRistrutturazione('parziale')}
-          >
-            <div className="flex items-center space-x-4">
-              <RadioGroupItem 
-                value="parziale" 
-                id="parziale" 
-                className={`${tipoRistrutturazione === 'parziale' ? 'border-[#d8010c] text-[#d8010c]' : ''}`}
-              />
-              <label htmlFor="parziale" className="text-lg font-medium text-[#1c1c1c] cursor-pointer flex-1">
-                Intervento parziale
-              </label>
-            </div>
-          </div>
-        </RadioGroup>
+        </div>
       </div>
 
       {/* Pulsanti di navigazione */}
