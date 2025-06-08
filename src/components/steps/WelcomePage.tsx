@@ -112,7 +112,7 @@ export const WelcomePage = ({
               <div className="text-xs text-gray-500 mb-1 font-medium p-1">
                 Budget stimato per questo progetto
               </div>
-              <div className="text-lg md:text-3xl font-bold text-gray-900 mb-2 p-1">
+              <div className="text-xl md:text-5xl font-bold text-gray-900 mb-2 p-1">
                 €13.450 - €19.330
               </div>
               
