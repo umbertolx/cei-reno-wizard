@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ArrowRight, ArrowLeft, Zap } from "lucide-react";
+import { ArrowRight, ArrowLeft, Building } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -25,103 +26,99 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
   const isFormValid = tipoRistrutturazione !== "";
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-8">
-      {/* Header con titolo principale */}
-      <div className="text-center space-y-4">
-        <h1 className="text-3xl md:text-4xl font-bold text-[#1c1c1c]">
-          Configuratore <span className="text-[#d8010c]">elettrico</span>
-        </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Configura il tuo impianto elettrico rispondendo a poche domande.<br />
-          Ti aiuteremo a creare un preventivo personalizzato e preciso.
-        </p>
+    <div className="w-full max-w-3xl mx-auto space-y-8">
+      {/* Badge in alto */}
+      <div className="text-center">
+        <Badge variant="secondary" className="px-4 py-2 text-sm font-medium bg-blue-100 text-blue-800 border-blue-200">
+          Impianto elettrico
+        </Badge>
       </div>
 
       {/* Contenuto principale */}
       <div className="space-y-8">
-        {/* Domanda principale */}
+        {/* Icona e domanda */}
         <div className="text-center space-y-6">
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
-              <Zap className="h-8 w-8 text-white" />
+            <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+              <Building className="h-6 w-6 text-white" />
             </div>
           </div>
           
           <div className="space-y-3">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#1c1c1c]">
-              Stai ristrutturando completamente il tuo immobile?
+            <h2 className="text-xl font-semibold text-gray-900">
+              Che tipo di intervento stai pianificando?
             </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              Una ristrutturazione completa prevede lavori sui pavimenti con demolizione del massetto o l'aggiunta di controsoffitti
+            <p className="text-gray-600 text-base max-w-2xl mx-auto">
+              Seleziona il tipo di lavoro per ricevere una stima più precisa
             </p>
           </div>
         </div>
 
         {/* Opzioni di risposta */}
-        <div className="max-w-2xl mx-auto space-y-4">
+        <div className="max-w-xl mx-auto space-y-3">
           <RadioGroup value={tipoRistrutturazione} onValueChange={setTipoRistrutturazione}>
             <div 
               className={`
-                border-2 rounded-xl p-6 cursor-pointer transition-all duration-200
+                border-2 rounded-lg p-4 cursor-pointer transition-all duration-200
                 ${tipoRistrutturazione === 'completa' 
-                  ? 'border-[#d8010c] bg-red-50' 
+                  ? 'border-blue-500 bg-blue-50' 
                   : 'border-gray-200 hover:border-gray-300 bg-white'
                 }
               `}
               onClick={() => setTipoRistrutturazione('completa')}
             >
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <RadioGroupItem 
                   value="completa" 
                   id="completa" 
-                  className={`${tipoRistrutturazione === 'completa' ? 'border-[#d8010c] text-[#d8010c]' : ''}`}
+                  className={`${tipoRistrutturazione === 'completa' ? 'border-blue-500 text-blue-500' : ''}`}
                 />
-                <label htmlFor="completa" className="text-lg font-medium text-[#1c1c1c] cursor-pointer flex-1">
-                  Sì, è una ristrutturazione completa
+                <label htmlFor="completa" className="text-base font-medium text-gray-900 cursor-pointer flex-1">
+                  Ristrutturazione completa
                 </label>
               </div>
             </div>
 
             <div 
               className={`
-                border-2 rounded-xl p-6 cursor-pointer transition-all duration-200
+                border-2 rounded-lg p-4 cursor-pointer transition-all duration-200
                 ${tipoRistrutturazione === 'nuova' 
-                  ? 'border-[#d8010c] bg-red-50' 
+                  ? 'border-blue-500 bg-blue-50' 
                   : 'border-gray-200 hover:border-gray-300 bg-white'
                 }
               `}
               onClick={() => setTipoRistrutturazione('nuova')}
             >
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <RadioGroupItem 
                   value="nuova" 
                   id="nuova" 
-                  className={`${tipoRistrutturazione === 'nuova' ? 'border-[#d8010c] text-[#d8010c]' : ''}`}
+                  className={`${tipoRistrutturazione === 'nuova' ? 'border-blue-500 text-blue-500' : ''}`}
                 />
-                <label htmlFor="nuova" className="text-lg font-medium text-[#1c1c1c] cursor-pointer flex-1">
-                  È una nuova costruzione
+                <label htmlFor="nuova" className="text-base font-medium text-gray-900 cursor-pointer flex-1">
+                  Nuova costruzione
                 </label>
               </div>
             </div>
 
             <div 
               className={`
-                border-2 rounded-xl p-6 cursor-pointer transition-all duration-200
+                border-2 rounded-lg p-4 cursor-pointer transition-all duration-200
                 ${tipoRistrutturazione === 'parziale' 
-                  ? 'border-[#d8010c] bg-red-50' 
+                  ? 'border-blue-500 bg-blue-50' 
                   : 'border-gray-200 hover:border-gray-300 bg-white'
                 }
               `}
               onClick={() => setTipoRistrutturazione('parziale')}
             >
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <RadioGroupItem 
                   value="parziale" 
                   id="parziale" 
-                  className={`${tipoRistrutturazione === 'parziale' ? 'border-[#d8010c] text-[#d8010c]' : ''}`}
+                  className={`${tipoRistrutturazione === 'parziale' ? 'border-blue-500 text-blue-500' : ''}`}
                 />
-                <label htmlFor="parziale" className="text-lg font-medium text-[#1c1c1c] cursor-pointer flex-1">
-                  No, è solo un intervento parziale
+                <label htmlFor="parziale" className="text-base font-medium text-gray-900 cursor-pointer flex-1">
+                  Intervento parziale
                 </label>
               </div>
             </div>
@@ -134,7 +131,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
         <Button 
           onClick={onBack}
           variant="outline"
-          className="px-8 py-3 text-gray-700 border-gray-300 hover:bg-gray-50"
+          className="px-6 py-2"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Indietro
@@ -143,7 +140,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
         <Button 
           onClick={handleSubmit}
           disabled={!isFormValid}
-          className="px-8 py-3 bg-[#d8010c] hover:bg-[#b8000a] text-white disabled:opacity-50"
+          className="px-6 py-2"
         >
           Avanti
           <ArrowRight className="h-4 w-4 ml-2" />
