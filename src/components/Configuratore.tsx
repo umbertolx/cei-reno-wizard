@@ -34,6 +34,7 @@ export type FormData = {
   accettoTermini: boolean;
   tipoProprietà: string;
   tipoRistrutturazione?: string;
+  tipoImpianto?: string;
   dataRichiestaSopralluogo?: string;
   orarioSopralluogo?: string;
   note?: string;
