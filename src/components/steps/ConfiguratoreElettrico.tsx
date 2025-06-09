@@ -2,9 +2,8 @@
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Info, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowLeft, Info } from "lucide-react";
 import { Check } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 type Props = {
   formData: FormData;
@@ -15,7 +14,6 @@ type Props = {
 
 export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const [tipoRistrutturazione, setTipoRistrutturazione] = useState<string>(formData.tipoRistrutturazione || "");
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   const handleSubmit = () => {
     updateFormData({ 
@@ -69,29 +67,17 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
             </div>
           </div>
 
-          {/* Sezione informativa collassabile */}
+          {/* Box informativo giallo */}
           <div className="px-3 md:px-0">
-            <Collapsible open={isInfoOpen} onOpenChange={setIsInfoOpen}>
-              <CollapsibleTrigger className="flex items-center gap-2 text-sm text-[#d8010c] hover:text-[#b8000a] transition-colors">
-                <Info className="h-4 w-4" />
-                <span>Cosa comporta una ristrutturazione completa?</span>
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isInfoOpen ? 'rotate-180' : ''}`} />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-3">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-gray-700">
-                  <p className="mb-2">
-                    <strong>Una ristrutturazione completa dell'impianto elettrico prevede:</strong>
-                  </p>
-                  <ul className="space-y-1 list-disc list-inside">
-                    <li>Lavori sui pavimenti con demolizione del massetto</li>
-                    <li>Aggiunta di controsoffitti per il passaggio dei cavi</li>
-                    <li>Sostituzione completa del quadro elettrico</li>
-                    <li>Rifacimento di tutte le tracce murarie</li>
-                    <li>Installazione di nuovi punti luce e prese</li>
-                  </ul>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-yellow-800">
+                  <p className="font-medium mb-1">Cosa comporta una ristrutturazione completa?</p>
+                  <p>Una ristrutturazione completa prevede lavori sui pavimenti con demolizione del massetto o l'aggiunta di controsoffitti per il passaggio dei cavi.</p>
                 </div>
-              </CollapsibleContent>
-            </Collapsible>
+              </div>
+            </div>
           </div>
           
           <div className="space-y-3 md:space-y-4">
