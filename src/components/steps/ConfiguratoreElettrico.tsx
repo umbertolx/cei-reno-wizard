@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -74,7 +73,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
                 <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-yellow-800">
                   <p className="font-medium mb-1">Cosa comporta una ristrutturazione completa?</p>
-                  <p>Una ristrutturazione completa prevede lavori sui pavimenti con demolizione del massetto o l'aggiunta di controsoffitti per il passaggio dei cavi.</p>
+                  <p>Una ristrutturazione completa prevede lavori sui pavimenti con demolizione del massetto o l'aggiunta di controsoffitti per il passaggio degli impianti.</p>
                 </div>
               </div>
             </div>
