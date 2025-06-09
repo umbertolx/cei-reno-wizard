@@ -58,17 +58,17 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
       <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
         <div className="space-y-4 md:space-y-6">
           {/* Header - Layout responsive come nelle pagine precedenti */}
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center mx-auto md:mx-0">
+          <div className="flex items-center gap-4 px-3 md:px-0">
+            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
               <img 
                 src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
                 alt="Electrical work icon" 
                 className="w-full h-full object-contain"
               />
             </div>
-            <div className="flex-1 text-center md:text-left">
+            <div>
               <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Tipo di intervento</h2>
-              <p className="text-sm md:text-base text-gray-600 mt-1">
+              <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">
                 Scegli il tipo di lavoro che meglio descrive il tuo progetto elettrico
               </p>
             </div>
