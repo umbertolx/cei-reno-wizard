@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Info, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowLeft, Info, ChevronDown, Plus } from "lucide-react";
 import { Check } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
@@ -15,7 +15,7 @@ type Props = {
 
 export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const [tipoRistrutturazione, setTipoRistrutturazione] = useState<string>(formData.tipoRistrutturazione || "");
-  const [expandedItem, setExpandedItem] = useState<string>("");
+  const [infoBoxOpen, setInfoBoxOpen] = useState<boolean>(false);
 
   const handleSubmit = () => {
     updateFormData({ 
@@ -29,24 +29,20 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
   const tipiIntervento = [
     {
       id: 'completa',
-      label: 'Ristrutturazione completa',
-      description: 'Lavori sui pavimenti con demolizione del massetto o aggiunta di controsoffitti per il passaggio degli impianti'
+      label: 'Ristrutturazione completa'
     },
     {
       id: 'nuova',
-      label: 'Nuova costruzione',
-      description: 'Installazione completa dell\'impianto elettrico in una nuova costruzione'
+      label: 'Nuova costruzione'
     },
     {
       id: 'parziale',
-      label: 'Intervento parziale',
-      description: 'Modifica o ampliamento di parti specifiche dell\'impianto esistente'
+      label: 'Intervento parziale'
     }
   ];
 
   const handleItemClick = (id: string) => {
     setTipoRistrutturazione(id);
-    setExpandedItem(expandedItem === id ? "" : id);
   };
 
   return (
@@ -78,76 +74,78 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
             </div>
           </div>
 
-          {/* Box informativo giallo */}
+          {/* Box informativo - collassabile su mobile, sempre aperto su desktop */}
           <div className="px-3 md:px-0">
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <div className="flex items-start gap-3">
-                <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-yellow-800">
-                  <p className="font-medium mb-1">Cosa comporta una ristrutturazione completa?</p>
-                  <p>Una ristrutturazione completa prevede lavori sui pavimenti con demolizione del massetto o l'aggiunta di controsoffitti per il passaggio degli impianti.</p>
+            {/* Versione mobile - collassabile */}
+            <div className="block md:hidden">
+              <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
+                <CollapsibleTrigger className="w-full">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
+                        <span className="text-sm font-medium text-yellow-800">
+                          Cosa comporta una ristrutturazione completa?
+                        </span>
+                      </div>
+                      <Plus className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen ? 'rotate-45' : ''}`} />
+                    </div>
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="bg-yellow-50 border-x border-b border-yellow-200 rounded-b-lg px-4 pb-4">
+                    <p className="text-sm text-yellow-800">
+                      Una ristrutturazione completa prevede lavori sui pavimenti con demolizione del massetto o l'aggiunta di controsoffitti per il passaggio degli impianti.
+                    </p>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+
+            {/* Versione desktop - sempre aperto */}
+            <div className="hidden md:block">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-yellow-800">
+                    <p className="font-medium mb-1">Cosa comporta una ristrutturazione completa?</p>
+                    <p>Una ristrutturazione completa prevede lavori sui pavimenti con demolizione del massetto o l'aggiunta di controsoffitti per il passaggio degli impianti.</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Layout a cascata con box espandibili */}
+          {/* Opzioni uniformi senza cascata */}
           <div className="space-y-3 md:space-y-4">
-            {tipiIntervento.map((tipo, index) => {
+            {tipiIntervento.map((tipo) => {
               const isSelected = tipoRistrutturazione === tipo.id;
-              const isExpanded = expandedItem === tipo.id;
               
               return (
-                <Collapsible
+                <div
                   key={tipo.id}
-                  open={isExpanded}
-                  onOpenChange={() => setExpandedItem(isExpanded ? "" : tipo.id)}
+                  onClick={() => handleItemClick(tipo.id)}
+                  className={`
+                    rounded-xl transition-all duration-300 border cursor-pointer p-4
+                    ${isSelected 
+                      ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                      : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                    }
+                  `}
                 >
-                  <div
-                    className={`
-                      rounded-xl transition-all duration-300 border cursor-pointer
-                      ${isSelected 
-                        ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
-                        : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
-                      }
-                      ${index > 0 ? 'ml-4 md:ml-8' : ''} 
-                      ${index > 1 ? 'ml-8 md:ml-16' : ''}
-                    `}
-                  >
-                    <CollapsibleTrigger
-                      onClick={() => handleItemClick(tipo.id)}
-                      className="w-full p-4 text-left"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-base text-[#1c1c1c]">
-                            {tipo.label}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 ml-3">
-                          {isSelected && (
-                            <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
-                              <Check className="h-3 w-3 text-white" />
-                            </div>
-                          )}
-                          <ChevronDown 
-                            className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${
-                              isExpanded ? 'rotate-180' : ''
-                            }`} 
-                          />
-                        </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-base text-[#1c1c1c]">
+                        {tipo.label}
                       </div>
-                    </CollapsibleTrigger>
-                    
-                    <CollapsibleContent className="px-4 pb-4">
-                      <div className="pt-2 border-t border-gray-100">
-                        <p className="text-sm text-gray-600 leading-relaxed">
-                          {tipo.description}
-                        </p>
+                    </div>
+                    {isSelected && (
+                      <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
+                        <Check className="h-3 w-3 text-white" />
                       </div>
-                    </CollapsibleContent>
+                    )}
                   </div>
-                </Collapsible>
+                </div>
               );
             })}
           </div>
