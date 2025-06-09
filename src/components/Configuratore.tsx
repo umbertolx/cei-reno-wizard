@@ -1,7 +1,9 @@
+
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
+import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
@@ -183,6 +185,15 @@ export const Configuratore = () => {
         );
       case 3:
         return (
+          <TipoImpiantoElettrico 
+            formData={formData} 
+            updateFormData={updateFormData} 
+            onNext={handleNext} 
+            onBack={handleBack}
+          />
+        );
+      case 4:
+        return (
           <DatiContatto
             formData={formData}
             updateFormData={updateFormData}
@@ -190,7 +201,7 @@ export const Configuratore = () => {
             onNext={handleNext}
           />
         );
-      case 4:
+      case 5:
         const stima = calcolaStima();
         return (
           <StimaFinale
@@ -201,7 +212,7 @@ export const Configuratore = () => {
             onSubmit={handleInviaDati}
           />
         );
-      case 5:
+      case 6:
         return <RichiestaInviata onReset={handleReset} />;
       default:
         return <div>Step non valido</div>;
