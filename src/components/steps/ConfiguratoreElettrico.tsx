@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
@@ -39,7 +40,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Badge Impianto Elettrico */}
       <div className="flex justify-center">
         <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
@@ -48,17 +49,18 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
       </div>
 
       {/* Contenuto principale */}
-      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-12 md:mt-16">
+      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
         <div className="space-y-4 md:space-y-6">
-          <div className="flex items-center gap-4 px-3 md:px-0">
-            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
+          {/* Header - Layout responsive */}
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 px-3 md:px-0">
+            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center mx-auto md:mx-0">
               <img 
                 src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
                 alt="Electrical work icon" 
                 className="w-full h-full object-contain"
               />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 text-center md:text-left">
               <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Tipo di intervento</h2>
               <p className="text-sm md:text-base text-gray-600 mt-1">
                 Scegli il tipo di lavoro che meglio descrive il tuo progetto elettrico
@@ -116,14 +118,14 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
         </div>
       </div>
 
-      {/* Pulsanti di navigazione */}
-      <div className="max-w-4xl md:mx-auto px-3 md:px-0 flex flex-col sm:flex-row gap-4">
+      {/* Pulsanti di navigazione uniformi */}
+      <div className="flex flex-col sm:flex-row gap-4 pt-6">
         <Button 
           onClick={onBack}
           variant="outline"
-          className="flex-1 py-4 md:py-5 text-base md:text-lg border-[#1c1c1c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl flex items-center justify-center gap-2"
+          className="flex-1 h-12 text-base font-medium border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg flex items-center justify-center gap-2"
         >
-          <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
+          <ArrowLeft className="h-4 w-4" />
           Indietro
         </Button>
         
@@ -131,19 +133,18 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
           onClick={handleSubmit}
           disabled={!isFormValid}
           className="
-            flex-1 py-4 md:py-5
-            text-base md:text-lg 
+            flex-1 h-12
+            text-base font-medium
             bg-[#d8010c] hover:bg-[#b8000a]
             text-white 
-            rounded-xl 
+            rounded-lg 
             flex items-center justify-center gap-2
-            transition-all duration-300 
-            shadow-sm hover:shadow-md
+            transition-all duration-200
             disabled:opacity-50 disabled:cursor-not-allowed
           "
         >
           <span>Avanti</span>
-          <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+          <ArrowRight className="h-4 w-4" />
         </Button>
       </div>
     </div>
