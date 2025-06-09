@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { Check } from "lucide-react";
 
@@ -28,15 +27,18 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
   const tipiIntervento = [
     {
       id: 'completa',
-      label: 'Ristrutturazione completa'
+      label: 'Ristrutturazione completa',
+      description: 'Rifacimento completo dell\'impianto elettrico'
     },
     {
       id: 'nuova',
-      label: 'Nuova costruzione'
+      label: 'Nuova costruzione',
+      description: 'Installazione ex novo dell\'impianto'
     },
     {
       id: 'parziale',
-      label: 'Intervento parziale'
+      label: 'Intervento parziale',
+      description: 'Modifica o ampliamento dell\'impianto esistente'
     }
   ];
 
@@ -49,19 +51,8 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
         </div>
       </div>
 
-      {/* Header principale */}
-      <div className="space-y-2 md:space-y-3 mt-7 text-center mb-12 md:mb-16">
-        <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05]">
-          Che tipo di <span className="text-[#d8010c]">intervento</span> stai pianificando?
-        </h1>
-        
-        <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Seleziona il tipo di lavoro per ricevere una stima più precisa per l'impianto elettrico
-        </p>
-      </div>
-
       {/* Contenuto principale */}
-      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8">
+      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-12 md:mt-16">
         <div className="space-y-4 md:space-y-6">
           <div className="flex items-center gap-4 px-3 md:px-0">
             <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
@@ -73,7 +64,9 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
             </div>
             <div>
               <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Tipo di intervento</h2>
-              <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Seleziona il tipo che meglio descrive il tuo progetto</p>
+              <p className="text-sm md:text-base text-gray-600 mt-1">
+                Scegli il tipo di lavoro che meglio descrive il tuo progetto elettrico
+              </p>
             </div>
           </div>
           
@@ -98,6 +91,9 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
                       <div className="font-semibold text-base text-[#1c1c1c]">
                         {tipo.label}
                       </div>
+                      <div className="text-sm text-gray-600 mt-1">
+                        {tipo.description}
+                      </div>
                     </div>
                     {isSelected && (
                       <div className="ml-3 flex-shrink-0">
@@ -119,7 +115,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
         <Button 
           onClick={onBack}
           variant="outline"
-          className="flex-1 p-6 text-lg border-[#1c1c1c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl flex items-center justify-center gap-2"
+          className="flex-1 py-4 md:py-5 text-base md:text-lg border-[#1c1c1c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl flex items-center justify-center gap-2"
         >
           <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" />
           Indietro
@@ -129,7 +125,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
           onClick={handleSubmit}
           disabled={!isFormValid}
           className="
-            flex-1 px-6 py-4 md:py-5
+            flex-1 py-4 md:py-5
             text-base md:text-lg 
             bg-[#d8010c] hover:bg-[#b8000a]
             text-white 
@@ -137,7 +133,6 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
             flex items-center justify-center gap-2
             transition-all duration-300 
             shadow-sm hover:shadow-md
-            min-h-[48px]
             disabled:opacity-50 disabled:cursor-not-allowed
           "
         >
