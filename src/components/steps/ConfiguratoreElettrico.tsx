@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Info, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowRight, ArrowLeft, Info, ChevronDown } from "lucide-react";
 import { Check } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
@@ -15,7 +15,7 @@ type Props = {
 
 export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const [tipoRistrutturazione, setTipoRistrutturazione] = useState<string>(formData.tipoRistrutturazione || "");
-  const [isOpen, setIsOpen] = useState(false);
+  const [expandedItem, setExpandedItem] = useState<string>("");
 
   const handleSubmit = () => {
     updateFormData({ 
@@ -29,17 +29,25 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
   const tipiIntervento = [
     {
       id: 'completa',
-      label: 'Ristrutturazione completa'
+      label: 'Ristrutturazione completa',
+      description: 'Lavori sui pavimenti con demolizione del massetto o aggiunta di controsoffitti per il passaggio degli impianti'
     },
     {
       id: 'nuova',
-      label: 'Nuova costruzione'
+      label: 'Nuova costruzione',
+      description: 'Installazione completa dell\'impianto elettrico in una nuova costruzione'
     },
     {
       id: 'parziale',
-      label: 'Intervento parziale'
+      label: 'Intervento parziale',
+      description: 'Modifica o ampliamento di parti specifiche dell\'impianto esistente'
     }
   ];
+
+  const handleItemClick = (id: string) => {
+    setTipoRistrutturazione(id);
+    setExpandedItem(expandedItem === id ? "" : id);
+  };
 
   return (
     <div className="space-y-6">
@@ -53,7 +61,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
       {/* Contenuto principale */}
       <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
         <div className="space-y-4 md:space-y-6">
-          {/* Header - Layout responsive */}
+          {/* Header - Layout responsive come nelle pagine precedenti */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 px-3 md:px-0">
             <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center mx-auto md:mx-0">
               <img 
@@ -70,79 +78,9 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
             </div>
           </div>
 
-          {/* Mobile: Collapsible version */}
-          <div className="md:hidden px-3">
-            <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-              <CollapsibleTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-between p-4 h-auto text-left"
-                >
-                  <span className="font-medium">
-                    {tipoRistrutturazione ? 
-                      tipiIntervento.find(t => t.id === tipoRistrutturazione)?.label : 
-                      "Seleziona il tipo di intervento"
-                    }
-                  </span>
-                  {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                </Button>
-              </CollapsibleTrigger>
-              
-              <CollapsibleContent className="space-y-3 mt-3">
-                {/* Box informativo giallo */}
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-yellow-800">
-                      <p className="font-medium mb-1">Cosa comporta una ristrutturazione completa?</p>
-                      <p>Una ristrutturazione completa prevede lavori sui pavimenti con demolizione del massetto o l'aggiunta di controsoffitti per il passaggio degli impianti.</p>
-                    </div>
-                  </div>
-                </div>
-                
-                {tipiIntervento.map((tipo) => {
-                  const isSelected = tipoRistrutturazione === tipo.id;
-                  
-                  return (
-                    <div
-                      key={tipo.id}
-                      onClick={() => {
-                        setTipoRistrutturazione(tipo.id);
-                        setIsOpen(false);
-                      }}
-                      className={`
-                        p-4 rounded-xl transition-all duration-300 border cursor-pointer
-                        ${isSelected 
-                          ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
-                          : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
-                        }
-                      `}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="text-left flex-1 min-w-0">
-                          <div className="font-semibold text-base text-[#1c1c1c]">
-                            {tipo.label}
-                          </div>
-                        </div>
-                        {isSelected && (
-                          <div className="ml-3 flex-shrink-0">
-                            <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
-                              <Check className="h-3 w-3 text-white" />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </CollapsibleContent>
-            </Collapsible>
-          </div>
-
-          {/* Desktop: Original layout */}
-          <div className="hidden md:block">
-            {/* Box informativo giallo */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+          {/* Box informativo giallo */}
+          <div className="px-3 md:px-0">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
               <div className="flex items-start gap-3">
                 <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-yellow-800">
@@ -151,41 +89,67 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
                 </div>
               </div>
             </div>
-            
-            <div className="space-y-3 md:space-y-4">
-              {tipiIntervento.map((tipo) => {
-                const isSelected = tipoRistrutturazione === tipo.id;
-                
-                return (
+          </div>
+          
+          {/* Layout a cascata con box espandibili */}
+          <div className="space-y-3 md:space-y-4">
+            {tipiIntervento.map((tipo, index) => {
+              const isSelected = tipoRistrutturazione === tipo.id;
+              const isExpanded = expandedItem === tipo.id;
+              
+              return (
+                <Collapsible
+                  key={tipo.id}
+                  open={isExpanded}
+                  onOpenChange={() => setExpandedItem(isExpanded ? "" : tipo.id)}
+                >
                   <div
-                    key={tipo.id}
-                    onClick={() => setTipoRistrutturazione(tipo.id)}
                     className={`
-                      p-4 rounded-xl transition-all duration-300 border cursor-pointer
+                      rounded-xl transition-all duration-300 border cursor-pointer
                       ${isSelected 
                         ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
                         : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
                       }
+                      ${index > 0 ? 'ml-4 md:ml-8' : ''} 
+                      ${index > 1 ? 'ml-8 md:ml-16' : ''}
                     `}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="text-left flex-1 min-w-0">
-                        <div className="font-semibold text-base text-[#1c1c1c]">
-                          {tipo.label}
-                        </div>
-                      </div>
-                      {isSelected && (
-                        <div className="ml-3 flex-shrink-0">
-                          <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
-                            <Check className="h-3 w-3 text-white" />
+                    <CollapsibleTrigger
+                      onClick={() => handleItemClick(tipo.id)}
+                      className="w-full p-4 text-left"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-base text-[#1c1c1c]">
+                            {tipo.label}
                           </div>
                         </div>
-                      )}
-                    </div>
+                        <div className="flex items-center gap-2 ml-3">
+                          {isSelected && (
+                            <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
+                              <Check className="h-3 w-3 text-white" />
+                            </div>
+                          )}
+                          <ChevronDown 
+                            className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${
+                              isExpanded ? 'rotate-180' : ''
+                            }`} 
+                          />
+                        </div>
+                      </div>
+                    </CollapsibleTrigger>
+                    
+                    <CollapsibleContent className="px-4 pb-4">
+                      <div className="pt-2 border-t border-gray-100">
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          {tipo.description}
+                        </p>
+                      </div>
+                    </CollapsibleContent>
                   </div>
-                );
-              })}
-            </div>
+                </Collapsible>
+              );
+            })}
           </div>
         </div>
       </div>
