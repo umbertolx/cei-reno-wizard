@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight, ArrowLeft, Info, ChevronDown } from "lucide-react";
 import { Check } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 type Props = {
   formData: FormData;
@@ -14,6 +15,7 @@ type Props = {
 
 export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const [tipoRistrutturazione, setTipoRistrutturazione] = useState<string>(formData.tipoRistrutturazione || "");
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   const handleSubmit = () => {
     updateFormData({ 
@@ -27,18 +29,15 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
   const tipiIntervento = [
     {
       id: 'completa',
-      label: 'Ristrutturazione completa',
-      description: 'Rifacimento completo dell\'impianto elettrico'
+      label: 'Ristrutturazione completa'
     },
     {
       id: 'nuova',
-      label: 'Nuova costruzione',
-      description: 'Installazione ex novo dell\'impianto'
+      label: 'Nuova costruzione'
     },
     {
       id: 'parziale',
-      label: 'Intervento parziale',
-      description: 'Modifica o ampliamento dell\'impianto esistente'
+      label: 'Intervento parziale'
     }
   ];
 
@@ -62,12 +61,37 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
                 className="w-full h-full object-contain"
               />
             </div>
-            <div>
+            <div className="flex-1">
               <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Tipo di intervento</h2>
               <p className="text-sm md:text-base text-gray-600 mt-1">
                 Scegli il tipo di lavoro che meglio descrive il tuo progetto elettrico
               </p>
             </div>
+          </div>
+
+          {/* Sezione informativa collassabile */}
+          <div className="px-3 md:px-0">
+            <Collapsible open={isInfoOpen} onOpenChange={setIsInfoOpen}>
+              <CollapsibleTrigger className="flex items-center gap-2 text-sm text-[#d8010c] hover:text-[#b8000a] transition-colors">
+                <Info className="h-4 w-4" />
+                <span>Cosa comporta una ristrutturazione completa?</span>
+                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isInfoOpen ? 'rotate-180' : ''}`} />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-3">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-gray-700">
+                  <p className="mb-2">
+                    <strong>Una ristrutturazione completa dell'impianto elettrico prevede:</strong>
+                  </p>
+                  <ul className="space-y-1 list-disc list-inside">
+                    <li>Lavori sui pavimenti con demolizione del massetto</li>
+                    <li>Aggiunta di controsoffitti per il passaggio dei cavi</li>
+                    <li>Sostituzione completa del quadro elettrico</li>
+                    <li>Rifacimento di tutte le tracce murarie</li>
+                    <li>Installazione di nuovi punti luce e prese</li>
+                  </ul>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
           
           <div className="space-y-3 md:space-y-4">
@@ -90,9 +114,6 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
                     <div className="text-left flex-1 min-w-0">
                       <div className="font-semibold text-base text-[#1c1c1c]">
                         {tipo.label}
-                      </div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        {tipo.description}
                       </div>
                     </div>
                     {isSelected && (
