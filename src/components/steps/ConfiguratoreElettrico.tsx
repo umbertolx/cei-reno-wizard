@@ -58,7 +58,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
       <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
         <div className="space-y-4 md:space-y-6">
           {/* Header - Layout responsive come nelle pagine precedenti */}
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 px-3 md:px-0">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
             <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center mx-auto md:mx-0">
               <img 
                 src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
@@ -75,7 +75,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
           </div>
 
           {/* Box informativo - collassabile su mobile, sempre aperto su desktop */}
-          <div className="px-3 md:px-0">
+          <div>
             {/* Versione mobile - collassabile */}
             <div className="block md:hidden">
               <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
