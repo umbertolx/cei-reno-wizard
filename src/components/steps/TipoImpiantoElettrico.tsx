@@ -36,7 +36,7 @@ export const TipoImpiantoElettrico = ({ formData, updateFormData, onNext, onBack
   ];
 
   const infoBox: InfoBox = {
-    title: 'Che tipo di impianto elettrico vuoi installare?',
+    title: 'Quali sono le differenze tra i 3 livelli di impianto elettrico?',
     content: 'Il livello 1 offre il minimo indispensabile per legge (pochi punti luce e prese). Il livello 2 aggiunge più prese e punti luce. Il livello 3 è il più completo.'
   };
 
