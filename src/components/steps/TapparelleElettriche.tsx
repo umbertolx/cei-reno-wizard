@@ -61,6 +61,21 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
             </div>
           </div>
 
+          {/* Box informativo sempre visibile */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-yellow-800">
+                <p className="font-medium mb-1">Come funziona l'elettrificazione delle tapparelle</p>
+                <p>
+                  Per elettrificare le tapparelle è necessario creare delle tracce murarie per far passare i cavi elettrici fino ai motori. 
+                  In base al numero di finestre che hai indicato, stimeremo un percorso ottimale per minimizzare i lavori e i costi, 
+                  considerando la disposizione degli ambienti e la posizione del quadro elettrico.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Opzioni Sì/No */}
           <div className="space-y-3 md:space-y-4">
             {options.map((option) => {
@@ -97,37 +112,20 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
 
           {/* Campo numero tapparelle - mostrato solo se selezionato "Sì" */}
           {elettrificareTapparelle === 'si' && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="numeroTapparelle" className="text-base font-medium text-[#1c1c1c]">
-                  Quante tapparelle vuoi elettrificare?
-                </Label>
-                <Input
-                  id="numeroTapparelle"
-                  type="number"
-                  min="1"
-                  max="50"
-                  value={numeroTapparelle || ""}
-                  onChange={(e) => setNumeroTapparelle(parseInt(e.target.value) || 0)}
-                  placeholder="Es. 5"
-                  className="text-base h-12"
-                />
-              </div>
-
-              {/* Box informativo */}
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-yellow-800">
-                    <p className="font-medium mb-1">Come funziona l'elettrificazione delle tapparelle</p>
-                    <p>
-                      Per elettrificare le tapparelle è necessario creare delle tracce murarie per far passare i cavi elettrici fino ai motori. 
-                      In base al numero di finestre che hai indicato, stimeremo un percorso ottimale per minimizzare i lavori e i costi, 
-                      considerando la disposizione degli ambienti e la posizione del quadro elettrico.
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="numeroTapparelle" className="text-base font-medium text-[#1c1c1c]">
+                Quante tapparelle vuoi elettrificare?
+              </Label>
+              <Input
+                id="numeroTapparelle"
+                type="number"
+                min="1"
+                max="50"
+                value={numeroTapparelle || ""}
+                onChange={(e) => setNumeroTapparelle(parseInt(e.target.value) || 0)}
+                placeholder="Es. 5"
+                className="text-base h-12"
+              />
             </div>
           )}
         </div>
