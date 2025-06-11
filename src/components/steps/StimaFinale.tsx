@@ -36,7 +36,7 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
     setOpenAccordion(openAccordion === value ? null : value);
   };
 
-  const isPrimaCasa = formData.tipoProprietario === 'prima casa';
+  const isPrimaCasa = formData.tipoProprietà === 'prima casa';
 
   return (
     <div className="space-y-8">
@@ -100,8 +100,8 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
 
       {/* Selezione tipo proprietà */}
       <TipoProprietaSelector 
-        value={formData.tipoProprietario || "prima casa"}
-        onChange={(value) => updateFormData({ tipoProprietario: value })}
+        value={formData.tipoProprietà || "prima casa"}
+        onChange={(value) => updateFormData({ tipoProprietà: value })}
       />
 
       {/* Box Bonus e Detrazioni Fiscali */}
