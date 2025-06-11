@@ -36,6 +36,7 @@ export type FormData = {
   tipoProprietà: string;
   tipoRistrutturazione?: string;
   tipoImpianto?: string;
+  elettrificareTapparelle?: string;
   dataRichiestaSopralluogo?: string;
   orarioSopralluogo?: string;
   note?: string;
