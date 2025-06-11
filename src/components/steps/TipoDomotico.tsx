@@ -23,13 +23,11 @@ export const TipoDomotico = ({ formData, updateFormData, onNext, onBack }: Props
   const options: QuestionOption[] = [
     {
       id: 'cablato',
-      label: 'Domotico cablato (filare)',
-      icon: 'cable'
+      label: 'Domotico cablato (filare)'
     },
     {
       id: 'wireless',
-      label: 'Domotico wireless',
-      icon: 'wifi'
+      label: 'Domotico wireless'
     }
   ];
 
