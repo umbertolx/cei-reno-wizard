@@ -4,6 +4,7 @@ import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
 import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
+import { TapparelleElettriche } from "./steps/TapparelleElettriche";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";

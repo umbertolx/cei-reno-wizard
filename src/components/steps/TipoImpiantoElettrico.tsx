@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { QuestionWithOptions, QuestionOption, InfoBox } from "../shared/QuestionWithOptions";
@@ -17,7 +16,15 @@ export const TipoImpiantoElettrico = ({ formData, updateFormData, onNext, onBack
     updateFormData({ 
       tipoImpianto 
     });
-    onNext();
+    
+    // Per Livello 1 e 2, vai alla pagina delle tapparelle
+    // Per Livello 3, salta direttamente ai dati di contatto (2 step avanti)
+    if (tipoImpianto === 'livello3') {
+      onNext();
+      onNext();
+    } else {
+      onNext();
+    }
   };
 
   const options: QuestionOption[] = [
@@ -35,18 +42,12 @@ export const TipoImpiantoElettrico = ({ formData, updateFormData, onNext, onBack
     }
   ];
 
-  const infoBox: InfoBox = {
-    title: 'Quali sono le differenze tra i 3 livelli di impianto elettrico?',
-    content: 'Tutti e tre i livelli rispettano la norma CEI 64-8, che regola gli impianti elettrici nelle abitazioni. Il Livello 1 è il minimo previsto per legge: garantisce la sicurezza e l\'essenziale (pochi punti luce e prese). Il Livello 2 offre più comfort, con un numero maggiore di prese, punti luce e circuiti dedicati. Il Livello 3 è il più completo, con dotazioni evolute, predisposizione per domotica, più sicurezza e flessibilità d\'uso.'
-  };
-
   return (
     <QuestionWithOptions
       badge="Impianto elettrico"
       icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
       iconAlt="Electrical work icon"
       title="Che tipo di impianto elettrico vuoi installare?"
-      infoBox={infoBox}
       options={options}
       selectedValue={tipoImpianto}
       onSelectionChange={setTipoImpianto}
