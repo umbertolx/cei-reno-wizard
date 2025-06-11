@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Check, Zap, Wifi, Home, Settings, Shield, DollarSign, CheckCircle, Clock } from "lucide-react";
+import { Check, Wifi, Settings, Shield, DollarSign, CheckCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -52,17 +52,32 @@ export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext,
     onSelectionChange(optionId);
   };
 
+  const infoBox = {
+    title: "Come funzionano i tipi di domotica",
+    content: "Il sistema KNX è filare e più stabile, perfetto per nuove costruzioni. Il wireless è più semplice da installare e adatto per ristrutturazioni."
+  };
+
   return (
     <div className="space-y-8">
-      {/* Header - identical to other steps */}
+      {/* Header - matching other steps exactly */}
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-medium">
-          <Home className="w-4 h-4" />
+          <img 
+            src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
+            alt="Electrical work icon" 
+            className="w-4 h-4"
+          />
           Domotica avanzata
         </div>
         <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
           Scegli il tipo di domotica che preferisci per la tua casa
         </h2>
+      </div>
+
+      {/* Info Box - matching other steps */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <h3 className="font-semibold text-blue-900 mb-2">{infoBox.title}</h3>
+        <p className="text-blue-800 text-sm leading-relaxed">{infoBox.content}</p>
       </div>
 
       {/* Main Cards */}
@@ -123,7 +138,7 @@ export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext,
         })}
       </div>
 
-      {/* Navigation - identical to other steps */}
+      {/* Navigation - exactly matching other steps */}
       <div className="flex justify-between pt-6">
         <Button
           variant="outline"
