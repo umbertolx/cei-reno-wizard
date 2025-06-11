@@ -4,7 +4,8 @@ import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, ArrowLeft, Info, Check } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ArrowRight, ArrowLeft, Info, Check, ChevronDown } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -16,6 +17,7 @@ type Props = {
 export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const [elettrificareTapparelle, setElettrificareTapparelle] = useState<string>(formData.elettrificareTapparelle || "");
   const [numeroTapparelle, setNumeroTapparelle] = useState<number>(formData.numeroTapparelle || 0);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   const handleSubmit = () => {
     updateFormData({ 
@@ -61,20 +63,38 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
             </div>
           </div>
 
-          {/* Box informativo sempre visibile */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <div className="flex items-start gap-3">
-              <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-yellow-800">
-                <p className="font-medium mb-1">Come funziona l'elettrificazione delle tapparelle</p>
-                <p>
-                  Per elettrificare le tapparelle è necessario creare delle tracce murarie per far passare i cavi elettrici fino ai motori. 
-                  In base al numero di finestre che hai indicato, stimeremo un percorso ottimale per minimizzare i lavori e i costi, 
-                  considerando la disposizione degli ambienti e la posizione del quadro elettrico.
-                </p>
+          {/* Box informativo collassabile su mobile */}
+          <Collapsible open={isInfoOpen} onOpenChange={setIsInfoOpen}>
+            <CollapsibleTrigger className="w-full md:hidden">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 hover:bg-yellow-100 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
+                    <span className="text-sm font-medium text-yellow-800">
+                      Come funziona l'elettrificazione delle tapparelle
+                    </span>
+                  </div>
+                  <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform ${isInfoOpen ? 'rotate-180' : ''}`} />
+                </div>
               </div>
-            </div>
-          </div>
+            </CollapsibleTrigger>
+
+            <CollapsibleContent className="md:block">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 md:mt-0 mt-0">
+                <div className="flex items-start gap-3">
+                  <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5 hidden md:block" />
+                  <div className="text-sm text-yellow-800">
+                    <p className="font-medium mb-1 hidden md:block">Come funziona l'elettrificazione delle tapparelle</p>
+                    <p>
+                      Per elettrificare le tapparelle è necessario creare delle tracce murarie per far passare i cavi elettrici fino ai motori. 
+                      In base al numero di finestre che hai indicato, stimeremo un percorso ottimale per minimizzare i lavori e i costi, 
+                      considerando la disposizione degli ambienti e la posizione del quadro elettrico.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
 
           {/* Opzioni Sì/No */}
           <div className="space-y-3 md:space-y-4">
