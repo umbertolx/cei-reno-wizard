@@ -68,19 +68,19 @@ export const ScenarioComparison = ({
 
   return (
     <div className="space-y-6">
-      {/* Badge */}
+      {/* Badge - consistente con altri step */}
       <div className="flex justify-center">
-        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
+        <div className="bg-[#d8010c] text-white px-6 py-3 rounded-full text-sm font-medium">
           {badge}
         </div>
       </div>
 
       {/* Contenuto principale */}
-      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
-        <div className="space-y-4 md:space-y-6">
-          {/* Header */}
-          <div className="flex items-center gap-4 px-3 md:px-0">
-            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
+      <div className="max-w-4xl mx-auto space-y-8 mt-16">
+        <div className="space-y-6">
+          {/* Header - consistente con altri step */}
+          <div className="flex items-center gap-4">
+            <div className="w-[100px] h-[100px] flex-shrink-0 flex items-center justify-center">
               <img 
                 src={icon}
                 alt={iconAlt}
@@ -88,9 +88,9 @@ export const ScenarioComparison = ({
               />
             </div>
             <div>
-              <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">{title}</h2>
+              <h2 className="text-2xl font-medium text-[#1c1c1c]">{title}</h2>
               {description && (
-                <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">
+                <p className="text-base text-[#1c1c1c] opacity-80 mt-2">
                   {description}
                 </p>
               )}
@@ -116,12 +116,12 @@ export const ScenarioComparison = ({
                         }
                       `}
                     >
-                      {/* Mobile Header */}
+                      {/* Mobile Header - altezza uniforme */}
                       <div 
-                        className="p-4 cursor-pointer"
+                        className="p-4 min-h-[80px] cursor-pointer flex items-center"
                         onClick={() => handleCardClick(option.id)}
                       >
-                        <div className="flex items-start justify-between">
+                        <div className="flex items-center justify-between w-full">
                           <div className="flex-1 pr-4">
                             <h3 className="text-base font-semibold text-[#1c1c1c] mb-1">
                               {option.title}
@@ -231,7 +231,7 @@ export const ScenarioComparison = ({
         </div>
       </div>
 
-      {/* Pulsanti di navigazione */}
+      {/* Pulsanti di navigazione - consistenti con altri step */}
       <div className="flex flex-col sm:flex-row gap-4 pt-6">
         <Button 
           onClick={onBack}
