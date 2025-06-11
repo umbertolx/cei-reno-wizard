@@ -22,41 +22,35 @@ export const TipoDomotica = ({ formData, updateFormData, onNext, onBack }: Props
   const domoticaOptions = [
     {
       id: 'knx',
-      title: 'Impianto domotico filare (KNX)',
-      subtitle: 'Domotica filare professionale',
-      description: 'Questo sistema collega tutti i dispositivi con un cavo dedicato. È il più stabile, il più personalizzabile e quello scelto da chi vuole un impianto professionale',
+      title: 'Sistema filare (KNX)',
+      subtitle: 'Soluzione professionale',
+      description: 'Il sistema più stabile e personalizzabile. Ideale per chi vuole un impianto duraturo con il massimo controllo.',
       features: [
-        { icon: CheckCircle, text: 'Affidabilità professionale' },
-        { icon: Settings, text: 'Già predisposto nella costruzione' },
-        { icon: Clock, text: 'Personalizzabile nel tempo' },
-        { icon: DollarSign, text: 'Più costoso, ma duraturo' }
+        { icon: CheckCircle, text: 'Massima affidabilità' },
+        { icon: Settings, text: 'Già cablato nella costruzione' },
+        { icon: Clock, text: 'Espandibile nel tempo' },
+        { icon: DollarSign, text: 'Investimento a lungo termine' }
       ]
     },
     {
       id: 'wireless',
-      title: 'Impianto domotico wireless (BTicino Living Now)',
-      subtitle: 'Domotica wireless semplificata',
-      description: 'Questo impianto usa connessioni wireless tra i dispositivi. È più semplice da installare e ha un costo più contenuto',
+      title: 'Sistema wireless (BTicino)',
+      subtitle: 'Soluzione semplificata',
+      description: 'Facile da installare e più economico. Perfetto per chi vuole la domotica senza grandi lavori.',
       features: [
-        { icon: Wifi, text: 'Comunicazione radio' },
-        { icon: CheckCircle, text: 'Installazione più veloce' },
-        { icon: DollarSign, text: 'Soluzione più economica' }
+        { icon: Wifi, text: 'Senza fili aggiuntivi' },
+        { icon: CheckCircle, text: 'Installazione veloce' },
+        { icon: DollarSign, text: 'Costo contenuto' }
       ]
     }
   ];
 
-  const infoBox = {
-    title: "Come funzionano i tipi di domotica",
-    content: "Il sistema KNX è filare e più stabile, perfetto per nuove costruzioni. Il wireless è più semplice da installare e adatto per ristrutturazioni."
-  };
-
   return (
     <ScenarioComparison
-      badge="Domotica avanzata"
+      badge="Impianto elettrico"
       icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
       iconAlt="Electrical work icon"
       title="Scegli il tipo di domotica che preferisci per la tua casa"
-      infoBox={infoBox}
       options={domoticaOptions}
       selectedValue={tipoDomotica}
       onSelectionChange={setTipoDomotica}

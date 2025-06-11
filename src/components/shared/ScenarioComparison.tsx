@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Info, ChevronDown, Check } from "lucide-react";
+import { ArrowRight, ArrowLeft, ChevronDown, Check } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export type ScenarioOption = {
@@ -15,18 +15,12 @@ export type ScenarioOption = {
   }>;
 };
 
-export type InfoBox = {
-  title: string;
-  content: string;
-};
-
 export type ScenarioComparisonProps = {
   badge: string;
   icon: string;
   iconAlt: string;
   title: string;
   description?: string;
-  infoBox?: InfoBox;
   options: ScenarioOption[];
   selectedValue: string;
   onSelectionChange: (value: string) => void;
@@ -42,7 +36,6 @@ export const ScenarioComparison = ({
   iconAlt,
   title,
   description,
-  infoBox,
   options,
   selectedValue,
   onSelectionChange,
@@ -51,7 +44,7 @@ export const ScenarioComparison = ({
   nextButtonText = "Avanti",
   backButtonText = "Indietro"
 }: ScenarioComparisonProps) => {
-  const [infoBoxOpen, setInfoBoxOpen] = useState<boolean>(false);
+  const [expandedCards, setExpandedCards] = useState<string[]>([]);
 
   const isFormValid = selectedValue !== "";
 
@@ -65,11 +58,19 @@ export const ScenarioComparison = ({
     onSelectionChange(optionId);
   };
 
+  const toggleCardExpansion = (optionId: string) => {
+    setExpandedCards(prev => 
+      prev.includes(optionId) 
+        ? prev.filter(id => id !== optionId)
+        : [...prev, optionId]
+    );
+  };
+
   return (
     <div className="space-y-6">
       {/* Badge */}
       <div className="flex justify-center">
-        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
+        <div className="bg-[#d8010c] text-white px-6 py-3 rounded-full text-sm font-medium">
           {badge}
         </div>
       </div>
@@ -77,7 +78,7 @@ export const ScenarioComparison = ({
       {/* Contenuto principale */}
       <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
         <div className="space-y-4 md:space-y-6">
-          {/* Header - Layout responsive */}
+          {/* Header */}
           <div className="flex items-center gap-4 px-3 md:px-0">
             <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
               <img 
@@ -95,103 +96,133 @@ export const ScenarioComparison = ({
               )}
             </div>
           </div>
-
-          {/* Box informativo - collassabile su mobile, sempre aperto su desktop */}
-          {infoBox && (
-            <div>
-              {/* Versione mobile - collassabile */}
-              <div className="block md:hidden">
-                <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
-                  <CollapsibleTrigger className="w-full">
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
-                          <span className="text-sm font-medium text-yellow-800 text-left">
-                            {infoBox.title}
-                          </span>
-                        </div>
-                        <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen ? 'rotate-180' : ''}`} />
-                      </div>
-                      {infoBoxOpen && (
-                        <div className="mt-3 pt-3 border-t border-yellow-200">
-                          <p className="text-sm text-yellow-800 text-left">
-                            {infoBox.content}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </CollapsibleTrigger>
-                </Collapsible>
-              </div>
-
-              {/* Versione desktop - sempre aperto */}
-              <div className="hidden md:block">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-yellow-800">
-                      <p className="font-medium mb-1">{infoBox.title}</p>
-                      <p>{infoBox.content}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
           
           {/* Comparison Cards */}
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+          <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
             {options.map((option) => {
               const isSelected = selectedValue === option.id;
+              const isExpanded = expandedCards.includes(option.id);
               
               return (
-                <div
-                  key={option.id}
-                  className={`
-                    relative p-6 rounded-lg border-2 cursor-pointer transition-all duration-200
-                    ${isSelected 
-                      ? 'border-[#d8010c] bg-[#d8010c]/5 shadow-sm' 
-                      : 'border-gray-200 hover:border-gray-300'
-                    }
-                  `}
-                  onClick={() => handleCardClick(option.id)}
-                >
-                  {/* Selection Indicator */}
-                  {isSelected && (
-                    <div className="absolute top-4 right-4 w-8 h-8 bg-[#d8010c] rounded-full flex items-center justify-center">
-                      <Check className="w-5 h-5 text-white" />
-                    </div>
-                  )}
-
-                  {/* Card Content */}
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">
-                        {option.title}
-                      </h3>
-                      <p className="text-gray-600 font-medium">
-                        {option.subtitle}
-                      </p>
-                    </div>
-
-                    {/* Features List */}
-                    <div className="space-y-2">
-                      {option.features.map((feature, index) => {
-                        const IconComponent = feature.icon;
-                        return (
-                          <div key={index} className="flex items-center gap-3">
-                            <IconComponent className="w-5 h-5 text-gray-600 flex-shrink-0" />
-                            <span className="text-gray-800">{feature.text}</span>
+                <div key={option.id} className="md:contents">
+                  {/* Mobile Version - Collapsible */}
+                  <div className="block md:hidden">
+                    <div
+                      className={`
+                        relative border-2 rounded-lg transition-all duration-200
+                        ${isSelected 
+                          ? 'border-[#d8010c] bg-[#d8010c]/5' 
+                          : 'border-gray-200'
+                        }
+                      `}
+                    >
+                      {/* Mobile Header - Always visible */}
+                      <div 
+                        className="p-4 cursor-pointer"
+                        onClick={() => handleCardClick(option.id)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                              {option.title}
+                            </h3>
+                            <p className="text-gray-600 font-medium text-sm">
+                              {option.subtitle}
+                            </p>
                           </div>
-                        );
-                      })}
-                    </div>
+                          
+                          {/* Selection Indicator */}
+                          {isSelected && (
+                            <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
+                              <Check className="w-4 h-4 text-white" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
 
-                    {/* Description */}
-                    <p className="text-gray-700 leading-relaxed">
-                      {option.description}
-                    </p>
+                      {/* Mobile Expand Button */}
+                      <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
+                        <CollapsibleTrigger className="w-full border-t border-gray-200 p-3 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50">
+                          <span className="text-sm">
+                            {isExpanded ? 'Nascondi dettagli' : 'Mostra dettagli'}
+                          </span>
+                          <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                        </CollapsibleTrigger>
+                        
+                        <CollapsibleContent>
+                          <div className="p-4 pt-0 space-y-3">
+                            {/* Features List */}
+                            <div className="space-y-2">
+                              {option.features.map((feature, index) => {
+                                const IconComponent = feature.icon;
+                                return (
+                                  <div key={index} className="flex items-center gap-3">
+                                    <IconComponent className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                                    <span className="text-sm text-gray-800">{feature.text}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            {/* Description */}
+                            <p className="text-sm text-gray-700 leading-relaxed">
+                              {option.description}
+                            </p>
+                          </div>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    </div>
+                  </div>
+
+                  {/* Desktop Version - Always expanded */}
+                  <div className="hidden md:block">
+                    <div
+                      className={`
+                        relative p-6 rounded-lg border-2 cursor-pointer transition-all duration-200
+                        ${isSelected 
+                          ? 'border-[#d8010c] bg-[#d8010c]/5 shadow-sm' 
+                          : 'border-gray-200 hover:border-gray-300'
+                        }
+                      `}
+                      onClick={() => handleCardClick(option.id)}
+                    >
+                      {/* Selection Indicator */}
+                      {isSelected && (
+                        <div className="absolute top-4 right-4 w-8 h-8 bg-[#d8010c] rounded-full flex items-center justify-center">
+                          <Check className="w-5 h-5 text-white" />
+                        </div>
+                      )}
+
+                      {/* Card Content */}
+                      <div className="space-y-4">
+                        <div>
+                          <h3 className="text-xl font-semibold text-gray-900 mb-1">
+                            {option.title}
+                          </h3>
+                          <p className="text-gray-600 font-medium">
+                            {option.subtitle}
+                          </p>
+                        </div>
+
+                        {/* Features List */}
+                        <div className="space-y-2">
+                          {option.features.map((feature, index) => {
+                            const IconComponent = feature.icon;
+                            return (
+                              <div key={index} className="flex items-center gap-3">
+                                <IconComponent className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                                <span className="text-gray-800">{feature.text}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-gray-700 leading-relaxed">
+                          {option.description}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               );
