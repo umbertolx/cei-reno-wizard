@@ -4,6 +4,7 @@ import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
 import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
+import { TipoDomotica } from "./steps/TipoDomotica";
 import { TapparelleElettriche } from "./steps/TapparelleElettriche";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
 import { Card, CardContent } from "@/components/ui/card";
@@ -36,6 +37,7 @@ export type FormData = {
   tipoProprietà: string;
   tipoRistrutturazione?: string;
   tipoImpianto?: string;
+  tipoDomotica?: string;
   elettrificareTapparelle?: string;
   numeroTapparelle?: number;
   dataRichiestaSopralluogo?: string;
@@ -197,35 +199,89 @@ export const Configuratore = () => {
           />
         );
       case 4:
-        return (
-          <TapparelleElettriche 
-            formData={formData} 
-            updateFormData={updateFormData} 
-            onNext={handleNext} 
-            onBack={handleBack}
-          />
-        );
+        // Solo per Livello 3, mostra la scelta domotica
+        if (formData.tipoImpianto === 'livello3') {
+          return (
+            <TipoDomotica
+              formData={formData}
+              updateFormData={updateFormData}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          );
+        } else {
+          // Per altri livelli, vai alle tapparelle
+          return (
+            <TapparelleElettriche 
+              formData={formData} 
+              updateFormData={updateFormData} 
+              onNext={handleNext} 
+              onBack={handleBack}
+            />
+          );
+        }
       case 5:
-        return (
-          <DatiContatto
-            formData={formData}
-            updateFormData={updateFormData}
-            onBack={handleBack}
-            onNext={handleNext}
-          />
-        );
+        // Per Livello 3, questo sarà tapparelle, per altri sarà dati contatto
+        if (formData.tipoImpianto === 'livello3') {
+          return (
+            <TapparelleElettriche 
+              formData={formData} 
+              updateFormData={updateFormData} 
+              onNext={handleNext} 
+              onBack={handleBack}
+            />
+          );
+        } else {
+          return (
+            <DatiContatto
+              formData={formData}
+              updateFormData={updateFormData}
+              onBack={handleBack}
+              onNext={handleNext}
+            />
+          );
+        }
       case 6:
-        const stima = calcolaStima();
-        return (
-          <StimaFinale
-            formData={formData}
-            updateFormData={updateFormData}
-            stima={stima}
-            onBack={handleBack}
-            onSubmit={handleInviaDati}
-          />
-        );
+        // Per Livello 3, questo sarà dati contatto, per altri sarà stima finale
+        if (formData.tipoImpianto === 'livello3') {
+          return (
+            <DatiContatto
+              formData={formData}
+              updateFormData={updateFormData}
+              onBack={handleBack}
+              onNext={handleNext}
+            />
+          );
+        } else {
+          const stima = calcolaStima();
+          return (
+            <StimaFinale
+              formData={formData}
+              updateFormData={updateFormData}
+              stima={stima}
+              onBack={handleBack}
+              onSubmit={handleInviaDati}
+            />
+          );
+        }
       case 7:
+        // Per Livello 3, questo sarà stima finale, per altri sarà richiesta inviata
+        if (formData.tipoImpianto === 'livello3') {
+          const stima = calcolaStima();
+          return (
+            <StimaFinale
+              formData={formData}
+              updateFormData={updateFormData}
+              stima={stima}
+              onBack={handleBack}
+              onSubmit={handleInviaDati}
+            />
+          );
+        } else {
+          return <RichiestaInviata onReset={handleReset} />;
+        }
+      case 8:
+        // Solo per Livello 3
         return <RichiestaInviata onReset={handleReset} />;
       default:
         return <div>Step non valido</div>;
