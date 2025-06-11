@@ -37,7 +37,7 @@ export const TipoImpiantoElettrico = ({ formData, updateFormData, onNext, onBack
 
   const infoBox: InfoBox = {
     title: 'Quali sono le differenze tra i 3 livelli di impianto elettrico?',
-    content: 'Il livello 1 offre il minimo indispensabile per legge (pochi punti luce e prese). Il livello 2 aggiunge più prese e punti luce. Il livello 3 è il più completo.'
+    content: 'Tutti e tre i livelli rispettano la norma CEI 64-8, che regola gli impianti elettrici nelle abitazioni. Il Livello 1 è il minimo previsto per legge: garantisce la sicurezza e l\'essenziale (pochi punti luce e prese). Il Livello 2 offre più comfort, con un numero maggiore di prese, punti luce e circuiti dedicati. Il Livello 3 è il più completo, con dotazioni evolute, predisposizione per domotica, più sicurezza e flessibilità d\'uso.'
   };
 
   return (
