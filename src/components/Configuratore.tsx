@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
@@ -36,6 +37,7 @@ export type FormData = {
   tipoRistrutturazione?: string;
   tipoImpianto?: string;
   elettrificareTapparelle?: string;
+  numeroTapparelle?: number;
   dataRichiestaSopralluogo?: string;
   orarioSopralluogo?: string;
   note?: string;
