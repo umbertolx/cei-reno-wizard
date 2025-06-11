@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Check, Zap, Wifi, HelpCircle, Home, Settings, Shield, DollarSign, CheckCircle, Clock } from "lucide-react";
+import { Check, Zap, Wifi, Home, Settings, Shield, DollarSign, CheckCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -52,13 +52,9 @@ export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext,
     onSelectionChange(optionId);
   };
 
-  const handleHelpClick = () => {
-    onSelectionChange('help');
-  };
-
   return (
     <div className="space-y-8">
-      {/* Header */}
+      {/* Header - identical to other steps */}
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-medium">
           <Home className="w-4 h-4" />
@@ -127,24 +123,7 @@ export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext,
         })}
       </div>
 
-      {/* Help Option */}
-      <div className="flex justify-center">
-        <button
-          onClick={handleHelpClick}
-          className={`
-            flex items-center gap-3 px-6 py-3 rounded-lg border-2 transition-all duration-200
-            ${selectedValue === 'help'
-              ? 'border-yellow-400 bg-yellow-50 text-gray-900'
-              : 'border-gray-300 hover:border-gray-400 text-gray-600 hover:text-gray-800'
-            }
-          `}
-        >
-          <HelpCircle className="w-5 h-5" />
-          <span className="font-medium">Non sono sicuro, aiutatemi voi</span>
-        </button>
-      </div>
-
-      {/* Navigation */}
+      {/* Navigation - identical to other steps */}
       <div className="flex justify-between pt-6">
         <Button
           variant="outline"
