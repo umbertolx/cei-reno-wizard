@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Check, Zap, Wifi, HelpCircle, Home, Settings, Shield, DollarSign } from "lucide-react";
+import { Check, Zap, Wifi, HelpCircle, Home, Settings, Shield, DollarSign, CheckCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -19,38 +19,32 @@ type DomoticOption = {
     icon: any;
     text: string;
   }>;
-  className: string;
 };
 
 export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext, onBack }: Props) => {
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-
   const options: DomoticOption[] = [
     {
       id: 'knx',
-      title: 'Domotica filare professionale',
-      subtitle: 'KNX - Massima stabilità e controllo completo',
-      description: 'Sistema cablato professionale con massima affidabilità. Richiede predisposizione durante i lavori ma offre prestazioni superiori e personalizzazione totale.',
+      title: 'Impianto domotico filare (KNX)',
+      subtitle: 'Domotica filare professionale',
+      description: 'Questo sistema collega tutti i dispositivi con un cavo dedicato. È il più stabile, il più personalizzabile e quello scelto da chi vuole un impianto professionale',
       features: [
-        { icon: Shield, text: 'Massima affidabilità' },
-        { icon: Settings, text: 'Controllo completo' },
-        { icon: Home, text: 'Scalabile nel tempo' },
-        { icon: DollarSign, text: 'Investimento superiore' }
-      ],
-      className: 'border-blue-200 hover:border-blue-400 hover:shadow-blue-100'
+        { icon: CheckCircle, text: 'Affidabilità professionale' },
+        { icon: Settings, text: 'Già predisposto nella costruzione' },
+        { icon: Clock, text: 'Personalizzabile nel tempo' },
+        { icon: DollarSign, text: 'Più costoso, ma duraturo' }
+      ]
     },
     {
       id: 'wireless',
-      title: 'Domotica wireless semplificata',
-      subtitle: 'BTicino Living Now - Controllo smart essenziale',
-      description: 'Sistema wireless facile da installare, ideale per controllo base di luci, prese e tapparelle. Soluzione più economica con buone funzionalità smart.',
+      title: 'Impianto domotico wireless (BTicino Living Now)',
+      subtitle: 'Domotica wireless semplificata',
+      description: 'Questo impianto usa connessioni wireless tra i dispositivi. È più semplice da installare e ha un costo più contenuto',
       features: [
-        { icon: Wifi, text: 'Installazione rapida' },
-        { icon: Zap, text: 'Setup semplificato' },
-        { icon: DollarSign, text: 'Costo contenuto' },
-        { icon: Settings, text: 'Funzioni essenziali' }
-      ],
-      className: 'border-green-200 hover:border-green-400 hover:shadow-green-100'
+        { icon: Wifi, text: 'Comunicazione radio' },
+        { icon: CheckCircle, text: 'Installazione più veloce' },
+        { icon: DollarSign, text: 'Soluzione più economica' }
+      ]
     }
   ];
 
@@ -66,7 +60,7 @@ export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext,
     <div className="space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+        <div className="inline-flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-medium">
           <Home className="w-4 h-4" />
           Domotica avanzata
         </div>
@@ -76,30 +70,26 @@ export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext,
       </div>
 
       {/* Main Cards */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-8">
         {options.map((option) => {
           const isSelected = selectedValue === option.id;
-          const isHovered = hoveredCard === option.id;
           
           return (
             <div
               key={option.id}
               className={`
-                relative p-6 rounded-xl border-2 cursor-pointer transition-all duration-200
+                relative p-6 rounded-lg border-2 cursor-pointer transition-all duration-200
                 ${isSelected 
-                  ? 'border-primary shadow-lg shadow-primary/20 bg-primary/5' 
-                  : `border-gray-200 hover:shadow-md ${option.className}`
+                  ? 'border-yellow-400 bg-yellow-50' 
+                  : 'border-gray-200 hover:border-gray-300'
                 }
-                ${isHovered ? 'transform scale-[1.02]' : ''}
               `}
               onClick={() => handleCardClick(option.id)}
-              onMouseEnter={() => setHoveredCard(option.id)}
-              onMouseLeave={() => setHoveredCard(null)}
             >
               {/* Selection Indicator */}
               {isSelected && (
-                <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                  <Check className="w-4 h-4 text-white" />
+                <div className="absolute top-4 right-4 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
                 </div>
               )}
 
@@ -109,26 +99,26 @@ export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext,
                   <h3 className="text-xl font-semibold text-gray-900 mb-1">
                     {option.title}
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-gray-600 font-medium">
                     {option.subtitle}
                   </p>
                 </div>
 
-                {/* Features Grid */}
-                <div className="grid grid-cols-2 gap-3">
+                {/* Features List */}
+                <div className="space-y-2">
                   {option.features.map((feature, index) => {
                     const IconComponent = feature.icon;
                     return (
-                      <div key={index} className="flex items-center gap-2">
-                        <IconComponent className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm text-gray-700">{feature.text}</span>
+                      <div key={index} className="flex items-center gap-3">
+                        <IconComponent className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                        <span className="text-gray-800">{feature.text}</span>
                       </div>
                     );
                   })}
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed">
                   {option.description}
                 </p>
               </div>
@@ -142,9 +132,9 @@ export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext,
         <button
           onClick={handleHelpClick}
           className={`
-            flex items-center gap-2 px-6 py-3 rounded-lg border-2 transition-all duration-200
+            flex items-center gap-3 px-6 py-3 rounded-lg border-2 transition-all duration-200
             ${selectedValue === 'help'
-              ? 'border-primary bg-primary/5 text-primary'
+              ? 'border-yellow-400 bg-yellow-50 text-gray-900'
               : 'border-gray-300 hover:border-gray-400 text-gray-600 hover:text-gray-800'
             }
           `}
@@ -159,17 +149,17 @@ export const TipoDomoticaSelector = ({ selectedValue, onSelectionChange, onNext,
         <Button
           variant="outline"
           onClick={onBack}
-          className="px-8"
+          className="px-8 py-2 border-gray-300 text-gray-700 hover:bg-gray-50"
         >
-          Indietro
+          ← Indietro
         </Button>
         
         <Button
           onClick={onNext}
           disabled={!selectedValue}
-          className="px-8"
+          className="px-8 py-2 bg-red-500 hover:bg-red-600 text-white disabled:opacity-50"
         >
-          Avanti
+          Avanti →
         </Button>
       </div>
     </div>
