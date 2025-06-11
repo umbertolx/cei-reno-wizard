@@ -70,7 +70,7 @@ export const ScenarioComparison = ({
     <div className="space-y-6">
       {/* Badge */}
       <div className="flex justify-center">
-        <div className="bg-[#d8010c] text-white px-6 py-3 rounded-full text-sm font-medium">
+        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
           {badge}
         </div>
       </div>
@@ -98,51 +98,51 @@ export const ScenarioComparison = ({
           </div>
           
           {/* Comparison Cards */}
-          <div className="space-y-8 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
+          <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
             {options.map((option) => {
               const isSelected = selectedValue === option.id;
               const isExpanded = expandedCards.includes(option.id);
               
               return (
                 <div key={option.id} className="md:contents">
-                  {/* Mobile Version - Collapsible with fixed height */}
+                  {/* Mobile Version - Collapsible */}
                   <div className="block md:hidden">
                     <div
                       className={`
-                        relative border-2 rounded-lg transition-all duration-200 h-[160px] flex flex-col
+                        relative border-2 rounded-xl transition-all duration-200
                         ${isSelected 
                           ? 'border-[#d8010c] bg-[#d8010c]/5' 
                           : 'border-gray-200'
                         }
                       `}
                     >
-                      {/* Mobile Header - Fixed height section */}
+                      {/* Mobile Header */}
                       <div 
-                        className="p-6 cursor-pointer flex-1 flex flex-col justify-center"
+                        className="p-4 cursor-pointer"
                         onClick={() => handleCardClick(option.id)}
                       >
-                        <div className="flex items-start justify-between h-full">
-                          <div className="flex-1 pr-4 flex flex-col justify-center">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-tight">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 pr-4">
+                            <h3 className="text-base font-semibold text-[#1c1c1c] mb-1">
                               {option.title}
                             </h3>
-                            <p className="text-gray-600 font-medium text-sm leading-relaxed">
+                            <p className="text-gray-600 font-medium text-sm">
                               {option.subtitle}
                             </p>
                           </div>
                           
                           {/* Selection Indicator */}
                           {isSelected && (
-                            <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                              <Check className="w-4 h-4 text-white" />
+                            <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0">
+                              <Check className="w-3 h-3 text-white" />
                             </div>
                           )}
                         </div>
                       </div>
 
-                      {/* Mobile Expand Button - Fixed at bottom */}
+                      {/* Mobile Expand Button */}
                       <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
-                        <CollapsibleTrigger className="w-full border-t border-gray-200 p-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50 flex-shrink-0">
+                        <CollapsibleTrigger className="w-full border-t border-gray-200 p-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50">
                           <span className="text-sm font-medium">
                             {isExpanded ? 'Nascondi dettagli' : 'Mostra dettagli'}
                           </span>
@@ -150,9 +150,9 @@ export const ScenarioComparison = ({
                         </CollapsibleTrigger>
                         
                         <CollapsibleContent>
-                          <div className="p-6 pt-0 space-y-4 bg-white rounded-b-lg border-t border-gray-100">
+                          <div className="p-4 pt-0 space-y-4 bg-white">
                             {/* Features List */}
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                               {option.features.map((feature, index) => {
                                 const IconComponent = feature.icon;
                                 return (
@@ -165,7 +165,7 @@ export const ScenarioComparison = ({
                             </div>
 
                             {/* Description */}
-                            <p className="text-sm text-gray-700 leading-relaxed">
+                            <p className="text-sm text-gray-700">
                               {option.description}
                             </p>
                           </div>
@@ -218,7 +218,7 @@ export const ScenarioComparison = ({
                         </div>
 
                         {/* Description */}
-                        <p className="text-gray-700 leading-relaxed">
+                        <p className="text-gray-700">
                           {option.description}
                         </p>
                       </div>

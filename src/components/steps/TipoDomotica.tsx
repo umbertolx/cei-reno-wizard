@@ -56,8 +56,8 @@ export const TipoDomotica = ({ formData, updateFormData, onNext, onBack }: Props
       onSelectionChange={setTipoDomotica}
       onNext={handleSubmit}
       onBack={onBack}
-      nextButtonText="Avanti →"
-      backButtonText="← Indietro"
+      nextButtonText="Avanti"
+      backButtonText="Indietro"
     />
   );
 };
