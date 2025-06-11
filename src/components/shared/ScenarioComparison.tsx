@@ -98,51 +98,51 @@ export const ScenarioComparison = ({
           </div>
           
           {/* Comparison Cards */}
-          <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
+          <div className="space-y-8 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
             {options.map((option) => {
               const isSelected = selectedValue === option.id;
               const isExpanded = expandedCards.includes(option.id);
               
               return (
                 <div key={option.id} className="md:contents">
-                  {/* Mobile Version - Collapsible */}
+                  {/* Mobile Version - Collapsible with fixed height */}
                   <div className="block md:hidden">
                     <div
                       className={`
-                        relative border-2 rounded-lg transition-all duration-200 min-h-[120px]
+                        relative border-2 rounded-lg transition-all duration-200 h-[160px] flex flex-col
                         ${isSelected 
                           ? 'border-[#d8010c] bg-[#d8010c]/5' 
                           : 'border-gray-200'
                         }
                       `}
                     >
-                      {/* Mobile Header - Always visible */}
+                      {/* Mobile Header - Fixed height section */}
                       <div 
-                        className="p-6 cursor-pointer"
+                        className="p-6 cursor-pointer flex-1 flex flex-col justify-center"
                         onClick={() => handleCardClick(option.id)}
                       >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1 pr-4">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                        <div className="flex items-start justify-between h-full">
+                          <div className="flex-1 pr-4 flex flex-col justify-center">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-tight">
                               {option.title}
                             </h3>
-                            <p className="text-gray-600 font-medium text-sm">
+                            <p className="text-gray-600 font-medium text-sm leading-relaxed">
                               {option.subtitle}
                             </p>
                           </div>
                           
                           {/* Selection Indicator */}
                           {isSelected && (
-                            <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0">
+                            <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                               <Check className="w-4 h-4 text-white" />
                             </div>
                           )}
                         </div>
                       </div>
 
-                      {/* Mobile Expand Button */}
+                      {/* Mobile Expand Button - Fixed at bottom */}
                       <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
-                        <CollapsibleTrigger className="w-full border-t border-gray-200 p-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50">
+                        <CollapsibleTrigger className="w-full border-t border-gray-200 p-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50 flex-shrink-0">
                           <span className="text-sm font-medium">
                             {isExpanded ? 'Nascondi dettagli' : 'Mostra dettagli'}
                           </span>
@@ -150,7 +150,7 @@ export const ScenarioComparison = ({
                         </CollapsibleTrigger>
                         
                         <CollapsibleContent>
-                          <div className="p-6 pt-0 space-y-4">
+                          <div className="p-6 pt-0 space-y-4 bg-white rounded-b-lg border-t border-gray-100">
                             {/* Features List */}
                             <div className="space-y-3">
                               {option.features.map((feature, index) => {
