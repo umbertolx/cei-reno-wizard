@@ -105,28 +105,28 @@ export const ScenarioComparison = ({
               
               return (
                 <div key={option.id} className="md:contents">
-                  {/* Mobile Version - Collapsible */}
+                  {/* Mobile Version - Collapsible con altezza uniforme */}
                   <div className="block md:hidden">
                     <div
                       className={`
-                        relative border-2 rounded-xl transition-all duration-200
+                        relative border-2 rounded-xl transition-all duration-200 min-h-[120px]
                         ${isSelected 
                           ? 'border-[#d8010c] bg-[#d8010c]/5' 
                           : 'border-gray-200'
                         }
                       `}
                     >
-                      {/* Mobile Header - altezza uniforme */}
+                      {/* Mobile Header - layout migliorato */}
                       <div 
-                        className="p-4 min-h-[80px] cursor-pointer flex items-center"
+                        className="p-4 h-[120px] cursor-pointer flex items-center"
                         onClick={() => handleCardClick(option.id)}
                       >
-                        <div className="flex items-center justify-between w-full">
-                          <div className="flex-1 pr-4">
-                            <h3 className="text-base font-semibold text-[#1c1c1c] mb-1">
+                        <div className="flex items-center justify-between w-full h-full">
+                          <div className="flex-1 pr-4 flex flex-col justify-center">
+                            <h3 className="text-base font-semibold text-[#1c1c1c] mb-2 leading-tight">
                               {option.title}
                             </h3>
-                            <p className="text-gray-600 font-medium text-sm">
+                            <p className="text-gray-600 font-medium text-sm leading-tight">
                               {option.subtitle}
                             </p>
                           </div>
