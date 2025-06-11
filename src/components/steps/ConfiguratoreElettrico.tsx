@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { QuestionWithOptions, QuestionOption, InfoBox } from "../shared/QuestionWithOptions";
@@ -21,7 +22,8 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
     if (tipoRistrutturazione === 'completa' || tipoRistrutturazione === 'nuova') {
       onNext();
     } else {
-      // Per intervento parziale, salta alla pagina dei dati di contatto (step + 2)
+      // Per intervento parziale, salta alla pagina dei dati di contatto (step + 3)
+      onNext();
       onNext();
       onNext();
     }
