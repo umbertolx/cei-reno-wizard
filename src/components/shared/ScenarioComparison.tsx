@@ -98,7 +98,7 @@ export const ScenarioComparison = ({
           </div>
           
           {/* Comparison Cards */}
-          <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
+          <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
             {options.map((option) => {
               const isSelected = selectedValue === option.id;
               const isExpanded = expandedCards.includes(option.id);
@@ -109,7 +109,7 @@ export const ScenarioComparison = ({
                   <div className="block md:hidden">
                     <div
                       className={`
-                        relative border-2 rounded-lg transition-all duration-200
+                        relative border-2 rounded-lg transition-all duration-200 min-h-[120px]
                         ${isSelected 
                           ? 'border-[#d8010c] bg-[#d8010c]/5' 
                           : 'border-gray-200'
@@ -118,12 +118,12 @@ export const ScenarioComparison = ({
                     >
                       {/* Mobile Header - Always visible */}
                       <div 
-                        className="p-4 cursor-pointer"
+                        className="p-6 cursor-pointer"
                         onClick={() => handleCardClick(option.id)}
                       >
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 pr-4">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">
                               {option.title}
                             </h3>
                             <p className="text-gray-600 font-medium text-sm">
@@ -133,7 +133,7 @@ export const ScenarioComparison = ({
                           
                           {/* Selection Indicator */}
                           {isSelected && (
-                            <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
+                            <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0">
                               <Check className="w-4 h-4 text-white" />
                             </div>
                           )}
@@ -142,17 +142,17 @@ export const ScenarioComparison = ({
 
                       {/* Mobile Expand Button */}
                       <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
-                        <CollapsibleTrigger className="w-full border-t border-gray-200 p-3 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50">
-                          <span className="text-sm">
+                        <CollapsibleTrigger className="w-full border-t border-gray-200 p-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50">
+                          <span className="text-sm font-medium">
                             {isExpanded ? 'Nascondi dettagli' : 'Mostra dettagli'}
                           </span>
                           <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
                         </CollapsibleTrigger>
                         
                         <CollapsibleContent>
-                          <div className="p-4 pt-0 space-y-3">
+                          <div className="p-6 pt-0 space-y-4">
                             {/* Features List */}
-                            <div className="space-y-2">
+                            <div className="space-y-3">
                               {option.features.map((feature, index) => {
                                 const IconComponent = feature.icon;
                                 return (
