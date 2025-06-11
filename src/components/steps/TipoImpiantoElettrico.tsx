@@ -18,14 +18,9 @@ export const TipoImpiantoElettrico = ({ formData, updateFormData, onNext, onBack
       tipoImpianto 
     });
     
-    // Per Livello 1 e 2, vai alla pagina delle tapparelle (step successivo)
-    // Per Livello 3, salta direttamente ai dati di contatto (2 step avanti)
-    if (tipoImpianto === 'livello3') {
-      onNext();
-      onNext();
-    } else {
-      onNext();
-    }
+    // Per Livello 3, vai alla pagina di scelta tipo domotico
+    // Per Livello 1 e 2, vai alla pagina delle tapparelle
+    onNext();
   };
 
   const options: QuestionOption[] = [
