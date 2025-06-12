@@ -74,7 +74,6 @@ export const Configuratore = () => {
     tipoProprietà: "prima casa"
   });
   
-  
   const updateFormData = (data: Partial<FormData>) => {
     setFormData(prev => ({ ...prev, ...data }));
   };
@@ -120,7 +119,6 @@ export const Configuratore = () => {
       superficie: 0,
       indirizzo: "",
       citta: "",
-      cap: "",
       regione: "",
       piano: "",
       composizione: {
@@ -139,8 +137,6 @@ export const Configuratore = () => {
       tipoProprietà: "prima casa"
     });
   };
-
-  
 
   const handleInviaDati = async () => {
     try {
