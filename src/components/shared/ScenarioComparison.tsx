@@ -70,7 +70,7 @@ export const ScenarioComparison = ({
     <div className="space-y-6">
       {/* Badge - consistente con altri step */}
       <div className="flex justify-center">
-        <div className="bg-[#d8010c] text-white px-6 py-3 rounded-full text-sm font-medium">
+        <div className="bg-[#d8010c] text-white px-6 py-3 rounded-full text-sm font-medium shadow-lg">
           {badge}
         </div>
       </div>
@@ -98,32 +98,32 @@ export const ScenarioComparison = ({
           </div>
           
           {/* Comparison Cards */}
-          <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
+          <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-6">
             {options.map((option) => {
               const isSelected = selectedValue === option.id;
               const isExpanded = expandedCards.includes(option.id);
               
               return (
                 <div key={option.id} className="md:contents">
-                  {/* Mobile Version - Collapsible con altezza uniforme fissa */}
+                  {/* Mobile Version - Collapsible con design migliorato */}
                   <div className="block md:hidden">
                     <div
                       className={`
-                        relative border-2 rounded-xl transition-all duration-200 h-[140px]
+                        relative border-2 rounded-2xl transition-all duration-300 h-[160px] shadow-sm
                         ${isSelected 
-                          ? 'border-[#d8010c] bg-[#d8010c]/5' 
-                          : 'border-gray-200'
+                          ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/8 to-[#d8010c]/3 shadow-md' 
+                          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
                         }
                       `}
                     >
-                      {/* Mobile Header - layout ottimizzato per altezza fissa */}
+                      {/* Mobile Header - design ottimizzato */}
                       <div 
-                        className="p-4 h-[90px] cursor-pointer flex items-center"
+                        className="p-5 h-[100px] cursor-pointer flex items-center relative"
                         onClick={() => handleCardClick(option.id)}
                       >
                         <div className="flex items-center justify-between w-full h-full">
                           <div className="flex-1 pr-4 flex flex-col justify-center">
-                            <h3 className="text-base font-semibold text-[#1c1c1c] mb-1 leading-tight line-clamp-2">
+                            <h3 className="text-lg font-semibold text-[#1c1c1c] mb-2 leading-tight line-clamp-2">
                               {option.title}
                             </h3>
                             <p className="text-gray-600 font-medium text-sm leading-tight line-clamp-2">
@@ -131,41 +131,47 @@ export const ScenarioComparison = ({
                             </p>
                           </div>
                           
-                          {/* Selection Indicator */}
-                          {isSelected && (
-                            <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0">
-                              <Check className="w-3 h-3 text-white" />
-                            </div>
-                          )}
+                          {/* Selection Indicator con design migliorato */}
+                          <div className={`
+                            w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200
+                            ${isSelected 
+                              ? 'bg-[#d8010c] shadow-lg' 
+                              : 'border-2 border-gray-300 bg-white'
+                            }
+                          `}>
+                            {isSelected && <Check className="w-4 h-4 text-white" />}
+                          </div>
                         </div>
                       </div>
 
-                      {/* Mobile Expand Button - altezza fissa */}
+                      {/* Mobile Expand Button con design migliorato */}
                       <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
-                        <CollapsibleTrigger className="w-full h-[50px] border-t border-gray-200 px-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50">
+                        <CollapsibleTrigger className="w-full h-[60px] border-t border-gray-200 px-5 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50/80 transition-colors rounded-b-2xl">
                           <span className="text-sm font-medium">
                             {isExpanded ? 'Nascondi dettagli' : 'Mostra dettagli'}
                           </span>
-                          <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
                         </CollapsibleTrigger>
                         
                         <CollapsibleContent>
-                          <div className="p-4 pt-0 space-y-4 bg-white">
-                            {/* Features List */}
-                            <div className="space-y-2">
+                          <div className="p-5 pt-0 space-y-4 bg-white rounded-b-2xl">
+                            {/* Features List con design migliorato */}
+                            <div className="space-y-3">
                               {option.features.map((feature, index) => {
                                 const IconComponent = feature.icon;
                                 return (
                                   <div key={index} className="flex items-center gap-3">
-                                    <IconComponent className="w-4 h-4 text-gray-600 flex-shrink-0" />
-                                    <span className="text-sm text-gray-800">{feature.text}</span>
+                                    <div className="w-8 h-8 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
+                                      <IconComponent className="w-4 h-4 text-[#d8010c]" />
+                                    </div>
+                                    <span className="text-sm text-gray-800 font-medium">{feature.text}</span>
                                   </div>
                                 );
                               })}
                             </div>
 
                             {/* Description */}
-                            <p className="text-sm text-gray-700">
+                            <p className="text-sm text-gray-700 leading-relaxed">
                               {option.description}
                             </p>
                           </div>
@@ -174,51 +180,58 @@ export const ScenarioComparison = ({
                     </div>
                   </div>
 
-                  {/* Desktop Version - Always expanded */}
+                  {/* Desktop Version con design migliorato e dimensioni identiche */}
                   <div className="hidden md:block">
                     <div
                       className={`
-                        relative p-6 rounded-lg border-2 cursor-pointer transition-all duration-200
+                        relative p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 h-[420px] flex flex-col shadow-sm
                         ${isSelected 
-                          ? 'border-[#d8010c] bg-[#d8010c]/5 shadow-sm' 
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/8 to-[#d8010c]/3 shadow-xl transform scale-[1.02]' 
+                          : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-white'
                         }
                       `}
                       onClick={() => handleCardClick(option.id)}
                     >
-                      {/* Selection Indicator */}
-                      {isSelected && (
-                        <div className="absolute top-4 right-4 w-8 h-8 bg-[#d8010c] rounded-full flex items-center justify-center">
-                          <Check className="w-5 h-5 text-white" />
-                        </div>
-                      )}
+                      {/* Selection Indicator con design migliorato */}
+                      <div className={`
+                        absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200
+                        ${isSelected 
+                          ? 'bg-[#d8010c] shadow-lg' 
+                          : 'border-2 border-gray-300 bg-white'
+                        }
+                      `}>
+                        {isSelected && <Check className="w-5 h-5 text-white" />}
+                      </div>
 
-                      {/* Card Content */}
-                      <div className="space-y-4">
-                        <div>
-                          <h3 className="text-xl font-semibold text-gray-900 mb-1">
+                      {/* Card Content con layout ottimizzato */}
+                      <div className="flex flex-col h-full">
+                        {/* Header Section */}
+                        <div className="mb-6">
+                          <h3 className="text-xl font-semibold text-gray-900 mb-2 leading-tight">
                             {option.title}
                           </h3>
-                          <p className="text-gray-600 font-medium">
+                          <p className="text-gray-600 font-medium text-base">
                             {option.subtitle}
                           </p>
                         </div>
 
-                        {/* Features List */}
-                        <div className="space-y-2">
+                        {/* Features List con design migliorato */}
+                        <div className="space-y-3 mb-6 flex-1">
                           {option.features.map((feature, index) => {
                             const IconComponent = feature.icon;
                             return (
                               <div key={index} className="flex items-center gap-3">
-                                <IconComponent className="w-5 h-5 text-gray-600 flex-shrink-0" />
-                                <span className="text-gray-800">{feature.text}</span>
+                                <div className="w-8 h-8 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
+                                  <IconComponent className="w-5 h-5 text-[#d8010c]" />
+                                </div>
+                                <span className="text-gray-800 font-medium">{feature.text}</span>
                               </div>
                             );
                           })}
                         </div>
 
                         {/* Description */}
-                        <p className="text-gray-700">
+                        <p className="text-gray-700 leading-relaxed">
                           {option.description}
                         </p>
                       </div>
