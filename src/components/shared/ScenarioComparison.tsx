@@ -105,28 +105,28 @@ export const ScenarioComparison = ({
               
               return (
                 <div key={option.id} className="md:contents">
-                  {/* Mobile Version - Collapsible con altezza uniforme */}
+                  {/* Mobile Version - Collapsible con altezza uniforme fissa */}
                   <div className="block md:hidden">
                     <div
                       className={`
-                        relative border-2 rounded-xl transition-all duration-200 min-h-[120px]
+                        relative border-2 rounded-xl transition-all duration-200 h-[140px]
                         ${isSelected 
                           ? 'border-[#d8010c] bg-[#d8010c]/5' 
                           : 'border-gray-200'
                         }
                       `}
                     >
-                      {/* Mobile Header - layout migliorato */}
+                      {/* Mobile Header - layout ottimizzato per altezza fissa */}
                       <div 
-                        className="p-4 h-[120px] cursor-pointer flex items-center"
+                        className="p-4 h-[90px] cursor-pointer flex items-center"
                         onClick={() => handleCardClick(option.id)}
                       >
                         <div className="flex items-center justify-between w-full h-full">
                           <div className="flex-1 pr-4 flex flex-col justify-center">
-                            <h3 className="text-base font-semibold text-[#1c1c1c] mb-2 leading-tight">
+                            <h3 className="text-base font-semibold text-[#1c1c1c] mb-1 leading-tight line-clamp-2">
                               {option.title}
                             </h3>
-                            <p className="text-gray-600 font-medium text-sm leading-tight">
+                            <p className="text-gray-600 font-medium text-sm leading-tight line-clamp-2">
                               {option.subtitle}
                             </p>
                           </div>
@@ -140,9 +140,9 @@ export const ScenarioComparison = ({
                         </div>
                       </div>
 
-                      {/* Mobile Expand Button */}
+                      {/* Mobile Expand Button - altezza fissa */}
                       <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
-                        <CollapsibleTrigger className="w-full border-t border-gray-200 p-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50">
+                        <CollapsibleTrigger className="w-full h-[50px] border-t border-gray-200 px-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50">
                           <span className="text-sm font-medium">
                             {isExpanded ? 'Nascondi dettagli' : 'Mostra dettagli'}
                           </span>
