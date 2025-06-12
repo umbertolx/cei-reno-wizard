@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, ChevronDown, Check } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { StickyNavigationBar } from "./StickyNavigationBar";
 
 export type ScenarioOption = {
   id: string;
@@ -246,38 +246,14 @@ export const ScenarioComparison = ({
         </div>
       </div>
 
-      {/* Navigation Buttons - Sticky su mobile */}
-      <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 mt-8">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row gap-3">
-          <Button 
-            onClick={onBack}
-            variant="outline"
-            className="flex-1 h-12 text-base font-medium border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg flex items-center justify-center gap-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {backButtonText}
-          </Button>
-          
-          <Button 
-            onClick={handleSubmit}
-            disabled={!isFormValid}
-            className="
-              flex-1 h-12
-              text-base font-medium
-              bg-[#d8010c] hover:bg-[#b8000a]
-              text-white 
-              rounded-lg 
-              flex items-center justify-center gap-2
-              transition-all duration-200
-              disabled:opacity-50 disabled:cursor-not-allowed
-              shadow-lg
-            "
-          >
-            <span>{nextButtonText}</span>
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
+      {/* Navigation Buttons - Using new component */}
+      <StickyNavigationBar
+        onBack={onBack}
+        onNext={handleSubmit}
+        nextButtonText={nextButtonText}
+        backButtonText={backButtonText}
+        isNextDisabled={!isFormValid}
+      />
     </div>
   );
 };
