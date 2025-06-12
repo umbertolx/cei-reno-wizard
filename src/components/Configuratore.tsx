@@ -119,6 +119,7 @@ export const Configuratore = () => {
       superficie: 0,
       indirizzo: "",
       citta: "",
+      cap: "",
       regione: "",
       piano: "",
       composizione: {
