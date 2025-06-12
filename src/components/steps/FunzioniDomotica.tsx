@@ -68,7 +68,7 @@ export const FunzioniDomotica = ({ formData, updateFormData, onNext, onBack }: P
     {
       id: 'prese',
       title: 'Prese intelligenti',
-      description: 'Rispondi al citofono dallo smartphone',
+      description: 'Controllo remoto degli elettrodomestici',
       icon: Zap,
       detailedInfo: 'Controllo remoto di elettrodomestici, programmazione accensione/spegnimento, monitoraggio consumi.',
       position: 'bottom-right'
@@ -81,7 +81,6 @@ export const FunzioniDomotica = ({ formData, updateFormData, onNext, onBack }: P
         ? prev.filter(id => id !== functionId)
         : [...prev, functionId];
       
-      updateFormData({ funzioniDomotica: newSelection });
       return newSelection;
     });
   };
