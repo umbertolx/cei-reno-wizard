@@ -67,30 +67,32 @@ export const ScenarioComparison = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Badge - consistente con altri step */}
-      <div className="flex justify-center">
+    <div className="min-h-screen flex flex-col">
+      {/* Badge */}
+      <div className="flex justify-center pt-6 pb-4">
         <div className="bg-[#d8010c] text-white px-6 py-3 rounded-full text-sm font-medium shadow-lg">
           {badge}
         </div>
       </div>
 
-      {/* Contenuto principale */}
-      <div className="max-w-4xl mx-auto space-y-8 mt-16">
-        <div className="space-y-6">
-          {/* Header - consistente con altri step */}
-          <div className="flex items-center gap-4">
-            <div className="w-[100px] h-[100px] flex-shrink-0 flex items-center justify-center">
+      {/* Main Content */}
+      <div className="flex-1 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+            <div className="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] flex-shrink-0 flex items-center justify-center">
               <img 
                 src={icon}
                 alt={iconAlt}
                 className="w-full h-full object-contain"
               />
             </div>
-            <div>
-              <h2 className="text-2xl font-medium text-[#1c1c1c]">{title}</h2>
+            <div className="flex-1">
+              <h2 className="text-xl sm:text-2xl font-medium text-[#1c1c1c] leading-tight">
+                {title}
+              </h2>
               {description && (
-                <p className="text-base text-[#1c1c1c] opacity-80 mt-2">
+                <p className="text-sm sm:text-base text-[#1c1c1c] opacity-80 mt-2">
                   {description}
                 </p>
               )}
@@ -98,70 +100,68 @@ export const ScenarioComparison = ({
           </div>
           
           {/* Comparison Cards */}
-          <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-6">
+          <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-8">
             {options.map((option) => {
               const isSelected = selectedValue === option.id;
               const isExpanded = expandedCards.includes(option.id);
               
               return (
-                <div key={option.id} className="md:contents">
-                  {/* Mobile Version - Collapsible con design migliorato */}
-                  <div className="block md:hidden">
+                <div key={option.id}>
+                  {/* Mobile Version - Design migliorato */}
+                  <div className="block lg:hidden">
                     <div
                       className={`
-                        relative border-2 rounded-2xl transition-all duration-300 h-[160px] shadow-sm
+                        relative border-2 rounded-xl transition-all duration-300 overflow-hidden
                         ${isSelected 
-                          ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/8 to-[#d8010c]/3 shadow-md' 
+                          ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/5 to-[#d8010c]/2 shadow-lg ring-2 ring-[#d8010c]/20' 
                           : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
                         }
                       `}
                     >
-                      {/* Mobile Header - design ottimizzato */}
+                      {/* Mobile Header */}
                       <div 
-                        className="p-5 h-[100px] cursor-pointer flex items-center relative"
+                        className="p-4 cursor-pointer flex items-center justify-between min-h-[100px]"
                         onClick={() => handleCardClick(option.id)}
                       >
-                        <div className="flex items-center justify-between w-full h-full">
-                          <div className="flex-1 pr-4 flex flex-col justify-center">
-                            <h3 className="text-lg font-semibold text-[#1c1c1c] mb-2 leading-tight line-clamp-2">
-                              {option.title}
-                            </h3>
-                            <p className="text-gray-600 font-medium text-sm leading-tight line-clamp-2">
-                              {option.subtitle}
-                            </p>
-                          </div>
-                          
-                          {/* Selection Indicator con design migliorato */}
-                          <div className={`
-                            w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200
-                            ${isSelected 
-                              ? 'bg-[#d8010c] shadow-lg' 
-                              : 'border-2 border-gray-300 bg-white'
-                            }
-                          `}>
-                            {isSelected && <Check className="w-4 h-4 text-white" />}
-                          </div>
+                        <div className="flex-1 pr-4">
+                          <h3 className="text-lg font-semibold text-[#1c1c1c] mb-2 leading-tight">
+                            {option.title}
+                          </h3>
+                          <p className="text-gray-600 font-medium text-sm leading-tight">
+                            {option.subtitle}
+                          </p>
+                        </div>
+                        
+                        {/* Selection Indicator */}
+                        <div className={`
+                          w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200
+                          ${isSelected 
+                            ? 'bg-[#d8010c] shadow-lg scale-110' 
+                            : 'border-2 border-gray-300 bg-white hover:border-gray-400'
+                          }
+                        `}>
+                          {isSelected && <Check className="w-4 h-4 text-white" />}
                         </div>
                       </div>
 
-                      {/* Mobile Expand Button con design migliorato */}
+                      {/* Mobile Expand/Collapse */}
                       <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
-                        <CollapsibleTrigger className="w-full h-[60px] border-t border-gray-200 px-5 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50/80 transition-colors rounded-b-2xl">
-                          <span className="text-sm font-medium">
+                        <CollapsibleTrigger className="w-full border-t border-gray-200 px-4 py-3 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50/80 transition-colors text-sm font-medium">
+                          <span>
                             {isExpanded ? 'Nascondi dettagli' : 'Mostra dettagli'}
                           </span>
                           <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
                         </CollapsibleTrigger>
                         
                         <CollapsibleContent>
-                          <div className="p-5 pt-0 space-y-4 bg-white rounded-b-2xl">
-                            {/* Features List con design migliorato */}
+                          <div className="p-4 pt-0 space-y-4 bg-gray-50/30">
+                            {/* Features List */}
                             <div className="space-y-3">
                               {option.features.map((feature, index) => {
                                 const IconComponent = feature.icon;
                                 return (
                                   <div key={index} className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
+                                    <div className="w-7 h-7 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
                                       <IconComponent className="w-4 h-4 text-[#d8010c]" />
                                     </div>
                                     <span className="text-sm text-gray-800 font-medium">{feature.text}</span>
@@ -171,7 +171,7 @@ export const ScenarioComparison = ({
                             </div>
 
                             {/* Description */}
-                            <p className="text-sm text-gray-700 leading-relaxed">
+                            <p className="text-sm text-gray-700 leading-relaxed bg-white p-3 rounded-lg border border-gray-100">
                               {option.description}
                             </p>
                           </div>
@@ -180,30 +180,30 @@ export const ScenarioComparison = ({
                     </div>
                   </div>
 
-                  {/* Desktop Version con design migliorato e dimensioni identiche */}
-                  <div className="hidden md:block">
+                  {/* Desktop Version */}
+                  <div className="hidden lg:block">
                     <div
                       className={`
-                        relative p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 h-[420px] flex flex-col shadow-sm
+                        relative p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 h-[450px] flex flex-col
                         ${isSelected 
-                          ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/8 to-[#d8010c]/3 shadow-xl transform scale-[1.02]' 
-                          : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-white'
+                          ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/5 to-[#d8010c]/2 shadow-xl ring-2 ring-[#d8010c]/20 transform scale-[1.02]' 
+                          : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-white hover:transform hover:scale-[1.01]'
                         }
                       `}
                       onClick={() => handleCardClick(option.id)}
                     >
-                      {/* Selection Indicator con design migliorato */}
+                      {/* Selection Indicator */}
                       <div className={`
                         absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200
                         ${isSelected 
-                          ? 'bg-[#d8010c] shadow-lg' 
-                          : 'border-2 border-gray-300 bg-white'
+                          ? 'bg-[#d8010c] shadow-lg scale-110' 
+                          : 'border-2 border-gray-300 bg-white hover:border-gray-400'
                         }
                       `}>
                         {isSelected && <Check className="w-5 h-5 text-white" />}
                       </div>
 
-                      {/* Card Content con layout ottimizzato */}
+                      {/* Card Content */}
                       <div className="flex flex-col h-full">
                         {/* Header Section */}
                         <div className="mb-6">
@@ -215,8 +215,8 @@ export const ScenarioComparison = ({
                           </p>
                         </div>
 
-                        {/* Features List con design migliorato */}
-                        <div className="space-y-3 mb-6 flex-1">
+                        {/* Features List */}
+                        <div className="space-y-4 mb-6 flex-1">
                           {option.features.map((feature, index) => {
                             const IconComponent = feature.icon;
                             return (
@@ -231,9 +231,11 @@ export const ScenarioComparison = ({
                         </div>
 
                         {/* Description */}
-                        <p className="text-gray-700 leading-relaxed">
-                          {option.description}
-                        </p>
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                          <p className="text-gray-700 leading-relaxed text-sm">
+                            {option.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -244,34 +246,37 @@ export const ScenarioComparison = ({
         </div>
       </div>
 
-      {/* Pulsanti di navigazione - consistenti con altri step */}
-      <div className="flex flex-col sm:flex-row gap-4 pt-6">
-        <Button 
-          onClick={onBack}
-          variant="outline"
-          className="flex-1 h-12 text-base font-medium border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg flex items-center justify-center gap-2"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          {backButtonText}
-        </Button>
-        
-        <Button 
-          onClick={handleSubmit}
-          disabled={!isFormValid}
-          className="
-            flex-1 h-12
-            text-base font-medium
-            bg-[#d8010c] hover:bg-[#b8000a]
-            text-white 
-            rounded-lg 
-            flex items-center justify-center gap-2
-            transition-all duration-200
-            disabled:opacity-50 disabled:cursor-not-allowed
-          "
-        >
-          <span>{nextButtonText}</span>
-          <ArrowRight className="h-4 w-4" />
-        </Button>
+      {/* Navigation Buttons - Sticky su mobile */}
+      <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 mt-8">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row gap-3">
+          <Button 
+            onClick={onBack}
+            variant="outline"
+            className="flex-1 h-12 text-base font-medium border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg flex items-center justify-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {backButtonText}
+          </Button>
+          
+          <Button 
+            onClick={handleSubmit}
+            disabled={!isFormValid}
+            className="
+              flex-1 h-12
+              text-base font-medium
+              bg-[#d8010c] hover:bg-[#b8000a]
+              text-white 
+              rounded-lg 
+              flex items-center justify-center gap-2
+              transition-all duration-200
+              disabled:opacity-50 disabled:cursor-not-allowed
+              shadow-lg
+            "
+          >
+            <span>{nextButtonText}</span>
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );
