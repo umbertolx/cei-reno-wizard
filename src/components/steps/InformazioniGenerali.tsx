@@ -16,6 +16,27 @@ type Props = {
 };
 
 export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props) => {
+  // Pre-compila i dati se non sono già presenti
+  if (!formData.tipologiaAbitazione) {
+    updateFormData({
+      tipologiaAbitazione: "appartamento",
+      superficie: 85,
+      indirizzo: "Via Roma 123, Milano, 20100, Lombardia",
+      citta: "Milano",
+      cap: "20100",
+      regione: "Lombardia",
+      composizione: {
+        ...formData.composizione,
+        cucina: 1,
+        cameraDoppia: 1,
+        cameraSingola: 1,
+        soggiorno: 1,
+        bagno: 2,
+        altro: 0
+      }
+    });
+  }
+
   const totalRooms = Object.values(formData.composizione).reduce((sum, count) => sum + count, 0);
   
   const validateForm = () => {
@@ -113,7 +134,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         />
 
         <SuperficieSlider
-          value={formData.superficie || 20}
+          value={formData.superficie || 85}
           onChange={(value) => updateFormData({ superficie: value })}
         />
 
