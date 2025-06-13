@@ -42,6 +42,19 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     }
   };
 
+  const handleCardClick = () => {
+    if (isCompleted) {
+      // Se è completata, deseleziona
+      setIsCompleted(false);
+      setIsActivated(false);
+      onComplete(feature.id, { active: false });
+    } else if (!isActivated) {
+      handleActivate();
+    } else {
+      handleDeactivate();
+    }
+  };
+
   const handleContinue = () => {
     setIsCompleted(true);
     setIsActivated(false); // Collassa le sotto-opzioni
@@ -62,14 +75,13 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
       {/* Feature Card */}
       <div 
         className={`
-          rounded-2xl shadow-sm transition-all duration-300
+          rounded-2xl shadow-sm transition-all duration-300 cursor-pointer
           ${shouldShowAsSelected 
             ? 'border border-[#d8010c] bg-[#d8010c]/5' 
             : 'bg-white border border-gray-200 hover:border-[#d8010c] hover:shadow-md'
           }
-          ${isCompleted ? 'cursor-default' : 'cursor-pointer'}
         `}
-        onClick={isCompleted ? undefined : (!isActivated ? handleActivate : handleDeactivate)}
+        onClick={handleCardClick}
       >
         <div className="space-y-0">
           {/* Feature Title and Description */}
