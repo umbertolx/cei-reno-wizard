@@ -64,19 +64,23 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
           {/* Action Button */}
           {!isActivated && (
             <div className="pt-4">
-              <QuestionWithOptions
-                question=""
-                options={[
-                  {
-                    id: 'activate',
-                    label: 'Attiva',
-                    description: ''
-                  }
-                ]}
-                selectedOption="activate"
-                onOptionSelect={() => handleActivate()}
-                showAsButton={true}
-              />
+              <div className="space-y-3">
+                <div
+                  onClick={handleActivate}
+                  className="rounded-xl transition-all duration-300 border cursor-pointer p-4 bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-base text-[#1c1c1c]">
+                        Attiva
+                      </div>
+                    </div>
+                    <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
+                      <div className="h-3 w-3 text-white">✓</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
@@ -94,16 +98,41 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
 
               {/* Options Comparison */}
               <div className="space-y-4">
-                <QuestionWithOptions
-                  question=""
-                  options={feature.advancedOption.options.map(option => ({
-                    id: option.id,
-                    label: option.label,
-                    description: option.description || ''
-                  }))}
-                  selectedOption={selectedOption}
-                  onOptionSelect={handleOptionSelect}
-                />
+                {feature.advancedOption.options.map((option) => {
+                  const isSelected = selectedOption === option.id;
+                  
+                  return (
+                    <div
+                      key={option.id}
+                      onClick={() => handleOptionSelect(option.id)}
+                      className={`
+                        rounded-xl transition-all duration-300 border cursor-pointer p-4
+                        ${isSelected 
+                          ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                          : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                        }
+                      `}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-base text-[#1c1c1c] mb-1">
+                            {option.label}
+                          </div>
+                          {option.description && (
+                            <div className="text-sm text-gray-600">
+                              {option.description}
+                            </div>
+                          )}
+                        </div>
+                        {isSelected && (
+                          <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
+                            <div className="h-3 w-3 text-white">✓</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Continue Button */}
