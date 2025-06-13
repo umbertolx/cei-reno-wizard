@@ -77,11 +77,16 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
               <h2 className="text-2xl font-semibold text-[#1c1c1c]">
                 {feature.title}
               </h2>
-              {isActivated && (
-                <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center">
-                  <Check className="h-4 w-4 text-white" />
-                </div>
-              )}
+              {/* Selection Indicator - Always visible */}
+              <div className={`
+                w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                ${isActivated 
+                  ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                  : 'border-gray-300 bg-white hover:border-gray-400'
+                }
+              `}>
+                {isActivated && <Check className="h-4 w-4 text-white" />}
+              </div>
             </div>
             <p className="text-lg text-gray-600 leading-relaxed">
               {feature.description}
@@ -131,11 +136,16 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
                             </div>
                           )}
                         </div>
-                        {isSelected && (
-                          <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
-                            <Check className="h-3 w-3 text-white" />
-                          </div>
-                        )}
+                        {/* Selection Indicator - Always visible */}
+                        <div className={`
+                          w-5 h-5 rounded-full flex items-center justify-center ml-3 transition-all duration-200 border-2
+                          ${isSelected 
+                            ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                            : 'border-gray-300 bg-white hover:border-gray-400'
+                          }
+                        `}>
+                          {isSelected && <Check className="h-3 w-3 text-white" />}
+                        </div>
                       </div>
                     </div>
                   );
