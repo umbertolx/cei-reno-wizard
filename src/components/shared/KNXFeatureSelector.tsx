@@ -64,7 +64,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
         className={`
           rounded-2xl shadow-sm transition-all duration-300
           ${shouldShowAsSelected 
-            ? 'border border-[#d8010c]' 
+            ? 'border border-[#d8010c] bg-[#d8010c]/5' 
             : 'bg-white border border-gray-200 hover:border-[#d8010c] hover:shadow-md'
           }
           ${isCompleted ? 'cursor-default' : 'cursor-pointer'}
@@ -78,6 +78,8 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               space-y-3 p-6 
               ${isActivated && !isCompleted
                 ? 'bg-white rounded-t-2xl' 
+                : shouldShowAsSelected
+                ? 'bg-[#d8010c]/5 rounded-2xl'
                 : 'bg-white rounded-2xl'
               }
             `}
