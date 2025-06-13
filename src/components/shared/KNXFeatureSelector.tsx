@@ -50,7 +50,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
   };
 
   return (
-    <div className="min-h-[60vh] flex flex-col justify-center space-y-6">
+    <div className="space-y-6">
       {/* Feature Card */}
       <div 
         className={`
@@ -66,7 +66,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
           {/* Feature Title and Description */}
           <div 
             className={`
-              space-y-4 p-8 
+              space-y-3 p-6 
               ${isActivated 
                 ? 'bg-white rounded-t-2xl' 
                 : 'bg-white rounded-2xl'
@@ -74,39 +74,39 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
             `}
           >
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-[#1c1c1c]">
+              <h2 className="text-xl font-semibold text-[#1c1c1c]">
                 {feature.title}
               </h2>
               {/* Selection Indicator - Always visible */}
               <div className={`
-                w-5 h-5 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
                 ${isActivated 
                   ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
                   : 'border-gray-300 bg-white hover:border-gray-400'
                 }
               `}>
-                {isActivated && <Check className="h-3 w-3 text-white" />}
+                {isActivated && <Check className="h-4 w-4 text-white" />}
               </div>
             </div>
-            <p className="text-lg text-gray-600 leading-relaxed">
+            <p className="text-base text-gray-600 leading-relaxed">
               {feature.description}
             </p>
           </div>
 
           {/* Advanced Options */}
           {isActivated && feature.advancedOption && (
-            <div className="border-t border-gray-200 space-y-6 bg-white px-8 pb-8 rounded-b-2xl">
-              <div className="pt-6 space-y-4">
-                <h3 className="text-xl font-semibold text-[#1c1c1c]">
+            <div className="border-t border-gray-200 space-y-4 bg-white px-6 pb-6 rounded-b-2xl">
+              <div className="pt-4 space-y-3">
+                <h3 className="text-lg font-semibold text-[#1c1c1c]">
                   {feature.advancedOption.title}
                 </h3>
-                <p className="text-base text-gray-600 leading-relaxed">
+                <p className="text-sm text-gray-600 leading-relaxed">
                   {feature.advancedOption.description}
                 </p>
               </div>
 
               {/* Options Comparison */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {feature.advancedOption.options.map((option) => {
                   const isSelected = selectedOption === option.id;
                   
@@ -118,7 +118,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
                         handleOptionSelect(option.id);
                       }}
                       className={`
-                        rounded-xl transition-all duration-300 border cursor-pointer p-4
+                        rounded-xl transition-all duration-300 border cursor-pointer p-3
                         ${isSelected 
                           ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
                           : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
@@ -127,24 +127,24 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-base text-[#1c1c1c] mb-1">
+                          <div className="font-semibold text-sm text-[#1c1c1c] mb-1">
                             {option.label}
                           </div>
                           {option.description && (
-                            <div className="text-sm text-gray-600">
+                            <div className="text-xs text-gray-600">
                               {option.description}
                             </div>
                           )}
                         </div>
                         {/* Selection Indicator - Always visible */}
                         <div className={`
-                          w-5 h-5 rounded-full flex items-center justify-center ml-3 transition-all duration-200 border-2
+                          w-6 h-6 rounded-full flex items-center justify-center ml-3 transition-all duration-200 border-2
                           ${isSelected 
                             ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
                             : 'border-gray-300 bg-white hover:border-gray-400'
                           }
                         `}>
-                          {isSelected && <Check className="h-3 w-3 text-white" />}
+                          {isSelected && <Check className="h-4 w-4 text-white" />}
                         </div>
                       </div>
                     </div>
@@ -153,10 +153,10 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
               </div>
 
               {/* Continue Button */}
-              <div className="pt-4">
+              <div className="pt-3">
                 <Button
                   onClick={handleContinue}
-                  className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-4 text-lg rounded-xl"
+                  className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-3 text-base rounded-xl"
                 >
                   <span>Continua</span>
                   <ArrowRight className="w-5 h-5 ml-2" />
