@@ -23,7 +23,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
       description: 'Regola l\'illuminazione da pulsanti intelligenti o da app. Puoi impostare l\'intensità, programmare accensioni e creare scenari (es. notte, lettura, relax).',
       advancedOption: {
         title: 'Controllo avanzato con KNX+DALI',
-        description: 'Vuoi controllare ogni singolo punto luce, come i faretti, anche nei colori o nella temperatura? Se selezioni questa opzione, attiviamo anche il protocollo DALI integrato nel KNX, pensato per un controllo più granulare della luce. È ideale se hai un\'illuminazione d\'atmosfera o tecnica.',
+        description: 'Controllo granulare di ogni singolo punto luce, colori e temperatura. Ideale per illuminazione d\'atmosfera o tecnica.',
         options: [
           { 
             id: 'standard', 
