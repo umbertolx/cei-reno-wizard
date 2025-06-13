@@ -37,6 +37,11 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
           }
         ]
       }
+    },
+    {
+      id: 'tapparelle',
+      title: 'Controllo tapparelle',
+      description: 'Gestisci l\'apertura e la chiusura delle tapparelle o tende motorizzate da app o da pulsanti intelligenti. Puoi impostare orari automatici, scenari coordinati con le luci, o regolare l\'apertura a una determinata percentuale.'
     }
   ];
 
@@ -48,9 +53,21 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
     setKnxConfig(updatedConfig);
     updateFormData({ knxConfig: updatedConfig });
 
-    // Per ora passiamo al prossimo step dato che abbiamo solo una feature
-    // In futuro qui incrementeremo currentFeature
-    onNext();
+    // Incrementa il currentFeature se ci sono altre features
+    if (currentFeature < features.length - 1) {
+      setCurrentFeature(prev => prev + 1);
+    } else {
+      // Se è l'ultima feature, vai al prossimo step
+      onNext();
+    }
+  };
+
+  const handleFeatureBack = () => {
+    if (currentFeature > 0) {
+      setCurrentFeature(prev => prev - 1);
+    } else {
+      onBack();
+    }
   };
 
   const currentFeatureData = features[currentFeature];
@@ -89,7 +106,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
             <KNXFeatureSelector
               feature={currentFeatureData}
               onComplete={handleFeatureComplete}
-              onBack={onBack}
+              onBack={handleFeatureBack}
             />
           </div>
         </div>
