@@ -85,7 +85,7 @@ export const InteractiveHouseSVG = ({ selectedFunctions, onFunctionToggle }: Pro
 
   return (
     <div className="space-y-6">
-      {/* Header con badge e titolo */}
+      {/* Header con badge e titolo - stile automotive */}
       <div className="flex items-center gap-4 mb-6">
         <Badge 
           className="bg-[#d90429] text-white px-3 py-1 text-sm font-semibold"
@@ -106,10 +106,10 @@ export const InteractiveHouseSVG = ({ selectedFunctions, onFunctionToggle }: Pro
         </div>
       </div>
 
-      {/* Layout principale: 65% preview + 35% picker */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Layout configuratore automotive: 65% preview + 35% picker */}
+      <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-6">
         {/* Preview isometrico - 65% */}
-        <div className="lg:col-span-2">
+        <div>
           <IsometricPreview 
             activeDevice={selectedDevice}
             deviceStates={deviceStates}
@@ -117,7 +117,7 @@ export const InteractiveHouseSVG = ({ selectedFunctions, onFunctionToggle }: Pro
         </div>
 
         {/* Device picker - 35% */}
-        <div className="lg:col-span-1">
+        <div>
           <DevicePicker
             devices={devicesConfig}
             selectedDevice={selectedDevice}
@@ -128,9 +128,9 @@ export const InteractiveHouseSVG = ({ selectedFunctions, onFunctionToggle }: Pro
         </div>
       </div>
 
-      {/* Riepilogo funzioni attive (mobile friendly) */}
+      {/* Riepilogo funzioni attive (inventory chips) */}
       {selectedFunctions.length > 0 && (
-        <div className="mt-6 p-4 bg-white rounded-lg border border-gray-200">
+        <div className="mt-6 p-4 bg-white rounded-lg border border-[#cbd5e1]">
           <h3 
             className="text-lg font-semibold mb-3 text-gray-900"
             style={{ fontFamily: 'system-ui', fontWeight: 600 }}

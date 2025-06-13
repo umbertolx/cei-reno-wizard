@@ -25,7 +25,7 @@ export const DevicePicker = ({
   const isActive = (deviceId: string) => deviceStates[deviceId]?.active || false;
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <h3 
         className="text-lg font-semibold text-gray-900 mb-4"
         style={{ fontFamily: 'system-ui', fontWeight: 600 }}
@@ -33,15 +33,15 @@ export const DevicePicker = ({
         Configurazione Dispositivi
       </h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto snap-y snap-mandatory">
+      <div className="space-y-3 max-h-[400px] overflow-y-auto snap-y snap-mandatory">
         {devices.map((device) => (
           <div
             key={device.id}
             className={`
               relative p-4 rounded-lg border cursor-pointer transition-all duration-200 snap-start
               ${selectedDevice === device.id 
-                ? 'border-2 border-[#ffc400] bg-[#fffbe5] shadow-md' 
-                : 'border border-gray-200 bg-white hover:shadow-lg hover:border-gray-300'
+                ? 'border-2 border-[#ffc400] bg-[#fffbe5] shadow-lg' 
+                : 'border border-[#cbd5e1] bg-white hover:shadow-md hover:border-gray-300'
               }
             `}
             onClick={() => onSelect(device.id)}
@@ -55,8 +55,8 @@ export const DevicePicker = ({
                   flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-lg
                   transition-all duration-200
                   ${isActive(device.id) 
-                    ? 'bg-[#ffc400] text-white shadow-md' 
-                    : 'bg-gray-100 text-gray-600'
+                    ? 'bg-[#ffc400] text-gray-900 shadow-md' 
+                    : 'bg-[#f1f5f9] text-gray-600'
                   }
                 `}
               >
@@ -66,7 +66,7 @@ export const DevicePicker = ({
               {/* Informazioni device */}
               <div className="flex-1 min-w-0">
                 <h4 
-                  className="text-sm font-medium text-gray-900 truncate"
+                  className="text-sm font-semibold text-gray-900 truncate"
                   style={{ fontFamily: 'system-ui', fontWeight: 600 }}
                 >
                   {device.label}
@@ -79,7 +79,7 @@ export const DevicePicker = ({
                 </p>
                 {device.price && (
                   <p 
-                    className="text-xs text-[#d90429] font-medium mt-1"
+                    className="text-xs text-[#d90429] font-semibold mt-1"
                     style={{ fontFamily: 'system-ui', fontWeight: 600 }}
                   >
                     {device.price}
@@ -92,7 +92,7 @@ export const DevicePicker = ({
                 <div 
                   className={`
                     w-3 h-3 rounded-full transition-all duration-200
-                    ${isActive(device.id) ? 'bg-[#22c55e]' : 'bg-gray-300'}
+                    ${isActive(device.id) ? 'bg-[#22c55e]' : 'bg-[#d1d5db]'}
                   `}
                 />
               </div>
@@ -107,7 +107,7 @@ export const DevicePicker = ({
                     onToggle(device.id);
                   }}
                   className={`
-                    w-full px-3 py-1 rounded text-xs font-medium transition-colors duration-200
+                    w-full px-3 py-1 rounded text-xs font-semibold transition-colors duration-200
                     ${isActive(device.id)
                       ? 'bg-[#d90429] text-white hover:bg-[#b91c3c]'
                       : 'bg-[#ffc400] text-gray-900 hover:bg-[#fbbf24]'
@@ -134,7 +134,7 @@ export const DevicePicker = ({
       </div>
 
       {/* Statistiche configurazione */}
-      <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+      <div className="mt-4 p-3 bg-[#f8fafc] rounded-lg border border-[#cbd5e1]">
         <div className="flex justify-between items-center text-sm">
           <span 
             className="text-gray-600"
