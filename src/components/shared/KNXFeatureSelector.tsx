@@ -57,7 +57,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
         className={`
           rounded-2xl border p-8 shadow-sm cursor-pointer transition-all duration-300
           ${isActivated 
-            ? 'bg-cei-yellow/20 border-cei-yellow' 
+            ? 'bg-cei-yellow/20 border-[#d8010c]' 
             : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-md'
           }
         `}
