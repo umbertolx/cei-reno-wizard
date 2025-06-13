@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
@@ -77,7 +78,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
 
           {/* Advanced Options */}
           {isActivated && feature.advancedOption && (
-            <div className="border-t border-gray-200 pt-6 space-y-6 bg-white rounded-b-2xl p-8 -mx-8 -mb-4 mt-6">
+            <div className="border-t border-gray-200 pt-6 space-y-6 bg-white rounded-b-2xl p-8 -mx-8 mt-6 pb-4">
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-[#1c1c1c]">
                   {feature.advancedOption.title}
