@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft } from "lucide-react";
-import { QuestionWithOptions } from "./QuestionWithOptions";
 
 type FeatureOption = {
   id: string;
@@ -49,40 +48,33 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
   return (
     <div className="space-y-8">
       {/* Feature Card */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+      <div 
+        className={`
+          rounded-2xl border p-8 shadow-sm cursor-pointer transition-all duration-300
+          ${isActivated 
+            ? 'bg-[#d8010c]/5 border-[#d8010c]' 
+            : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-md'
+          }
+        `}
+        onClick={!isActivated ? handleActivate : undefined}
+      >
         <div className="space-y-6">
           {/* Feature Title and Description */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold text-[#1c1c1c]">
-              {feature.title}
-            </h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-[#1c1c1c]">
+                {feature.title}
+              </h2>
+              {isActivated && (
+                <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center">
+                  <div className="h-4 w-4 text-white text-xs">✓</div>
+                </div>
+              )}
+            </div>
             <p className="text-lg text-gray-600 leading-relaxed">
               {feature.description}
             </p>
           </div>
-
-          {/* Action Button */}
-          {!isActivated && (
-            <div className="pt-4">
-              <div className="space-y-3">
-                <div
-                  onClick={handleActivate}
-                  className="rounded-xl transition-all duration-300 border cursor-pointer p-4 bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-base text-[#1c1c1c]">
-                        Attiva
-                      </div>
-                    </div>
-                    <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
-                      <div className="h-3 w-3 text-white">✓</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Advanced Options */}
           {isActivated && feature.advancedOption && (
@@ -104,7 +96,10 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
                   return (
                     <div
                       key={option.id}
-                      onClick={() => handleOptionSelect(option.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOptionSelect(option.id);
+                      }}
                       className={`
                         rounded-xl transition-all duration-300 border cursor-pointer p-4
                         ${isSelected 
