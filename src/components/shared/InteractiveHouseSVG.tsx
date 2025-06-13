@@ -16,501 +16,406 @@ export const InteractiveHouseSVG = ({ selectedFunctions }: Props) => {
       >
         {/* Definitions for realistic gradients and effects */}
         <defs>
-          {/* Realistic wall materials */}
-          <linearGradient id="exteriorWall" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#f5f5f4" />
-            <stop offset="50%" stopColor="#e7e5e4" />
-            <stop offset="100%" stopColor="#d6d3d1" />
+          {/* Modern wall gradient */}
+          <linearGradient id="wallGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f8fafc" />
+            <stop offset="50%" stopColor="#f1f5f9" />
+            <stop offset="100%" stopColor="#e2e8f0" />
           </linearGradient>
           
-          <linearGradient id="interiorWall" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fafaf9" />
-            <stop offset="100%" stopColor="#f5f5f4" />
+          {/* Luxury floor */}
+          <linearGradient id="floorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#92400e" />
+            <stop offset="50%" stopColor="#a16207" />
+            <stop offset="100%" stopColor="#78716c" />
           </linearGradient>
           
-          {/* Modern flooring */}
-          <linearGradient id="modernFloor" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#8b7355" />
-            <stop offset="50%" stopColor="#a0845c" />
-            <stop offset="100%" stopColor="#6b5b47" />
-          </linearGradient>
-          
-          {/* Luxury roof material */}
-          <linearGradient id="roofMaterial" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#374151" />
-            <stop offset="50%" stopColor="#4b5563" />
-            <stop offset="100%" stopColor="#1f2937" />
-          </linearGradient>
-          
-          {/* Glass reflections */}
-          <linearGradient id="glassReflection" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#bfdbfe" />
-            <stop offset="50%" stopColor="#93c5fd" />
+          {/* Window glass with reflection */}
+          <linearGradient id="windowGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#dbeafe" />
+            <stop offset="30%" stopColor="#bfdbfe" />
+            <stop offset="70%" stopColor="#93c5fd" />
             <stop offset="100%" stopColor="#3b82f6" />
           </linearGradient>
           
-          {/* Premium light glow effects */}
-          <filter id="premiumGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+          {/* Premium light glow */}
+          <filter id="lightGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
             <feMerge> 
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
           
-          <filter id="warmLight" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="12" result="coloredBlur"/>
+          {/* Warm ambient light */}
+          <filter id="warmGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="15" result="coloredBlur"/>
             <feMerge> 
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
           
-          {/* Shadow effects */}
+          {/* Drop shadow */}
           <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="2" dy="4" stdDeviation="3" floodColor="#000000" floodOpacity="0.2"/>
+            <feDropShadow dx="3" dy="6" stdDeviation="4" floodColor="#000000" floodOpacity="0.15"/>
           </filter>
           
-          {/* Wood texture pattern */}
-          <pattern id="woodTexture" patternUnits="userSpaceOnUse" width="20" height="4">
-            <rect width="20" height="4" fill="#8b7355"/>
-            <line x1="0" y1="2" x2="20" y2="2" stroke="#6b5b47" strokeWidth="0.5"/>
+          {/* Wood texture */}
+          <pattern id="woodTexture" patternUnits="userSpaceOnUse" width="30" height="6">
+            <rect width="30" height="6" fill="#92400e"/>
+            <line x1="0" y1="3" x2="30" y2="3" stroke="#78716c" strokeWidth="0.8"/>
+            <line x1="0" y1="1" x2="30" y2="1" stroke="#a16207" strokeWidth="0.3"/>
+            <line x1="0" y1="5" x2="30" y2="5" stroke="#a16207" strokeWidth="0.3"/>
           </pattern>
         </defs>
 
-        {/* Background landscape */}
-        <rect x="0" y="500" width="800" height="100" fill="#22c55e" opacity="0.3" />
-        <circle cx="700" cy="100" r="40" fill="#fbbf24" opacity="0.7" />
+        {/* Room structure - Modern living room */}
         
-        {/* House foundation and base */}
-        <rect x="100" y="480" width="600" height="30" fill="#78716c" stroke="#57534e" strokeWidth="2" rx="4" />
-        <rect x="90" y="470" width="620" height="15" fill="#a8a29e" stroke="#78716c" strokeWidth="1" rx="2" />
+        {/* Back wall */}
+        <rect x="50" y="50" width="700" height="400" fill="url(#wallGradient)" stroke="#cbd5e1" strokeWidth="2" />
         
-        {/* Main house structure with modern architecture */}
+        {/* Floor with wood pattern */}
+        <rect x="50" y="450" width="700" height="100" fill="url(#woodTexture)" stroke="#78716c" strokeWidth="2" />
         
-        {/* Exterior walls with depth */}
-        <polygon points="120,180 680,180 680,480 120,480" fill="url(#exteriorWall)" stroke="#a8a29e" strokeWidth="3" filter="url(#dropShadow)" />
+        {/* Left wall (partial view) */}
+        <polygon points="50,50 50,550 80,520 80,80" fill="#e2e8f0" stroke="#cbd5e1" strokeWidth="2" />
         
-        {/* Side perspective wall for 3D effect */}
-        <polygon points="680,180 720,140 720,440 680,480" fill="url(#exteriorWall)" stroke="#a8a29e" strokeWidth="2" />
+        {/* Right wall (partial view) */}
+        <polygon points="750,50 750,550 720,520 720,80" fill="#e2e8f0" stroke="#cbd5e1" strokeWidth="2" />
         
-        {/* Modern slanted roof */}
-        <polygon points="100,180 400,80 700,140 680,180 120,180" fill="url(#roofMaterial)" stroke="#1f2937" strokeWidth="3" />
-        <polygon points="400,80 700,140 740,100 440,40" fill="#1f2937" stroke="#111827" strokeWidth="2" />
-        
-        {/* Roof details - solar panels */}
-        <rect x="450" y="95" width="180" height="35" fill="#1e293b" stroke="#0f172a" strokeWidth="1" rx="2" opacity="0.8" />
-        <rect x="455" y="100" width="170" height="25" fill="#0f172a" rx="1" />
-        <g stroke="#334155" strokeWidth="0.5">
-          {Array.from({length: 6}, (_, i) => (
-            <line key={i} x1={460 + i * 27} y1="100" x2={460 + i * 27} y2="125" />
-          ))}
-        </g>
-        
-        {/* Floor divisions - 3 levels with realistic proportions */}
-        
-        {/* Ground floor - Soggiorno e Cucina */}
-        <rect x="125" y="360" width="550" height="115" fill="url(#modernFloor)" />
-        <polygon points="675,360 715,320 715,435 675,475" fill="#6b5b47" />
-        
-        {/* First floor - Camere */}
-        <rect x="125" y="240" width="550" height="115" fill="url(#modernFloor)" />
-        <polygon points="675,240 715,200 715,315 675,355" fill="#6b5b47" />
-        
-        {/* Attic/Mansarda */}
-        <rect x="125" y="185" width="550" height="50" fill="url(#modernFloor)" />
-        <polygon points="675,185 715,145 715,195 675,235" fill="#6b5b47" />
-        
-        {/* Interior room divisions */}
-        <line x1="400" y1="185" x2="400" y2="475" stroke="#d6d3d1" strokeWidth="3" />
-        <line x1="400" y1="185" x2="440" y2="145" stroke="#d6d3d1" strokeWidth="2" />
-        
-        {/* Modern large windows with realistic frames */}
-        
-        {/* Ground floor panoramic windows */}
-        <g>
-          {/* Living room large window */}
-          <rect x="140" y="380" width="100" height="70" fill="url(#glassReflection)" stroke="#374151" strokeWidth="3" rx="4" filter="url(#dropShadow)" />
-          <rect x="145" y="385" width="90" height="60" fill="#bfdbfe" opacity="0.3" rx="2" />
-          <line x1="190" y1="380" x2="190" y2="450" stroke="#374151" strokeWidth="2" />
-          <line x1="140" y1="415" x2="240" y2="415" stroke="#374151" strokeWidth="2" />
-          
-          {/* Kitchen window */}
-          <rect x="520" y="380" width="100" height="70" fill="url(#glassReflection)" stroke="#374151" strokeWidth="3" rx="4" filter="url(#dropShadow)" />
-          <rect x="525" y="385" width="90" height="60" fill="#bfdbfe" opacity="0.3" rx="2" />
-          <line x1="570" y1="380" x2="570" y2="450" stroke="#374151" strokeWidth="2" />
-        </g>
-        
-        {/* First floor bedroom windows */}
-        <g>
-          <rect x="160" y="260" width="80" height="60" fill="url(#glassReflection)" stroke="#374151" strokeWidth="3" rx="4" />
-          <rect x="540" y="260" width="80" height="60" fill="url(#glassReflection)" stroke="#374151" strokeWidth="3" rx="4" />
-        </g>
-        
-        {/* Attic windows */}
-        <g>
-          <rect x="200" y="195" width="60" height="35" fill="url(#glassReflection)" stroke="#374151" strokeWidth="2" rx="3" />
-          <rect x="500" y="195" width="60" height="35" fill="url(#glassReflection)" stroke="#374151" strokeWidth="2" rx="3" />
-        </g>
+        {/* Ceiling */}
+        <polygon points="50,50 750,50 720,80 80,80" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="2" />
 
-        {/* TAPPARELLE - Premium motorized blinds */}
+        {/* Large panoramic window */}
+        <rect x="150" y="80" width="500" height="250" fill="url(#windowGlass)" stroke="#374151" strokeWidth="4" rx="8" filter="url(#dropShadow)" />
+        
+        {/* Window frame details */}
+        <rect x="155" y="85" width="490" height="240" fill="none" stroke="#374151" strokeWidth="2" rx="4" />
+        <line x1="400" y1="80" x2="400" y2="330" stroke="#374151" strokeWidth="3" />
+        <line x1="150" y1="205" x2="650" y2="205" stroke="#374151" strokeWidth="3" />
+        
+        {/* Window view - subtle landscape */}
+        <rect x="160" y="90" width="480" height="230" fill="#87ceeb" opacity="0.3" rx="4" />
+        <circle cx="600" cy="130" r="25" fill="#fbbf24" opacity="0.6" />
+        <polygon points="160,280 300,200 450,240 650,180 650,320 160,320" fill="#22c55e" opacity="0.4" />
+
+        {/* TAPPARELLE - Motorized blinds */}
         <g className={`transition-all duration-500 ${isSelected('tapparelle') ? 'opacity-100' : 'opacity-70'}`}>
-          {/* Ground floor living room blinds */}
-          <rect x="135" y="375" width="110" height="80" 
+          <rect x="145" y="75" width="510" height="260" 
                 fill={isSelected('tapparelle') ? '#3b82f6' : '#e5e7eb'} 
-                opacity="0.9" stroke="#374151" strokeWidth="2" rx="4" 
-                filter={isSelected('tapparelle') ? "url(#premiumGlow)" : ""} />
-          <g stroke={isSelected('tapparelle') ? '#1e40af' : '#9ca3af'} strokeWidth="1">
-            {Array.from({length: 16}, (_, i) => (
-              <line key={i} x1="140" y1={380 + i * 4.5} x2="240" y2={380 + i * 4.5} />
+                opacity="0.85" stroke="#374151" strokeWidth="3" rx="8" 
+                filter={isSelected('tapparelle') ? "url(#lightGlow)" : ""} />
+          
+          {/* Blind slats */}
+          <g stroke={isSelected('tapparelle') ? '#1e40af' : '#9ca3af'} strokeWidth="1.5">
+            {Array.from({length: 25}, (_, i) => (
+              <line key={i} x1="150" y1={85 + i * 10} x2="650" y2={85 + i * 10} />
             ))}
           </g>
           
-          {/* Kitchen blinds */}
-          <rect x="515" y="375" width="110" height="80" 
-                fill={isSelected('tapparelle') ? '#3b82f6' : '#e5e7eb'} 
-                opacity="0.9" stroke="#374151" strokeWidth="2" rx="4" 
-                filter={isSelected('tapparelle') ? "url(#premiumGlow)" : ""} />
-          <g stroke={isSelected('tapparelle') ? '#1e40af' : '#9ca3af'} strokeWidth="1">
-            {Array.from({length: 16}, (_, i) => (
-              <line key={i} x1="520" y1={380 + i * 4.5} x2="620" y2={380 + i * 4.5} />
-            ))}
-          </g>
-          
-          {/* Motor controls */}
+          {/* Motor control */}
           {isSelected('tapparelle') && (
-            <>
-              <rect x="230" y="365" width="20" height="10" fill="#22c55e" rx="2" className="animate-pulse" />
-              <rect x="610" y="365" width="20" height="10" fill="#22c55e" rx="2" className="animate-pulse" />
-            </>
+            <rect x="620" y="60" width="25" height="15" fill="#22c55e" rx="3" className="animate-pulse" />
           )}
         </g>
 
-        {/* TENDE - Luxury interior curtains */}
+        {/* TENDE - Luxury curtains */}
         <g className={`transition-all duration-500 ${isSelected('tende') ? 'opacity-100' : 'opacity-60'}`}>
-          {/* Living room curtains */}
-          <path d="M150 390 Q170 380 190 390 Q210 380 230 390 L230 440 Q210 450 190 440 Q170 450 150 440 Z" 
+          {/* Left curtain */}
+          <path d="M120 90 Q140 80 160 90 Q180 80 200 90 L200 320 Q180 330 160 320 Q140 330 120 320 Z" 
                 fill={isSelected('tende') ? '#8b5cf6' : '#f3f4f6'} 
                 stroke={isSelected('tende') ? '#7c3aed' : '#d1d5db'} 
-                strokeWidth="2" opacity="0.8" />
+                strokeWidth="3" opacity="0.9" />
           
-          {/* Kitchen curtains */}
-          <path d="M530 390 Q550 380 570 390 Q590 380 610 390 L610 440 Q590 450 570 440 Q550 450 530 440 Z" 
+          {/* Right curtain */}
+          <path d="M600 90 Q620 80 640 90 Q660 80 680 90 L680 320 Q660 330 640 320 Q620 330 600 320 Z" 
                 fill={isSelected('tende') ? '#8b5cf6' : '#f3f4f6'} 
                 stroke={isSelected('tende') ? '#7c3aed' : '#d1d5db'} 
-                strokeWidth="2" opacity="0.8" />
+                strokeWidth="3" opacity="0.9" />
           
           {/* Curtain rails */}
-          <line x1="145" y1="385" x2="235" y2="385" stroke="#6b7280" strokeWidth="3" />
-          <line x1="525" y1="385" x2="615" y2="385" stroke="#6b7280" strokeWidth="3" />
+          <line x1="115" y1="85" x2="205" y2="85" stroke="#6b7280" strokeWidth="4" />
+          <line x1="595" y1="85" x2="685" y2="85" stroke="#6b7280" strokeWidth="4" />
         </g>
 
-        {/* LUCI - Designer ceiling lights and ambient lighting */}
+        {/* LUCI - Modern lighting system */}
         <g>
-          {/* Ground floor - Modern pendant lights */}
+          {/* Main ceiling chandelier */}
           <g>
-            {/* Living room chandelier */}
-            <circle cx="260" cy="420" r="12" 
+            <circle cx="400" cy="120" r="25" 
                     fill={isSelected('luci') ? '#fbbf24' : '#f3f4f6'} 
-                    stroke="#374151" strokeWidth="2"
-                    filter={isSelected('luci') ? "url(#warmLight)" : ""} />
-            <circle cx="260" cy="420" r="8" 
+                    stroke="#374151" strokeWidth="3"
+                    filter={isSelected('luci') ? "url(#warmGlow)" : ""} />
+            <circle cx="400" cy="120" r="18" 
                     fill={isSelected('luci') ? '#ffffff' : '#e5e7eb'} opacity="0.9" />
-            {isSelected('luci') && (
-              <circle cx="260" cy="420" r="35" fill="#fbbf24" opacity="0.2" className="animate-pulse" />
-            )}
+            <circle cx="400" cy="120" r="12" 
+                    fill={isSelected('luci') ? '#fef3c7' : '#f3f4f6'} opacity="0.8" />
             
-            {/* Kitchen pendant lights */}
-            <ellipse cx="520" cy="420" rx="25" ry="8" 
-                     fill={isSelected('luci') ? '#fbbf24' : '#f3f4f6'} 
-                     stroke="#374151" strokeWidth="2"
-                     filter={isSelected('luci') ? "url(#warmLight)" : ""} />
+            {/* Pendant details */}
+            <line x1="400" y1="95" x2="400" y2="105" stroke="#374151" strokeWidth="2" />
+            
             {isSelected('luci') && (
-              <ellipse cx="520" cy="420" rx="40" ry="15" fill="#fbbf24" opacity="0.15" className="animate-pulse" />
+              <>
+                <circle cx="400" cy="120" r="60" fill="#fbbf24" opacity="0.15" className="animate-pulse" />
+                <circle cx="400" cy="120" r="40" fill="#fbbf24" opacity="0.25" className="animate-pulse" />
+              </>
             )}
           </g>
           
-          {/* First floor - Recessed ceiling lights */}
-          <g>
-            <circle cx="260" cy="300" r="8" 
-                    fill={isSelected('luci') ? '#fbbf24' : '#f3f4f6'} 
-                    stroke="#374151" strokeWidth="1.5"
-                    filter={isSelected('luci') ? "url(#warmLight)" : ""} />
-            <circle cx="540" cy="300" r="8" 
-                    fill={isSelected('luci') ? '#fbbf24' : '#f3f4f6'} 
-                    stroke="#374151" strokeWidth="1.5"
-                    filter={isSelected('luci') ? "url(#warmLight)" : ""} />
-          </g>
+          {/* Recessed lights */}
+          <circle cx="200" cy="100" r="12" 
+                  fill={isSelected('luci') ? '#fbbf24' : '#f3f4f6'} 
+                  stroke="#374151" strokeWidth="2"
+                  filter={isSelected('luci') ? "url(#lightGlow)" : ""} />
+          <circle cx="600" cy="100" r="12" 
+                  fill={isSelected('luci') ? '#fbbf24' : '#f3f4f6'} 
+                  stroke="#374151" strokeWidth="2"
+                  filter={isSelected('luci') ? "url(#lightGlow)" : ""} />
           
-          {/* Attic - Skylight style */}
-          <rect x="360" y="195" width="80" height="15" 
-                fill={isSelected('luci') ? '#fbbf24' : '#f3f4f6'} 
-                stroke="#374151" strokeWidth="2" rx="7"
-                filter={isSelected('luci') ? "url(#warmLight)" : ""} />
+          {/* Table lamps */}
+          <g>
+            <ellipse cx="150" cy="400" rx="20" ry="8" fill="#374151" />
+            <rect x="145" y="385" width="10" height="15" fill="#6b7280" />
+            <ellipse cx="150" cy="375" rx="15" ry="10" 
+                     fill={isSelected('luci') ? '#fef3c7' : '#f3f4f6'} 
+                     stroke="#6b7280" strokeWidth="1"
+                     filter={isSelected('luci') ? "url(#warmGlow)" : ""} />
+          </g>
         </g>
 
-        {/* PORTA DI INGRESSO - Modern entrance with smart features */}
-        <g>
-          {/* Main door frame */}
-          <rect x="340" y="390" width="80" height="85" 
-                fill="#92400e" stroke="#451a03" strokeWidth="3" rx="6" filter="url(#dropShadow)" />
-          
-          {/* Door panels */}
-          <rect x="345" y="395" width="30" height="75" 
-                fill="#a16207" stroke="#92400e" strokeWidth="1" rx="3" />
-          <rect x="385" y="395" width="30" height="75" 
-                fill="#a16207" stroke="#92400e" strokeWidth="1" rx="3" />
-          
-          {/* Modern handle */}
-          <rect x="405" y="430" width="8" height="20" fill="#374151" rx="4" />
-          
-          {/* Glass panel */}
-          <rect x="350" y="400" width="20" height="30" fill="url(#glassReflection)" rx="2" />
-          
-          {/* VIDEOCITOFONO - Premium intercom system */}
-          <rect x="430" y="410" width="20" height="30" 
+        {/* VIDEOCITOFONO - Smart intercom near entrance */}
+        <g transform="translate(700, 350)">
+          <rect x="0" y="0" width="35" height="50" 
                 fill={isSelected('videocitofono') ? '#ef4444' : '#6b7280'} 
-                stroke="#374151" strokeWidth="2" rx="4"
-                filter={isSelected('videocitofono') ? "url(#premiumGlow)" : ""} />
+                stroke="#374151" strokeWidth="3" rx="6"
+                filter={isSelected('videocitofono') ? "url(#lightGlow)" : ""} />
           
-          {/* Camera lens */}
-          <circle cx="440" cy="420" r="4" 
+          {/* Camera */}
+          <circle cx="17" cy="15" r="6" 
                   fill={isSelected('videocitofono') ? '#ffffff' : '#d1d5db'} />
-          <circle cx="440" cy="420" r="2" 
+          <circle cx="17" cy="15" r="3" 
                   fill={isSelected('videocitofono') ? '#1f2937' : '#9ca3af'} />
           
           {/* Screen */}
-          <rect x="433" y="428" width="14" height="8" 
+          <rect x="5" y="25" width="25" height="15" 
                 fill={isSelected('videocitofono') ? '#22c55e' : '#9ca3af'} rx="2" />
           
-          {/* Smart lock indicator */}
+          {/* Buttons */}
+          <circle cx="17" cy="45" r="3" 
+                  fill={isSelected('videocitofono') ? '#22c55e' : '#d1d5db'} />
+          
           {isSelected('videocitofono') && (
-            <circle cx="440" cy="450" r="3" fill="#22c55e" className="animate-pulse" />
+            <circle cx="17" cy="15" r="12" fill="#ef4444" opacity="0.3" className="animate-pulse" />
           )}
         </g>
 
-        {/* AUDIO - High-end sound system */}
+        {/* AUDIO - Premium sound system */}
         <g>
-          {/* Living room tower speakers */}
-          <rect x="180" y="440" width="20" height="25" 
-                fill={isSelected('audio') ? '#10b981' : '#d1d5db'} 
-                stroke="#374151" strokeWidth="2" rx="6"
-                filter={isSelected('audio') ? "url(#premiumGlow)" : ""} />
-          
-          {/* Speaker drivers */}
-          <circle cx="190" cy="450" r="5" 
-                  fill={isSelected('audio') ? '#ffffff' : '#9ca3af'} />
-          <circle cx="190" cy="450" r="2" 
-                  fill={isSelected('audio') ? '#10b981' : '#6b7280'} />
-          <circle cx="190" cy="458" r="3" 
-                  fill={isSelected('audio') ? '#ffffff' : '#9ca3af'} />
-          
-          {/* Kitchen ceiling speakers */}
-          <circle cx="560" cy="370" r="8" 
+          {/* Floor speakers */}
+          <g transform="translate(100, 420)">
+            <rect x="0" y="0" width="25" height="60" 
                   fill={isSelected('audio') ? '#10b981' : '#d1d5db'} 
-                  stroke="#374151" strokeWidth="1.5"
-                  filter={isSelected('audio') ? "url(#premiumGlow)" : ""} />
-          <circle cx="560" cy="370" r="4" 
+                  stroke="#374151" strokeWidth="3" rx="8"
+                  filter={isSelected('audio') ? "url(#lightGlow)" : ""} />
+            
+            {/* Speaker drivers */}
+            <circle cx="12" cy="20" r="7" 
+                    fill={isSelected('audio') ? '#ffffff' : '#9ca3af'} />
+            <circle cx="12" cy="20" r="3" 
+                    fill={isSelected('audio') ? '#10b981' : '#6b7280'} />
+            <circle cx="12" cy="40" r="5" 
+                    fill={isSelected('audio') ? '#ffffff' : '#9ca3af'} />
+            <circle cx="12" cy="40" r="2" 
+                    fill={isSelected('audio') ? '#10b981' : '#6b7280'} />
+          </g>
+          
+          {/* Ceiling speakers */}
+          <circle cx="300" cy="90" r="15" 
+                  fill={isSelected('audio') ? '#10b981' : '#d1d5db'} 
+                  stroke="#374151" strokeWidth="2"
+                  filter={isSelected('audio') ? "url(#lightGlow)" : ""} />
+          <circle cx="300" cy="90" r="8" 
                   fill={isSelected('audio') ? '#ffffff' : '#9ca3af'} />
           
-          {/* Bedroom speakers */}
-          <rect x="200" y="250" width="15" height="15" 
-                fill={isSelected('audio') ? '#10b981' : '#d1d5db'} 
-                stroke="#374151" strokeWidth="1" rx="3"
-                filter={isSelected('audio') ? "url(#premiumGlow)" : ""} />
+          <circle cx="500" cy="90" r="15" 
+                  fill={isSelected('audio') ? '#10b981' : '#d1d5db'} 
+                  stroke="#374151" strokeWidth="2" />
+          <circle cx="500" cy="90" r="8" 
+                  fill={isSelected('audio') ? '#ffffff' : '#9ca3af'} />
           
-          {/* Sound waves when active */}
+          {/* Sound waves */}
           {isSelected('audio') && (
             <>
-              <path d="M210 450 Q220 445 210 460" stroke="#10b981" strokeWidth="2" fill="none" opacity="0.6" className="animate-pulse" />
-              <path d="M215 448 Q225 443 215 463" stroke="#10b981" strokeWidth="1.5" fill="none" opacity="0.4" className="animate-pulse" />
+              <path d="M130 440 Q140 435 130 455" stroke="#10b981" strokeWidth="3" fill="none" opacity="0.7" className="animate-pulse" />
+              <path d="M135 438 Q145 433 135 458" stroke="#10b981" strokeWidth="2" fill="none" opacity="0.5" className="animate-pulse" />
             </>
           )}
         </g>
 
-        {/* CLIMA - Modern HVAC system */}
+        {/* CLIMA - HVAC system */}
         <g>
-          {/* Ground floor - Designer radiators */}
-          <rect x="130" y="460" width="60" height="12" 
-                fill={isSelected('clima') ? '#f97316' : '#d1d5db'} 
-                stroke="#374151" strokeWidth="2" rx="6" 
-                filter={isSelected('clima') ? "url(#premiumGlow)" : ""} />
-          <g stroke={isSelected('clima') ? '#ea580c' : '#9ca3af'} strokeWidth="1">
-            {Array.from({length: 10}, (_, i) => (
-              <line key={i} x1={135 + i * 5} y1="460" x2={135 + i * 5} y2="472" />
+          {/* Wall-mounted AC unit */}
+          <rect x="650" y="120" width="60" height="25" 
+                fill={isSelected('clima') ? '#ffffff' : '#f3f4f6'} 
+                stroke={isSelected('clima') ? '#22c55e' : '#9ca3af'} 
+                strokeWidth="3" rx="6"
+                filter={isSelected('clima') ? "url(#lightGlow)" : ""} />
+          
+          {/* AC vents */}
+          <g stroke={isSelected('clima') ? '#22c55e' : '#9ca3af'} strokeWidth="1">
+            {Array.from({length: 8}, (_, i) => (
+              <line key={i} x1={655 + i * 6} y1="125" x2={655 + i * 6} y2="140" />
             ))}
           </g>
           
-          {/* Kitchen radiator */}
-          <rect x="580" y="460" width="60" height="12" 
+          {/* Floor heating radiator */}
+          <rect x="80" y="480" width="120" height="20" 
                 fill={isSelected('clima') ? '#f97316' : '#d1d5db'} 
-                stroke="#374151" strokeWidth="2" rx="6" />
+                stroke="#374151" strokeWidth="2" rx="10" />
           
-          {/* Air conditioning unit */}
-          <rect x="600" y="350" width="40" height="15" 
-                fill={isSelected('clima') ? '#ffffff' : '#f3f4f6'} 
-                stroke={isSelected('clima') ? '#22c55e' : '#9ca3af'} 
-                strokeWidth="2" rx="4"
-                filter={isSelected('clima') ? "url(#premiumGlow)" : ""} />
+          {/* Radiator fins */}
+          <g stroke={isSelected('clima') ? '#ea580c' : '#9ca3af'} strokeWidth="1.5">
+            {Array.from({length: 15}, (_, i) => (
+              <line key={i} x1={85 + i * 7} y1="480" x2={85 + i * 7} y2="500" />
+            ))}
+          </g>
           
           {/* Thermostat */}
-          <circle cx="300" cy="400" r="8" 
+          <circle cx="550" cy="250" r="15" 
                   fill={isSelected('clima') ? '#ffffff' : '#f3f4f6'} 
                   stroke={isSelected('clima') ? '#f97316' : '#9ca3af'} 
-                  strokeWidth="2" />
+                  strokeWidth="3" />
+          <circle cx="550" cy="250" r="8" 
+                  fill={isSelected('clima') ? '#f97316' : '#d1d5db'} />
           
           {/* Heat visualization */}
           {isSelected('clima') && (
             <>
-              <path d="M160 455 Q165 450 170 455 Q175 450 180 455" stroke="#f97316" strokeWidth="2" fill="none" opacity="0.8" className="animate-pulse" />
-              <path d="M157 453 Q162 448 167 453 Q172 448 177 453" stroke="#f97316" strokeWidth="1.5" fill="none" opacity="0.6" className="animate-pulse" />
+              <path d="M140 475 Q145 470 150 475 Q155 470 160 475" stroke="#f97316" strokeWidth="2" fill="none" opacity="0.8" className="animate-pulse" />
+              <path d="M120 473 Q125 468 130 473 Q135 468 140 473" stroke="#f97316" strokeWidth="2" fill="none" opacity="0.6" className="animate-pulse" />
             </>
           )}
         </g>
 
-        {/* PRESE SMART - Smart appliances and outlets */}
+        {/* PRESE SMART - Smart appliances */}
         <g>
-          {/* Smart refrigerator */}
-          <rect x="460" y="400" width="35" height="60" 
-                fill={isSelected('prese') ? '#ffffff' : '#f3f4f6'} 
-                stroke={isSelected('prese') ? '#22c55e' : '#9ca3af'} 
-                strokeWidth={isSelected('prese') ? "3" : "2"} rx="6"
-                filter={isSelected('prese') ? "url(#premiumGlow)" : ""} />
-          
-          {/* Fridge compartments */}
-          <rect x="463" y="405" width="29" height="25" 
-                fill={isSelected('prese') ? '#dbeafe' : '#f9fafb'} rx="2" />
-          <rect x="463" y="435" width="29" height="22" 
-                fill={isSelected('prese') ? '#dbeafe' : '#f9fafb'} rx="2" />
-          
-          {/* Smart display */}
-          <rect x="468" y="410" width="19" height="8" 
-                fill={isSelected('prese') ? '#3b82f6' : '#d1d5db'} rx="1" />
-          
           {/* Smart TV */}
-          <rect x="420" y="270" width="50" height="30" 
+          <rect x="250" y="350" width="300" height="180" 
                 fill={isSelected('prese') ? '#1f2937' : '#9ca3af'} 
                 stroke={isSelected('prese') ? '#22c55e' : '#6b7280'} 
-                strokeWidth="2" rx="4" />
+                strokeWidth="4" rx="8" filter="url(#dropShadow)" />
           
           {/* TV screen */}
-          {isSelected('prese') && (
-            <rect x="423" y="273" width="44" height="24" fill="#3b82f6" opacity="0.7" rx="2" />
-          )}
+          <rect x="260" y="360" width="280" height="160" 
+                fill={isSelected('prese') ? '#3b82f6' : '#f3f4f6'} 
+                opacity={isSelected('prese') ? "0.8" : "0.3"} rx="4" />
           
-          {/* Smart washing machine */}
-          <rect x="130" y="420" width="25" height="30" 
+          {/* TV stand */}
+          <rect x="350" y="530" width="100" height="15" fill="#374151" rx="4" />
+          <rect x="380" y="515" width="40" height="15" fill="#6b7280" />
+          
+          {/* Smart coffee machine */}
+          <rect x="600" y="420" width="40" height="50" 
                 fill={isSelected('prese') ? '#ffffff' : '#f3f4f6'} 
                 stroke={isSelected('prese') ? '#22c55e' : '#9ca3af'} 
-                strokeWidth="2" rx="4" />
-          <circle cx="142" cy="435" r="8" 
-                  fill={isSelected('prese') ? '#dbeafe' : '#f9fafb'} 
-                  stroke="#9ca3af" strokeWidth="1" />
+                strokeWidth="2" rx="6" />
+          <circle cx="620" cy="440" r="8" 
+                  fill={isSelected('prese') ? '#8b5cf6' : '#d1d5db'} />
           
           {/* WiFi indicators */}
           {isSelected('prese') && (
             <>
-              <circle cx="485" cy="395" r="3" fill="#22c55e" opacity="0.8" className="animate-pulse" />
-              <circle cx="460" cy="265" r="2" fill="#22c55e" opacity="0.6" className="animate-pulse" />
+              <circle cx="540" cy="340" r="4" fill="#22c55e" opacity="0.8" className="animate-pulse" />
+              <circle cx="630" cy="410" r="3" fill="#22c55e" opacity="0.6" className="animate-pulse" />
             </>
           )}
         </g>
 
-        {/* SICUREZZA - Advanced security system */}
+        {/* SICUREZZA - Security system */}
         <g>
-          {/* Main entrance camera */}
-          <circle cx="320" cy="380" r="8" 
+          {/* Main security camera */}
+          <circle cx="720" cy="90" r="15" 
                   fill={isSelected('sicurezza') ? '#dc2626' : '#d1d5db'} 
-                  stroke="#374151" strokeWidth="2"
-                  filter={isSelected('sicurezza') ? "url(#premiumGlow)" : ""} />
-          <circle cx="320" cy="380" r="4" 
+                  stroke="#374151" strokeWidth="3"
+                  filter={isSelected('sicurezza') ? "url(#lightGlow)" : ""} />
+          <circle cx="720" cy="90" r="8" 
                   fill={isSelected('sicurezza') ? '#ffffff' : '#9ca3af'} />
-          <circle cx="320" cy="380" r="2" 
+          <circle cx="720" cy="90" r="4" 
                   fill={isSelected('sicurezza') ? '#1f2937' : '#6b7280'} />
           
-          {/* Corner security cameras */}
-          <circle cx="650" cy="190" r="6" 
-                  fill={isSelected('sicurezza') ? '#dc2626' : '#d1d5db'} 
-                  stroke="#374151" strokeWidth="1.5"
-                  filter={isSelected('sicurezza') ? "url(#premiumGlow)" : ""} />
-          
-          <circle cx="150" cy="250" r="5" 
-                  fill={isSelected('sicurezza') ? '#dc2626' : '#d1d5db'} 
-                  stroke="#374151" strokeWidth="1.5" />
-          
-          {/* Motion sensors */}
-          <rect x="250" y="375" width="8" height="6" 
+          {/* Motion sensor */}
+          <rect x="450" y="340" width="20" height="12" 
                 fill={isSelected('sicurezza') ? '#fbbf24' : '#e5e7eb'} 
-                rx="3" stroke="#374151" strokeWidth="1" />
+                rx="6" stroke="#374151" strokeWidth="2" />
           
-          <rect x="500" y="255" width="6" height="8" 
+          {/* Door sensor */}
+          <rect x="750" y="300" width="8" height="20" 
                 fill={isSelected('sicurezza') ? '#fbbf24' : '#e5e7eb'} 
-                rx="3" stroke="#374151" strokeWidth="1" />
+                rx="4" stroke="#374151" strokeWidth="1" />
           
-          {/* Security status indicators */}
+          {/* Security indicators */}
           {isSelected('sicurezza') && (
             <>
-              <circle cx="320" cy="380" r="15" fill="#dc2626" opacity="0.2" className="animate-pulse" />
-              <circle cx="650" cy="190" r="12" fill="#dc2626" opacity="0.15" className="animate-pulse" />
-              <text x="280" y="370" fontSize="8" fill="#dc2626" fontWeight="600">REC</text>
+              <circle cx="720" cy="90" r="25" fill="#dc2626" opacity="0.2" className="animate-pulse" />
+              <text x="680" y="75" fontSize="10" fill="#dc2626" fontWeight="700">REC</text>
+              <circle cx="460" cy="346" r="8" fill="#fbbf24" opacity="0.4" className="animate-pulse" />
             </>
           )}
         </g>
 
-        {/* Elegant room labels with better typography */}
-        <g fontFamily="system-ui, -apple-system, sans-serif" fontWeight="600">
-          <text x="260" y="340" fontSize="14" fill="#374151" textAnchor="middle">Soggiorno</text>
-          <text x="540" y="340" fontSize="14" fill="#374151" textAnchor="middle">Cucina</text>
-          <text x="260" y="220" fontSize="12" fill="#374151" textAnchor="middle">Camera da Letto</text>
-          <text x="540" y="220" fontSize="12" fill="#374151" textAnchor="middle">Bagno</text>
-          <text x="400" y="175" fontSize="11" fill="#374151" textAnchor="middle">Mansarda</text>
+        {/* Room furniture for context */}
+        <g opacity="0.6">
+          {/* Sofa */}
+          <rect x="200" y="450" width="150" height="40" fill="#64748b" rx="8" />
+          <rect x="190" y="440" width="20" height="30" fill="#64748b" rx="4" />
+          <rect x="340" y="440" width="20" height="30" fill="#64748b" rx="4" />
+          
+          {/* Coffee table */}
+          <rect x="220" y="500" width="110" height="25" fill="#92400e" rx="4" />
+          <rect x="230" y="520" width="8" height="15" fill="#78716c" />
+          <rect x="312" y="520" width="8" height="15" fill="#78716c" />
         </g>
 
-        {/* Smart home network visualization */}
+        {/* Room label */}
+        <text x="400" y="40" fontSize="24" fill="#374151" textAnchor="middle" fontWeight="700" fontFamily="system-ui">
+          Soggiorno Smart
+        </text>
+
+        {/* Network visualization when multiple functions selected */}
         {selectedFunctions.length > 1 && (
-          <g opacity="0.6">
-            {/* Central smart hub */}
-            <rect x="390" y="325" width="20" height="15" fill="#22c55e" rx="3" className="animate-pulse" />
-            <text x="400" y="335" fontSize="6" fill="#ffffff" textAnchor="middle" fontWeight="700">HUB</text>
+          <g opacity="0.7">
+            {/* Central hub */}
+            <rect x="390" y="280" width="20" height="20" fill="#22c55e" rx="4" className="animate-pulse" />
+            <text x="400" y="293" fontSize="8" fill="#ffffff" textAnchor="middle" fontWeight="700">HUB</text>
             
             {/* Network connections */}
-            <g stroke="#22c55e" strokeWidth="1.5" strokeDasharray="4,4" className="animate-pulse">
-              <line x1="400" y1="332" x2="260" y2="420" />
-              <line x1="400" y1="332" x2="540" y2="420" />
-              <line x1="400" y1="332" x2="440" y2="420" />
-              <line x1="400" y1="332" x2="320" y2="380" />
-              <line x1="400" y1="332" x2="480" y2="430" />
+            <g stroke="#22c55e" strokeWidth="2" strokeDasharray="5,5" className="animate-pulse">
+              <line x1="400" y1="290" x2="400" y2="120" />
+              <line x1="400" y1="290" x2="720" y2="90" />
+              <line x1="400" y1="290" x2="680" y2="135" />
+              <line x1="400" y1="290" x2="550" y2="250" />
+              <line x1="400" y1="290" x2="400" y2="360" />
             </g>
-            
-            {/* Data transmission indicators */}
-            <circle cx="400" cy="332" r="8" fill="none" stroke="#22c55e" strokeWidth="1" opacity="0.4">
-              <animate attributeName="r" values="8;20;8" dur="2s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite" />
-            </circle>
           </g>
         )}
 
-        {/* Enhanced modern legend */}
-        <g transform="translate(20, 20)">
-          <rect x="0" y="0" width="180" height="120" fill="white" stroke="#e2e8f0" strokeWidth="2" rx="12" fillOpacity="0.98" filter="url(#dropShadow)" />
+        {/* Modern legend */}
+        <g transform="translate(20, 480)">
+          <rect x="0" y="0" width="200" height="100" fill="white" stroke="#e2e8f0" strokeWidth="2" rx="12" fillOpacity="0.95" filter="url(#dropShadow)" />
           
-          {/* Legend header */}
-          <rect x="0" y="0" width="180" height="35" fill="#3b82f6" rx="12" />
-          <rect x="0" y="25" width="180" height="10" fill="#3b82f6" />
-          <text x="90" y="22" fontSize="14" fill="white" textAnchor="middle" fontWeight="700">Smart Home</text>
+          <rect x="0" y="0" width="200" height="30" fill="#3b82f6" rx="12" />
+          <rect x="0" y="20" width="200" height="10" fill="#3b82f6" />
+          <text x="100" y="20" fontSize="14" fill="white" textAnchor="middle" fontWeight="700">Casa Intelligente</text>
           
-          {/* Status indicators */}
-          <circle cx="20" cy="50" r="5" fill="#22c55e" />
-          <text x="35" y="55" fontSize="10" fill="#374151" fontWeight="600">Funzione attiva</text>
+          <circle cx="15" cy="45" r="4" fill="#22c55e" />
+          <text x="25" y="50" fontSize="11" fill="#374151" fontWeight="600">Attivo</text>
           
-          <circle cx="20" cy="68" r="5" fill="#d1d5db" />
-          <text x="35" y="73" fontSize="10" fill="#374151" fontWeight="600">Funzione inattiva</text>
+          <circle cx="15" cy="60" r="4" fill="#d1d5db" />
+          <text x="25" y="65" fontSize="11" fill="#374151" fontWeight="600">Inattivo</text>
           
-          <line x1="20" y1="85" x2="35" y2="85" stroke="#22c55e" strokeWidth="2" strokeDasharray="3,3" />
-          <text x="45" y="90" fontSize="9" fill="#6b7280" fontWeight="500">Rete domotica</text>
-          
-          <text x="20" y="105" fontSize="9" fill="#6b7280" fontWeight="500">Tocca le funzioni per vedere</text>
-          <text x="20" y="115" fontSize="9" fill="#6b7280" fontWeight="500">l'integrazione in tempo reale</text>
+          <line x1="15" y1="75" x2="30" y2="75" stroke="#22c55e" strokeWidth="2" strokeDasharray="3,3" />
+          <text x="35" y="80" fontSize="10" fill="#6b7280" fontWeight="500">Rete KNX</text>
         </g>
       </svg>
     </div>
