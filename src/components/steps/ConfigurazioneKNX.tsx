@@ -11,7 +11,6 @@ type Props = {
 };
 
 export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const [currentFeature, setCurrentFeature] = useState<number>(0);
   const [knxConfig, setKnxConfig] = useState<Record<string, any>>(
     formData.knxConfig || {}
   );
@@ -53,24 +52,15 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
     setKnxConfig(updatedConfig);
     updateFormData({ knxConfig: updatedConfig });
 
-    // Incrementa il currentFeature se ci sono altre features
-    if (currentFeature < features.length - 1) {
-      setCurrentFeature(prev => prev + 1);
-    } else {
-      // Se è l'ultima feature, vai al prossimo step
+    // Controlla se tutte le feature attive sono state configurate
+    const allFeaturesConfigured = features.every(feature => 
+      updatedConfig[feature.id] !== undefined
+    );
+
+    if (allFeaturesConfigured) {
       onNext();
     }
   };
-
-  const handleFeatureBack = () => {
-    if (currentFeature > 0) {
-      setCurrentFeature(prev => prev - 1);
-    } else {
-      onBack();
-    }
-  };
-
-  const currentFeatureData = features[currentFeature];
 
   return (
     <div className="space-y-6">
@@ -101,13 +91,16 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
             </div>
           </div>
 
-          {/* Feature Selector */}
-          <div>
-            <KNXFeatureSelector
-              feature={currentFeatureData}
-              onComplete={handleFeatureComplete}
-              onBack={handleFeatureBack}
-            />
+          {/* Features List */}
+          <div className="space-y-4">
+            {features.map((feature) => (
+              <KNXFeatureSelector
+                key={feature.id}
+                feature={feature}
+                onComplete={handleFeatureComplete}
+                onBack={onBack}
+              />
+            ))}
           </div>
         </div>
       </div>
