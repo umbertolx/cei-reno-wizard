@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, ChevronDown, Check } from "lucide-react";
@@ -111,16 +112,22 @@ export const ScenarioComparison = ({
                   <div className="block lg:hidden">
                     <div
                       className={`
-                        relative border-2 rounded-xl transition-all duration-300 overflow-hidden
+                        relative border rounded-xl transition-all duration-300 overflow-hidden cursor-pointer
                         ${isSelected 
-                          ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/5 to-[#d8010c]/2 shadow-lg ring-2 ring-[#d8010c]/20' 
-                          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+                          ? 'border-[#d8010c] shadow-lg' 
+                          : 'border-gray-200 hover:border-[#d8010c] hover:shadow-md'
                         }
                       `}
                     >
                       {/* Mobile Header */}
                       <div 
-                        className="p-4 cursor-pointer flex items-center justify-between min-h-[100px]"
+                        className={`
+                          p-4 flex items-center justify-between min-h-[100px]
+                          ${isSelected 
+                            ? 'bg-[#d8010c]/5' 
+                            : 'bg-white hover:bg-gray-50'
+                          }
+                        `}
                         onClick={() => handleCardClick(option.id)}
                       >
                         <div className="flex-1 pr-4">
@@ -132,12 +139,12 @@ export const ScenarioComparison = ({
                           </p>
                         </div>
                         
-                        {/* Selection Indicator */}
+                        {/* Selection Indicator - Always visible */}
                         <div className={`
-                          w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200
+                          w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200 border-2
                           ${isSelected 
-                            ? 'bg-[#d8010c] shadow-lg scale-110' 
-                            : 'border-2 border-gray-300 bg-white hover:border-gray-400'
+                            ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                            : 'border-gray-300 bg-white hover:border-gray-400'
                           }
                         `}>
                           {isSelected && <Check className="w-4 h-4 text-white" />}
@@ -184,20 +191,20 @@ export const ScenarioComparison = ({
                   <div className="hidden lg:block">
                     <div
                       className={`
-                        relative p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 h-[450px] flex flex-col
+                        relative p-6 rounded-xl border cursor-pointer transition-all duration-300 h-[450px] flex flex-col
                         ${isSelected 
-                          ? 'border-[#d8010c] bg-gradient-to-br from-[#d8010c]/5 to-[#d8010c]/2 shadow-xl ring-2 ring-[#d8010c]/20 transform scale-[1.02]' 
+                          ? 'border-[#d8010c] bg-[#d8010c]/5 shadow-xl transform scale-[1.02]' 
                           : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-white hover:transform hover:scale-[1.01]'
                         }
                       `}
                       onClick={() => handleCardClick(option.id)}
                     >
-                      {/* Selection Indicator */}
+                      {/* Selection Indicator - Always visible */}
                       <div className={`
-                        absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200
+                        absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 border-2
                         ${isSelected 
-                          ? 'bg-[#d8010c] shadow-lg scale-110' 
-                          : 'border-2 border-gray-300 bg-white hover:border-gray-400'
+                          ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                          : 'border-gray-300 bg-white hover:border-gray-400'
                         }
                       `}>
                         {isSelected && <Check className="w-5 h-5 text-white" />}
