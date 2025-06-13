@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 
 type FeatureOption = {
   id: string;
@@ -67,7 +66,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
               </h2>
               {isActivated && (
                 <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center">
-                  <div className="h-4 w-4 text-white text-xs">✓</div>
+                  <Check className="h-4 w-4 text-white" />
                 </div>
               )}
             </div>
@@ -121,7 +120,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
                         </div>
                         {isSelected && (
                           <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
-                            <div className="h-3 w-3 text-white">✓</div>
+                            <Check className="h-3 w-3 text-white" />
                           </div>
                         )}
                       </div>
