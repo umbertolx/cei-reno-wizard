@@ -1,12 +1,13 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowRight, ArrowLeft, CheckCircle } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
+import { QuestionWithOptions } from "./QuestionWithOptions";
 
 type FeatureOption = {
   id: string;
   label: string;
+  description?: string;
 };
 
 type Feature = {
@@ -34,15 +35,15 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
     setIsActivated(true);
   };
 
-  const handleSkip = () => {
-    onComplete(feature.id, { active: false });
-  };
-
   const handleContinue = () => {
     onComplete(feature.id, { 
       active: true,
       option: selectedOption 
     });
+  };
+
+  const handleOptionSelect = (optionId: string) => {
+    setSelectedOption(optionId);
   };
 
   return (
@@ -60,23 +61,22 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
             </p>
           </div>
 
-          {/* Action Buttons */}
+          {/* Action Button */}
           {!isActivated && (
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button
-                onClick={handleActivate}
-                className="flex-1 bg-[#d8010c] hover:bg-[#b8000a] text-white py-4 text-lg rounded-xl"
-              >
-                <CheckCircle className="w-5 h-5 mr-2" />
-                Attiva
-              </Button>
-              <Button
-                onClick={handleSkip}
-                variant="outline"
-                className="flex-1 py-4 text-lg rounded-xl border-gray-300"
-              >
-                Salta questa funzione
-              </Button>
+            <div className="pt-4">
+              <QuestionWithOptions
+                question=""
+                options={[
+                  {
+                    id: 'activate',
+                    label: 'Attiva',
+                    description: ''
+                  }
+                ]}
+                selectedOption="activate"
+                onOptionSelect={() => handleActivate()}
+                showAsButton={true}
+              />
             </div>
           )}
 
@@ -92,27 +92,18 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
                 </p>
               </div>
 
-              {/* Options */}
+              {/* Options Comparison */}
               <div className="space-y-4">
-                {feature.advancedOption.options.map((option) => (
-                  <div key={option.id} className="flex items-center space-x-3">
-                    <Checkbox
-                      id={option.id}
-                      checked={selectedOption === option.id}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          setSelectedOption(option.id);
-                        }
-                      }}
-                    />
-                    <label 
-                      htmlFor={option.id}
-                      className="text-lg text-gray-700 cursor-pointer"
-                    >
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
+                <QuestionWithOptions
+                  question=""
+                  options={feature.advancedOption.options.map(option => ({
+                    id: option.id,
+                    label: option.label,
+                    description: option.description || ''
+                  }))}
+                  selectedOption={selectedOption}
+                  onOptionSelect={handleOptionSelect}
+                />
               </div>
 
               {/* Continue Button */}

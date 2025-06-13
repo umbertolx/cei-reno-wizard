@@ -25,8 +25,16 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
         title: 'Controllo avanzato con KNX+DALI',
         description: 'Vuoi controllare ogni singolo punto luce, come i faretti, anche nei colori o nella temperatura? Se selezioni questa opzione, attiviamo anche il protocollo DALI integrato nel KNX, pensato per un controllo più granulare della luce. È ideale se hai un\'illuminazione d\'atmosfera o tecnica.',
         options: [
-          { id: 'standard', label: 'Controllo standard' },
-          { id: 'avanzato', label: 'Controllo avanzato (KNX+DALI)' }
+          { 
+            id: 'standard', 
+            label: 'Controllo standard',
+            description: 'Controllo di base per accensione, spegnimento e dimmerazione delle luci'
+          },
+          { 
+            id: 'avanzato', 
+            label: 'Controllo avanzato (KNX+DALI)',
+            description: 'Controllo granulare di ogni singolo punto luce, colori e temperatura'
+          }
         ]
       }
     }
