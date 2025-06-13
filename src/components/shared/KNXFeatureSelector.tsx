@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 type FeatureOption = {
   id: string;
@@ -23,10 +23,9 @@ type Feature = {
 type Props = {
   feature: Feature;
   onComplete: (featureId: string, config: any) => void;
-  onBack: () => void;
 };
 
-export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
+export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
   const [isActivated, setIsActivated] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('standard');
 
@@ -166,20 +165,6 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
           )}
         </div>
       </div>
-
-      {/* Back Button */}
-      {!isActivated && (
-        <div className="flex justify-start">
-          <Button
-            onClick={onBack}
-            variant="outline"
-            className="flex items-center gap-2 px-6 py-3 text-base border-gray-300"
-          >
-            <ArrowLeft className="w-4 w-4" />
-            Indietro
-          </Button>
-        </div>
-      )}
     </div>
   );
 };
