@@ -21,7 +21,7 @@ export const TipoDomotica = ({ formData, updateFormData, onNext, onBack }: Props
 
   const domoticaOptions = [
     {
-      id: 'sistema-filare',
+      id: 'knx',
       title: 'Sistema filare (KNX)',
       subtitle: 'Soluzione professionale',
       description: 'Il sistema più stabile e personalizzabile. Ideale per chi vuole un impianto duraturo con il massimo controllo.',
