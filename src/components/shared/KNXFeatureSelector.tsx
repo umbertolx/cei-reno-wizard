@@ -27,17 +27,24 @@ type Props = {
 
 export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
   const [isActivated, setIsActivated] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('standard');
 
   const handleActivate = () => {
-    setIsActivated(true);
+    if (!isCompleted) {
+      setIsActivated(true);
+    }
   };
 
   const handleDeactivate = () => {
-    setIsActivated(false);
+    if (!isCompleted) {
+      setIsActivated(false);
+    }
   };
 
   const handleContinue = () => {
+    setIsCompleted(true);
+    setIsActivated(false); // Collassa le sotto-opzioni
     onComplete(feature.id, { 
       active: true,
       option: selectedOption 
@@ -48,25 +55,28 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     setSelectedOption(optionId);
   };
 
+  const shouldShowAsSelected = isActivated || isCompleted;
+
   return (
     <div className="space-y-6">
       {/* Feature Card */}
       <div 
         className={`
-          rounded-2xl shadow-sm cursor-pointer transition-all duration-300
-          ${isActivated 
+          rounded-2xl shadow-sm transition-all duration-300
+          ${shouldShowAsSelected 
             ? 'border border-[#d8010c]' 
             : 'bg-white border border-gray-200 hover:border-[#d8010c] hover:shadow-md'
           }
+          ${isCompleted ? 'cursor-default' : 'cursor-pointer'}
         `}
-        onClick={!isActivated ? handleActivate : handleDeactivate}
+        onClick={isCompleted ? undefined : (!isActivated ? handleActivate : handleDeactivate)}
       >
         <div className="space-y-0">
           {/* Feature Title and Description */}
           <div 
             className={`
               space-y-3 p-6 
-              ${isActivated 
+              ${isActivated && !isCompleted
                 ? 'bg-white rounded-t-2xl' 
                 : 'bg-white rounded-2xl'
               }
@@ -79,12 +89,12 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               {/* Selection Indicator - Always visible */}
               <div className={`
                 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
-                ${isActivated 
+                ${shouldShowAsSelected 
                   ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
                   : 'border-gray-300 bg-white hover:border-gray-400'
                 }
               `}>
-                {isActivated && <Check className="h-4 w-4 text-white" />}
+                {shouldShowAsSelected && <Check className="h-4 w-4 text-white" />}
               </div>
             </div>
             <p className="text-base text-gray-600 leading-relaxed">
@@ -93,7 +103,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
           </div>
 
           {/* Advanced Options */}
-          {isActivated && feature.advancedOption && (
+          {isActivated && !isCompleted && feature.advancedOption && (
             <div className="border-t border-gray-200 space-y-4 bg-white px-6 pb-6 rounded-b-2xl">
               <div className="pt-4 space-y-3">
                 <h3 className="text-lg font-semibold text-[#1c1c1c]">
