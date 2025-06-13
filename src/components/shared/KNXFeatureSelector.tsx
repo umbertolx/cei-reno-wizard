@@ -54,9 +54,9 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
       {/* Feature Card */}
       <div 
         className={`
-          rounded-2xl border p-8 shadow-sm cursor-pointer transition-all duration-300
+          rounded-2xl border shadow-sm cursor-pointer transition-all duration-300
           ${isActivated 
-            ? 'bg-[#d8010c]/5 border-[#d8010c]' 
+            ? 'border-[#d8010c]' 
             : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-md'
           }
         `}
@@ -64,7 +64,15 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
       >
         <div className="space-y-6">
           {/* Feature Title and Description */}
-          <div className="space-y-4">
+          <div 
+            className={`
+              space-y-4 p-8 rounded-t-2xl
+              ${isActivated 
+                ? 'bg-[#d8010c]/5' 
+                : 'bg-white'
+              }
+            `}
+          >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-semibold text-[#1c1c1c]">
                 {feature.title}
@@ -82,7 +90,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
 
           {/* Advanced Options */}
           {isActivated && feature.advancedOption && (
-            <div className="border-t border-gray-200 pt-6 space-y-6 bg-white -mx-8 -mb-8 px-8 pb-8 mt-6">
+            <div className="border-t border-gray-200 pt-6 space-y-6 bg-white px-8 pb-8 rounded-b-2xl">
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-[#1c1c1c]">
                   {feature.advancedOption.title}
@@ -107,7 +115,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
                       className={`
                         rounded-xl transition-all duration-300 border cursor-pointer p-4
                         ${isSelected 
-                          ? 'bg-cei-yellow/20 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                          ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
                           : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
                         }
                       `}
