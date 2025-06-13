@@ -54,22 +54,22 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
       {/* Feature Card */}
       <div 
         className={`
-          rounded-2xl border shadow-sm cursor-pointer transition-all duration-300
+          rounded-2xl shadow-sm cursor-pointer transition-all duration-300
           ${isActivated 
-            ? 'border-[#d8010c]' 
-            : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-md'
+            ? 'border border-[#d8010c]' 
+            : 'bg-white border border-gray-200 hover:border-[#d8010c] hover:shadow-md'
           }
         `}
         onClick={!isActivated ? handleActivate : handleDeactivate}
       >
-        <div className="space-y-6">
+        <div className="space-y-0">
           {/* Feature Title and Description */}
           <div 
             className={`
-              space-y-4 p-8 rounded-t-2xl
+              space-y-4 p-8 
               ${isActivated 
-                ? 'bg-white' 
-                : 'bg-white'
+                ? 'bg-white rounded-t-2xl' 
+                : 'bg-white rounded-2xl'
               }
             `}
           >
@@ -90,8 +90,8 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
 
           {/* Advanced Options */}
           {isActivated && feature.advancedOption && (
-            <div className="border-t border-gray-200 pt-6 space-y-6 bg-white px-8 pb-8 rounded-b-2xl">
-              <div className="space-y-4">
+            <div className="border-t border-gray-200 space-y-6 bg-white px-8 pb-8 rounded-b-2xl">
+              <div className="pt-6 space-y-4">
                 <h3 className="text-xl font-semibold text-[#1c1c1c]">
                   {feature.advancedOption.title}
                 </h3>
@@ -165,7 +165,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
             variant="outline"
             className="flex items-center gap-2 px-6 py-3 text-base border-gray-300"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 w-4" />
             Indietro
           </Button>
         </div>
