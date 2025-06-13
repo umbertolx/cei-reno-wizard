@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
@@ -56,7 +57,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
         className={`
           rounded-2xl border p-8 shadow-sm cursor-pointer transition-all duration-300
           ${isActivated 
-            ? 'bg-[#d8010c]/5 border-[#d8010c]' 
+            ? 'bg-cei-yellow/20 border-cei-yellow' 
             : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-md'
           }
         `}
@@ -165,3 +166,4 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
     </div>
   );
 };
+
