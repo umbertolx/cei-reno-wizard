@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
@@ -23,7 +22,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
       description: 'Regola l\'illuminazione da pulsanti intelligenti o da app. Puoi impostare l\'intensità, programmare accensioni e creare scenari (es. notte, lettura, relax).',
       advancedOption: {
         title: 'Controllo avanzato con KNX+DALI',
-        description: 'Controllo granulare di ogni singolo punto luce, colori e temperatura. Ideale per illuminazione d\'atmosfera o tecnica.',
+        description: 'Il protocollo DALI permette il controllo individuale di ogni singolo apparecchio illuminante con precisione assoluta. Regola intensità, colore, temperatura della luce e crea effetti dinamici. Perfetto per illuminazione architetturale, retail e ambienti che richiedono scenari luminosi complessi.',
         options: [
           { 
             id: 'standard', 
