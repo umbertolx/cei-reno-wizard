@@ -68,16 +68,16 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     setSelectedOption(optionId);
   };
 
-  const shouldShowAsSelected = isActivated || isCompleted;
-
   return (
     <div className="space-y-6">
       {/* Feature Card */}
       <div 
         className={`
-          rounded-2xl shadow-sm transition-all duration-300 cursor-pointer
-          ${shouldShowAsSelected 
+          rounded-2xl shadow-sm transition-all duration-300 cursor-pointer overflow-hidden
+          ${isCompleted
             ? 'border border-[#d8010c] bg-[#d8010c]/5' 
+            : isActivated
+            ? 'border border-[#d8010c] bg-[#d8010c]/5'
             : 'bg-white border border-gray-200 hover:border-[#d8010c] hover:shadow-md'
           }
         `}
@@ -90,9 +90,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               space-y-3 p-6 
               ${isActivated && !isCompleted
                 ? 'bg-white rounded-t-2xl' 
-                : shouldShowAsSelected
-                ? 'bg-[#d8010c]/5 rounded-2xl'
-                : 'bg-white rounded-2xl'
+                : 'rounded-2xl'
               }
             `}
           >
@@ -103,12 +101,12 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               {/* Selection Indicator - Always visible */}
               <div className={`
                 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
-                ${shouldShowAsSelected 
+                ${(isActivated || isCompleted)
                   ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
                   : 'border-gray-300 bg-white hover:border-gray-400'
                 }
               `}>
-                {shouldShowAsSelected && <Check className="h-4 w-4 text-white" />}
+                {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
               </div>
             </div>
             <p className="text-base text-gray-600 leading-relaxed">
