@@ -22,7 +22,7 @@ type Props = {
   onBack: () => void;
   nextButtonText?: string;
   backButtonText?: string;
-  children?: React.ReactNode; // For the SVG visualization
+  children?: React.ReactNode;
 };
 
 export const MultiSelectWithVisualization = ({
@@ -50,9 +50,9 @@ export const MultiSelectWithVisualization = ({
 
   return (
     <div className="space-y-8">
-      {/* Header */}
+      {/* Header with consistent styling */}
       <div className="text-center space-y-4">
-        <Badge variant="outline" className="text-sm font-medium text-gray-600 bg-gray-50 border-gray-200">
+        <Badge variant="outline" className="text-sm font-medium text-gray-600 bg-gray-50 border-gray-200 px-3 py-1">
           {badge}
         </Badge>
         
@@ -77,7 +77,7 @@ export const MultiSelectWithVisualization = ({
           {children}
         </div>
 
-        {/* Right side - Options */}
+        {/* Right side - Options with consistent styling */}
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-gray-900 mb-4">
             Seleziona le funzioni che ti interessano:
@@ -88,10 +88,10 @@ export const MultiSelectWithVisualization = ({
               <button
                 key={option.id}
                 onClick={() => handleOptionToggle(option.id)}
-                className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 ${
+                className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 hover:shadow-sm ${
                   selectedValues.includes(option.id)
                     ? 'border-blue-500 bg-blue-50 shadow-md'
-                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                    : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -105,7 +105,7 @@ export const MultiSelectWithVisualization = ({
                       </p>
                     )}
                   </div>
-                  <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                  <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
                     selectedValues.includes(option.id)
                       ? 'border-blue-500 bg-blue-500'
                       : 'border-gray-300'
@@ -123,12 +123,12 @@ export const MultiSelectWithVisualization = ({
         </div>
       </div>
 
-      {/* Navigation */}
+      {/* Navigation with consistent button styling */}
       <div className="flex flex-col sm:flex-row gap-4 justify-between pt-6 border-t border-gray-200">
         <Button
           variant="outline"
           onClick={onBack}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto px-6 py-2 text-gray-700 border-gray-300 hover:bg-gray-50"
         >
           {backButtonText}
         </Button>
@@ -136,7 +136,7 @@ export const MultiSelectWithVisualization = ({
         <Button
           onClick={onNext}
           disabled={selectedValues.length === 0}
-          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
+          className="w-full sm:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {nextButtonText}
         </Button>
