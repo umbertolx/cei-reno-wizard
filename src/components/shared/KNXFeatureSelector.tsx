@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
@@ -33,6 +34,10 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
     setIsActivated(true);
   };
 
+  const handleDeactivate = () => {
+    setIsActivated(false);
+  };
+
   const handleContinue = () => {
     onComplete(feature.id, { 
       active: true,
@@ -55,7 +60,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
             : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-md'
           }
         `}
-        onClick={!isActivated ? handleActivate : undefined}
+        onClick={!isActivated ? handleActivate : handleDeactivate}
       >
         <div className="space-y-6">
           {/* Feature Title and Description */}
