@@ -1,134 +1,151 @@
 
-import { InteractiveDevice } from "./InteractiveDevice";
+import { useState } from "react";
+import { IsometricPreview } from "./IsometricPreview";
+import { DevicePicker } from "./DevicePicker";
+import { Badge } from "@/components/ui/badge";
 
 interface Props {
   selectedFunctions: string[];
+  onFunctionToggle?: (functionId: string) => void;
 }
 
-const deviceMapping = [
-  { id: 'luci', x: 150, y: 120, icon: '💡', label: 'Luci' },
-  { id: 'tapparelle', x: 300, y: 120, icon: '↕️', label: 'Tapparelle' },
-  { id: 'clima', x: 450, y: 120, icon: '🌡', label: 'Clima' },
-  { id: 'videocitofono', x: 600, y: 120, icon: '📷', label: 'Videocitofono' },
-  { id: 'audio', x: 150, y: 220, icon: '🔈', label: 'Audio' },
-  { id: 'prese', x: 300, y: 220, icon: '🔌', label: 'Prese Smart' },
-  { id: 'sicurezza', x: 450, y: 220, icon: '🛡', label: 'Sicurezza' },
-  { id: 'tende', x: 600, y: 220, icon: '↕️', label: 'Tende' }
+const devicesConfig = [
+  {
+    id: 'luci',
+    label: 'Luci Smart',
+    icon: '💡',
+    description: 'Regola scenari e intensità',
+    price: 'da €150'
+  },
+  {
+    id: 'tapparelle',
+    label: 'Tapparelle',
+    icon: '↕️',
+    description: 'Apertura/chiusura automatica',
+    price: 'da €300'
+  },
+  {
+    id: 'clima',
+    label: 'Clima KNX',
+    icon: '🌡',
+    description: 'Gestisci temperatura KNX',
+    price: 'da €450'
+  },
+  {
+    id: 'videocitofono',
+    label: 'Videocitofono',
+    icon: '📷',
+    description: 'Rispondi da app',
+    price: 'da €200'
+  },
+  {
+    id: 'audio',
+    label: 'Audio Multi-room',
+    icon: '🔈',
+    description: 'Musica multi-room',
+    price: 'da €350'
+  },
+  {
+    id: 'prese',
+    label: 'Prese Smart',
+    icon: '🔌',
+    description: 'Controllo elettrodomestici',
+    price: 'da €80'
+  },
+  {
+    id: 'sicurezza',
+    label: 'Sicurezza',
+    icon: '🛡',
+    description: 'Allarmi e sensori',
+    price: 'da €250'
+  }
 ];
 
-export const InteractiveHouseSVG = ({ selectedFunctions }: Props) => {
-  const isSelected = (functionId: string) => selectedFunctions.includes(functionId);
+export const InteractiveHouseSVG = ({ selectedFunctions, onFunctionToggle }: Props) => {
+  const [selectedDevice, setSelectedDevice] = useState<string | null>(null);
   
-  // Hub centrale per le linee di connessione
-  const hubX = 400;
-  const hubY = 320;
-  
-  // Calcola se mostrare le linee di connessione
-  const showNetworkLines = selectedFunctions.length > 1;
+  // Converti selectedFunctions in deviceStates
+  const deviceStates = devicesConfig.reduce((acc, device) => {
+    acc[device.id] = {
+      active: selectedFunctions.includes(device.id),
+      level: 50 // valore default per slider
+    };
+    return acc;
+  }, {} as Record<string, { active: boolean; level?: number }>);
+
+  const handleDeviceSelect = (deviceId: string) => {
+    setSelectedDevice(selectedDevice === deviceId ? null : deviceId);
+  };
+
+  const handleDeviceToggle = (deviceId: string) => {
+    if (onFunctionToggle) {
+      onFunctionToggle(deviceId);
+    }
+  };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      {/* Titolo */}
-      <h2 
-        className="text-2xl font-semibold text-center mb-6 text-gray-900"
-        style={{ fontFamily: 'system-ui', fontWeight: 600 }}
-      >
-        Soggiorno Smart
-      </h2>
-      
-      {/* SVG della pianta */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <svg viewBox="0 0 800 400" className="w-full h-auto">
-          {/* Room outline */}
-          <rect 
-            x="40" 
-            y="40" 
-            width="720" 
-            height="320"
-            fill="#ffffff" 
-            stroke="#cbd5e1" 
-            strokeWidth="2"
-            rx="8"
-          />
-          
-          {/* Network lines (se più di un dispositivo è selezionato) */}
-          {showNetworkLines && (
-            <g>
-              {/* Hub centrale */}
-              <circle
-                cx={hubX}
-                cy={hubY}
-                r="8"
-                fill="#22c55e"
-                opacity="0.8"
-              />
-              <text
-                x={hubX}
-                y={hubY + 25}
-                textAnchor="middle"
-                fontSize="10"
-                fill="#16a34a"
-                fontWeight="500"
-                style={{ fontFamily: 'system-ui' }}
-              >
-                KNX Hub
-              </text>
-              
-              {/* Linee di connessione */}
-              {deviceMapping
-                .filter(device => isSelected(device.id))
-                .map(device => (
-                  <line
-                    key={`line-${device.id}`}
-                    x1={device.x}
-                    y1={device.y}
-                    x2={hubX}
-                    y2={hubY}
-                    stroke="#22c55e"
-                    strokeWidth="2"
-                    strokeDasharray="6 4"
-                    opacity="0.6"
-                    className="transition-opacity duration-200"
-                  />
-                ))
-              }
-            </g>
-          )}
-          
-          {/* Interactive devices */}
-          {deviceMapping.map(device => (
-            <InteractiveDevice
-              key={device.id}
-              id={device.id}
-              x={device.x}
-              y={device.y}
-              icon={device.icon}
-              label={device.label}
-              active={isSelected(device.id)}
-              onClick={() => {}} // La logica di click viene gestita dal componente padre
-            />
-          ))}
-        </svg>
+    <div className="space-y-6">
+      {/* Header con badge e titolo */}
+      <div className="flex items-center gap-4 mb-6">
+        <Badge 
+          className="bg-[#d90429] text-white px-3 py-1 text-sm font-semibold"
+          style={{ fontFamily: 'system-ui', fontWeight: 600 }}
+        >
+          Impianto elettrico
+        </Badge>
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 flex items-center justify-center">
+            🏠
+          </div>
+          <h2 
+            className="text-2xl font-semibold text-gray-900"
+            style={{ fontFamily: 'system-ui', fontWeight: 600 }}
+          >
+            Soggiorno Smart
+          </h2>
+        </div>
       </div>
-      
-      {/* Inventario funzioni selezionate */}
+
+      {/* Layout principale: 65% preview + 35% picker */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Preview isometrico - 65% */}
+        <div className="lg:col-span-2">
+          <IsometricPreview 
+            activeDevice={selectedDevice}
+            deviceStates={deviceStates}
+          />
+        </div>
+
+        {/* Device picker - 35% */}
+        <div className="lg:col-span-1">
+          <DevicePicker
+            devices={devicesConfig}
+            selectedDevice={selectedDevice}
+            deviceStates={deviceStates}
+            onSelect={handleDeviceSelect}
+            onToggle={handleDeviceToggle}
+          />
+        </div>
+      </div>
+
+      {/* Riepilogo funzioni attive (mobile friendly) */}
       {selectedFunctions.length > 0 && (
-        <div className="mt-6">
+        <div className="mt-6 p-4 bg-white rounded-lg border border-gray-200">
           <h3 
             className="text-lg font-semibold mb-3 text-gray-900"
             style={{ fontFamily: 'system-ui', fontWeight: 600 }}
           >
-            Funzioni Attive
+            Configurazione Attuale
           </h3>
           <div className="flex flex-wrap gap-2">
             {selectedFunctions.map(funcId => {
-              const device = deviceMapping.find(d => d.id === funcId);
+              const device = devicesConfig.find(d => d.id === funcId);
               if (!device) return null;
               
               return (
                 <div
                   key={funcId}
-                  className="inline-flex items-center gap-2 px-3 py-2 bg-yellow-50 border border-yellow-200 rounded-lg"
+                  className="inline-flex items-center gap-2 px-3 py-2 bg-[#fffbe5] border border-[#ffc400] rounded-lg"
                 >
                   <span className="text-sm">{device.icon}</span>
                   <span 
@@ -138,7 +155,7 @@ export const InteractiveHouseSVG = ({ selectedFunctions }: Props) => {
                     {device.label}
                   </span>
                   <div 
-                    className="w-2 h-2 rounded-full bg-yellow-400"
+                    className="w-2 h-2 rounded-full bg-[#22c55e]"
                     title="Attivo"
                   />
                 </div>
