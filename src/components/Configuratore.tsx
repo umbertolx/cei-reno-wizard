@@ -5,6 +5,7 @@ import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
 import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
 import { TipoDomotica } from "./steps/TipoDomotica";
+import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
 import { TapparelleElettriche } from "./steps/TapparelleElettriche";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
 import { Card, CardContent } from "@/components/ui/card";
@@ -38,6 +39,7 @@ export type FormData = {
   tipoRistrutturazione?: string;
   tipoImpianto?: string;
   tipoDomotica?: string;
+  knxConfig?: Record<string, any>;
   elettrificareTapparelle?: string;
   numeroTapparelle?: number;
   dataRichiestaSopralluogo?: string;
@@ -221,8 +223,19 @@ export const Configuratore = () => {
           );
         }
       case 5:
-        // Per Livello 3, questo sarà tapparelle, per altri sarà dati contatto
-        if (formData.tipoImpianto === 'livello3') {
+        // Per Livello 3 con KNX, mostra configurazione KNX
+        if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          return (
+            <ConfigurazioneKNX
+              formData={formData}
+              updateFormData={updateFormData}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          );
+        }
+        // Per Livello 3 con wireless, vai alle tapparelle
+        else if (formData.tipoImpianto === 'livello3') {
           return (
             <TapparelleElettriche 
               formData={formData} 
@@ -242,8 +255,19 @@ export const Configuratore = () => {
           );
         }
       case 6:
-        // Per Livello 3, questo sarà dati contatto, per altri sarà stima finale
-        if (formData.tipoImpianto === 'livello3') {
+        // Per Livello 3 con KNX, questo sarà tapparelle
+        if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          return (
+            <TapparelleElettriche 
+              formData={formData} 
+              updateFormData={updateFormData} 
+              onNext={handleNext} 
+              onBack={handleBack}
+            />
+          );
+        }
+        // Per Livello 3 con wireless, questo sarà dati contatto
+        else if (formData.tipoImpianto === 'livello3') {
           return (
             <DatiContatto
               formData={formData}
@@ -265,8 +289,19 @@ export const Configuratore = () => {
           );
         }
       case 7:
-        // Per Livello 3, questo sarà stima finale, per altri sarà richiesta inviata
-        if (formData.tipoImpianto === 'livello3') {
+        // Per Livello 3 con KNX, questo sarà dati contatto
+        if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          return (
+            <DatiContatto
+              formData={formData}
+              updateFormData={updateFormData}
+              onBack={handleBack}
+              onNext={handleNext}
+            />
+          );
+        }
+        // Per Livello 3 con wireless, questo sarà stima finale
+        else if (formData.tipoImpianto === 'livello3') {
           const stima = calcolaStima();
           return (
             <StimaFinale
@@ -281,7 +316,27 @@ export const Configuratore = () => {
           return <RichiestaInviata onReset={handleReset} />;
         }
       case 8:
-        // Solo per Livello 3
+        // Per Livello 3 con KNX, questo sarà stima finale
+        if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          const stima = calcolaStima();
+          return (
+            <StimaFinale
+              formData={formData}
+              updateFormData={updateFormData}
+              stima={stima}
+              onBack={handleBack}
+              onSubmit={handleInviaDati}
+            />
+          );
+        }
+        // Per Livello 3 con wireless, questo sarà richiesta inviata
+        else if (formData.tipoImpianto === 'livello3') {
+          return <RichiestaInviata onReset={handleReset} />;
+        } else {
+          return <div>Step non valido</div>;
+        }
+      case 9:
+        // Solo per Livello 3 con KNX
         return <RichiestaInviata onReset={handleReset} />;
       default:
         return <div>Step non valido</div>;
