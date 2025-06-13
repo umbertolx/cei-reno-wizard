@@ -115,7 +115,7 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
                       className={`
                         rounded-xl transition-all duration-300 border cursor-pointer p-4
                         ${isSelected 
-                          ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                          ? 'bg-white border-[#d8010c] text-[#1c1c1c] shadow-sm' 
                           : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
                         }
                       `}
