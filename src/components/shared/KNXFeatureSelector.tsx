@@ -79,13 +79,13 @@ export const KNXFeatureSelector = ({ feature, onComplete, onBack }: Props) => {
               </h2>
               {/* Selection Indicator - Always visible */}
               <div className={`
-                w-5 h-5 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                w-4 h-4 rounded-full flex items-center justify-center transition-all duration-200 border-2
                 ${isActivated 
                   ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
                   : 'border-gray-300 bg-white hover:border-gray-400'
                 }
               `}>
-                {isActivated && <Check className="h-3 w-3 text-white" />}
+                {isActivated && <Check className="h-2.5 w-2.5 text-white" />}
               </div>
             </div>
             <p className="text-lg text-gray-600 leading-relaxed">
