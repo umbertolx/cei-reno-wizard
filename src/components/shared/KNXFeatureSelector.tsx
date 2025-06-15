@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Lightbulb, Blinds } from "lucide-react";
 
 type FeatureOption = {
   id: string;
@@ -68,6 +67,18 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     setSelectedOption(optionId);
   };
 
+  // Get the appropriate icon for the feature
+  const getFeatureIcon = () => {
+    switch (feature.id) {
+      case 'luci':
+        return <Lightbulb className="w-8 h-8 text-[#d8010c]" />;
+      case 'tapparelle':
+        return <Blinds className="w-8 h-8 text-[#d8010c]" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Feature Card */}
@@ -95,9 +106,15 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
             `}
           >
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-[#1c1c1c]">
-                {feature.title}
-              </h2>
+              <div className="flex items-center gap-4">
+                {/* Feature Icon */}
+                <div className="flex-shrink-0">
+                  {getFeatureIcon()}
+                </div>
+                <h2 className="text-xl font-semibold text-[#1c1c1c]">
+                  {feature.title}
+                </h2>
+              </div>
               {/* Selection Indicator - Always visible */}
               <div className={`
                 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
