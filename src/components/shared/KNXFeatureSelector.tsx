@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,6 +57,10 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
       setIsCompleted(false);
       setIsActivated(false);
       onComplete(feature.id, { active: false });
+    } else if (!feature.advancedOption) {
+      // Se non ha opzioni avanzate, seleziona direttamente
+      setIsCompleted(true);
+      onComplete(feature.id, { active: true });
     } else if (!isActivated) {
       handleActivate();
     } else {
