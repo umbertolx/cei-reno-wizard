@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, Lightbulb, Blinds, Thermometer } from "lucide-react";
@@ -115,50 +116,66 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
           {/* Feature Title and Description */}
           <div 
             className={`
-              space-y-3 p-6 
+              space-y-4 p-6 
               ${isActivated && !isCompleted
                 ? 'bg-white rounded-t-2xl' 
                 : 'rounded-2xl'
               }
             `}
           >
-            {/* Main content with image for all features */}
-            <div className="flex gap-4 md:gap-6">
-              {/* Feature Image */}
+            {/* Mobile Layout - Image full width on top */}
+            <div className="md:hidden space-y-4">
+              {/* Feature Image - Full width */}
+              <div className="w-full">
+                <img 
+                  src={featureImage} 
+                  alt={feature.title}
+                  className="w-full h-32 object-cover rounded-xl"
+                />
+              </div>
+              
+              {/* Content below image */}
+              <div className="space-y-2">
+                <h2 className="text-base font-semibold text-[#1c1c1c]">
+                  {feature.title}
+                </h2>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+
+            {/* Desktop Layout - Side by side with larger image */}
+            <div className="hidden md:flex gap-6">
+              {/* Feature Image - Larger on desktop */}
               <div className="flex-shrink-0">
                 <img 
                   src={featureImage} 
                   alt={feature.title}
-                  className="w-16 h-16 md:w-32 md:h-32 object-cover rounded-xl"
+                  className="w-40 h-40 object-cover rounded-xl"
                 />
               </div>
               
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-2 md:mb-3 gap-2 md:gap-0">
-                  <div className="flex items-center gap-2 md:gap-3">
-                    <h2 className="text-base md:text-xl font-semibold text-[#1c1c1c]">
-                      {feature.title}
-                    </h2>
-                  </div>
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-xl font-semibold text-[#1c1c1c]">
+                    {feature.title}
+                  </h2>
                   {/* Selection Indicator - Desktop only */}
-                  <div className="hidden md:block">
-                    <div className={`
-                      w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
-                      ${(isActivated || isCompleted)
-                        ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                        : 'border-gray-300 bg-white hover:border-gray-400'
-                      }
-                    `}>
-                      {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
-                    </div>
+                  <div className={`
+                    w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                    ${(isActivated || isCompleted)
+                      ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                      : 'border-gray-300 bg-white hover:border-gray-400'
+                    }
+                  `}>
+                    {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
                   </div>
                 </div>
-                <div>
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
+                <p className="text-base text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
             </div>
           </div>
