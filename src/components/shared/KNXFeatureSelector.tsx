@@ -116,7 +116,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
           {/* Feature Title and Description */}
           <div 
             className={`
-              space-y-4 p-6 md:p-4
+              p-6 md:p-0
               ${isActivated && !isCompleted
                 ? 'bg-white rounded-t-2xl' 
                 : 'rounded-2xl'
@@ -145,10 +145,10 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               </div>
             </div>
 
-            {/* Desktop Layout - Side by side with centered image */}
-            <div className="hidden md:flex gap-4 items-center">
-              {/* Feature Image - Centered and square */}
-              <div className="flex-shrink-0 flex items-center">
+            {/* Desktop Layout - Side by side with perfectly centered image */}
+            <div className="hidden md:flex gap-6 p-6">
+              {/* Feature Image Container - Fixed height matching content */}
+              <div className="flex-shrink-0 flex items-center justify-center h-32">
                 <img 
                   src={featureImage} 
                   alt={feature.title}
@@ -156,15 +156,15 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                 />
               </div>
               
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between mb-3">
+              {/* Content Container - Matching height */}
+              <div className="flex-1 min-w-0 flex flex-col justify-center">
+                <div className="flex items-start justify-between mb-3">
                   <h2 className="text-xl font-semibold text-[#1c1c1c]">
                     {feature.title}
                   </h2>
                   {/* Selection Indicator - Desktop only */}
                   <div className={`
-                    w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                    w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2 flex-shrink-0 ml-4
                     ${(isActivated || isCompleted)
                       ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
                       : 'border-gray-300 bg-white hover:border-gray-400'
