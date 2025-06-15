@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -92,6 +91,8 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
         return "/lovable-uploads/fe24b59f-57ea-4463-a1da-970fbfe1242c.png";
       case 'clima':
         return "/lovable-uploads/c995d44b-5a6b-49b1-8300-513cbd07f544.png";
+      case 'prese':
+        return "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop";
       default:
         return "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=400&h=300&fit=crop";
     }

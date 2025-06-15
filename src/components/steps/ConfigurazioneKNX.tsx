@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
@@ -73,6 +72,27 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
           }
         ]
       }
+    },
+    {
+      id: 'prese',
+      title: 'Prese intelligenti',
+      description: 'Controlla da remoto l\'accensione e lo spegnimento di elettrodomestici e monitora i consumi energetici. Ideale per piccoli elettrodomestici e gestione a distanza (es. frigorifero nella seconda casa).',
+      advancedOption: {
+        title: 'Calcolo automatico prese intelligenti',
+        description: 'Ai fini della stima, calcoleremo automaticamente un numero indicativo di prese intelligenti in base alle stanze che hai indicato e agli usi più comuni. Le prese smart sono particolarmente utili per il controllo remoto di elettrodomestici e il monitoraggio dei consumi.',
+        options: [
+          { 
+            id: 'base', 
+            label: 'Configurazione base',
+            description: '1-2 prese per stanza principale (soggiorno, cucina, camera)'
+          },
+          { 
+            id: 'estesa', 
+            label: 'Configurazione estesa',
+            description: '3-4 prese per stanza per un controllo più capillare'
+          }
+        ]
+      }
     }
   ];
 
@@ -103,7 +123,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
           <div className="space-y-4 md:space-y-6">
             {/* Header - Layout responsive */}
             <div className="flex items-center gap-4 px-3 md:px-0">
-              <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
+              <div className="w-[70px] h-[70px] md:w-[100px] h-[100px] flex-shrink-0 flex items-center justify-center">
                 <img 
                   src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
                   alt="Electrical work icon" 
