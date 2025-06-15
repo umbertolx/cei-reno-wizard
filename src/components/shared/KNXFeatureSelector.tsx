@@ -130,7 +130,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                 <img 
                   src={featureImage} 
                   alt={feature.title}
-                  className="w-full h-32 object-cover"
+                  className="w-full h-32 object-cover rounded-xl"
                 />
               </div>
               
@@ -148,11 +148,11 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
             {/* Desktop Layout - Side by side with centered image */}
             <div className="hidden md:flex gap-4 items-center">
               {/* Feature Image - Centered and square */}
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 flex items-center">
                 <img 
                   src={featureImage} 
                   alt={feature.title}
-                  className="w-32 h-32 object-cover"
+                  className="w-32 h-32 object-cover rounded-xl"
                 />
               </div>
               
