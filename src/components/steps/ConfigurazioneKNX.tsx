@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
@@ -116,7 +117,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
               </div>
               <div>
                 <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Configurazione KNX</h2>
-                <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">
+                <p className="text-base text-[#1c1c1c] opacity-80">
                   Personalizza le funzionalità del tuo impianto domotico filare
                 </p>
               </div>
