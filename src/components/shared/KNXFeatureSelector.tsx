@@ -130,7 +130,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                 <img 
                   src={featureImage} 
                   alt={feature.title}
-                  className="w-full h-32 object-cover rounded-xl"
+                  className="w-full h-32 object-cover"
                 />
               </div>
               
@@ -152,7 +152,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                 <img 
                   src={featureImage} 
                   alt={feature.title}
-                  className="w-32 h-32 object-cover rounded-xl"
+                  className="w-32 h-32 object-cover"
                 />
               </div>
               
