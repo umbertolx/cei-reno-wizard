@@ -49,7 +49,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
       description: 'Utilizza i frutti KNX come sensori di temperatura per controllare climatizzatori o pompe di calore compatibili. Richiede impianto termico predisposto.',
       advancedOption: {
         title: 'Gestione VMC',
-        description: 'Aggiungi controllo della qualità dell\'aria (CO2, VOC, umidità) per impianti VMC esistenti.',
+        description: 'La Ventilazione Meccanica Controllata (VMC) garantisce il ricambio d\'aria negli ambienti. Con KNX puoi monitorare CO2, VOC e umidità per regolare automaticamente i flussi d\'aria in base alla qualità dell\'aria rilevata.',
         options: [
           { 
             id: 'solo_clima', 
