@@ -41,7 +41,17 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
     {
       id: 'tapparelle',
       title: 'Controllo tapparelle',
-      description: 'Gestisci l\'apertura e la chiusura delle tapparelle o tende motorizzate da app o da pulsanti intelligenti. Puoi impostare orari automatici, scenari coordinati con le luci, o regolare l\'apertura a una determinata percentuale.'
+      description: 'Gestisci l\'apertura e la chiusura delle tapparelle o tende motorizzate da app o da pulsanti intelligenti. Puoi impostare orari automatici, scenari coordinati con le luci, o regolare l\'apertura a una determinata percentuale.',
+      advancedOption: {
+        title: 'Numero di tapparelle',
+        description: 'Specifica quante tapparelle vuoi controllare con il sistema KNX per calcolare correttamente il costo degli attuatori necessari.',
+        requiresInput: true,
+        inputType: 'number',
+        inputPlaceholder: 'Es. 8',
+        inputLabel: 'Numero di tapparelle',
+        inputMin: 1,
+        inputMax: 50
+      }
     },
     {
       id: 'clima',

@@ -1,6 +1,7 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { ArrowRight, Check, Lightbulb, Blinds, Thermometer } from "lucide-react";
 
 type FeatureOption = {
@@ -16,7 +17,13 @@ type Feature = {
   advancedOption?: {
     title: string;
     description: string;
-    options: FeatureOption[];
+    options?: FeatureOption[];
+    requiresInput?: boolean;
+    inputType?: string;
+    inputPlaceholder?: string;
+    inputLabel?: string;
+    inputMin?: number;
+    inputMax?: number;
   };
 };
 
@@ -29,6 +36,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
   const [isActivated, setIsActivated] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('standard');
+  const [inputValue, setInputValue] = useState<number>(0);
 
   const handleActivate = () => {
     if (!isCompleted) {
@@ -58,10 +66,16 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
   const handleContinue = () => {
     setIsCompleted(true);
     setIsActivated(false); // Collassa le sotto-opzioni
-    onComplete(feature.id, { 
-      active: true,
-      option: selectedOption 
-    });
+    
+    const config = { active: true };
+    
+    if (feature.advancedOption?.requiresInput) {
+      config.inputValue = inputValue;
+    } else if (feature.advancedOption?.options) {
+      config.option = selectedOption;
+    }
+    
+    onComplete(feature.id, config);
   };
 
   const handleOptionSelect = (optionId: string) => {
@@ -83,6 +97,9 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
   };
 
   const featureImage = getFeatureImage();
+
+  // Validation for continue button
+  const canContinue = !feature.advancedOption?.requiresInput || inputValue > 0;
 
   return (
     <div className="space-y-6">
@@ -192,58 +209,81 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                 </p>
               </div>
 
-              {/* Options Comparison */}
-              <div className="space-y-3">
-                {feature.advancedOption.options.map((option) => {
-                  const isSelected = selectedOption === option.id;
-                  
-                  return (
-                    <div
-                      key={option.id}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleOptionSelect(option.id);
-                      }}
-                      className={`
-                        rounded-xl transition-all duration-300 border cursor-pointer p-3
-                        ${isSelected 
-                          ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
-                          : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
-                        }
-                      `}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-xs md:text-sm text-[#1c1c1c] mb-1">
-                            {option.label}
-                          </div>
-                          {option.description && (
-                            <div className="text-xs text-gray-600">
-                              {option.description}
-                            </div>
-                          )}
-                        </div>
-                        {/* Selection Indicator - Always visible */}
-                        <div className={`
-                          w-6 h-6 rounded-full flex items-center justify-center ml-3 transition-all duration-200 border-2
+              {/* Input Field - for features that require input */}
+              {feature.advancedOption.requiresInput && (
+                <div className="space-y-2">
+                  <Label htmlFor={`${feature.id}-input`} className="text-sm font-medium text-[#1c1c1c]">
+                    {feature.advancedOption.inputLabel}
+                  </Label>
+                  <Input
+                    id={`${feature.id}-input`}
+                    type={feature.advancedOption.inputType || "text"}
+                    min={feature.advancedOption.inputMin}
+                    max={feature.advancedOption.inputMax}
+                    value={inputValue || ""}
+                    onChange={(e) => setInputValue(parseInt(e.target.value) || 0)}
+                    placeholder={feature.advancedOption.inputPlaceholder}
+                    className="text-sm h-10"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </div>
+              )}
+
+              {/* Options Comparison - for features with multiple options */}
+              {feature.advancedOption.options && (
+                <div className="space-y-3">
+                  {feature.advancedOption.options.map((option) => {
+                    const isSelected = selectedOption === option.id;
+                    
+                    return (
+                      <div
+                        key={option.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOptionSelect(option.id);
+                        }}
+                        className={`
+                          rounded-xl transition-all duration-300 border cursor-pointer p-3
                           ${isSelected 
-                            ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                            : 'border-gray-300 bg-white hover:border-gray-400'
+                            ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                            : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
                           }
-                        `}>
-                          {isSelected && <Check className="h-4 w-4 text-white" />}
+                        `}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1 min-w-0">
+                            <div className="font-semibold text-xs md:text-sm text-[#1c1c1c] mb-1">
+                              {option.label}
+                            </div>
+                            {option.description && (
+                              <div className="text-xs text-gray-600">
+                                {option.description}
+                              </div>
+                            )}
+                          </div>
+                          {/* Selection Indicator - Always visible */}
+                          <div className={`
+                            w-6 h-6 rounded-full flex items-center justify-center ml-3 transition-all duration-200 border-2
+                            ${isSelected 
+                              ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                              : 'border-gray-300 bg-white hover:border-gray-400'
+                            }
+                          `}>
+                            {isSelected && <Check className="h-4 w-4 text-white" />}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* Continue Button */}
               <div className="pt-3">
                 <Button
                   onClick={handleContinue}
-                  className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-3 text-sm md:text-base rounded-xl"
+                  disabled={!canContinue}
+                  className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-3 text-sm md:text-base rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span>Continua</span>
                   <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
