@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -67,7 +68,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     setIsCompleted(true);
     setIsActivated(false); // Collassa le sotto-opzioni
     
-    const config = { active: true };
+    const config: { active: boolean; inputValue?: number; option?: string } = { active: true };
     
     if (feature.advancedOption?.requiresInput) {
       config.inputValue = inputValue;
@@ -88,7 +89,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
       case 'luci':
         return "/lovable-uploads/e6632418-100a-4695-b616-b643ef13304c.png";
       case 'tapparelle':
-        return "https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=400&h=300&fit=crop";
+        return "/lovable-uploads/fe24b59f-57ea-4463-a1da-970fbfe1242c.png";
       case 'clima':
         return "/lovable-uploads/c995d44b-5a6b-49b1-8300-513cbd07f544.png";
       default:
