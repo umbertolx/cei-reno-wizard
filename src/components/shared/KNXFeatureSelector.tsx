@@ -92,7 +92,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
       case 'clima':
         return "/lovable-uploads/c995d44b-5a6b-49b1-8300-513cbd07f544.png";
       case 'prese':
-        return "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop";
+        return "/lovable-uploads/d56be5f7-57a6-4791-b896-09863446c8b8.png";
       default:
         return "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=400&h=300&fit=crop";
     }
