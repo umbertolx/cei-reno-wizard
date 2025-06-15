@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, Lightbulb, Blinds, Thermometer } from "lucide-react";
@@ -119,31 +120,31 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
           >
             {/* Main content with image for clima feature */}
             {featureImage ? (
-              <div className="flex gap-6">
+              <div className="flex gap-4 md:gap-6">
                 {/* Feature Image */}
                 <div className="flex-shrink-0">
                   <img 
                     src={featureImage} 
                     alt={feature.title}
-                    className="w-32 h-32 object-cover rounded-xl"
+                    className="w-20 h-20 md:w-32 md:h-32 object-cover rounded-xl"
                   />
                 </div>
                 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      {/* Feature Icon */}
-                      <div className="flex-shrink-0">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2 md:gap-0">
+                    <div className="flex items-center gap-2 md:gap-3">
+                      {/* Feature Icon - Hidden on mobile when there's an image */}
+                      <div className="flex-shrink-0 hidden md:block">
                         {getFeatureIcon()}
                       </div>
-                      <h2 className="text-xl font-semibold text-[#1c1c1c]">
+                      <h2 className="text-lg md:text-xl font-semibold text-[#1c1c1c]">
                         {feature.title}
                       </h2>
                     </div>
                     {/* Selection Indicator */}
                     <div className={`
-                      w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                      w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2 self-start md:self-center
                       ${(isActivated || isCompleted)
                         ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
                         : 'border-gray-300 bg-white hover:border-gray-400'
@@ -153,7 +154,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                     </div>
                   </div>
                   <div>
-                    <p className="text-base text-gray-600 leading-relaxed">
+                    <p className="text-sm md:text-base text-gray-600 leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -163,12 +164,12 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               // Original layout for features without image
               <div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3 md:gap-4">
                     {/* Feature Icon */}
                     <div className="flex-shrink-0">
                       {getFeatureIcon()}
                     </div>
-                    <h2 className="text-xl font-semibold text-[#1c1c1c]">
+                    <h2 className="text-lg md:text-xl font-semibold text-[#1c1c1c]">
                       {feature.title}
                     </h2>
                   </div>
@@ -183,7 +184,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                     {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
                   </div>
                 </div>
-                <p className="text-base text-gray-600 leading-relaxed">
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed mt-2">
                   {feature.description}
                 </p>
               </div>
@@ -194,10 +195,10 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
           {isActivated && !isCompleted && feature.advancedOption && (
             <div className="border-t border-gray-200 space-y-4 bg-white px-6 pb-6 rounded-b-2xl">
               <div className="pt-4 space-y-3">
-                <h3 className="text-lg font-semibold text-[#1c1c1c]">
+                <h3 className="text-base md:text-lg font-semibold text-[#1c1c1c]">
                   {feature.advancedOption.title}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
                   {feature.advancedOption.description}
                 </p>
               </div>
@@ -224,7 +225,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-sm text-[#1c1c1c] mb-1">
+                          <div className="font-semibold text-xs md:text-sm text-[#1c1c1c] mb-1">
                             {option.label}
                           </div>
                           {option.description && (
@@ -253,10 +254,10 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               <div className="pt-3">
                 <Button
                   onClick={handleContinue}
-                  className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-3 text-base rounded-xl"
+                  className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-3 text-sm md:text-base rounded-xl"
                 >
                   <span>Continua</span>
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
                 </Button>
               </div>
             </div>
