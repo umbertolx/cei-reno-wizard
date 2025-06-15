@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, Lightbulb, Blinds, Thermometer } from "lucide-react";
@@ -89,7 +88,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
       {/* Feature Card */}
       <div 
         className={`
-          rounded-2xl shadow-sm transition-all duration-300 cursor-pointer overflow-hidden
+          rounded-2xl shadow-sm transition-all duration-300 cursor-pointer overflow-hidden relative
           ${isCompleted
             ? 'border border-[#d8010c] bg-[#d8010c]/5' 
             : isActivated
@@ -99,6 +98,19 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
         `}
         onClick={handleCardClick}
       >
+        {/* Selection Indicator - Mobile: top right */}
+        <div className="md:hidden absolute top-4 right-4 z-10">
+          <div className={`
+            w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+            ${(isActivated || isCompleted)
+              ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+              : 'border-gray-300 bg-white hover:border-gray-400'
+            }
+          `}>
+            {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
+          </div>
+        </div>
+
         <div className="space-y-0">
           {/* Feature Title and Description */}
           <div 
@@ -129,15 +141,17 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                       {feature.title}
                     </h2>
                   </div>
-                  {/* Selection Indicator */}
-                  <div className={`
-                    w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2 self-start md:self-center
-                    ${(isActivated || isCompleted)
-                      ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                      : 'border-gray-300 bg-white hover:border-gray-400'
-                    }
-                  `}>
-                    {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
+                  {/* Selection Indicator - Desktop only */}
+                  <div className="hidden md:block">
+                    <div className={`
+                      w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                      ${(isActivated || isCompleted)
+                        ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                        : 'border-gray-300 bg-white hover:border-gray-400'
+                      }
+                    `}>
+                      {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
+                    </div>
                   </div>
                 </div>
                 <div>
