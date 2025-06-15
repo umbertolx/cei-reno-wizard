@@ -76,23 +76,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
     {
       id: 'prese',
       title: 'Prese intelligenti',
-      description: 'Controlla da remoto l\'accensione e lo spegnimento di elettrodomestici e monitora i consumi energetici. Ideale per piccoli elettrodomestici e gestione a distanza (es. frigorifero nella seconda casa).',
-      advancedOption: {
-        title: 'Calcolo automatico prese intelligenti',
-        description: 'Ai fini della stima, calcoleremo automaticamente un numero indicativo di prese intelligenti in base alle stanze che hai indicato e agli usi più comuni. Le prese smart sono particolarmente utili per il controllo remoto di elettrodomestici e il monitoraggio dei consumi.',
-        options: [
-          { 
-            id: 'base', 
-            label: 'Configurazione base',
-            description: '1-2 prese per stanza principale (soggiorno, cucina, camera)'
-          },
-          { 
-            id: 'estesa', 
-            label: 'Configurazione estesa',
-            description: '3-4 prese per stanza per un controllo più capillare'
-          }
-        ]
-      }
+      description: 'Controlla da remoto l\'accensione e lo spegnimento di elettrodomestici e monitora i consumi energetici. Ideale per piccoli elettrodomestici e gestione a distanza (es. frigorifero nella seconda casa).'
     }
   ];
 
