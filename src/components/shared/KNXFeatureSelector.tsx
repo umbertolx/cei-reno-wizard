@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, Lightbulb, Blinds, Thermometer } from "lucide-react";
@@ -153,9 +152,11 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                       {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
                     </div>
                   </div>
-                  <p className="text-base text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
+                  <div>
+                    <p className="text-base text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
                 </div>
               </div>
             ) : (
