@@ -68,11 +68,11 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     setSelectedOption(optionId);
   };
 
-  // Get feature image - ora tutte le feature hanno un'immagine
+  // Get feature image
   const getFeatureImage = () => {
     switch (feature.id) {
       case 'luci':
-        return "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=400&h=300&fit=crop";
+        return "/lovable-uploads/e6632418-100a-4695-b616-b643ef13304c.png";
       case 'tapparelle':
         return "https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=400&h=300&fit=crop";
       case 'clima':
