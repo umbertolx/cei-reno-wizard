@@ -120,13 +120,13 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
           >
             {/* Main content with image for clima feature */}
             {featureImage ? (
-              <div className="flex gap-4">
+              <div className="flex gap-6">
                 {/* Feature Image */}
                 <div className="flex-shrink-0">
                   <img 
                     src={featureImage} 
                     alt={feature.title}
-                    className="w-20 h-20 object-cover rounded-xl"
+                    className="w-32 h-32 object-cover rounded-xl"
                   />
                 </div>
                 
