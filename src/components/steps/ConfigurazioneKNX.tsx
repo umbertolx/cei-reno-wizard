@@ -75,6 +75,27 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
       }
     },
     {
+      id: 'audio',
+      title: 'Controllo dell\'audio',
+      description: 'Gestisci il sistema audio multiroom tramite domotica. Regola volume, cambia traccia o sorgente e inserisci l\'audio in scenari domotici (es. relax, cena) direttamente dai comandi dell\'impianto elettrico.',
+      advancedOption: {
+        title: 'Impianto audio diffuso',
+        description: 'CEI può fornirti anche l\'impianto audio diffuso completo. Un sistema professionale che garantisce qualità audio superiore e perfetta integrazione con la domotica KNX.',
+        options: [
+          { 
+            id: 'solo_controllo', 
+            label: 'Solo controllo audio',
+            description: 'Controllo del tuo sistema audio esistente tramite KNX'
+          },
+          { 
+            id: 'impianto_completo', 
+            label: 'Controllo + impianto audio diffuso',
+            description: 'Sistema completo: controllo KNX + impianto audio fornito da CEI'
+          }
+        ]
+      }
+    },
+    {
       id: 'prese',
       title: 'Prese intelligenti',
       description: 'Controlla da remoto l\'accensione e lo spegnimento di elettrodomestici e monitora i consumi energetici. Ideale per piccoli elettrodomestici e gestione a distanza (es. frigorifero nella seconda casa).'
