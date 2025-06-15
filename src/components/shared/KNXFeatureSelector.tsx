@@ -116,7 +116,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
           {/* Feature Title and Description */}
           <div 
             className={`
-              space-y-4 p-6 
+              space-y-4 p-6 md:p-4
               ${isActivated && !isCompleted
                 ? 'bg-white rounded-t-2xl' 
                 : 'rounded-2xl'
@@ -145,14 +145,14 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               </div>
             </div>
 
-            {/* Desktop Layout - Side by side with larger image */}
-            <div className="hidden md:flex gap-6">
-              {/* Feature Image - Larger on desktop */}
+            {/* Desktop Layout - Side by side with centered image */}
+            <div className="hidden md:flex gap-4 items-center">
+              {/* Feature Image - Centered and square */}
               <div className="flex-shrink-0">
                 <img 
                   src={featureImage} 
                   alt={feature.title}
-                  className="w-40 h-40 object-cover rounded-xl"
+                  className="w-32 h-32 object-cover rounded-xl"
                 />
               </div>
               
