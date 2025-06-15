@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, Lightbulb, Blinds } from "lucide-react";
+import { ArrowRight, Check, Lightbulb, Blinds, Thermometer } from "lucide-react";
 
 type FeatureOption = {
   id: string;
@@ -74,6 +74,8 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
         return <Lightbulb className="w-8 h-8 text-[#d8010c]" />;
       case 'tapparelle':
         return <Blinds className="w-8 h-8 text-[#d8010c]" />;
+      case 'clima':
+        return <Thermometer className="w-8 h-8 text-[#d8010c]" />;
       default:
         return null;
     }

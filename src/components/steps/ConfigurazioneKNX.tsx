@@ -42,6 +42,27 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
       id: 'tapparelle',
       title: 'Controllo tapparelle',
       description: 'Gestisci l\'apertura e la chiusura delle tapparelle o tende motorizzate da app o da pulsanti intelligenti. Puoi impostare orari automatici, scenari coordinati con le luci, o regolare l\'apertura a una determinata percentuale.'
+    },
+    {
+      id: 'clima',
+      title: 'Controllo Clima',
+      description: 'Se abbinato a un impianto termotecnico compatibile (climatizzatori o pompe di calore con gestione a zone), l\'impianto elettrico KNX utilizza i frutti come sensori di temperatura per ogni ambiente, permettendo di adattare automaticamente il raffrescamento o il riscaldamento. Funzionalità disponibile solo con impianti termici predisposti.',
+      advancedOption: {
+        title: 'Gestione VMC',
+        description: 'Se presente un impianto di ventilazione meccanica controllata, gli stessi frutti possono essere utilizzati come rilevatori di qualità dell\'aria (CO2, VOC, umidità) per regolare automaticamente il ricambio d\'aria. Questa configurazione riguarda solo la parte elettrica che rende compatibile l\'impianto VMC esistente.',
+        options: [
+          { 
+            id: 'solo_clima', 
+            label: 'Solo controllo clima',
+            description: 'Gestione temperatura tramite sensori nei frutti KNX'
+          },
+          { 
+            id: 'clima_vmc', 
+            label: 'Controllo clima + VMC',
+            description: 'Gestione temperatura e qualità dell\'aria con VMC esistente'
+          }
+        ]
+      }
     }
   ];
 
