@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, Lightbulb, Blinds, Thermometer } from "lucide-react";
@@ -81,6 +82,16 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     }
   };
 
+  // Get feature image if available
+  const getFeatureImage = () => {
+    if (feature.id === 'clima') {
+      return "/lovable-uploads/c995d44b-5a6b-49b1-8300-513cbd07f544.png";
+    }
+    return null;
+  };
+
+  const featureImage = getFeatureImage();
+
   return (
     <div className="space-y-6">
       {/* Feature Card */}
@@ -107,30 +118,75 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               }
             `}
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                {/* Feature Icon */}
+            {/* Main content with image for clima feature */}
+            {featureImage ? (
+              <div className="flex gap-4">
+                {/* Feature Image */}
                 <div className="flex-shrink-0">
-                  {getFeatureIcon()}
+                  <img 
+                    src={featureImage} 
+                    alt={feature.title}
+                    className="w-20 h-20 object-cover rounded-xl"
+                  />
                 </div>
-                <h2 className="text-xl font-semibold text-[#1c1c1c]">
-                  {feature.title}
-                </h2>
+                
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      {/* Feature Icon */}
+                      <div className="flex-shrink-0">
+                        {getFeatureIcon()}
+                      </div>
+                      <h2 className="text-xl font-semibold text-[#1c1c1c]">
+                        {feature.title}
+                      </h2>
+                    </div>
+                    {/* Selection Indicator */}
+                    <div className={`
+                      w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                      ${(isActivated || isCompleted)
+                        ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                        : 'border-gray-300 bg-white hover:border-gray-400'
+                      }
+                    `}>
+                      {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
+                    </div>
+                  </div>
+                  <p className="text-base text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
               </div>
-              {/* Selection Indicator - Always visible */}
-              <div className={`
-                w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
-                ${(isActivated || isCompleted)
-                  ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                  : 'border-gray-300 bg-white hover:border-gray-400'
-                }
-              `}>
-                {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
+            ) : (
+              // Original layout for features without image
+              <div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    {/* Feature Icon */}
+                    <div className="flex-shrink-0">
+                      {getFeatureIcon()}
+                    </div>
+                    <h2 className="text-xl font-semibold text-[#1c1c1c]">
+                      {feature.title}
+                    </h2>
+                  </div>
+                  {/* Selection Indicator - Always visible */}
+                  <div className={`
+                    w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                    ${(isActivated || isCompleted)
+                      ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                      : 'border-gray-300 bg-white hover:border-gray-400'
+                    }
+                  `}>
+                    {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
+                  </div>
+                </div>
+                <p className="text-base text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-            </div>
-            <p className="text-base text-gray-600 leading-relaxed">
-              {feature.description}
-            </p>
+            )}
           </div>
 
           {/* Advanced Options */}
