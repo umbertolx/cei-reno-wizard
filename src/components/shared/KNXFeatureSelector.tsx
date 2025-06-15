@@ -68,26 +68,18 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     setSelectedOption(optionId);
   };
 
-  // Get the appropriate icon for the feature
-  const getFeatureIcon = () => {
+  // Get feature image - ora tutte le feature hanno un'immagine
+  const getFeatureImage = () => {
     switch (feature.id) {
       case 'luci':
-        return <Lightbulb className="w-8 h-8 text-[#d8010c]" />;
+        return "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=400&h=300&fit=crop";
       case 'tapparelle':
-        return <Blinds className="w-8 h-8 text-[#d8010c]" />;
+        return "https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=400&h=300&fit=crop";
       case 'clima':
-        return <Thermometer className="w-8 h-8 text-[#d8010c]" />;
+        return "/lovable-uploads/c995d44b-5a6b-49b1-8300-513cbd07f544.png";
       default:
-        return null;
+        return "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=400&h=300&fit=crop";
     }
-  };
-
-  // Get feature image if available
-  const getFeatureImage = () => {
-    if (feature.id === 'clima') {
-      return "/lovable-uploads/c995d44b-5a6b-49b1-8300-513cbd07f544.png";
-    }
-    return null;
   };
 
   const featureImage = getFeatureImage();
@@ -118,64 +110,28 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               }
             `}
           >
-            {/* Main content with image for clima feature */}
-            {featureImage ? (
-              <div className="flex gap-4 md:gap-6">
-                {/* Feature Image */}
-                <div className="flex-shrink-0">
-                  <img 
-                    src={featureImage} 
-                    alt={feature.title}
-                    className="w-20 h-20 md:w-32 md:h-32 object-cover rounded-xl"
-                  />
-                </div>
-                
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2 md:gap-0">
-                    <div className="flex items-center gap-2 md:gap-3">
-                      {/* Feature Icon - Hidden on mobile when there's an image */}
-                      <div className="flex-shrink-0 hidden md:block">
-                        {getFeatureIcon()}
-                      </div>
-                      <h2 className="text-lg md:text-xl font-semibold text-[#1c1c1c]">
-                        {feature.title}
-                      </h2>
-                    </div>
-                    {/* Selection Indicator */}
-                    <div className={`
-                      w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2 self-start md:self-center
-                      ${(isActivated || isCompleted)
-                        ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                        : 'border-gray-300 bg-white hover:border-gray-400'
-                      }
-                    `}>
-                      {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
+            {/* Main content with image for all features */}
+            <div className="flex gap-4 md:gap-6">
+              {/* Feature Image */}
+              <div className="flex-shrink-0">
+                <img 
+                  src={featureImage} 
+                  alt={feature.title}
+                  className="w-16 h-16 md:w-32 md:h-32 object-cover rounded-xl"
+                />
               </div>
-            ) : (
-              // Original layout for features without image
-              <div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 md:gap-4">
-                    {/* Feature Icon */}
-                    <div className="flex-shrink-0">
-                      {getFeatureIcon()}
-                    </div>
-                    <h2 className="text-lg md:text-xl font-semibold text-[#1c1c1c]">
+              
+              {/* Content */}
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-2 md:mb-3 gap-2 md:gap-0">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <h2 className="text-base md:text-xl font-semibold text-[#1c1c1c]">
                       {feature.title}
                     </h2>
                   </div>
-                  {/* Selection Indicator - Always visible */}
+                  {/* Selection Indicator */}
                   <div className={`
-                    w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                    w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2 self-start md:self-center
                     ${(isActivated || isCompleted)
                       ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
                       : 'border-gray-300 bg-white hover:border-gray-400'
@@ -184,11 +140,13 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                     {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
                   </div>
                 </div>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed mt-2">
-                  {feature.description}
-                </p>
+                <div>
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Advanced Options */}
