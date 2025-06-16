@@ -1,7 +1,9 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import { ArrowRight, Check, Lightbulb, Blinds, Thermometer } from "lucide-react";
 
 type FeatureOption = {
@@ -17,6 +19,7 @@ type InputField = {
   inputPlaceholder: string;
   inputMin: number;
   inputMax: number;
+  useSlider?: boolean;
 };
 
 type Feature = {
@@ -104,6 +107,13 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     setMultipleInputValues(prev => ({
       ...prev,
       [inputId]: value
+    }));
+  };
+
+  const handleSliderChange = (inputId: string, values: number[]) => {
+    setMultipleInputValues(prev => ({
+      ...prev,
+      [inputId]: values[0]
     }));
   };
 
@@ -284,21 +294,32 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               {feature.advancedOption.requiresMultipleInputs && feature.advancedOption.inputs && (
                 <div className="space-y-4">
                   {feature.advancedOption.inputs.map((input) => (
-                    <div key={input.id} className="space-y-2">
-                      <Label htmlFor={`${feature.id}-${input.id}`} className="text-sm font-medium text-[#1c1c1c]">
-                        {input.label}
-                      </Label>
-                      <Input
-                        id={`${feature.id}-${input.id}`}
-                        type={input.inputType}
-                        min={input.inputMin}
-                        max={input.inputMax}
-                        value={multipleInputValues[input.id] || ""}
-                        onChange={(e) => handleMultipleInputChange(input.id, parseInt(e.target.value) || 0)}
-                        placeholder={input.inputPlaceholder}
-                        className="text-sm h-10"
-                        onClick={(e) => e.stopPropagation()}
-                      />
+                    <div key={input.id} className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor={`${feature.id}-${input.id}`} className="text-sm font-medium text-[#1c1c1c]">
+                          {input.label}
+                        </Label>
+                        <span className="text-sm font-bold text-[#d8010c]">
+                          {multipleInputValues[input.id] || 0}
+                        </span>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Slider
+                          value={[multipleInputValues[input.id] || 0]}
+                          onValueChange={(values) => handleSliderChange(input.id, values)}
+                          max={input.inputMax}
+                          min={input.inputMin}
+                          step={1}
+                          className="py-2"
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                        
+                        <div className="flex justify-between text-xs text-gray-500">
+                          <span>{input.inputMin}</span>
+                          <span>{input.inputMax}</span>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>

@@ -71,7 +71,8 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
                 inputType: 'number',
                 inputPlaceholder: 'Es. 4',
                 inputMin: 0,
-                inputMax: 30
+                inputMax: 30,
+                useSlider: true
               },
               {
                 id: 'tendeEsterne',
@@ -79,7 +80,8 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
                 inputType: 'number',
                 inputPlaceholder: 'Es. 6',
                 inputMin: 0,
-                inputMax: 30
+                inputMax: 30,
+                useSlider: true
               }
             ]
           }
