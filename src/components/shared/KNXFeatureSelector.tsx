@@ -130,7 +130,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
       case 'tapparelle':
         return "/lovable-uploads/fe24b59f-57ea-4463-a1da-970fbfe1242c.png";
       case 'tende':
-        return "/lovable-uploads/fe24b59f-57ea-4463-a1da-970fbfe1242c.png"; // Riusa l'immagine delle tapparelle
+        return "/lovable-uploads/c0a1f152-d988-470c-ace9-54e6b6cd8f71.png";
       case 'clima':
         return "/lovable-uploads/c995d44b-5a6b-49b1-8300-513cbd07f544.png";
       case 'audio':
