@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
@@ -55,6 +54,34 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
             inputLabel: 'Numero di tapparelle',
             inputMin: 1,
             inputMax: 50
+          }
+        },
+        {
+          id: 'tende',
+          title: 'Controllo tende interne ed esterne',
+          description: 'Aggiungi al tuo impianto la possibilità di controllare tende interne ed esterne in modo automatico. Potrai gestirle da app o da interruttore, programmare l\'apertura/chiusura e aumentare comfort ed efficienza energetica.',
+          advancedOption: {
+            title: 'Numero di tende motorizzate',
+            description: 'Specifica quante tende interne ed esterne vuoi controllare con il sistema KNX per calcolare correttamente il costo degli attuatori necessari.',
+            requiresMultipleInputs: true,
+            inputs: [
+              {
+                id: 'tendeInterne',
+                label: 'Numero di tende interne',
+                inputType: 'number',
+                inputPlaceholder: 'Es. 4',
+                inputMin: 0,
+                inputMax: 30
+              },
+              {
+                id: 'tendeEsterne',
+                label: 'Numero di tende esterne',
+                inputType: 'number',
+                inputPlaceholder: 'Es. 6',
+                inputMin: 0,
+                inputMax: 30
+              }
+            ]
           }
         }
       ]

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +10,15 @@ type FeatureOption = {
   description?: string;
 };
 
+type InputField = {
+  id: string;
+  label: string;
+  inputType: string;
+  inputPlaceholder: string;
+  inputMin: number;
+  inputMax: number;
+};
+
 type Feature = {
   id: string;
   title: string;
@@ -20,6 +28,8 @@ type Feature = {
     description: string;
     options?: FeatureOption[];
     requiresInput?: boolean;
+    requiresMultipleInputs?: boolean;
+    inputs?: InputField[];
     inputType?: string;
     inputPlaceholder?: string;
     inputLabel?: string;
@@ -38,6 +48,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('standard');
   const [inputValue, setInputValue] = useState<number>(0);
+  const [multipleInputValues, setMultipleInputValues] = useState<Record<string, number>>({});
 
   const handleActivate = () => {
     if (!isCompleted) {
@@ -72,10 +83,12 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     setIsCompleted(true);
     setIsActivated(false); // Collassa le sotto-opzioni
     
-    const config: { active: boolean; inputValue?: number; option?: string } = { active: true };
+    const config: { active: boolean; inputValue?: number; multipleInputs?: Record<string, number>; option?: string } = { active: true };
     
     if (feature.advancedOption?.requiresInput) {
       config.inputValue = inputValue;
+    } else if (feature.advancedOption?.requiresMultipleInputs) {
+      config.multipleInputs = multipleInputValues;
     } else if (feature.advancedOption?.options) {
       config.option = selectedOption;
     }
@@ -87,6 +100,13 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     setSelectedOption(optionId);
   };
 
+  const handleMultipleInputChange = (inputId: string, value: number) => {
+    setMultipleInputValues(prev => ({
+      ...prev,
+      [inputId]: value
+    }));
+  };
+
   // Get feature image
   const getFeatureImage = () => {
     switch (feature.id) {
@@ -94,6 +114,8 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
         return "/lovable-uploads/e6632418-100a-4695-b616-b643ef13304c.png";
       case 'tapparelle':
         return "/lovable-uploads/fe24b59f-57ea-4463-a1da-970fbfe1242c.png";
+      case 'tende':
+        return "/lovable-uploads/fe24b59f-57ea-4463-a1da-970fbfe1242c.png"; // Riusa l'immagine delle tapparelle
       case 'clima':
         return "/lovable-uploads/c995d44b-5a6b-49b1-8300-513cbd07f544.png";
       case 'audio':
@@ -115,6 +137,14 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
 
   // Validation for continue button
   const canContinue = !feature.advancedOption?.requiresInput || inputValue > 0;
+  
+  // Validation for multiple inputs
+  const canContinueMultiple = !feature.advancedOption?.requiresMultipleInputs || 
+    (feature.advancedOption.inputs && feature.advancedOption.inputs.some(input => 
+      multipleInputValues[input.id] > 0
+    ));
+
+  const finalCanContinue = feature.advancedOption?.requiresMultipleInputs ? canContinueMultiple : canContinue;
 
   return (
     <div className="space-y-6">
@@ -250,6 +280,30 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                 </div>
               )}
 
+              {/* Multiple Input Fields - for features that require multiple inputs */}
+              {feature.advancedOption.requiresMultipleInputs && feature.advancedOption.inputs && (
+                <div className="space-y-4">
+                  {feature.advancedOption.inputs.map((input) => (
+                    <div key={input.id} className="space-y-2">
+                      <Label htmlFor={`${feature.id}-${input.id}`} className="text-sm font-medium text-[#1c1c1c]">
+                        {input.label}
+                      </Label>
+                      <Input
+                        id={`${feature.id}-${input.id}`}
+                        type={input.inputType}
+                        min={input.inputMin}
+                        max={input.inputMax}
+                        value={multipleInputValues[input.id] || ""}
+                        onChange={(e) => handleMultipleInputChange(input.id, parseInt(e.target.value) || 0)}
+                        placeholder={input.inputPlaceholder}
+                        className="text-sm h-10"
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
               {/* Options Comparison - for features with multiple options */}
               {feature.advancedOption.options && (
                 <div className="space-y-3">
@@ -303,7 +357,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
               <div className="pt-3">
                 <Button
                   onClick={handleContinue}
-                  disabled={!canContinue}
+                  disabled={!finalCanContinue}
                   className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-3 text-sm md:text-base rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span>Continua</span>
