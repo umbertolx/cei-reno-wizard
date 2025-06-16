@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, ChevronDown, Check, ChevronUp } from "lucide-react";
+import { ArrowRight, ArrowLeft, ChevronDown, Check } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { StickyNavigationBar } from "./StickyNavigationBar";
 
@@ -59,8 +59,7 @@ export const ScenarioComparison = ({
     onSelectionChange(optionId);
   };
 
-  const toggleCardExpansion = (optionId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const toggleCardExpansion = (optionId: string) => {
     setExpandedCards(prev => 
       prev.includes(optionId) 
         ? prev.filter(id => id !== optionId)
@@ -109,7 +108,7 @@ export const ScenarioComparison = ({
               
               return (
                 <div key={option.id}>
-                  {/* Mobile Version */}
+                  {/* Mobile Version - Design migliorato */}
                   <div className="block lg:hidden">
                     <div
                       className={`
@@ -120,10 +119,10 @@ export const ScenarioComparison = ({
                         }
                       `}
                     >
-                      {/* Mobile Header - Always visible */}
+                      {/* Mobile Header */}
                       <div 
                         className={`
-                          p-4 flex items-center justify-between
+                          p-4 flex items-center justify-between min-h-[100px]
                           ${isSelected 
                             ? 'bg-[#d8010c]/5' 
                             : 'bg-white hover:bg-gray-50'
@@ -140,7 +139,7 @@ export const ScenarioComparison = ({
                           </p>
                         </div>
                         
-                        {/* Selection Indicator */}
+                        {/* Selection Indicator - Always visible */}
                         <div className={`
                           w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200 border-2
                           ${isSelected 
@@ -152,36 +151,33 @@ export const ScenarioComparison = ({
                         </div>
                       </div>
 
-                      {/* Mobile Features - Always visible as bullet points */}
-                      <div className="px-4 py-3 border-t border-gray-100 bg-gray-50/30">
-                        <ul className="space-y-2">
-                          {option.features.map((feature, index) => (
-                            <li key={index} className="flex items-center gap-3">
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#d8010c] flex-shrink-0"></div>
-                              <span className="text-xs text-gray-800 font-medium">{feature.text}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Mobile Expand/Collapse for Description */}
-                      <Collapsible open={isExpanded}>
-                        <CollapsibleTrigger 
-                          className="w-full border-t border-gray-200 px-4 py-3 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50/80 transition-colors text-sm font-medium"
-                          onClick={(e) => toggleCardExpansion(option.id, e)}
-                        >
+                      {/* Mobile Expand/Collapse */}
+                      <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
+                        <CollapsibleTrigger className="w-full border-t border-gray-200 px-4 py-3 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50/80 transition-colors text-sm font-medium">
                           <span>
-                            {isExpanded ? 'Nascondi descrizione dettagliata' : 'Mostra descrizione dettagliata'}
+                            {isExpanded ? 'Nascondi dettagli' : 'Mostra dettagli'}
                           </span>
-                          {isExpanded ? (
-                            <ChevronUp className="h-4 w-4" />
-                          ) : (
-                            <ChevronDown className="h-4 w-4" />
-                          )}
+                          <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
                         </CollapsibleTrigger>
                         
                         <CollapsibleContent>
-                          <div className="p-4 pt-0 bg-gray-50/30">
+                          <div className="p-4 pt-0 space-y-4 bg-gray-50/30">
+                            {/* Features List */}
+                            <div className="space-y-3">
+                              {option.features.map((feature, index) => {
+                                const IconComponent = feature.icon;
+                                return (
+                                  <div key={index} className="flex items-center gap-3">
+                                    <div className="w-7 h-7 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
+                                      <IconComponent className="w-4 h-4 text-[#d8010c]" />
+                                    </div>
+                                    <span className="text-sm text-gray-800 font-medium">{feature.text}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            {/* Description */}
                             <p className="text-sm text-gray-700 leading-relaxed bg-white p-3 rounded-lg border border-gray-100">
                               {option.description}
                             </p>
@@ -195,31 +191,29 @@ export const ScenarioComparison = ({
                   <div className="hidden lg:block">
                     <div
                       className={`
-                        relative rounded-xl border cursor-pointer transition-all duration-300 overflow-hidden
+                        relative p-6 rounded-xl border cursor-pointer transition-all duration-300 h-[450px] flex flex-col
                         ${isSelected 
                           ? 'border-[#d8010c] bg-[#d8010c]/5 shadow-xl transform scale-[1.02]' 
                           : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-white hover:transform hover:scale-[1.01]'
                         }
                       `}
+                      onClick={() => handleCardClick(option.id)}
                     >
-                      {/* Desktop Header - Always visible */}
-                      <div 
-                        className="p-6 pb-4"
-                        onClick={() => handleCardClick(option.id)}
-                      >
-                        {/* Selection Indicator */}
-                        <div className={`
-                          absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 border-2
-                          ${isSelected 
-                            ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                            : 'border-gray-300 bg-white hover:border-gray-400'
-                          }
-                        `}>
-                          {isSelected && <Check className="w-5 h-5 text-white" />}
-                        </div>
+                      {/* Selection Indicator - Always visible */}
+                      <div className={`
+                        absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 border-2
+                        ${isSelected 
+                          ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                          : 'border-gray-300 bg-white hover:border-gray-400'
+                        }
+                      `}>
+                        {isSelected && <Check className="w-5 h-5 text-white" />}
+                      </div>
 
-                        {/* Header Content */}
-                        <div className="pr-12">
+                      {/* Card Content */}
+                      <div className="flex flex-col h-full">
+                        {/* Header Section */}
+                        <div className="mb-6">
                           <h3 className="text-xl font-semibold text-gray-900 mb-2 leading-tight">
                             {option.title}
                           </h3>
@@ -227,46 +221,29 @@ export const ScenarioComparison = ({
                             {option.subtitle}
                           </p>
                         </div>
-                      </div>
 
-                      {/* Desktop Features - Always visible as bullet points */}
-                      <div className="px-6 pb-4">
-                        <ul className="space-y-3">
-                          {option.features.map((feature, index) => (
-                            <li key={index} className="flex items-center gap-3">
-                              <div className="w-2 h-2 rounded-full bg-[#d8010c] flex-shrink-0"></div>
-                              <span className="text-gray-800 font-medium text-sm">{feature.text}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                        {/* Features List */}
+                        <div className="space-y-4 mb-6 flex-1">
+                          {option.features.map((feature, index) => {
+                            const IconComponent = feature.icon;
+                            return (
+                              <div key={index} className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
+                                  <IconComponent className="w-5 h-5 text-[#d8010c]" />
+                                </div>
+                                <span className="text-gray-800 font-medium">{feature.text}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
 
-                      {/* Desktop Expand/Collapse for Description */}
-                      <Collapsible open={isExpanded}>
-                        <CollapsibleTrigger 
-                          className="w-full border-t border-gray-200 px-6 py-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50/80 transition-colors text-sm font-medium"
-                          onClick={(e) => toggleCardExpansion(option.id, e)}
-                        >
-                          <span>
-                            {isExpanded ? 'Nascondi descrizione dettagliata' : 'Mostra descrizione dettagliata'}
-                          </span>
-                          {isExpanded ? (
-                            <ChevronUp className="h-4 w-4" />
-                          ) : (
-                            <ChevronDown className="h-4 w-4" />
-                          )}
-                        </CollapsibleTrigger>
-                        
-                        <CollapsibleContent>
-                          <div className="px-6 pb-6">
-                            <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                              <p className="text-gray-700 leading-relaxed text-sm">
-                                {option.description}
-                              </p>
-                            </div>
-                          </div>
-                        </CollapsibleContent>
-                      </Collapsible>
+                        {/* Description */}
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                          <p className="text-gray-700 leading-relaxed text-sm">
+                            {option.description}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
