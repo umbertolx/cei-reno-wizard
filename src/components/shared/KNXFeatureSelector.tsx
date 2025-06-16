@@ -38,6 +38,7 @@ type Feature = {
     inputLabel?: string;
     inputMin?: number;
     inputMax?: number;
+    useSlider?: boolean;
   };
 };
 
@@ -110,11 +111,15 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
     }));
   };
 
-  const handleSliderChange = (inputId: string, values: number[]) => {
+  const handleMultipleSliderChange = (inputId: string, values: number[]) => {
     setMultipleInputValues(prev => ({
       ...prev,
       [inputId]: values[0]
     }));
+  };
+
+  const handleSingleSliderChange = (values: number[]) => {
+    setInputValue(values[0]);
   };
 
   // Get feature image
@@ -270,23 +275,48 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                 </p>
               </div>
 
-              {/* Input Field - for features that require input */}
+              {/* Single Input Field - for features that require input */}
               {feature.advancedOption.requiresInput && (
-                <div className="space-y-2">
-                  <Label htmlFor={`${feature.id}-input`} className="text-sm font-medium text-[#1c1c1c]">
-                    {feature.advancedOption.inputLabel}
-                  </Label>
-                  <Input
-                    id={`${feature.id}-input`}
-                    type={feature.advancedOption.inputType || "text"}
-                    min={feature.advancedOption.inputMin}
-                    max={feature.advancedOption.inputMax}
-                    value={inputValue || ""}
-                    onChange={(e) => setInputValue(parseInt(e.target.value) || 0)}
-                    placeholder={feature.advancedOption.inputPlaceholder}
-                    className="text-sm h-10"
-                    onClick={(e) => e.stopPropagation()}
-                  />
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor={`${feature.id}-input`} className="text-sm font-medium text-[#1c1c1c]">
+                      {feature.advancedOption.inputLabel}
+                    </Label>
+                    <span className="text-sm font-bold text-[#d8010c]">
+                      {inputValue || 0}
+                    </span>
+                  </div>
+                  
+                  {feature.advancedOption.useSlider ? (
+                    <div className="space-y-2">
+                      <Slider
+                        value={[inputValue || 0]}
+                        onValueChange={handleSingleSliderChange}
+                        max={feature.advancedOption.inputMax}
+                        min={feature.advancedOption.inputMin}
+                        step={1}
+                        className="py-2"
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      
+                      <div className="flex justify-between text-xs text-gray-500">
+                        <span>{feature.advancedOption.inputMin}</span>
+                        <span>{feature.advancedOption.inputMax}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <Input
+                      id={`${feature.id}-input`}
+                      type={feature.advancedOption.inputType || "text"}
+                      min={feature.advancedOption.inputMin}
+                      max={feature.advancedOption.inputMax}
+                      value={inputValue || ""}
+                      onChange={(e) => setInputValue(parseInt(e.target.value) || 0)}
+                      placeholder={feature.advancedOption.inputPlaceholder}
+                      className="text-sm h-10"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  )}
                 </div>
               )}
 
@@ -307,7 +337,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                       <div className="space-y-2">
                         <Slider
                           value={[multipleInputValues[input.id] || 0]}
-                          onValueChange={(values) => handleSliderChange(input.id, values)}
+                          onValueChange={(values) => handleMultipleSliderChange(input.id, values)}
                           max={input.inputMax}
                           min={input.inputMin}
                           step={1}
