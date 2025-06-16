@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
@@ -98,6 +99,11 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
       id: 'videocitofono',
       title: 'Videocitofono smart',
       description: 'Ricevi chiamate sullo smartphone quando qualcuno suona, apri il cancello anche se non sei in casa e integra il videocitofono nei tuoi scenari domotici. Puoi attivare luci, notifiche o azioni automatiche in base all\'orario o a chi chiama.'
+    },
+    {
+      id: 'supervisor',
+      title: 'Supervisor e interfaccia di controllo',
+      description: 'Controlla l\'intero impianto domotico da app o pannello touch. Visualizza e gestisci luci, clima, scenari e consumi da un\'unica interfaccia elegante e intuitiva. Include 1 supervisor base per la gestione centralizzata del sistema.'
     },
     {
       id: 'prese',
