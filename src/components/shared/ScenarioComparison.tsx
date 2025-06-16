@@ -152,21 +152,16 @@ export const ScenarioComparison = ({
                         </div>
                       </div>
 
-                      {/* Mobile Features - Always visible */}
+                      {/* Mobile Features - Always visible as bullet points */}
                       <div className="px-4 py-3 border-t border-gray-100 bg-gray-50/30">
-                        <div className="space-y-2">
-                          {option.features.map((feature, index) => {
-                            const IconComponent = feature.icon;
-                            return (
-                              <div key={index} className="flex items-center gap-3">
-                                <div className="w-6 h-6 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
-                                  <IconComponent className="w-3.5 h-3.5 text-[#d8010c]" />
-                                </div>
-                                <span className="text-xs text-gray-800 font-medium">{feature.text}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
+                        <ul className="space-y-2">
+                          {option.features.map((feature, index) => (
+                            <li key={index} className="flex items-center gap-3">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#d8010c] flex-shrink-0"></div>
+                              <span className="text-xs text-gray-800 font-medium">{feature.text}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
 
                       {/* Mobile Expand/Collapse for Description */}
@@ -234,21 +229,16 @@ export const ScenarioComparison = ({
                         </div>
                       </div>
 
-                      {/* Desktop Features - Always visible */}
+                      {/* Desktop Features - Always visible as bullet points */}
                       <div className="px-6 pb-4">
-                        <div className="space-y-3">
-                          {option.features.map((feature, index) => {
-                            const IconComponent = feature.icon;
-                            return (
-                              <div key={index} className="flex items-center gap-3">
-                                <div className="w-7 h-7 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
-                                  <IconComponent className="w-4 h-4 text-[#d8010c]" />
-                                </div>
-                                <span className="text-gray-800 font-medium text-sm">{feature.text}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
+                        <ul className="space-y-3">
+                          {option.features.map((feature, index) => (
+                            <li key={index} className="flex items-center gap-3">
+                              <div className="w-2 h-2 rounded-full bg-[#d8010c] flex-shrink-0"></div>
+                              <span className="text-gray-800 font-medium text-sm">{feature.text}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
 
                       {/* Desktop Expand/Collapse for Description */}
