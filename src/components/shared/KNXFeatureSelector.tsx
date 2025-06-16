@@ -99,7 +99,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
       case 'audio':
         return "/lovable-uploads/64f1fc05-9f90-4bc3-98ce-609171969f34.png";
       case 'videocitofono':
-        return "/lovable-uploads/5bf55b41-64d6-47a0-800f-7aab0862bf98.png";
+        return "/lovable-uploads/f5e5fded-c7de-4125-a941-5f1b7848216b.png";
       case 'supervisor':
         return "/lovable-uploads/7c632c46-64c6-454b-b98d-2306abb92ecb.png";
       case 'prese':
