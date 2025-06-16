@@ -168,7 +168,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
           <div className="space-y-4 md:space-y-6">
             {/* Header - Layout responsive */}
             <div className="flex items-center gap-4 px-3 md:px-0">
-              <div className="w-[100px] h-[100px] md:w-[120px] md:h-[120px] flex-shrink-0 flex items-center justify-center">
+              <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
                 <img 
                   src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
                   alt="Electrical work icon" 
