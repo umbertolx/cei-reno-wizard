@@ -161,6 +161,9 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                   src={featureImage} 
                   alt={feature.title}
                   className="w-full h-32 object-cover rounded-xl"
+                  style={{
+                    objectPosition: feature.id === 'videocitofono' ? 'center top' : 'center'
+                  }}
                 />
               </div>
               
@@ -183,6 +186,9 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                   src={featureImage} 
                   alt={feature.title}
                   className="w-32 h-32 object-cover rounded-xl"
+                  style={{
+                    objectPosition: feature.id === 'videocitofono' ? 'center top' : 'center'
+                  }}
                 />
               </div>
               
