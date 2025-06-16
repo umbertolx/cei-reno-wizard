@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
@@ -94,6 +93,11 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
           }
         ]
       }
+    },
+    {
+      id: 'videocitofono',
+      title: 'Videocitofono smart',
+      description: 'Ricevi chiamate sullo smartphone quando qualcuno suona, apri il cancello anche se non sei in casa e integra il videocitofono nei tuoi scenari domotici. Puoi attivare luci, notifiche o azioni automatiche in base all\'orario o a chi chiama.'
     },
     {
       id: 'prese',
