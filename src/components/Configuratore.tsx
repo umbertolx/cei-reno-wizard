@@ -1,15 +1,16 @@
+
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { Step1 } from "./steps/Step1";
-import { Step2 } from "./steps/Step2";
+import { InformazioniGenerali } from "./steps/InformazioniGenerali";
+import { SuddivisioneSpazi } from "./steps/informazioni-generali/SuddivisioneSpazi";
 import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
-import { Tapparelle } from "./steps/Tapparelle";
-import { ContactForm } from "./steps/ContactForm";
-import { Riepilogo } from "./steps/Riepilogo";
-import { ThankYou } from "./steps/ThankYou";
+import { TapparelleElettriche } from "./steps/TapparelleElettriche";
+import { DatiContatto } from "./steps/DatiContatto";
+import { RiepilogoFinale } from "./steps/RiepilogoFinale";
+import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
-import { Domotica } from "./steps/Domotica";
-import { TipoProprietario } from "./steps/TipoProprietario";
+import { TipoDomotica } from "./steps/TipoDomotica";
+import { TipoProprietaSelector } from "./steps/stimafinale/TipoProprietaSelector";
 import { EtaImpiantoElettrico } from "./steps/EtaImpiantoElettrico";
 
 export type FormData = {
@@ -51,17 +52,17 @@ export type FormData = {
 };
 
 const steps = [
-  "step1",
-  "step2",
+  "informazioniGenerali",
+  "suddivisioneSpazi",
   "configuratoreElettrico",
   "etaImpiantoElettrico",
   "tipoImpiantoElettrico",
-  "domotica",
-  "tapparelle",
-  "tipoProprietario",
-  "contactForm",
-  "riepilogo",
-  "thankYou"
+  "tipoDomotica",
+  "tapparelleElettriche",
+  "tipoProprietaSelector",
+  "datiContatto",
+  "riepilogoFinale",
+  "richiestaInviata"
 ];
 
 export const Configuratore = () => {
@@ -91,28 +92,28 @@ export const Configuratore = () => {
 
   const renderStep = () => {
     switch (steps[currentStep]) {
-      case "step1":
-        return <Step1 formData={formData} updateFormData={updateFormData} onNext={nextStep} />;
-      case "step2":
-        return <Step2 formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "informazioniGenerali":
+        return <InformazioniGenerali formData={formData} updateFormData={updateFormData} onNext={nextStep} />;
+      case "suddivisioneSpazi":
+        return <SuddivisioneSpazi formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
       case "configuratoreElettrico":
         return <ConfiguratoreElettrico formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
       case "etaImpiantoElettrico":
         return <EtaImpiantoElettrico formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
       case "tipoImpiantoElettrico":
         return <TipoImpiantoElettrico formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
-      case "domotica":
-        return <Domotica formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
-      case "tapparelle":
-        return <Tapparelle formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
-      case "tipoProprietario":
-        return <TipoProprietario formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
-      case "contactForm":
-        return <ContactForm formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} resetForm={resetForm} />;
-      case "riepilogo":
-        return <Riepilogo formData={formData} onBack={prevStep} />;
-      case "thankYou":
-        return <ThankYou formData={formData} />;
+      case "tipoDomotica":
+        return <TipoDomotica formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "tapparelleElettriche":
+        return <TapparelleElettriche formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "tipoProprietaSelector":
+        return <TipoProprietaSelector formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "datiContatto":
+        return <DatiContatto formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} resetForm={resetForm} />;
+      case "riepilogoFinale":
+        return <RiepilogoFinale formData={formData} onBack={prevStep} />;
+      case "richiestaInviata":
+        return <RichiestaInviata formData={formData} />;
       default:
         return <div>Passo non trovato</div>;
     }
