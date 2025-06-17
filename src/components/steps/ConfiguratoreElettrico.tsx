@@ -18,13 +18,11 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
       tipoRistrutturazione 
     });
     
-    // Vai alla pagina successiva solo se è ristrutturazione completa o nuova costruzione
-    if (tipoRistrutturazione === 'completa' || tipoRistrutturazione === 'nuova') {
+    // Per intervento parziale, vai alla nuova pagina dell'età dell'impianto
+    if (tipoRistrutturazione === 'parziale') {
       onNext();
     } else {
-      // Per intervento parziale, salta alla pagina dei dati di contatto (step + 3)
-      onNext();
-      onNext();
+      // Per ristrutturazione completa o nuova costruzione, vai alla pagina successiva normale
       onNext();
     }
   };

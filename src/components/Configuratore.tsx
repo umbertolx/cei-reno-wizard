@@ -1,355 +1,128 @@
-
 import { useState } from "react";
-import { WelcomePage } from "./steps/WelcomePage";
-import { InformazioniGenerali } from "./steps/InformazioniGenerali";
-import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
+import { AnimatePresence } from "framer-motion";
+import { Step1 } from "./steps/Step1";
+import { Step2 } from "./steps/Step2";
 import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
-import { TipoDomotica } from "./steps/TipoDomotica";
-import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
-import { TapparelleElettriche } from "./steps/TapparelleElettriche";
-import { RiepilogoFinale } from "./steps/RiepilogoFinale";
-import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "@/hooks/use-toast";
-import { RichiestaInviata } from "./steps/RichiestaInviata";
-import { DatiContatto } from "./steps/DatiContatto";
-import { StimaFinale } from "./steps/StimaFinale";
+import { Tapparelle } from "./steps/Tapparelle";
+import { ContactForm } from "./steps/ContactForm";
+import { Riepilogo } from "./steps/Riepilogo";
+import { ThankYou } from "./steps/ThankYou";
+import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
+import { Domotica } from "./steps/Domotica";
+import { TipoProprietario } from "./steps/TipoProprietario";
+import { EtaImpiantoElettrico } from "./steps/EtaImpiantoElettrico";
 
 export type FormData = {
-  tipologiaAbitazione: string;
-  superficie: number;
-  indirizzo: string;
-  citta: string;
-  cap: string;
-  regione: string;
-  piano: string;
-  composizione: {
-    cucina: number;
-    cameraDoppia: number;
-    cameraSingola: number;
-    bagno: number;
-    soggiorno: number;
-    altro: number;
-  };
-  nome: string;
-  cognome: string;
-  email: string;
-  telefono: string;
-  accettoTermini: boolean;
-  tipoProprietà: string;
+  // Informazioni generali
+  superficie?: number;
+  tipoAbitazione?: string;
+  numeroStanze?: number;
+  numeroBagni?: number;
+  numeroSoggiorniCucine?: number;
+  indirizzo?: string;
+  
+  // Configurazione elettrico
   tipoRistrutturazione?: string;
+  etaImpianto?: string;
   tipoImpianto?: string;
   tipoDomotica?: string;
-  knxConfig?: Record<string, any>;
-  elettrificareTapparelle?: string;
-  numeroTapparelle?: number;
-  dataRichiestaSopralluogo?: string;
-  orarioSopralluogo?: string;
-  note?: string;
+  
+  // KNX Features
+  knxFeatures?: string[];
+  
+  // Tapparelle
+  tapparelleElettricheCount?: number;
+  
+  // Dati contatto
+  nome?: string;
+  cognome?: string;
+  email?: string;
+  telefono?: string;
+  consensoPrivacy?: boolean;
+  consensoMarketing?: boolean;
+  
+  // Stima finale
+  tipoProprietario?: string;
+  
+  // Prezzi calcolati
+  prezzoBase?: number;
+  prezzoTotale?: number;
+  risparmio?: number;
 };
 
+const steps = [
+  "step1",
+  "step2",
+  "configuratoreElettrico",
+  "etaImpiantoElettrico",
+  "tipoImpiantoElettrico",
+  "domotica",
+  "tapparelle",
+  "tipoProprietario",
+  "contactForm",
+  "riepilogo",
+  "thankYou"
+];
+
 export const Configuratore = () => {
-  // Step iniziale ora è 0 (pagina di benvenuto)
-  const [step, setStep] = useState<number>(0);
-  
-  const [formData, setFormData] = useState<FormData>({
-    tipologiaAbitazione: "",
-    superficie: 0,
-    indirizzo: "",
-    citta: "",
-    cap: "",
-    regione: "",
-    piano: "",
-    composizione: {
-      cucina: 0,
-      cameraDoppia: 0,
-      cameraSingola: 0,
-      bagno: 0,
-      soggiorno: 0,
-      altro: 0,
-    },
-    nome: "",
-    cognome: "",
-    email: "",
-    telefono: "",
-    accettoTermini: false,
-    tipoProprietà: "prima casa"
-  });
-  
+  const [currentStep, setCurrentStep] = useState(0);
+  const [formData, setFormData] = useState<FormData>({});
+
   const updateFormData = (data: Partial<FormData>) => {
-    setFormData(prev => ({ ...prev, ...data }));
-  };
-  
-  const calcolaStima = (): { min: number; max: number } => {
-    // Algoritmo semplificato per la stima dei costi
-    const costoBase = {
-      "appartamento": 400,
-      "casa indipendente": 550
-    };
-    
-    // Costo base per metro quadro
-    const costoBaseMetroQuadro = formData.tipologiaAbitazione.toLowerCase() === "appartamento" 
-      ? costoBase.appartamento 
-      : costoBase["casa indipendente"];
-    
-    // Calcolo stanza per stanza
-    const { cucina, cameraDoppia, cameraSingola, bagno, soggiorno, altro } = formData.composizione;
-    const costoStanze = (cucina * 5000) + (cameraDoppia * 3000) + (cameraSingola * 2500) + (bagno * 5500) + (soggiorno * 3500) + (altro * 2000);
-    
-    // Calcolo totale con superficie
-    const costoTotale = (costoBaseMetroQuadro * formData.superficie) + costoStanze;
-    
-    // Range di stima con +/- 20%
-    return {
-      min: Math.round(costoTotale * 0.8),
-      max: Math.round(costoTotale * 1.2)
-    };
+    setFormData({ ...formData, ...data });
   };
 
-  const handleNext = () => {
-    setStep(prev => prev + 1);
-  };
-
-  const handleBack = () => {
-    setStep(prev => Math.max(0, prev - 1));
-  };
-
-  const handleReset = () => {
-    setStep(0);
-    setFormData({
-      tipologiaAbitazione: "",
-      superficie: 0,
-      indirizzo: "",
-      citta: "",
-      cap: "",
-      regione: "",
-      piano: "",
-      composizione: {
-        cucina: 0,
-        cameraDoppia: 0,
-        cameraSingola: 0,
-        bagno: 0,
-        soggiorno: 0,
-        altro: 0,
-      },
-      nome: "",
-      cognome: "",
-      email: "",
-      telefono: "",
-      accettoTermini: false,
-      tipoProprietà: "prima casa"
-    });
-  };
-
-  const handleInviaDati = async () => {
-    try {
-      // Qui andrebbe la logica di invio dei dati al backend
-      console.log("Dati da inviare:", formData);
-      
-      // Simula un invio dati riuscito
-      toast({
-        title: "Richiesta inviata con successo!",
-        description: "Ti contatteremo al più presto.",
-        duration: 5000,
-      });
-      
-      // Passa allo step di conferma
-      setStep(prev => prev + 1);
-      
-    } catch (error) {
-      toast({
-        title: "Errore",
-        description: "Non è stato possibile inviare la tua richiesta. Riprova più tardi.",
-        variant: "destructive",
-        duration: 5000,
-      });
+  const nextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
     }
   };
 
-  // Renderizza il contenuto in base allo step corrente
+  const prevStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({});
+    setCurrentStep(0);
+  };
+
   const renderStep = () => {
-    switch (step) {
-      case 0:
-        return (
-          <WelcomePage 
-            onStart={handleNext} 
-          />
-        );
-      case 1:
-        return (
-          <InformazioniGenerali 
-            formData={formData} 
-            updateFormData={updateFormData} 
-            onNext={handleNext} 
-          />
-        );
-      case 2:
-        return (
-          <ConfiguratoreElettrico 
-            formData={formData} 
-            updateFormData={updateFormData} 
-            onNext={handleNext} 
-            onBack={handleBack}
-          />
-        );
-      case 3:
-        return (
-          <TipoImpiantoElettrico 
-            formData={formData} 
-            updateFormData={updateFormData} 
-            onNext={handleNext} 
-            onBack={handleBack}
-          />
-        );
-      case 4:
-        // Solo per Livello 3, mostra la scelta domotica
-        if (formData.tipoImpianto === 'livello3') {
-          return (
-            <TipoDomotica
-              formData={formData}
-              updateFormData={updateFormData}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          );
-        } else {
-          // Per altri livelli, vai alle tapparelle
-          return (
-            <TapparelleElettriche 
-              formData={formData} 
-              updateFormData={updateFormData} 
-              onNext={handleNext} 
-              onBack={handleBack}
-            />
-          );
-        }
-      case 5:
-        // Per Livello 3 con KNX, mostra configurazione KNX
-        if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
-          return (
-            <ConfigurazioneKNX
-              formData={formData}
-              updateFormData={updateFormData}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          );
-        }
-        // Per Livello 3 con wireless, vai alle tapparelle
-        else if (formData.tipoImpianto === 'livello3') {
-          return (
-            <TapparelleElettriche 
-              formData={formData} 
-              updateFormData={updateFormData} 
-              onNext={handleNext} 
-              onBack={handleBack}
-            />
-          );
-        } else {
-          return (
-            <DatiContatto
-              formData={formData}
-              updateFormData={updateFormData}
-              onBack={handleBack}
-              onNext={handleNext}
-            />
-          );
-        }
-      case 6:
-        // Per Livello 3 con KNX, questo sarà tapparelle
-        if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
-          return (
-            <TapparelleElettriche 
-              formData={formData} 
-              updateFormData={updateFormData} 
-              onNext={handleNext} 
-              onBack={handleBack}
-            />
-          );
-        }
-        // Per Livello 3 con wireless, questo sarà dati contatto
-        else if (formData.tipoImpianto === 'livello3') {
-          return (
-            <DatiContatto
-              formData={formData}
-              updateFormData={updateFormData}
-              onBack={handleBack}
-              onNext={handleNext}
-            />
-          );
-        } else {
-          const stima = calcolaStima();
-          return (
-            <StimaFinale
-              formData={formData}
-              updateFormData={updateFormData}
-              stima={stima}
-              onBack={handleBack}
-              onSubmit={handleInviaDati}
-            />
-          );
-        }
-      case 7:
-        // Per Livello 3 con KNX, questo sarà dati contatto
-        if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
-          return (
-            <DatiContatto
-              formData={formData}
-              updateFormData={updateFormData}
-              onBack={handleBack}
-              onNext={handleNext}
-            />
-          );
-        }
-        // Per Livello 3 con wireless, questo sarà stima finale
-        else if (formData.tipoImpianto === 'livello3') {
-          const stima = calcolaStima();
-          return (
-            <StimaFinale
-              formData={formData}
-              updateFormData={updateFormData}
-              stima={stima}
-              onBack={handleBack}
-              onSubmit={handleInviaDati}
-            />
-          );
-        } else {
-          return <RichiestaInviata onReset={handleReset} />;
-        }
-      case 8:
-        // Per Livello 3 con KNX, questo sarà stima finale
-        if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
-          const stima = calcolaStima();
-          return (
-            <StimaFinale
-              formData={formData}
-              updateFormData={updateFormData}
-              stima={stima}
-              onBack={handleBack}
-              onSubmit={handleInviaDati}
-            />
-          );
-        }
-        // Per Livello 3 con wireless, questo sarà richiesta inviata
-        else if (formData.tipoImpianto === 'livello3') {
-          return <RichiestaInviata onReset={handleReset} />;
-        } else {
-          return <div>Step non valido</div>;
-        }
-      case 9:
-        // Solo per Livello 3 con KNX
-        return <RichiestaInviata onReset={handleReset} />;
+    switch (steps[currentStep]) {
+      case "step1":
+        return <Step1 formData={formData} updateFormData={updateFormData} onNext={nextStep} />;
+      case "step2":
+        return <Step2 formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "configuratoreElettrico":
+        return <ConfiguratoreElettrico formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "etaImpiantoElettrico":
+        return <EtaImpiantoElettrico formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "tipoImpiantoElettrico":
+        return <TipoImpiantoElettrico formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "domotica":
+        return <Domotica formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "tapparelle":
+        return <Tapparelle formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "tipoProprietario":
+        return <TipoProprietario formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} />;
+      case "contactForm":
+        return <ContactForm formData={formData} updateFormData={updateFormData} onNext={nextStep} onBack={prevStep} resetForm={resetForm} />;
+      case "riepilogo":
+        return <Riepilogo formData={formData} onBack={prevStep} />;
+      case "thankYou":
+        return <ThankYou formData={formData} />;
       default:
-        return <div>Step non valido</div>;
+        return <div>Passo non trovato</div>;
     }
   };
 
   return (
-    <Card className="w-full max-w-4xl rounded-[20px] shadow-lg overflow-hidden">
-      <CardContent className="p-4 sm:p-6 md:p-8">
-        <div className="flex flex-col">
-          {renderStep()}
-        </div>
-      </CardContent>
-    </Card>
+    <div className="w-full">
+      <AnimatePresence mode="wait" initial={false}>
+        {renderStep()}
+      </AnimatePresence>
+    </div>
   );
 };
