@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { QuestionWithOptions, QuestionOption, InfoBox } from "../shared/QuestionWithOptions";
@@ -42,7 +43,6 @@ export const EtaImpiantoElettrico = ({ formData, updateFormData, onNext, onBack 
       icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
       iconAlt="Electrical work icon"
       title="Il tuo impianto elettrico è vecchio o non più a norma?"
-      description="Se l'impianto elettrico ha più di 20 anni, è consigliabile un rifacimento completo per garantire sicurezza ed efficienza. In questo caso, vengono tirati nuovi cavi sfruttando le tracce esistenti. Se invece l'impianto è recente e a norma, si può optare per un aggiornamento parziale, aggiungendo nuove prese, interruttori o soluzioni smart senza interventi invasivi."
       infoBox={infoBox}
       options={options}
       selectedValue={impiantoVecchio}
@@ -52,3 +52,4 @@ export const EtaImpiantoElettrico = ({ formData, updateFormData, onNext, onBack 
     />
   );
 };
+
