@@ -17,16 +17,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
     updateFormData({ 
       tipoRistrutturazione 
     });
-    
-    // Vai alla pagina successiva solo se è ristrutturazione completa o nuova costruzione
-    if (tipoRistrutturazione === 'completa' || tipoRistrutturazione === 'nuova') {
-      onNext();
-    } else {
-      // Per intervento parziale, salta alla pagina dei dati di contatto (step + 3)
-      onNext();
-      onNext();
-      onNext();
-    }
+    onNext();
   };
 
   const options: QuestionOption[] = [

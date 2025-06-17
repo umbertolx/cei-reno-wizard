@@ -3,6 +3,7 @@ import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
+import { EtaImpiantoElettrico } from "./steps/EtaImpiantoElettrico";
 import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
 import { TipoDomotica } from "./steps/TipoDomotica";
 import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
