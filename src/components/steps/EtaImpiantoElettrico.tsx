@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { FormData } from "../Configuratore";
-import { QuestionWithOptions, QuestionOption } from "../shared/QuestionWithOptions";
+import { QuestionWithOptions, QuestionOption, InfoBox } from "../shared/QuestionWithOptions";
 
 type Props = {
   formData: FormData;
@@ -31,6 +31,11 @@ export const EtaImpiantoElettrico = ({ formData, updateFormData, onNext, onBack 
     }
   ];
 
+  const infoBox: InfoBox = {
+    title: 'Informazioni utili',
+    content: "Se l'impianto elettrico ha più di 20 anni, è consigliabile un rifacimento completo per garantire sicurezza ed efficienza. In questo caso, vengono tirati nuovi cavi sfruttando le tracce esistenti. Se invece l'impianto è recente e a norma, si può optare per un aggiornamento parziale, aggiungendo nuove prese, interruttori o soluzioni smart senza interventi invasivi."
+  };
+
   return (
     <QuestionWithOptions
       badge="Impianto elettrico"
@@ -38,6 +43,7 @@ export const EtaImpiantoElettrico = ({ formData, updateFormData, onNext, onBack 
       iconAlt="Electrical work icon"
       title="Il tuo impianto elettrico è vecchio o non più a norma?"
       description="Se l'impianto elettrico ha più di 20 anni, è consigliabile un rifacimento completo per garantire sicurezza ed efficienza. In questo caso, vengono tirati nuovi cavi sfruttando le tracce esistenti. Se invece l'impianto è recente e a norma, si può optare per un aggiornamento parziale, aggiungendo nuove prese, interruttori o soluzioni smart senza interventi invasivi."
+      infoBox={infoBox}
       options={options}
       selectedValue={impiantoVecchio}
       onSelectionChange={setImpiantoVecchio}
