@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { FormData } from "../Configuratore";
+import { FormData } from "@/types/FormData";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
 

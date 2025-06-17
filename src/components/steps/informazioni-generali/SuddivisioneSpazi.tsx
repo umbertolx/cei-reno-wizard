@@ -1,5 +1,6 @@
 
-import { FormData } from "../../Configuratore";
+import { useState } from "react";
+import { FormData } from "@/types/FormData";
 import { StanzaCounter } from "./StanzaCounter";
 
 type SuddivisioneProps = {

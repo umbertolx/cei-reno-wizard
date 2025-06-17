@@ -1,4 +1,5 @@
-import { FormData } from "../Configuratore";
+
+import { FormData } from "@/types/FormData";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,7 +73,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext }: Props
   };
 
   // Conta il totale delle stanze
-  const totalRooms = Object.values(formData.composizione).reduce((acc, curr) => acc + curr, 0);
+  const totalRooms = Object.values(formData.composizione).reduce((acc: number, curr: number) => acc + curr, 0);
 
   return (
     <div className="space-y-8">

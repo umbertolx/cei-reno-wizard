@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { FormData } from "../Configuratore";
+import { FormData } from "@/types/FormData";
 import { QuestionWithOptions, QuestionOption } from "../shared/QuestionWithOptions";
 
 type Props = {
