@@ -38,6 +38,7 @@ export type FormData = {
   accettoTermini: boolean;
   tipoProprietà: string;
   tipoRistrutturazione?: string;
+  impiantoVecchio?: string;
   tipoImpianto?: string;
   tipoDomotica?: string;
   knxConfig?: Record<string, any>;
