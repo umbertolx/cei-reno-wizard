@@ -140,7 +140,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
       case 'sicurezza':
         return "/lovable-uploads/9d845369-d0e2-4422-a530-568c6698397b.png";
       case 'supervisor':
-        return "/lovable-uploads/7c632c46-64c6-454b-b98d-2306abb92ecb.png";
+        return "/lovable-uploads/cce32257-443f-4688-901b-cd6e4dc8cb1d.png";
       case 'prese':
         return "/lovable-uploads/d56be5f7-57a6-4791-b896-09863446c8b8.png";
       default:
