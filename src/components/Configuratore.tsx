@@ -1,8 +1,10 @@
+
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
 import { EtaImpiantoElettrico } from "./steps/EtaImpiantoElettrico";
+import { InterventiElettrici } from "./steps/InterventiElettrici";
 import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
 import { TipoDomotica } from "./steps/TipoDomotica";
 import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
@@ -38,6 +40,7 @@ export type FormData = {
   tipoProprietà: string;
   tipoRistrutturazione?: string;
   impiantoVecchio?: string;
+  interventiElettrici?: Record<string, any>;
   tipoImpianto?: string;
   tipoDomotica?: string;
   knxConfig?: Record<string, any>;
@@ -214,18 +217,31 @@ export const Configuratore = () => {
           );
         }
       case 4:
-        // Se l'intervento è parziale, questo è il tipo di impianto
+        // Se l'intervento è parziale, gestisci il flusso degli interventi elettrici
         if (formData.tipoRistrutturazione === 'parziale') {
-          return (
-            <TipoImpiantoElettrico 
-              formData={formData} 
-              updateFormData={updateFormData} 
-              onNext={handleNext} 
-              onBack={handleBack}
-            />
-          );
+          // Se l'impianto è vecchio, mostra gli interventi elettrici
+          if (formData.impiantoVecchio === 'si') {
+            return (
+              <InterventiElettrici 
+                formData={formData} 
+                updateFormData={updateFormData} 
+                onNext={handleNext} 
+                onBack={handleBack}
+              />
+            );
+          } else {
+            // Altrimenti vai al tipo di impianto
+            return (
+              <TipoImpiantoElettrico 
+                formData={formData} 
+                updateFormData={updateFormData} 
+                onNext={handleNext} 
+                onBack={handleBack}
+              />
+            );
+          }
         } else {
-          // Altrimenti questo è il passo successivo (Livello 3 o tapparelle)
+          // Per ristrutturazione completa/nuova costruzione - Livello 3 o tapparelle
           if (formData.tipoImpianto === 'livello3') {
             return (
               <TipoDomotica
@@ -249,25 +265,38 @@ export const Configuratore = () => {
       case 5:
         // Gestione step 5 in base al percorso
         if (formData.tipoRistrutturazione === 'parziale') {
-          // Per intervento parziale: Livello 3 o tapparelle
-          if (formData.tipoImpianto === 'livello3') {
+          // Se ha fatto gli interventi elettrici o è arrivato al tipo impianto
+          if (formData.impiantoVecchio === 'si' && formData.interventiElettrici) {
+            // Dopo interventi elettrici, vai al tipo di impianto
             return (
-              <TipoDomotica
-                formData={formData}
-                updateFormData={updateFormData}
-                onNext={handleNext}
-                onBack={handleBack}
-              />
-            );
-          } else {
-            return (
-              <TapparelleElettriche 
+              <TipoImpiantoElettrico 
                 formData={formData} 
                 updateFormData={updateFormData} 
                 onNext={handleNext} 
                 onBack={handleBack}
               />
             );
+          } else {
+            // Livello 3 o tapparelle per intervento parziale
+            if (formData.tipoImpianto === 'livello3') {
+              return (
+                <TipoDomotica
+                  formData={formData}
+                  updateFormData={updateFormData}
+                  onNext={handleNext}
+                  onBack={handleBack}
+                />
+              );
+            } else {
+              return (
+                <TapparelleElettriche 
+                  formData={formData} 
+                  updateFormData={updateFormData} 
+                  onNext={handleNext} 
+                  onBack={handleBack}
+                />
+              );
+            }
           }
         } else {
           // Per ristrutturazione completa/nuova costruzione
