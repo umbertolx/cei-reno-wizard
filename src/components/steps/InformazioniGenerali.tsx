@@ -16,17 +16,10 @@ type Props = {
 };
 
 export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props) => {
-  // Pre-compila i dati se non sono già presenti
-  if (!formData.tipologiaAbitazione) {
+  // Initialize composizione if it doesn't exist
+  if (!formData.composizione) {
     updateFormData({
-      tipologiaAbitazione: "appartamento",
-      superficie: 85,
-      indirizzo: "Via Roma 123, Milano, 20100, Lombardia",
-      citta: "Milano",
-      cap: "20100",
-      regione: "Lombardia",
       composizione: {
-        ...formData.composizione,
         cucina: 1,
         cameraDoppia: 1,
         cameraSingola: 1,
@@ -37,7 +30,19 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     });
   }
 
-  const totalRooms = Object.values(formData.composizione).reduce((sum, count) => sum + count, 0);
+  // Pre-compila i dati se non sono già presenti
+  if (!formData.tipologiaAbitazione) {
+    updateFormData({
+      tipologiaAbitazione: "appartamento",
+      superficie: 85,
+      indirizzo: "Via Roma 123, Milano, 20100, Lombardia",
+      citta: "Milano",
+      cap: "20100",
+      regione: "Lombardia"
+    });
+  }
+
+  const totalRooms = formData.composizione ? Object.values(formData.composizione).reduce((sum: number, count: number) => sum + count, 0) : 0;
   
   const validateForm = () => {
     if (!formData.tipologiaAbitazione) {
@@ -67,14 +72,16 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       return false;
     }
     
-    const { cucina, cameraDoppia, cameraSingola, soggiorno, bagno } = formData.composizione;
-    if (cucina + cameraDoppia + cameraSingola + soggiorno + bagno === 0) {
-      toast({
-        title: "Attenzione",
-        description: "Inserisci almeno una stanza nella suddivisione degli spazi",
-        variant: "destructive",
-      });
-      return false;
+    if (formData.composizione) {
+      const { cucina, cameraDoppia, cameraSingola, soggiorno, bagno } = formData.composizione;
+      if (cucina + cameraDoppia + cameraSingola + soggiorno + bagno === 0) {
+        toast({
+          title: "Attenzione",
+          description: "Inserisci almeno una stanza nella suddivisione degli spazi",
+          variant: "destructive",
+        });
+        return false;
+      }
     }
     
     return true;
@@ -96,13 +103,15 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     }
   };
 
-  const handleChangeComposizione = (tipo: keyof FormData['composizione'], value: number) => {
-    updateFormData({
-      composizione: {
-        ...formData.composizione,
-        [tipo]: value
-      }
-    });
+  const handleChangeComposizione = (tipo: keyof NonNullable<FormData['composizione']>, value: number) => {
+    if (formData.composizione) {
+      updateFormData({
+        composizione: {
+          ...formData.composizione,
+          [tipo]: value
+        }
+      });
+    }
   };
 
   return (
@@ -144,11 +153,13 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           onSelectLocation={selectLocation}
         />
 
-        <SuddivisioneSpazi
-          composizione={formData.composizione}
-          onChangeStanza={handleChangeComposizione}
-          totalRooms={totalRooms}
-        />
+        {formData.composizione && (
+          <SuddivisioneSpazi
+            composizione={formData.composizione}
+            onChangeStanza={handleChangeComposizione}
+            totalRooms={totalRooms}
+          />
+        )}
       </div>
 
       {/* Pulsante Avanti */}

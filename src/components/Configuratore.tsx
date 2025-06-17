@@ -17,10 +17,25 @@ export type FormData = {
   // Informazioni generali
   superficie?: number;
   tipoAbitazione?: string;
+  tipologiaAbitazione?: string;
   numeroStanze?: number;
   numeroBagni?: number;
   numeroSoggiorniCucine?: number;
   indirizzo?: string;
+  citta?: string;
+  cap?: string;
+  regione?: string;
+  piano?: string;
+  
+  // Composizione stanze
+  composizione?: {
+    cucina: number;
+    cameraDoppia: number;
+    cameraSingola: number;
+    soggiorno: number;
+    bagno: number;
+    altro: number;
+  };
   
   // Configurazione elettrico
   tipoRistrutturazione?: string;
@@ -30,9 +45,12 @@ export type FormData = {
   
   // KNX Features
   knxFeatures?: string[];
+  knxConfig?: any;
   
   // Tapparelle
   tapparelleElettricheCount?: number;
+  elettrificareTapparelle?: boolean;
+  numeroTapparelle?: number;
   
   // Dati contatto
   nome?: string;
@@ -41,9 +59,14 @@ export type FormData = {
   telefono?: string;
   consensoPrivacy?: boolean;
   consensoMarketing?: boolean;
+  accettoTermini?: boolean;
   
   // Stima finale
   tipoProprietario?: string;
+  tipoProprietà?: string;
+  dataRichiestaSopralluogo?: string;
+  orarioSopralluogo?: string;
+  note?: string;
   
   // Prezzi calcolati
   prezzoBase?: number;
@@ -67,7 +90,16 @@ const steps = [
 
 export const Configuratore = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<FormData>({});
+  const [formData, setFormData] = useState<FormData>({
+    composizione: {
+      cucina: 0,
+      cameraDoppia: 0,
+      cameraSingola: 0,
+      soggiorno: 0,
+      bagno: 0,
+      altro: 0
+    }
+  });
 
   const updateFormData = (data: Partial<FormData>) => {
     setFormData({ ...formData, ...data });
@@ -86,7 +118,16 @@ export const Configuratore = () => {
   };
 
   const resetForm = () => {
-    setFormData({});
+    setFormData({
+      composizione: {
+        cucina: 0,
+        cameraDoppia: 0,
+        cameraSingola: 0,
+        soggiorno: 0,
+        bagno: 0,
+        altro: 0
+      }
+    });
     setCurrentStep(0);
   };
 
