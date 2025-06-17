@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { FormData } from "@/types/FormData";
+import { FormData } from "../Configuratore";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
 
@@ -21,7 +21,6 @@ export const InterventiElettrici = ({ formData, updateFormData, onNext, onBack }
       id: 'tapparelleElettriche',
       title: 'Elettrificare le tapparelle',
       description: 'Portiamo la corrente fino alle finestre per motorizzare le tapparelle e renderle controllabili da interruttore o app.',
-      image: '/lovable-uploads/fe24b59f-57ea-4463-a1da-970fbfe1242c.png',
       advancedOption: {
         title: 'Numero di tapparelle',
         description: 'Specifica quante tapparelle vuoi elettrificare per calcolare correttamente il costo degli interventi necessari.',

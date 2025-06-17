@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { FormData } from "@/types/FormData";
+import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { TipoAbitazione } from "./informazioni-generali/TipoAbitazione";
@@ -37,7 +37,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     });
   }
 
-  const totalRooms = Object.values(formData.composizione).reduce((sum: number, count: number) => sum + count, 0);
+  const totalRooms = Object.values(formData.composizione).reduce((sum, count) => sum + count, 0);
   
   const validateForm = () => {
     if (!formData.tipologiaAbitazione) {

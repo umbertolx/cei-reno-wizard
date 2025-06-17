@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { FormData } from "@/types/FormData";
+import { FormData } from "../../Configuratore";
+import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 
 type TipoAbitazioneProps = {

@@ -1,5 +1,7 @@
+
+
 import { useState } from "react";
-import { FormData } from "@/types/FormData";
+import { FormData } from "../Configuratore";
 import { QuestionWithOptions, QuestionOption, InfoBox } from "../shared/QuestionWithOptions";
 
 type Props = {
@@ -50,5 +52,4 @@ export const EtaImpiantoElettrico = ({ formData, updateFormData, onNext, onBack 
     />
   );
 };
-
 

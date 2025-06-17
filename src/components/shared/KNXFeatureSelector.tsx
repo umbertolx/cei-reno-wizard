@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +26,6 @@ type Feature = {
   id: string;
   title: string;
   description: string;
-  image?: string;
   advancedOption?: {
     title: string;
     description: string;
@@ -124,17 +124,10 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
 
   // Get feature image
   const getFeatureImage = () => {
-    // If a custom image is provided in the feature, use it
-    if (feature.image) {
-      return feature.image;
-    }
-    
-    // Otherwise use the default mapping
     switch (feature.id) {
       case 'luci':
         return "/lovable-uploads/e6632418-100a-4695-b616-b643ef13304c.png";
       case 'tapparelle':
-      case 'tapparelleElettriche':
         return "/lovable-uploads/fe24b59f-57ea-4463-a1da-970fbfe1242c.png";
       case 'tende':
         return "/lovable-uploads/c0a1f152-d988-470c-ace9-54e6b6cd8f71.png";
