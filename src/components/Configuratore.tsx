@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
@@ -8,6 +7,7 @@ import { InterventiElettrici } from "./steps/InterventiElettrici";
 import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
 import { TipoDomotica } from "./steps/TipoDomotica";
 import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
+import { ConfigurazioneBTicino } from "./steps/ConfigurazioneBTicino";
 import { TapparelleElettriche } from "./steps/TapparelleElettriche";
 import { RiepilogoFinale } from "./steps/RiepilogoFinale";
 import { Card, CardContent } from "@/components/ui/card";
@@ -44,6 +44,7 @@ export type FormData = {
   tipoImpianto?: string;
   tipoDomotica?: string;
   knxConfig?: Record<string, any>;
+  bTicinoConfig?: Record<string, any>;
   elettrificareTapparelle?: string;
   numeroTapparelle?: number;
   dataRichiestaSopralluogo?: string;
@@ -309,6 +310,15 @@ export const Configuratore = () => {
                 onBack={handleBack}
               />
             );
+          } else if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'wireless') {
+            return (
+              <ConfigurazioneBTicino
+                formData={formData}
+                updateFormData={updateFormData}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            );
           } else if (formData.tipoImpianto === 'livello3') {
             return (
               <TapparelleElettriche 
@@ -341,6 +351,15 @@ export const Configuratore = () => {
                 onBack={handleBack}
               />
             );
+          } else if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'wireless') {
+            return (
+              <ConfigurazioneBTicino
+                formData={formData}
+                updateFormData={updateFormData}
+                onNext={handleNext}
+                onBack={handleBack}
+              />
+            );
           } else if (formData.tipoImpianto === 'livello3') {
             return (
               <TapparelleElettriche 
@@ -361,7 +380,7 @@ export const Configuratore = () => {
             );
           }
         } else {
-          if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
             return (
               <TapparelleElettriche 
                 formData={formData} 
@@ -395,7 +414,7 @@ export const Configuratore = () => {
       case 7:
         // Gestione step 7
         if (formData.tipoRistrutturazione === 'parziale') {
-          if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
             return (
               <TapparelleElettriche 
                 formData={formData} 
@@ -426,7 +445,7 @@ export const Configuratore = () => {
             );
           }
         } else {
-          if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
             return (
               <DatiContatto
                 formData={formData}
@@ -453,7 +472,7 @@ export const Configuratore = () => {
       case 8:
         // Gestione step 8
         if (formData.tipoRistrutturazione === 'parziale') {
-          if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
             return (
               <DatiContatto
                 formData={formData}
@@ -477,7 +496,7 @@ export const Configuratore = () => {
             return <RichiestaInviata onReset={handleReset} />;
           }
         } else {
-          if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
             const stima = calcolaStima();
             return (
               <StimaFinale
@@ -497,7 +516,7 @@ export const Configuratore = () => {
       case 9:
         // Gestione step 9
         if (formData.tipoRistrutturazione === 'parziale') {
-          if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
             const stima = calcolaStima();
             return (
               <StimaFinale
@@ -517,7 +536,7 @@ export const Configuratore = () => {
           return <RichiestaInviata onReset={handleReset} />;
         }
       case 10:
-        // Solo per intervento parziale con Livello 3 e KNX
+        // Solo per intervento parziale con Livello 3 e KNX/Wireless
         return <RichiestaInviata onReset={handleReset} />;
       default:
         return <div>Step non valido</div>;
