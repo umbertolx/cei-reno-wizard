@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
@@ -61,7 +60,7 @@ export const InterventiElettrici = ({ formData, updateFormData, onNext, onBack }
       id: 'sostituirePreseInterruttori',
       title: 'Sostituire prese e interruttori',
       description: 'Cambiamo i frutti esistenti con modelli più moderni o compatibili con il nuovo impianto.',
-      image: '/lovable-uploads/d7ee0676-af00-434a-926a-362f0d0aa623.png'
+      image: '/lovable-uploads/e4018e3d-af29-46a5-b9a0-6ee8a266e5c6.png'
     },
     {
       id: 'comandiSmart',
