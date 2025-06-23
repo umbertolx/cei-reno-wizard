@@ -65,7 +65,8 @@ export const InterventiElettrici = ({ formData, updateFormData, onNext, onBack }
     {
       id: 'comandiSmart',
       title: 'Comandi smart',
-      description: 'Installiamo pulsanti intelligenti compatibili con i sistemi domotici per controllare luci, tapparelle o altri dispositivi.'
+      description: 'Installiamo pulsanti intelligenti compatibili con i sistemi domotici per controllare luci, tapparelle o altri dispositivi.',
+      image: '/lovable-uploads/cfe162f6-b15e-4476-8b03-d10078b34010.png'
     }
   ];
 
