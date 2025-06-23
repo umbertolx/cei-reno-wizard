@@ -60,7 +60,8 @@ export const InterventiElettrici = ({ formData, updateFormData, onNext, onBack }
     {
       id: 'sostituirePreseInterruttori',
       title: 'Sostituire prese e interruttori',
-      description: 'Cambiamo i frutti esistenti con modelli più moderni o compatibili con il nuovo impianto.'
+      description: 'Cambiamo i frutti esistenti con modelli più moderni o compatibili con il nuovo impianto.',
+      image: '/lovable-uploads/d7ee0676-af00-434a-926a-362f0d0aa623.png'
     },
     {
       id: 'comandiSmart',
