@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -156,13 +157,13 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
 
   const featureImage = getFeatureImage();
 
-  // Validation for continue button
-  const canContinue = !feature.advancedOption?.requiresInput || inputValue > 0;
+  // Validation for continue button - allow 0 values for optional inputs
+  const canContinue = !feature.advancedOption?.requiresInput || inputValue >= 0;
   
-  // Validation for multiple inputs
+  // Validation for multiple inputs - allow 0 values
   const canContinueMultiple = !feature.advancedOption?.requiresMultipleInputs || 
     (feature.advancedOption.inputs && feature.advancedOption.inputs.some(input => 
-      multipleInputValues[input.id] > 0
+      multipleInputValues[input.id] >= 0
     ));
 
   const finalCanContinue = feature.advancedOption?.requiresMultipleInputs ? canContinueMultiple : canContinue;

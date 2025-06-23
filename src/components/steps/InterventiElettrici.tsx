@@ -37,7 +37,19 @@ export const InterventiElettrici = ({ formData, updateFormData, onNext, onBack }
     {
       id: 'puntiLuce',
       title: 'Aggiungere nuovi punti luce',
-      description: 'Installiamo nuovi punti luce a soffitto o a parete dove prima non c\'erano.'
+      description: 'Installiamo nuovi punti luce a soffitto o a parete dove prima non c\'erano.',
+      image: '/lovable-uploads/85e3fe85-3d4a-498d-9bba-3b25c28bae0c.png',
+      advancedOption: {
+        title: 'Numero di punti luce',
+        description: 'Indica quanti nuovi punti luce vuoi aggiungere. Puoi lasciare vuoto se non lo sai ancora.',
+        requiresInput: true,
+        inputType: 'number',
+        inputPlaceholder: 'Es. 5 (lascia vuoto se non lo sai)',
+        inputLabel: 'Numero di punti luce',
+        inputMin: 0,
+        inputMax: 20,
+        useSlider: true
+      }
     },
     {
       id: 'modificareTracce',
