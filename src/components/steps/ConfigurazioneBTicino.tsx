@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { FormData } from "../Configuratore";
 import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
@@ -24,18 +23,7 @@ export const ConfigurazioneBTicino = ({ formData, updateFormData, onNext, onBack
         {
           id: 'luci',
           title: 'Controllo luci wireless',
-          description: 'Gestisci l\'illuminazione tramite interruttori smart BTicino e app MyHome. Controlli wireless per accensione, spegnimento e regolazione intensità luminosa senza opere murarie aggiuntive.',
-          advancedOption: {
-            title: 'Tipo di controllo luci',
-            description: 'Il sistema wireless BTicino offre controllo base delle luci con dimmerazione. Non include il protocollo DALI ma garantisce affidabilità e semplicità di installazione.',
-            options: [
-              { 
-                id: 'standard', 
-                label: 'Controllo wireless standard',
-                description: 'Controllo base per accensione, spegnimento e dimmerazione delle luci via radio'
-              }
-            ]
-          }
+          description: 'Gestisci l\'illuminazione tramite interruttori smart BTicino e app MyHome. Controlli wireless per accensione, spegnimento e regolazione intensità luminosa senza opere murarie aggiuntive.'
         },
         {
           id: 'tapparelle',
