@@ -3,6 +3,7 @@ import { FormData } from "../Configuratore";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import { Check } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -144,33 +145,39 @@ export const SelezioneAmbienti = ({ formData, updateFormData, onNext, onBack }: 
               </Button>
             </div>
 
-            {/* Grid degli ambienti - usando lo stesso stile delle opzioni */}
+            {/* Grid degli ambienti - usando lo stesso stile di QuestionWithOptions */}
             <div className="px-3 md:px-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {ambientiDisponibili.map((ambiente) => (
-                  <div
-                    key={ambiente}
-                    onClick={() => handleAmbienteToggle(ambiente)}
-                    className={`
-                      cursor-pointer p-4 md:p-6 rounded-2xl border-2 transition-all duration-200 hover:shadow-sm
-                      ${ambientiSelezionati.includes(ambiente)
-                        ? 'border-[#d8010c] bg-[#d8010c]/5'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                      }
-                    `}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center flex-shrink-0">
-                        {ambientiSelezionati.includes(ambiente) && (
-                          <div className="w-2 h-2 rounded-full bg-[#d8010c]"></div>
+                {ambientiDisponibili.map((ambiente) => {
+                  const isSelected = ambientiSelezionati.includes(ambiente);
+                  
+                  return (
+                    <div
+                      key={ambiente}
+                      onClick={() => handleAmbienteToggle(ambiente)}
+                      className={`
+                        rounded-xl transition-all duration-300 border cursor-pointer p-4
+                        ${isSelected 
+                          ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                          : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                        }
+                      `}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-base text-[#1c1c1c]">
+                            {ambiente}
+                          </div>
+                        </div>
+                        {isSelected && (
+                          <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
+                            <Check className="h-3 w-3 text-white" />
+                          </div>
                         )}
                       </div>
-                      <div className="text-base md:text-lg font-medium text-[#1c1c1c]">
-                        {ambiente}
-                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
