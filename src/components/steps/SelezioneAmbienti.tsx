@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { FormData } from "../Configuratore";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
@@ -145,25 +144,32 @@ export const SelezioneAmbienti = ({ formData, updateFormData, onNext, onBack }: 
               </Button>
             </div>
 
-            {/* Grid degli ambienti */}
+            {/* Grid degli ambienti - usando lo stesso stile delle opzioni */}
             <div className="px-3 md:px-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {ambientiDisponibili.map((ambiente) => (
-                  <button
+                  <div
                     key={ambiente}
                     onClick={() => handleAmbienteToggle(ambiente)}
                     className={`
-                      p-4 md:p-6 rounded-xl border-2 text-center transition-all duration-200 hover:shadow-md
+                      cursor-pointer p-4 md:p-6 rounded-2xl border-2 transition-all duration-200 hover:shadow-sm
                       ${ambientiSelezionati.includes(ambiente)
-                        ? 'border-[#d8010c] bg-[#d8010c]/5 text-[#d8010c]'
-                        : 'border-gray-200 bg-white text-[#1c1c1c] hover:border-gray-300'
+                        ? 'border-[#d8010c] bg-[#d8010c]/5'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
                       }
                     `}
                   >
-                    <div className="text-base md:text-lg font-medium">
-                      {ambiente}
+                    <div className="flex items-center gap-4">
+                      <div className="w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center flex-shrink-0">
+                        {ambientiSelezionati.includes(ambiente) && (
+                          <div className="w-2 h-2 rounded-full bg-[#d8010c]"></div>
+                        )}
+                      </div>
+                      <div className="text-base md:text-lg font-medium text-[#1c1c1c]">
+                        {ambiente}
+                      </div>
                     </div>
-                  </button>
+                  </div>
                 ))}
               </div>
             </div>
