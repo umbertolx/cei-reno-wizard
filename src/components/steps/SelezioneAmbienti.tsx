@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { FormData } from "../Configuratore";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 
@@ -146,26 +145,27 @@ export const SelezioneAmbienti = ({ formData, updateFormData, onNext, onBack }: 
               </Button>
             </div>
 
-            {/* Lista ambienti */}
-            <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6 space-y-4">
-              {ambientiDisponibili.map((ambiente) => (
-                <div
-                  key={ambiente}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                  onClick={() => handleAmbienteToggle(ambiente)}
-                >
-                  <Checkbox
-                    checked={ambientiSelezionati.includes(ambiente)}
-                    onCheckedChange={() => handleAmbienteToggle(ambiente)}
-                    className="data-[state=checked]:bg-[#d8010c] data-[state=checked]:border-[#d8010c]"
-                  />
-                  <label 
-                    className="text-base font-medium text-[#1c1c1c] cursor-pointer flex-1"
+            {/* Grid degli ambienti */}
+            <div className="px-3 md:px-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+                {ambientiDisponibili.map((ambiente) => (
+                  <button
+                    key={ambiente}
+                    onClick={() => handleAmbienteToggle(ambiente)}
+                    className={`
+                      p-4 md:p-6 rounded-xl border-2 text-center transition-all duration-200 hover:shadow-md
+                      ${ambientiSelezionati.includes(ambiente)
+                        ? 'border-[#d8010c] bg-[#d8010c]/5 text-[#d8010c]'
+                        : 'border-gray-200 bg-white text-[#1c1c1c] hover:border-gray-300'
+                      }
+                    `}
                   >
-                    {ambiente}
-                  </label>
-                </div>
-              ))}
+                    <div className="text-base md:text-lg font-medium">
+                      {ambiente}
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {ambientiSelezionati.length > 0 && (
