@@ -9,13 +9,11 @@ import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
 import { TipoDomotica } from "./steps/TipoDomotica";
 import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
 import { ConfigurazioneBTicino } from "./steps/ConfigurazioneBTicino";
-import { TapparelleElettriche } from "./steps/TapparelleElettriche";
-import { RiepilogoFinale } from "./steps/RiepilogoFinale";
-import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "@/hooks/use-toast";
-import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
+import { RichiestaInviata } from "./steps/RichiestaInviata";
+import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
 
 export type FormData = {
   tipologiaAbitazione: string;
@@ -46,8 +44,6 @@ export type FormData = {
   tipoDomotica?: string;
   knxConfig?: Record<string, any>;
   bTicinoConfig?: Record<string, any>;
-  elettrificareTapparelle?: string;
-  numeroTapparelle?: number;
   dataRichiestaSopralluogo?: string;
   orarioSopralluogo?: string;
   note?: string;
@@ -147,17 +143,14 @@ export const Configuratore = () => {
 
   const handleInviaDati = async () => {
     try {
-      // Qui andrebbe la logica di invio dei dati al backend
       console.log("Dati da inviare:", formData);
       
-      // Simula un invio dati riuscito
       toast({
         title: "Richiesta inviata con successo!",
         description: "Ti contatteremo al più presto.",
         duration: 5000,
       });
       
-      // Passa allo step di conferma
       setStep(prev => prev + 1);
       
     } catch (error) {
@@ -170,15 +163,11 @@ export const Configuratore = () => {
     }
   };
 
-  // Renderizza il contenuto in base allo step corrente
   const renderStep = () => {
     switch (step) {
       case 0:
-        return (
-          <WelcomePage 
-            onStart={handleNext} 
-          />
-        );
+        return <WelcomePage onStart={handleNext} />;
+      
       case 1:
         return (
           <InformazioniGenerali 
@@ -187,6 +176,7 @@ export const Configuratore = () => {
             onNext={handleNext} 
           />
         );
+      
       case 2:
         return (
           <ConfiguratoreElettrico 
@@ -196,8 +186,9 @@ export const Configuratore = () => {
             onBack={handleBack}
           />
         );
+      
       case 3:
-        // Se l'intervento è parziale, mostra la domanda sull'età dell'impianto
+        // Se è parziale, chiedi età impianto, altrimenti vai al tipo impianto
         if (formData.tipoRistrutturazione === 'parziale') {
           return (
             <EtaImpiantoElettrico 
@@ -208,7 +199,7 @@ export const Configuratore = () => {
             />
           );
         } else {
-          // Altrimenti vai direttamente al tipo di impianto
+          // Ristrutturazione completa/nuova costruzione
           return (
             <TipoImpiantoElettrico 
               formData={formData} 
@@ -218,10 +209,11 @@ export const Configuratore = () => {
             />
           );
         }
+      
       case 4:
-        // Se l'intervento è parziale, gestisci il flusso corretto
+        // Gestione diversa per parziale vs completo
         if (formData.tipoRistrutturazione === 'parziale') {
-          // Se l'impianto è vecchio E l'intervento è parziale, mostra gli interventi elettrici
+          // Se impianto vecchio → interventi elettrici, altrimenti → stima finale
           if (formData.impiantoVecchio === 'si') {
             return (
               <InterventiElettrici 
@@ -232,18 +224,20 @@ export const Configuratore = () => {
               />
             );
           } else {
-            // Se l'impianto NON è vecchio (certificato di recente), vai direttamente al tipo di impianto
+            // Impianto certificato di recente → stima finale
+            const stima = calcolaStima();
             return (
-              <TipoImpiantoElettrico 
-                formData={formData} 
-                updateFormData={updateFormData} 
-                onNext={handleNext} 
+              <StimaFinale
+                formData={formData}
+                updateFormData={updateFormData}
+                stima={stima}
                 onBack={handleBack}
+                onSubmit={handleInviaDati}
               />
             );
           }
         } else {
-          // Per ristrutturazione completa/nuova costruzione - Livello 3 o tapparelle
+          // Per ristrutturazione completa/nuova costruzione
           if (formData.tipoImpianto === 'livello3') {
             return (
               <TipoDomotica
@@ -254,54 +248,37 @@ export const Configuratore = () => {
               />
             );
           } else {
+            // Livello 1 o 2 → stima finale
+            const stima = calcolaStima();
             return (
-              <TapparelleElettriche 
-                formData={formData} 
-                updateFormData={updateFormData} 
-                onNext={handleNext} 
+              <StimaFinale
+                formData={formData}
+                updateFormData={updateFormData}
+                stima={stima}
                 onBack={handleBack}
+                onSubmit={handleInviaDati}
               />
             );
           }
         }
+      
       case 5:
-        // Gestione step 5 in base al percorso
-        if (formData.tipoRistrutturazione === 'parziale') {
-          // Se ha fatto gli interventi elettrici (impianto vecchio), vai al tipo di impianto
-          if (formData.impiantoVecchio === 'si' && formData.interventiElettrici) {
-            return (
-              <TipoImpiantoElettrico 
-                formData={formData} 
-                updateFormData={updateFormData} 
-                onNext={handleNext} 
-                onBack={handleBack}
-              />
-            );
-          } else {
-            // Se l'impianto è certificato di recente, siamo già al tipo impianto, quindi livello 3 o tapparelle
-            if (formData.tipoImpianto === 'livello3') {
-              return (
-                <TipoDomotica
-                  formData={formData}
-                  updateFormData={updateFormData}
-                  onNext={handleNext}
-                  onBack={handleBack}
-                />
-              );
-            } else {
-              return (
-                <TapparelleElettriche 
-                  formData={formData} 
-                  updateFormData={updateFormData} 
-                  onNext={handleNext} 
-                  onBack={handleBack}
-                />
-              );
-            }
-          }
-        } else {
-          // Per ristrutturazione completa/nuova costruzione
-          if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
+        // Solo per alcuni percorsi specifici
+        if (formData.tipoRistrutturazione === 'parziale' && formData.impiantoVecchio === 'si') {
+          // Dopo interventi elettrici → stima finale
+          const stima = calcolaStima();
+          return (
+            <StimaFinale
+              formData={formData}
+              updateFormData={updateFormData}
+              stima={stima}
+              onBack={handleBack}
+              onSubmit={handleInviaDati}
+            />
+          );
+        } else if (formData.tipoRistrutturazione !== 'parziale' && formData.tipoImpianto === 'livello3') {
+          // Configurazione domotica
+          if (formData.tipoDomotica === 'knx') {
             return (
               <ConfigurazioneKNX
                 formData={formData}
@@ -310,7 +287,7 @@ export const Configuratore = () => {
                 onBack={handleBack}
               />
             );
-          } else if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'wireless') {
+          } else if (formData.tipoDomotica === 'wireless') {
             return (
               <ConfigurazioneBTicino
                 formData={formData}
@@ -319,225 +296,26 @@ export const Configuratore = () => {
                 onBack={handleBack}
               />
             );
-          } else if (formData.tipoImpianto === 'livello3') {
-            return (
-              <TapparelleElettriche 
-                formData={formData} 
-                updateFormData={updateFormData} 
-                onNext={handleNext} 
-                onBack={handleBack}
-              />
-            );
-          } else {
-            return (
-              <DatiContatto
-                formData={formData}
-                updateFormData={updateFormData}
-                onBack={handleBack}
-                onNext={handleNext}
-              />
-            );
           }
         }
+        return <div>Step non valido</div>;
+      
       case 6:
-        // Gestione step 6
-        if (formData.tipoRistrutturazione === 'parziale') {
-          if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
-            return (
-              <ConfigurazioneKNX
-                formData={formData}
-                updateFormData={updateFormData}
-                onNext={handleNext}
-                onBack={handleBack}
-              />
-            );
-          } else if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'wireless') {
-            return (
-              <ConfigurazioneBTicino
-                formData={formData}
-                updateFormData={updateFormData}
-                onNext={handleNext}
-                onBack={handleBack}
-              />
-            );
-          } else if (formData.tipoImpianto === 'livello3') {
-            return (
-              <TapparelleElettriche 
-                formData={formData} 
-                updateFormData={updateFormData} 
-                onNext={handleNext} 
-                onBack={handleBack}
-              />
-            );
-          } else {
-            return (
-              <DatiContatto
-                formData={formData}
-                updateFormData={updateFormData}
-                onBack={handleBack}
-                onNext={handleNext}
-              />
-            );
-          }
-        } else {
-          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
-            return (
-              <TapparelleElettriche 
-                formData={formData} 
-                updateFormData={updateFormData} 
-                onNext={handleNext} 
-                onBack={handleBack}
-              />
-            );
-          } else if (formData.tipoImpianto === 'livello3') {
-            return (
-              <DatiContatto
-                formData={formData}
-                updateFormData={updateFormData}
-                onBack={handleBack}
-                onNext={handleNext}
-              />
-            );
-          } else {
-            const stima = calcolaStima();
-            return (
-              <StimaFinale
-                formData={formData}
-                updateFormData={updateFormData}
-                stima={stima}
-                onBack={handleBack}
-                onSubmit={handleInviaDati}
-              />
-            );
-          }
-        }
+        // Dopo configurazione KNX o BTicino → stima finale
+        const stima = calcolaStima();
+        return (
+          <StimaFinale
+            formData={formData}
+            updateFormData={updateFormData}
+            stima={stima}
+            onBack={handleBack}
+            onSubmit={handleInviaDati}
+          />
+        );
+      
       case 7:
-        // Gestione step 7
-        if (formData.tipoRistrutturazione === 'parziale') {
-          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
-            return (
-              <TapparelleElettriche 
-                formData={formData} 
-                updateFormData={updateFormData} 
-                onNext={handleNext} 
-                onBack={handleBack}
-              />
-            );
-          } else if (formData.tipoImpianto === 'livello3') {
-            return (
-              <DatiContatto
-                formData={formData}
-                updateFormData={updateFormData}
-                onBack={handleBack}
-                onNext={handleNext}
-              />
-            );
-          } else {
-            const stima = calcolaStima();
-            return (
-              <StimaFinale
-                formData={formData}
-                updateFormData={updateFormData}
-                stima={stima}
-                onBack={handleBack}
-                onSubmit={handleInviaDati}
-              />
-            );
-          }
-        } else {
-          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
-            return (
-              <DatiContatto
-                formData={formData}
-                updateFormData={updateFormData}
-                onBack={handleBack}
-                onNext={handleNext}
-              />
-            );
-          } else if (formData.tipoImpianto === 'livello3') {
-            const stima = calcolaStima();
-            return (
-              <StimaFinale
-                formData={formData}
-                updateFormData={updateFormData}
-                stima={stima}
-                onBack={handleBack}
-                onSubmit={handleInviaDati}
-              />
-            );
-          } else {
-            return <RichiestaInviata onReset={handleReset} />;
-          }
-        }
-      case 8:
-        // Gestione step 8
-        if (formData.tipoRistrutturazione === 'parziale') {
-          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
-            return (
-              <DatiContatto
-                formData={formData}
-                updateFormData={updateFormData}
-                onBack={handleBack}
-                onNext={handleNext}
-              />
-            );
-          } else if (formData.tipoImpianto === 'livello3') {
-            const stima = calcolaStima();
-            return (
-              <StimaFinale
-                formData={formData}
-                updateFormData={updateFormData}
-                stima={stima}
-                onBack={handleBack}
-                onSubmit={handleInviaDati}
-              />
-            );
-          } else {
-            return <RichiestaInviata onReset={handleReset} />;
-          }
-        } else {
-          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
-            const stima = calcolaStima();
-            return (
-              <StimaFinale
-                formData={formData}
-                updateFormData={updateFormData}
-                stima={stima}
-                onBack={handleBack}
-                onSubmit={handleInviaDati}
-              />
-            );
-          } else if (formData.tipoImpianto === 'livello3') {
-            return <RichiestaInviata onReset={handleReset} />;
-          } else {
-            return <div>Step non valido</div>;
-          }
-        }
-      case 9:
-        // Gestione step 9
-        if (formData.tipoRistrutturazione === 'parziale') {
-          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
-            const stima = calcolaStima();
-            return (
-              <StimaFinale
-                formData={formData}
-                updateFormData={updateFormData}
-                stima={stima}
-                onBack={handleBack}
-                onSubmit={handleInviaDati}
-              />
-            );
-          } else if (formData.tipoImpianto === 'livello3') {
-            return <RichiestaInviata onReset={handleReset} />;
-          } else {
-            return <div>Step non valido</div>;
-          }
-        } else {
-          return <RichiestaInviata onReset={handleReset} />;
-        }
-      case 10:
-        // Solo per intervento parziale con Livello 3 e KNX/Wireless
         return <RichiestaInviata onReset={handleReset} />;
+      
       default:
         return <div>Step non valido</div>;
     }
