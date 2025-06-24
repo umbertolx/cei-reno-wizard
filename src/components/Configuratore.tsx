@@ -1,9 +1,11 @@
+
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
 import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
 import { EtaImpiantoElettrico } from "./steps/EtaImpiantoElettrico";
 import { InterventiElettrici } from "./steps/InterventiElettrici";
+import { SelezioneAmbienti } from "./steps/SelezioneAmbienti";
 import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
 import { TipoDomotica } from "./steps/TipoDomotica";
 import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
@@ -41,6 +43,7 @@ export type FormData = {
   tipoRistrutturazione?: string;
   impiantoVecchio?: string;
   interventiElettrici?: Record<string, any>;
+  ambientiSelezionati?: string[];
   tipoImpianto?: string;
   tipoDomotica?: string;
   knxConfig?: Record<string, any>;
@@ -97,7 +100,13 @@ export const Configuratore = () => {
     
     // Calcolo stanza per stanza
     const { cucina, cameraDoppia, cameraSingola, bagno, soggiorno, altro } = formData.composizione;
-    const costoStanze = (cucina * 5000) + (cameraDoppia * 3000) + (cameraSingola * 2500) + (bagno * 5500) + (soggiorno * 3500) + (altro * 2000);
+    let costoStanze = (cucina * 5000) + (cameraDoppia * 3000) + (cameraSingola * 2500) + (bagno * 5500) + (soggiorno * 3500) + (altro * 2000);
+    
+    // Per interventi parziali, considera solo gli ambienti selezionati
+    if (formData.tipoRistrutturazione === 'parziale' && formData.ambientiSelezionati) {
+      const percentualeAmbienti = formData.ambientiSelezionati.length / Object.values(formData.composizione).reduce((sum, count) => sum + count, 0);
+      costoStanze = costoStanze * percentualeAmbienti;
+    }
     
     // Calcolo totale con superficie
     const costoTotale = (costoBaseMetroQuadro * formData.superficie) + costoStanze;
@@ -218,7 +227,7 @@ export const Configuratore = () => {
           );
         }
       case 4:
-        // Per intervento parziale: interventi elettrici (indipendentemente dalla risposta su età)
+        // Per intervento parziale: interventi elettrici
         if (formData.tipoRistrutturazione === 'parziale') {
           return (
             <InterventiElettrici 
@@ -251,14 +260,14 @@ export const Configuratore = () => {
           }
         }
       case 5:
-        // Per intervento parziale: dati contatto
+        // Per intervento parziale: NUOVO - selezione ambienti
         if (formData.tipoRistrutturazione === 'parziale') {
           return (
-            <DatiContatto
+            <SelezioneAmbienti
               formData={formData}
               updateFormData={updateFormData}
-              onBack={handleBack}
               onNext={handleNext}
+              onBack={handleBack}
             />
           );
         } else {
@@ -294,16 +303,14 @@ export const Configuratore = () => {
           }
         }
       case 6:
-        // Per intervento parziale: stima finale
+        // Per intervento parziale: dati contatto (shift di un step)
         if (formData.tipoRistrutturazione === 'parziale') {
-          const stima = calcolaStima();
           return (
-            <StimaFinale
+            <DatiContatto
               formData={formData}
               updateFormData={updateFormData}
-              stima={stima}
               onBack={handleBack}
-              onSubmit={handleInviaDati}
+              onNext={handleNext}
             />
           );
         } else {
@@ -332,9 +339,18 @@ export const Configuratore = () => {
           }
         }
       case 7:
-        // Per intervento parziale: richiesta inviata
+        // Per intervento parziale: stima finale (shift di un step)
         if (formData.tipoRistrutturazione === 'parziale') {
-          return <RichiestaInviata onReset={handleReset} />;
+          const stima = calcolaStima();
+          return (
+            <StimaFinale
+              formData={formData}
+              updateFormData={updateFormData}
+              stima={stima}
+              onBack={handleBack}
+              onSubmit={handleInviaDati}
+            />
+          );
         } else {
           // Per completa/nuova con configurazione domotica: stima finale
           if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
@@ -354,7 +370,15 @@ export const Configuratore = () => {
           }
         }
       case 8:
-        // Solo per completa/nuova con configurazione domotica: richiesta inviata
+        // Per intervento parziale: richiesta inviata (shift di un step)
+        if (formData.tipoRistrutturazione === 'parziale') {
+          return <RichiestaInviata onReset={handleReset} />;
+        } else {
+          // Solo per completa/nuova con configurazione domotica: richiesta inviata
+          return <RichiestaInviata onReset={handleReset} />;
+        }
+      case 9:
+        // Solo per completa/nuova con configurazione domotica: ultimo step possibile
         return <RichiestaInviata onReset={handleReset} />;
       default:
         return <div>Step non valido</div>;
