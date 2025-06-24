@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
@@ -218,9 +219,9 @@ export const Configuratore = () => {
           );
         }
       case 4:
-        // Se l'intervento è parziale, gestisci il flusso degli interventi elettrici
+        // Se l'intervento è parziale, gestisci il flusso corretto
         if (formData.tipoRistrutturazione === 'parziale') {
-          // Se l'impianto è vecchio, mostra gli interventi elettrici
+          // Se l'impianto è vecchio E l'intervento è parziale, mostra gli interventi elettrici
           if (formData.impiantoVecchio === 'si') {
             return (
               <InterventiElettrici 
@@ -231,7 +232,7 @@ export const Configuratore = () => {
               />
             );
           } else {
-            // Altrimenti vai al tipo di impianto
+            // Se l'impianto NON è vecchio (certificato di recente), vai direttamente al tipo di impianto
             return (
               <TipoImpiantoElettrico 
                 formData={formData} 
@@ -266,9 +267,8 @@ export const Configuratore = () => {
       case 5:
         // Gestione step 5 in base al percorso
         if (formData.tipoRistrutturazione === 'parziale') {
-          // Se ha fatto gli interventi elettrici o è arrivato al tipo impianto
+          // Se ha fatto gli interventi elettrici (impianto vecchio), vai al tipo di impianto
           if (formData.impiantoVecchio === 'si' && formData.interventiElettrici) {
-            // Dopo interventi elettrici, vai al tipo di impianto
             return (
               <TipoImpiantoElettrico 
                 formData={formData} 
@@ -278,7 +278,7 @@ export const Configuratore = () => {
               />
             );
           } else {
-            // Livello 3 o tapparelle per intervento parziale
+            // Se l'impianto è certificato di recente, siamo già al tipo impianto, quindi livello 3 o tapparelle
             if (formData.tipoImpianto === 'livello3') {
               return (
                 <TipoDomotica
