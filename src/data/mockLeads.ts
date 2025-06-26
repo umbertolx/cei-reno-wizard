@@ -1,5 +1,3 @@
-
-
 export const leadStates = {
   nuovo: { label: "Nuovo", color: "bg-blue-500" },
   contattato: { label: "Contattato", color: "bg-yellow-500" },
@@ -70,6 +68,8 @@ export interface Lead {
   moduliCompletati: string[];
   note?: string;
   sopralluogoRichiesto?: boolean;
+  configurazioneTecnica?: any;
+  stimaDettagli?: any;
 }
 
 export interface CustomColumn {
@@ -139,6 +139,7 @@ export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
     moduliCompletati: [], // We don't have this field in the database yet
     note: dbLead.note,
     sopralluogoRichiesto: dbLead.data_richiesta_sopralluogo ? true : false,
+    configurazioneTecnica: dbLead.configurazione_tecnica,
+    stimaDettagli: dbLead.stima_dettagli,
   };
 };
-
