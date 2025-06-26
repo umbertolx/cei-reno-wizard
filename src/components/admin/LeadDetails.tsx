@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { MapPin, Phone, Mail, Calendar, Euro, User, Building, FileText } from "lucide-react";
+import { MapPin, Phone, Mail, Calendar, Euro, User, Building } from "lucide-react";
 
 interface LeadDetailsProps {
   lead: Lead | null;
@@ -130,7 +130,7 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Informazioni di Contatto */}
+          {/* 1. Informazioni di Contatto */}
           <div className="bg-white border rounded-lg p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <User className="h-5 w-5 mr-2" />
@@ -152,20 +152,12 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
                   <div className="text-gray-600 text-sm">{lead.citta}, {lead.cap} ({lead.regione})</div>
                 </div>
               </div>
-              {lead.dataUltimoContatto && (
-                <div className="flex items-center space-x-3 md:col-span-2">
-                  <Calendar className="h-4 w-4 text-gray-400" />
-                  <div>
-                    <span className="text-sm text-gray-600">Ultimo contatto: {formatDate(lead.dataUltimoContatto)}</span>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
 
           <Separator />
 
-          {/* Dettagli Immobile */}
+          {/* 2. Dettagli Immobile */}
           <div className="bg-white border rounded-lg p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <Building className="h-5 w-5 mr-2" />
@@ -221,7 +213,24 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
 
           <Separator />
 
-          {/* Analisi Economica */}
+          {/* 3. Configurazione Tecnica */}
+          {configurazione && Object.keys(configurazione).length > 0 && (
+            <div className="bg-white border rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Configurazione Richiesta</h3>
+              
+              <div className="space-y-1">
+                {Object.entries(configurazione).map(([key, value]) => (
+                  <div key={key}>
+                    {renderConfigurationChoice(key, value)}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <Separator />
+
+          {/* 4. Analisi Economica */}
           <div className="bg-white border rounded-lg p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <Euro className="h-5 w-5 mr-2" />
@@ -246,38 +255,39 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
             </div>
           </div>
 
-          <Separator />
-
-          {/* Configurazione Tecnica */}
-          {configurazione && Object.keys(configurazione).length > 0 && (
-            <div className="bg-white border rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Configurazione Richiesta</h3>
-              
-              <div className="space-y-1">
-                {Object.entries(configurazione).map(([key, value]) => (
-                  <div key={key}>
-                    {renderConfigurationChoice(key, value)}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Note del Cliente */}
+          {/* 5. Note del Cliente */}
           {lead.note && (
             <>
               <Separator />
               <div className="bg-white border rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <FileText className="h-5 w-5 mr-2" />
-                  Note del Cliente
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Note del Cliente</h3>
                 <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
                   <p className="text-gray-800">{lead.note}</p>
                 </div>
               </div>
             </>
           )}
+
+          {/* 6. Cronologia Contatti */}
+          <Separator />
+          <div className="bg-white border rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Calendar className="h-5 w-5 mr-2" />
+              Cronologia Contatti
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-gray-700">Richiesta inviata</span>
+                <span className="text-gray-600 text-sm">{formatDate(lead.dataRichiesta)}</span>
+              </div>
+              {lead.dataUltimoContatto && (
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Ultimo contatto</span>
+                  <span className="text-gray-600 text-sm">{formatDate(lead.dataUltimoContatto)}</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
