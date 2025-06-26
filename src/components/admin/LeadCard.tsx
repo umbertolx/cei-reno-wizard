@@ -67,7 +67,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
       style={style}
       className={`hover:shadow-lg transition-all duration-300 ${
         isDragging ? 'shadow-2xl ring-2 ring-blue-500 bg-white rotate-3' : 'hover:shadow-md'
-      } ${isExpanded ? 'min-h-[600px]' : ''}`}
+      } ${isExpanded ? 'min-h-[800px] shadow-xl' : ''}`}
     >
       <CardContent className="p-4">
         <LeadCardHeader
@@ -81,14 +81,18 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
 
         <LeadCardBasicInfo lead={lead} />
 
-        {isExpanded && <LeadCardExpandedContent lead={lead} />}
+        {isExpanded && (
+          <div className="mt-6">
+            <LeadCardExpandedContent lead={lead} />
+          </div>
+        )}
 
         <div className="flex gap-2 mt-4">
           <Button
             variant="outline"
             size="sm"
             onClick={handleViewDetails}
-            className="flex-1"
+            className="flex-1 hover:bg-blue-50 hover:border-blue-300 transition-colors"
             type="button"
           >
             <Eye className="h-4 w-4 mr-1" />

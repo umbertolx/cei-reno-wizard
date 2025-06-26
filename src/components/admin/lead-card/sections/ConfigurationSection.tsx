@@ -1,6 +1,6 @@
 
 import { Lead } from "@/data/mockLeads";
-import { Zap, CheckCircle, X } from "lucide-react";
+import { Zap, CheckCircle, X, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface ConfigurationSectionProps {
@@ -34,24 +34,46 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
   };
 
   if (!configurazione || Object.keys(configurazione).length === 0) {
-    return null;
+    return (
+      <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-xl p-6 border border-gray-200">
+        <div className="flex items-center mb-4">
+          <div className="p-2 bg-gray-400 rounded-lg mr-3">
+            <Settings className="h-6 w-6 text-white" />
+          </div>
+          <h4 className="font-bold text-xl text-gray-700">Configurazione Non Disponibile</h4>
+        </div>
+        <p className="text-gray-600">Nessuna configurazione tecnica specificata per questo lead.</p>
+      </div>
+    );
   }
 
   return (
-    <div className="bg-purple-50 rounded-lg p-4">
-      <div className="flex items-center mb-4">
-        <Zap className="h-5 w-5 text-purple-600 mr-2" />
-        <h4 className="font-bold text-lg text-purple-800">Configurazione Richiesta</h4>
+    <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-200 shadow-sm">
+      <div className="flex items-center mb-6">
+        <div className="p-2 bg-purple-500 rounded-lg mr-3">
+          <Zap className="h-6 w-6 text-white" />
+        </div>
+        <h4 className="font-bold text-xl text-purple-900">Configurazione Richiesta</h4>
       </div>
 
       {/* Tipo di sistema domotico */}
       {configurazione.tipoDomotica && (
-        <div className="mb-4 p-4 bg-white rounded-lg border-l-4 border-purple-400">
-          <div className="text-xs font-medium text-gray-500 mb-1">SISTEMA DOMOTICO SCELTO</div>
-          <div className="text-xl font-bold text-purple-800 mb-2">
-            {configurazione.tipoDomotica === 'knx' ? '🔌 Sistema KNX (Filare)' : '📡 Sistema Wireless BTicino'}
+        <div className="mb-6 p-5 bg-white/80 backdrop-blur-sm rounded-xl border-l-4 border-purple-400 hover:shadow-md transition-shadow">
+          <div className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-2">Sistema Domotico Scelto</div>
+          <div className="text-2xl font-bold text-purple-800 mb-3 flex items-center">
+            {configurazione.tipoDomotica === 'knx' ? (
+              <>
+                <span className="mr-3">🔌</span>
+                Sistema KNX (Filare)
+              </>
+            ) : (
+              <>
+                <span className="mr-3">📡</span>
+                Sistema Wireless BTicino
+              </>
+            )}
           </div>
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-purple-700 bg-purple-50 p-3 rounded-lg">
             {configurazione.tipoDomotica === 'knx' ? 
               'Sistema professionale cablato per massima affidabilità e prestazioni' : 
               'Sistema wireless per installazione rapida senza opere murarie'}
@@ -61,13 +83,13 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
       {/* Tipo di ristrutturazione */}
       {configurazione.tipoRistrutturazione && (
-        <div className="mb-4 p-3 bg-white rounded-lg">
-          <div className="text-xs font-medium text-gray-500 mb-1">TIPO DI INTERVENTO</div>
-          <Badge className={`text-sm ${
-            configurazione.tipoRistrutturazione === 'completa' ? 'bg-red-100 text-red-800' :
-            configurazione.tipoRistrutturazione === 'nuova' ? 'bg-green-100 text-green-800' :
-            configurazione.tipoRistrutturazione === 'parziale' ? 'bg-yellow-100 text-yellow-800' :
-            'bg-gray-100 text-gray-800'
+        <div className="mb-6 p-4 bg-white/80 backdrop-blur-sm rounded-lg">
+          <div className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-3">Tipo di Intervento</div>
+          <Badge className={`text-base px-4 py-2 ${
+            configurazione.tipoRistrutturazione === 'completa' ? 'bg-red-100 text-red-800 hover:bg-red-200' :
+            configurazione.tipoRistrutturazione === 'nuova' ? 'bg-green-100 text-green-800 hover:bg-green-200' :
+            configurazione.tipoRistrutturazione === 'parziale' ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' :
+            'bg-gray-100 text-gray-800 hover:bg-gray-200'
           }`}>
             {configurazione.tipoRistrutturazione === 'completa' ? '🏗️ Ristrutturazione Completa' :
              configurazione.tipoRistrutturazione === 'nuova' ? '🏠 Nuova Costruzione' : 
@@ -79,18 +101,18 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
       {/* Età impianto */}
       {configurazione.impiantoVecchio !== undefined && (
-        <div className="mb-4 p-3 bg-white rounded-lg">
-          <div className="text-xs font-medium text-gray-500 mb-1">ETÀ IMPIANTO ELETTRICO</div>
-          <div className="flex items-center">
+        <div className="mb-6 p-4 bg-white/80 backdrop-blur-sm rounded-lg">
+          <div className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-3">Età Impianto Elettrico</div>
+          <div className="flex items-center p-3 rounded-lg border-2">
             {configurazione.impiantoVecchio ? (
-              <div className="flex items-center text-orange-600">
-                <X className="h-4 w-4 mr-1" />
-                <span className="font-medium">Impianto vecchio (da rifare)</span>
+              <div className="flex items-center text-orange-600 bg-orange-50 px-4 py-2 rounded-lg">
+                <X className="h-5 w-5 mr-2" />
+                <span className="font-bold">Impianto vecchio (da rifare)</span>
               </div>
             ) : (
-              <div className="flex items-center text-green-600">
-                <CheckCircle className="h-4 w-4 mr-1" />
-                <span className="font-medium">Impianto recente (a norma)</span>
+              <div className="flex items-center text-green-600 bg-green-50 px-4 py-2 rounded-lg">
+                <CheckCircle className="h-5 w-5 mr-2" />
+                <span className="font-bold">Impianto recente (a norma)</span>
               </div>
             )}
           </div>
@@ -99,8 +121,8 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
       {/* Funzionalità richieste */}
       {(configurazione.knxConfig || configurazione.bTicinoConfig) && (
-        <div className="bg-white p-4 rounded-lg">
-          <div className="text-xs font-medium text-gray-500 mb-3">FUNZIONALITÀ RICHIESTE</div>
+        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-lg border border-purple-100">
+          <div className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-4">Funzionalità Richieste</div>
           <div className="space-y-3">
             {(() => {
               const config = configurazione.tipoDomotica === 'knx' ? configurazione.knxConfig : configurazione.bTicinoConfig;
@@ -109,10 +131,10 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
               return Object.entries(config).map(([key, value]) => {
                 if (hasEnabledProperty(value) && value.enabled) {
                   return (
-                    <div key={key} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                    <div key={key} className="flex items-center justify-between py-3 px-4 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors">
                       <div className="flex items-center">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                        <span className="font-medium text-gray-900">
+                        <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="font-bold text-gray-900">
                           {key === 'luci' ? '💡 Controllo Luci' :
                            key === 'tapparelle' ? '🪟 Tapparelle Motorizzate' :
                            key === 'tende' ? '🏠 Tende Motorizzate' :
@@ -125,14 +147,14 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
                            key}
                         </span>
                       </div>
-                      <div className="text-sm text-gray-600">
+                      <div className="flex gap-2">
                         {hasAdvancedOptionProperty(value) && value.advancedOption && (
-                          <span className="bg-gray-100 px-2 py-1 rounded text-xs">
+                          <span className="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-xs font-medium">
                             {value.advancedOption}
                           </span>
                         )}
                         {hasValueProperty(value) && value.value && (
-                          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs ml-1">
+                          <span className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
                             {value.value}
                           </span>
                         )}
@@ -149,16 +171,16 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
       {/* Interventi elettrici */}
       {configurazione.interventiElettrici && Object.keys(configurazione.interventiElettrici).length > 0 && (
-        <div className="mt-4 bg-white p-4 rounded-lg">
-          <div className="text-xs font-medium text-gray-500 mb-3">INTERVENTI ELETTRICI RICHIESTI</div>
-          <div className="space-y-2">
+        <div className="mt-6 bg-white/80 backdrop-blur-sm p-5 rounded-lg border border-purple-100">
+          <div className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-4">Interventi Elettrici Richiesti</div>
+          <div className="space-y-3">
             {Object.entries(configurazione.interventiElettrici).map(([key, value]) => {
               if (hasEnabledProperty(value) && value.enabled) {
                 return (
-                  <div key={key} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                  <div key={key} className="flex items-center justify-between py-3 px-4 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors">
                     <div className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-blue-500 mr-2" />
-                      <span className="font-medium text-gray-900">
+                      <CheckCircle className="h-5 w-5 text-blue-500 mr-3" />
+                      <span className="font-bold text-gray-900">
                         {key === 'tapparelleElettriche' ? '⚡ Elettrificare Tapparelle' :
                          key === 'puntiLuce' ? '💡 Nuovi Punti Luce' :
                          key === 'modificareTracce' ? '🔧 Modificare Tracce' :
@@ -169,7 +191,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
                     </div>
                     {hasValueProperty(value) && value.value && (
                       <div className="text-sm text-gray-600">
-                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
+                        <span className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
                           {value.value} {key === 'tapparelleElettriche' ? 'tapparelle' : key === 'puntiLuce' ? 'punti luce' : ''}
                         </span>
                       </div>
