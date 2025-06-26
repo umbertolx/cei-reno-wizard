@@ -1,4 +1,5 @@
 
+
 export const leadStates = {
   nuovo: { label: "Nuovo", color: "bg-blue-500" },
   contattato: { label: "Contattato", color: "bg-yellow-500" },
@@ -80,32 +81,31 @@ export interface CustomColumn {
 
 export interface DatabaseLead {
   id: string;
-  created_at: string;
-  updated_at: string;
   nome: string;
   cognome: string;
   email: string;
   telefono: string;
+  tipologia_abitazione: string;
+  superficie: number;
   indirizzo: string;
   citta: string;
   cap: string;
   regione: string;
-  tipologia_abitazione: string;
-  superficie: number;
   piano: string;
-  composizione_cucina: number;
-  composizione_camera_doppia: number;
-  composizione_camera_singola: number;
-  composizione_bagno: number;
-  composizione_soggiorno: number;
-  composizione_altro: number;
+  composizione: any;
+  configurazione_tecnica: any;
+  stima_min: number | null;
+  stima_max: number | null;
+  stima_media: number | null;
+  stima_dettagli: any;
+  data_richiesta_sopralluogo: string | null;
+  orario_sopralluogo: string | null;
+  note: string | null;
   tipo_proprieta: string;
   stato: string;
-  stima_min: number;
-  stima_max: number;
-  moduli_completati: string[];
-  note?: string;
-  sopralluogo_richiesto: boolean;
+  data_creazione: string;
+  data_ultimo_contatto: string;
+  accetto_termini: boolean;
 }
 
 export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
@@ -123,21 +123,22 @@ export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
     superficie: dbLead.superficie,
     piano: dbLead.piano,
     composizione: {
-      cucina: dbLead.composizione_cucina,
-      cameraDoppia: dbLead.composizione_camera_doppia,
-      cameraSingola: dbLead.composizione_camera_singola,
-      bagno: dbLead.composizione_bagno,
-      soggiorno: dbLead.composizione_soggiorno,
-      altro: dbLead.composizione_altro,
+      cucina: dbLead.composizione?.cucina || 0,
+      cameraDoppia: dbLead.composizione?.cameraDoppia || 0,
+      cameraSingola: dbLead.composizione?.cameraSingola || 0,
+      bagno: dbLead.composizione?.bagno || 0,
+      soggiorno: dbLead.composizione?.soggiorno || 0,
+      altro: dbLead.composizione?.altro || 0,
     },
     tipoProprietà: dbLead.tipo_proprieta,
     stato: dbLead.stato as keyof typeof leadStates,
-    dataRichiesta: dbLead.created_at,
-    dataUltimoContatto: dbLead.updated_at,
-    stimaMin: dbLead.stima_min,
-    stimaMax: dbLead.stima_max,
-    moduliCompletati: dbLead.moduli_completati,
+    dataRichiesta: dbLead.data_creazione,
+    dataUltimoContatto: dbLead.data_ultimo_contatto,
+    stimaMin: dbLead.stima_min || 0,
+    stimaMax: dbLead.stima_max || 0,
+    moduliCompletati: [], // We don't have this field in the database yet
     note: dbLead.note,
-    sopralluogoRichiesto: dbLead.sopralluogo_richiesto,
+    sopralluogoRichiesto: dbLead.data_richiesta_sopralluogo ? true : false,
   };
 };
+
