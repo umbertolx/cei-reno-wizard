@@ -1,3 +1,4 @@
+
 export const leadStates = {
   nuovo: { label: "Nuovo", color: "bg-blue-500" },
   contattato: { label: "Contattato", color: "bg-yellow-500" },
@@ -108,7 +109,63 @@ export interface DatabaseLead {
   accetto_termini: boolean;
 }
 
+// Funzione helper per determinare i moduli completati dalla configurazione
+const getModuliCompletatiFromConfig = (config: any): string[] => {
+  const moduli: string[] = [];
+  
+  if (!config) return moduli;
+
+  // Sempre presente se il lead esiste
+  moduli.push('informazioni_generali');
+  moduli.push('dati_contatto');
+  
+  // Controlli specifici basati sui dati della configurazione
+  if (config.tipoRistrutturazione) {
+    moduli.push('configuratore_elettrico');
+  }
+  
+  if (config.impiantoVecchio) {
+    moduli.push('eta_impianto');
+  }
+  
+  if (config.tipoImpianto) {
+    moduli.push('tipo_impianto');
+  }
+  
+  if (config.interventiElettrici) {
+    moduli.push('interventi_elettrici');
+  }
+  
+  if (config.ambientiSelezionati) {
+    moduli.push('selezione_ambienti');
+  }
+  
+  if (config.tipoDomotica) {
+    moduli.push('tipo_domotica');
+    
+    // Se ha scelto KNX o BTicino, aggiungi il modulo corrispondente
+    if (config.tipoDomotica === 'knx' && config.knxConfig) {
+      moduli.push('configurazione_knx');
+    } else if (config.tipoDomotica === 'wireless' && config.bTicinoConfig) {
+      moduli.push('configurazione_bticino');
+    }
+  }
+  
+  if (config.elettrificareTapparelle || config.numeroTapparelle) {
+    moduli.push('tapparelle_elettriche');
+  }
+  
+  // Se c'è una stima, significa che ha completato tutto
+  if (config.stimaMin || config.stimaMax) {
+    moduli.push('stima_finale');
+  }
+  
+  return moduli;
+};
+
 export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
+  const config = dbLead.configurazione_tecnica || {};
+  
   return {
     id: dbLead.id,
     nome: dbLead.nome,
@@ -136,10 +193,10 @@ export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
     dataUltimoContatto: dbLead.data_ultimo_contatto,
     stimaMin: dbLead.stima_min || 0,
     stimaMax: dbLead.stima_max || 0,
-    moduliCompletati: [], // We don't have this field in the database yet
+    moduliCompletati: getModuliCompletatiFromConfig(config),
     note: dbLead.note,
     sopralluogoRichiesto: dbLead.data_richiesta_sopralluogo ? true : false,
-    configurazioneTecnica: dbLead.configurazione_tecnica,
+    configurazioneTecnica: config,
     stimaDettagli: dbLead.stima_dettagli,
   };
 };
