@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { MapPin, Phone, Mail, Home, Calendar, Euro, User, Building, FileText, Settings, Clock, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Home, Calendar, Euro, User, Building, FileText, Settings, Clock, CheckCircle, Zap, Wrench } from "lucide-react";
 
 interface LeadDetailsProps {
   lead: Lead | null;
@@ -42,12 +42,90 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
 
   const stimaMedia = lead.stimaMin && lead.stimaMax ? Math.round((lead.stimaMin + lead.stimaMax) / 2) : 0;
 
+  const parseConfigurazioneTecnica = () => {
+    try {
+      return typeof lead.configurazioneTecnica === 'string' 
+        ? JSON.parse(lead.configurazioneTecnica) 
+        : lead.configurazioneTecnica || {};
+    } catch {
+      return {};
+    }
+  };
+
+  const configurazione = parseConfigurazioneTecnica();
+
+  const renderConfigurationChoice = (key: string, value: any) => {
+    const choices: Record<string, { label: string; description?: string; icon: string }> = {
+      tipoImpianto: {
+        livello1: { label: "Livello 1 - Standard Minimo", description: "Impianto base con punti luce e prese essenziali", icon: "⚡" },
+        livello2: { label: "Livello 2 - Impianto Avanzato", description: "Più punti luce, prese dati e TV", icon: "🔌" },
+        livello3: { label: "Livello 3 - Domotico e Smart Home", description: "Controllo smart completo", icon: "🏠" }
+      },
+      tipoRistrutturazione: {
+        completa: { label: "Ristrutturazione Completa", description: "Rifacimento totale dell'impianto", icon: "🏗️" },
+        parziale: { label: "Intervento Parziale", description: "Modifiche mirate", icon: "🔧" },
+        nuova: { label: "Nuova Costruzione", description: "Impianto ex-novo", icon: "🏠" }
+      },
+      elettrificareTapparelle: {
+        si: { label: "Sì", description: "Elettrificazione delle tapparelle", icon: "🪟" },
+        no: { label: "No", description: "Nessuna elettrificazione", icon: "❌" }
+      },
+      tipoDomotica: {
+        knx: { label: "Sistema KNX", description: "Sistema domotico cablato professionale", icon: "🔌" },
+        bticino: { label: "BTicino Wireless", description: "Sistema wireless facile da installare", icon: "📡" }
+      },
+      impiantoVecchio: {
+        true: { label: "Impianto Vecchio", description: "Da rifare completamente", icon: "⚠️" },
+        false: { label: "Impianto Recente", description: "A norma, modifiche minime", icon: "✅" }
+      }
+    };
+
+    if (choices[key] && choices[key][value]) {
+      const choice = choices[key][value];
+      return (
+        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+          <div className="flex items-center space-x-3">
+            <span className="text-2xl">{choice.icon}</span>
+            <div>
+              <div className="font-semibold text-gray-900">{choice.label}</div>
+              {choice.description && (
+                <div className="text-sm text-gray-600">{choice.description}</div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Per valori numerici o altri tipi
+    if (typeof value === 'number') {
+      const labels: Record<string, string> = {
+        numeroTapparelle: "Numero Tapparelle da Elettrificare"
+      };
+      
+      return (
+        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+          <div className="flex items-center space-x-3">
+            <span className="text-2xl">🔢</span>
+            <div>
+              <div className="font-semibold text-gray-900">{labels[key] || key}</div>
+              <div className="text-sm text-gray-600">{value} unità</div>
+            </div>
+          </div>
+          <div className="text-xl font-bold text-blue-600">{value}</div>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="pb-4">
+        <DialogHeader className="pb-6 border-b">
           <DialogTitle className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-xl border-2 border-gray-300">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-xl border-2 border-blue-200">
               {lead.nome.charAt(0)}{lead.cognome.charAt(0)}
             </div>
             <div className="flex-1">
@@ -65,10 +143,10 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
         </DialogHeader>
 
         <div className="space-y-8">
-          {/* Sezione Contatti e Informazioni Principali */}
+          {/* Sezione Contatti e Timeline */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Dati di Contatto */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <div className="bg-white border rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <User className="h-5 w-5 mr-2 text-blue-600" />
                 Informazioni di Contatto
@@ -93,7 +171,7 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
             </div>
 
             {/* Timeline */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <div className="bg-white border rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Clock className="h-5 w-5 mr-2 text-green-600" />
                 Timeline
@@ -115,18 +193,6 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
                     </div>
                   </div>
                 )}
-                {lead.dataRichiestaSopralluogo && (
-                  <div className="flex items-center space-x-3">
-                    <Home className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">Sopralluogo Richiesto</div>
-                      <div className="text-sm text-gray-600">
-                        {new Date(lead.dataRichiestaSopralluogo).toLocaleDateString('it-IT')}
-                        {lead.orarioSopralluogo && ` alle ${lead.orarioSopralluogo}`}
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -134,26 +200,26 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
           <Separator />
 
           {/* Dettagli Immobile */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
+          <div className="bg-white border rounded-lg p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
               <Building className="h-5 w-5 mr-2 text-purple-600" />
               Dettagli Immobile
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <div className="text-center p-4 bg-gray-50 rounded-lg border">
                 <div className="text-2xl font-bold text-gray-900">{lead.superficie}</div>
                 <div className="text-sm text-gray-600">mq totali</div>
               </div>
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <div className="text-center p-4 bg-gray-50 rounded-lg border">
                 <div className="text-2xl font-bold text-gray-900">{getTotalRooms()}</div>
                 <div className="text-sm text-gray-600">stanze totali</div>
               </div>
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <div className="text-center p-4 bg-gray-50 rounded-lg border">
                 <div className="text-2xl font-bold text-gray-900 capitalize">{lead.piano}</div>
                 <div className="text-sm text-gray-600">piano</div>
               </div>
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <div className="text-center p-4 bg-gray-50 rounded-lg border">
                 <div className="text-2xl font-bold text-gray-900 capitalize">
                   {lead.tipologiaAbitazione === 'appartamento' ? 'Appartamento' : 'Casa'}
                 </div>
@@ -165,34 +231,34 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
             <div>
               <h4 className="font-semibold text-gray-900 mb-4">Composizione Stanze</h4>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <div className="text-center p-3 border border-gray-200 rounded-lg">
+                <div className="text-center p-3 border rounded-lg">
                   <div className="text-xl font-bold text-gray-900">{lead.composizione.cucina}</div>
                   <div className="text-xs text-gray-600">Cucina</div>
                 </div>
-                <div className="text-center p-3 border border-gray-200 rounded-lg">
+                <div className="text-center p-3 border rounded-lg">
                   <div className="text-xl font-bold text-gray-900">{lead.composizione.cameraDoppia}</div>
                   <div className="text-xs text-gray-600">Camera Doppia</div>
                 </div>
-                <div className="text-center p-3 border border-gray-200 rounded-lg">
+                <div className="text-center p-3 border rounded-lg">
                   <div className="text-xl font-bold text-gray-900">{lead.composizione.cameraSingola}</div>
                   <div className="text-xs text-gray-600">Camera Singola</div>
                 </div>
-                <div className="text-center p-3 border border-gray-200 rounded-lg">
+                <div className="text-center p-3 border rounded-lg">
                   <div className="text-xl font-bold text-gray-900">{lead.composizione.bagno}</div>
                   <div className="text-xs text-gray-600">Bagno</div>
                 </div>
-                <div className="text-center p-3 border border-gray-200 rounded-lg">
+                <div className="text-center p-3 border rounded-lg">
                   <div className="text-xl font-bold text-gray-900">{lead.composizione.soggiorno}</div>
                   <div className="text-xs text-gray-600">Soggiorno</div>
                 </div>
-                <div className="text-center p-3 border border-gray-200 rounded-lg">
+                <div className="text-center p-3 border rounded-lg">
                   <div className="text-xl font-bold text-gray-900">{lead.composizione.altro}</div>
                   <div className="text-xs text-gray-600">Altro</div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-200">
+            <div className="mt-6 pt-4 border-t">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-600">Tipo Proprietà:</span>
                 <span className="font-medium text-gray-900 capitalize">{lead.tipoProprietà}</span>
@@ -203,7 +269,7 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
           <Separator />
 
           {/* Analisi Economica */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
+          <div className="bg-white border rounded-lg p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
               <Euro className="h-5 w-5 mr-2 text-green-600" />
               Analisi Economica
@@ -222,7 +288,7 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
                 <div className="text-sm text-blue-700 mt-1">Configurazione completa</div>
               </div>
               
-              <div className="text-center p-6 bg-gray-50 border border-gray-200 rounded-lg">
+              <div className="text-center p-6 bg-gray-50 border rounded-lg">
                 <div className="text-sm font-medium text-gray-800 mb-2">Valore Medio</div>
                 <div className="text-3xl font-bold text-gray-900">€{stimaMedia?.toLocaleString()}</div>
                 <div className="text-sm text-gray-700 mt-1">Stima realistica</div>
@@ -233,15 +299,34 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
           <Separator />
 
           {/* Configurazione Tecnica */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-              <Settings className="h-5 w-5 mr-2 text-orange-600" />
-              Configurazione e Moduli
-            </h3>
-            
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-medium text-gray-900 mb-3">Moduli Completati</h4>
+          {configurazione && Object.keys(configurazione).length > 0 && (
+            <div className="bg-white border rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                <Settings className="h-5 w-5 mr-2 text-orange-600" />
+                Configurazione Richiesta
+              </h3>
+              
+              <div className="space-y-4">
+                {Object.entries(configurazione).map(([key, value]) => {
+                  const rendered = renderConfigurationChoice(key, value);
+                  if (rendered) {
+                    return <div key={key}>{rendered}</div>;
+                  }
+                  return null;
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Moduli Completati */}
+          {lead.moduliCompletati && lead.moduliCompletati.length > 0 && (
+            <>
+              <Separator />
+              <div className="bg-white border rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <Zap className="h-5 w-5 mr-2 text-purple-600" />
+                  Moduli Completati
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {lead.moduliCompletati.map((modulo, index) => {
                     const moduloInfo = moduliDisponibili[modulo as keyof typeof moduliDisponibili];
@@ -253,25 +338,14 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
                   })}
                 </div>
               </div>
-
-              {lead.configurazioneTecnica && Object.keys(lead.configurazioneTecnica).length > 0 && (
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Dettagli Configurazione</h4>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <pre className="text-sm text-gray-700 whitespace-pre-wrap">
-                      {JSON.stringify(lead.configurazioneTecnica, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+            </>
+          )}
 
           {/* Note del Cliente */}
           {lead.note && (
             <>
               <Separator />
-              <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <div className="bg-white border rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                   <FileText className="h-5 w-5 mr-2 text-yellow-600" />
                   Note del Cliente
