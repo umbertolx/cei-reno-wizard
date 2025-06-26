@@ -3,6 +3,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
 import { LeadDetails } from "@/components/admin/LeadDetails";
 import { AddColumnDialog } from "@/components/admin/AddColumnDialog";
+import { CardExpansionToggle } from "@/components/admin/CardExpansionToggle";
 import { leadStates, Lead, CustomColumn, convertDatabaseLeadToLead } from "@/data/mockLeads";
 import { fetchLeads, updateLeadStatus } from "@/services/leadService";
 import { Input } from "@/components/ui/input";
@@ -35,6 +36,7 @@ const AdminLeads = () => {
   const [leadPositions, setLeadPositions] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [allCardsExpanded, setAllCardsExpanded] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -176,7 +178,6 @@ const AdminLeads = () => {
 
     if (activeLead.stato !== targetColumn) {
       try {
-        // Aggiorna nel database
         await updateLeadStatus(activeId, targetColumn);
         
         const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
@@ -195,7 +196,6 @@ const AdminLeads = () => {
           variant: "destructive",
         });
         
-        // Ripristina lo stato precedente in caso di errore
         setLeads(prev => prev.map(lead =>
           lead.id === activeId 
             ? { ...lead, stato: activeLead.stato }
@@ -273,6 +273,10 @@ const AdminLeads = () => {
     });
   };
 
+  const handleToggleAllExpansion = () => {
+    setAllCardsExpanded(!allCardsExpanded);
+  };
+
   const handleExport = () => {
     const csvContent = leads.map(lead => 
       `${lead.nome},${lead.cognome},${lead.email},${lead.telefono},${lead.citta},${lead.stimaMax},${lead.stato}`
@@ -309,7 +313,6 @@ const AdminLeads = () => {
   return (
     <AdminLayout>
       <div className="space-y-6 w-full">
-        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Gestione Lead</h1>
@@ -317,7 +320,6 @@ const AdminLeads = () => {
           </div>
         </div>
 
-        {/* Filtri e Ricerca */}
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1 relative">
@@ -330,6 +332,10 @@ const AdminLeads = () => {
               />
             </div>
             <div className="flex gap-2">
+              <CardExpansionToggle 
+                allExpanded={allCardsExpanded}
+                onToggle={handleToggleAllExpansion}
+              />
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -355,7 +361,6 @@ const AdminLeads = () => {
           </div>
         </div>
 
-        {/* Kanban Board */}
         <DndContext 
           sensors={sensors}
           collisionDetection={closestCorners}
@@ -375,6 +380,7 @@ const AdminLeads = () => {
                 customColumn={col.type === 'custom' ? col.column : undefined}
                 onDeleteColumn={handleDeleteColumn}
                 isDefaultColumn={col.type === 'default'}
+                allCardsExpanded={allCardsExpanded}
               />
             ))}
           </div>
@@ -384,19 +390,18 @@ const AdminLeads = () => {
               <LeadCard 
                 lead={activeLead} 
                 onViewDetails={() => {}} 
+                forceExpanded={allCardsExpanded}
               />
             ) : null}
           </DragOverlay>
         </DndContext>
 
-        {/* Modal Dettagli Lead */}
         <LeadDetails
           lead={selectedLead}
           isOpen={!!selectedLead}
           onClose={handleCloseDetails}
         />
 
-        {/* Dialog Aggiungi Colonna */}
         <AddColumnDialog
           isOpen={isAddColumnOpen}
           onClose={() => setIsAddColumnOpen(false)}

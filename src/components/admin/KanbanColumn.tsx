@@ -17,6 +17,7 @@ interface KanbanColumnProps {
   customColumn?: CustomColumn;
   onDeleteColumn?: (columnId: string) => void;
   isDefaultColumn?: boolean;
+  allCardsExpanded?: boolean;
 }
 
 export const KanbanColumn = ({ 
@@ -27,7 +28,8 @@ export const KanbanColumn = ({
   onTitleChange,
   customColumn,
   onDeleteColumn,
-  isDefaultColumn = false
+  isDefaultColumn = false,
+  allCardsExpanded = false
 }: KanbanColumnProps) => {
   const { setNodeRef } = useDroppable({
     id: stato,
@@ -60,7 +62,6 @@ export const KanbanColumn = ({
 
   return (
     <div className="flex-1 min-w-80 max-w-80">
-      {/* Header della colonna */}
       <div className="mb-4 bg-white rounded-lg p-3 shadow-sm border">
         <div className="flex items-center justify-between">
           {isEditingTitle ? (
@@ -111,7 +112,6 @@ export const KanbanColumn = ({
         </div>
       </div>
 
-      {/* Zona drop per le card con scroll */}
       <div
         ref={setNodeRef}
         className="bg-gray-50 rounded-lg p-4 h-[calc(100vh-280px)] overflow-y-auto"
@@ -131,6 +131,7 @@ export const KanbanColumn = ({
                   key={lead.id}
                   lead={lead}
                   onViewDetails={() => onViewDetails(lead)}
+                  forceExpanded={allCardsExpanded}
                 />
               ))}
             </div>

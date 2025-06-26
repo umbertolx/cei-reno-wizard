@@ -3,18 +3,25 @@ import { Lead, leadStates, moduliDisponibili } from "@/data/mockLeads";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Phone, Mail, Home, Calendar, Euro, ChevronDown, Settings, Zap, Shield, Eye } from "lucide-react";
+import { MapPin, Phone, Mail, Home, Calendar, Euro, ChevronDown, Settings, Zap, Shield, Eye, Wrench, Calculator, Clock } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface LeadCardProps {
   lead: Lead;
   onViewDetails: () => void;
+  forceExpanded?: boolean;
 }
 
-export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
+export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  useEffect(() => {
+    if (forceExpanded !== undefined) {
+      setIsExpanded(forceExpanded);
+    }
+  }, [forceExpanded]);
   
   const {
     attributes,
@@ -53,19 +60,17 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
   const handleViewDetails = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("LeadCard: Button clicked - preventing default and stopping propagation");
-    console.log("LeadCard: View details clicked for lead:", lead.id);
-    console.log("LeadCard: onViewDetails function:", onViewDetails);
     onViewDetails();
   };
 
   const toggleExpansion = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsExpanded(!isExpanded);
+    if (forceExpanded === undefined) {
+      setIsExpanded(!isExpanded);
+    }
   };
 
-  // Parse configurazione tecnica se disponibile
   const parseConfigurazioneTecnica = () => {
     try {
       return typeof lead.configurazioneTecnica === 'string' 
@@ -76,7 +81,6 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
     }
   };
 
-  // Parse stima dettagli se disponibile
   const parseStimaDettagli = () => {
     try {
       return typeof lead.stimaDettagli === 'string' 
@@ -90,6 +94,26 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
   const configurazione = parseConfigurazioneTecnica();
   const stimaDettagli = parseStimaDettagli();
 
+  const getTipoImpiantoLabel = (tipo: string) => {
+    const mappings: Record<string, string> = {
+      'livello1': 'Livello 1 - Base',
+      'livello2': 'Livello 2 - Intermedio',
+      'livello3': 'Livello 3 - Avanzato',
+      'esistente': 'Impianto Esistente',
+      'nuovo': 'Nuovo Impianto'
+    };
+    return mappings[tipo] || tipo;
+  };
+
+  const getRistrutturazioneLavel = (tipo: string) => {
+    const mappings: Record<string, string> = {
+      'completa': 'Ristrutturazione Completa',
+      'parziale': 'Ristrutturazione Parziale',
+      'nessuna': 'Nessuna Ristrutturazione'
+    };
+    return mappings[tipo] || tipo;
+  };
+
   return (
     <Card
       ref={setNodeRef}
@@ -99,7 +123,6 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
       } ${isExpanded ? 'min-h-[600px]' : ''}`}
     >
       <CardContent className="p-4">
-        {/* Header con drag handle */}
         <div 
           {...attributes}
           {...listeners}
@@ -117,22 +140,22 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
               {lead.citta}, {lead.cap}
             </p>
           </div>
-          {/* Toggle espansione */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleExpansion}
-            className="p-1 h-8 w-8"
-          >
-            <ChevronDown 
-              className={`h-4 w-4 transition-transform duration-200 ${
-                isExpanded ? 'rotate-180' : ''
-              }`} 
-            />
-          </Button>
+          {forceExpanded === undefined && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleExpansion}
+              className="p-1 h-8 w-8"
+            >
+              <ChevronDown 
+                className={`h-4 w-4 transition-transform duration-200 ${
+                  isExpanded ? 'rotate-180' : ''
+                }`} 
+              />
+            </Button>
+          )}
         </div>
 
-        {/* Dettagli immobile - sempre visibili */}
         <div className="space-y-2 mb-3">
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center text-gray-600">
@@ -164,30 +187,32 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
           </div>
         </div>
 
-        {/* Sezione espandibile */}
         {isExpanded && (
           <div className="space-y-4 border-t pt-4 animate-fade-in">
-            {/* Configurazione Tecnica */}
+            {/* Configurazione Tecnica Dettagliata */}
             {Object.keys(configurazione).length > 0 && (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <h4 className="font-medium text-sm flex items-center text-gray-800">
-                  <Settings className="h-4 w-4 mr-1" />
+                  <Settings className="h-4 w-4 mr-2" />
                   Configurazione Tecnica
                 </h4>
-                <div className="grid grid-cols-1 gap-2">
+                <div className="bg-gray-50 rounded-lg p-3 space-y-2">
                   {configurazione.tipoImpianto && (
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-gray-600">Tipo Impianto:</span>
-                      <Badge variant="secondary" className="text-xs">
-                        {configurazione.tipoImpianto}
+                      <span className="text-gray-600 flex items-center">
+                        <Wrench className="h-3 w-3 mr-1" />
+                        Tipo Impianto:
+                      </span>
+                      <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-800">
+                        {getTipoImpiantoLabel(configurazione.tipoImpianto)}
                       </Badge>
                     </div>
                   )}
-                  {configurazione.ristrutturazione && (
+                  {configurazione.tipoRistrutturazione && (
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-600">Ristrutturazione:</span>
-                      <Badge variant="secondary" className="text-xs">
-                        {configurazione.ristrutturazione}
+                      <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-800">
+                        {getRistrutturazioneLavel(configurazione.tipoRistrutturazione)}
                       </Badge>
                     </div>
                   )}
@@ -197,19 +222,28 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
                         <Zap className="h-3 w-3 mr-1" />
                         Domotica:
                       </span>
-                      <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-800">
-                        {configurazione.tipoDomotica}
+                      <Badge variant="secondary" className="text-xs bg-purple-100 text-purple-800">
+                        {configurazione.tipoDomotica === 'bticino' ? 'BTicino' : 
+                         configurazione.tipoDomotica === 'knx' ? 'KNX' : configurazione.tipoDomotica}
                       </Badge>
                     </div>
                   )}
-                  {configurazione.tapparelleElettriche && (
+                  {configurazione.numeroTapparelle && (
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-600 flex items-center">
                         <Shield className="h-3 w-3 mr-1" />
                         Tapparelle:
                       </span>
                       <Badge variant="secondary" className="text-xs bg-green-100 text-green-800">
-                        {configurazione.tapparelleElettriche === true ? 'Sì' : 'No'}
+                        {configurazione.numeroTapparelle} tapparelle
+                      </Badge>
+                    </div>
+                  )}
+                  {configurazione.elettrificareTapparelle && (
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-600">Elettrificazione:</span>
+                      <Badge variant="secondary" className="text-xs bg-yellow-100 text-yellow-800">
+                        {configurazione.elettrificareTapparelle === 'si' ? 'Sì' : 'No'}
                       </Badge>
                     </div>
                   )}
@@ -218,70 +252,83 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
             )}
 
             {/* Breakdown Stima Dettagliata */}
-            {Object.keys(stimaDettagli).length > 0 && (
-              <div className="space-y-2">
+            {stimaDettagli.breakdown && (
+              <div className="space-y-3">
                 <h4 className="font-medium text-sm flex items-center text-gray-800">
-                  <Euro className="h-4 w-4 mr-1" />
+                  <Calculator className="h-4 w-4 mr-2" />
                   Dettaglio Costi
                 </h4>
-                <div className="space-y-1">
-                  {stimaDettagli.prezzoBase && (
+                <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                  {stimaDettagli.breakdown.basePrice && (
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-600">Prezzo Base:</span>
-                      <span className="font-medium">€{stimaDettagli.prezzoBase.toLocaleString()}</span>
+                      <span className="font-medium text-blue-600">€{stimaDettagli.breakdown.basePrice.toLocaleString()}</span>
                     </div>
                   )}
-                  {stimaDettagli.costoStanze && (
+                  {stimaDettagli.breakdown.roomsCost !== undefined && (
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-600">Costo Stanze:</span>
-                      <span className="font-medium">€{stimaDettagli.costoStanze.toLocaleString()}</span>
+                      <span className="font-medium text-green-600">€{stimaDettagli.breakdown.roomsCost.toLocaleString()}</span>
                     </div>
                   )}
-                  {stimaDettagli.costoSuperficie && (
+                  {stimaDettagli.breakdown.surfaceCost && (
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-600">Costo Superficie:</span>
-                      <span className="font-medium">€{stimaDettagli.costoSuperficie.toLocaleString()}</span>
+                      <span className="font-medium text-purple-600">€{stimaDettagli.breakdown.surfaceCost.toLocaleString()}</span>
                     </div>
                   )}
-                  {stimaDettagli.funzioniSpeciali && (
+                  {stimaDettagli.breakdown.specialFeaturesCost && (
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-600">Funzioni Speciali:</span>
-                      <span className="font-medium">€{stimaDettagli.funzioniSpeciali.toLocaleString()}</span>
+                      <span className="font-medium text-orange-600">€{stimaDettagli.breakdown.specialFeaturesCost.toLocaleString()}</span>
                     </div>
                   )}
+                  <div className="border-t pt-2 mt-2">
+                    <div className="flex items-center justify-between text-xs font-semibold">
+                      <span className="text-gray-800">Totale Stimato:</span>
+                      <span className="text-[#d8010c]">€{lead.stimaMin.toLocaleString()} - €{lead.stimaMax.toLocaleString()}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
             {/* Composizione Stanze Dettagliata */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               <h4 className="font-medium text-sm flex items-center text-gray-800">
-                <Home className="h-4 w-4 mr-1" />
+                <Home className="h-4 w-4 mr-2" />
                 Composizione Stanze
               </h4>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                {Object.entries(lead.composizione).map(([stanza, numero]) => (
-                  numero > 0 && (
-                    <div key={stanza} className="flex items-center justify-between">
-                      <span className="text-gray-600 capitalize">
-                        {stanza === 'cameraDoppia' ? 'Camera Doppia' : 
-                         stanza === 'cameraSingola' ? 'Camera Singola' : 
-                         stanza}:
-                      </span>
-                      <span className="font-medium">{numero}</span>
-                    </div>
-                  )
-                ))}
+              <div className="bg-gray-50 rounded-lg p-3">
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {Object.entries(lead.composizione).map(([stanza, numero]) => (
+                    numero > 0 && (
+                      <div key={stanza} className="flex items-center justify-between py-1">
+                        <span className="text-gray-600 capitalize">
+                          {stanza === 'cameraDoppia' ? 'Camera Doppia' : 
+                           stanza === 'cameraSingola' ? 'Camera Singola' : 
+                           stanza === 'bagno' ? 'Bagni' :
+                           stanza === 'soggiorno' ? 'Soggiorno' :
+                           stanza === 'cucina' ? 'Cucina' :
+                           stanza}:
+                        </span>
+                        <Badge variant="outline" className="text-xs">
+                          {numero}
+                        </Badge>
+                      </div>
+                    )
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Timeline e Info Aggiuntive */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               <h4 className="font-medium text-sm flex items-center text-gray-800">
-                <Calendar className="h-4 w-4 mr-1" />
-                Timeline
+                <Clock className="h-4 w-4 mr-2" />
+                Timeline & Info
               </h4>
-              <div className="space-y-1 text-xs">
+              <div className="bg-gray-50 rounded-lg p-3 space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">Ultimo Contatto:</span>
                   <span className="font-medium">
@@ -300,6 +347,18 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
                   <span className="text-gray-600">Tipo Proprietà:</span>
                   <span className="font-medium capitalize">{lead.tipoProprietà}</span>
                 </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Piano:</span>
+                  <span className="font-medium">{lead.piano || 'Non specificato'}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Email:</span>
+                  <span className="font-medium text-blue-600 truncate max-w-32">{lead.email}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Telefono:</span>
+                  <span className="font-medium text-green-600">{lead.telefono}</span>
+                </div>
               </div>
             </div>
 
@@ -307,9 +366,9 @@ export const LeadCard = ({ lead, onViewDetails }: LeadCardProps) => {
             {lead.note && (
               <div className="space-y-2">
                 <h4 className="font-medium text-sm text-gray-800">Note</h4>
-                <p className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
-                  {lead.note}
-                </p>
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded">
+                  <p className="text-xs text-gray-700">{lead.note}</p>
+                </div>
               </div>
             )}
           </div>
