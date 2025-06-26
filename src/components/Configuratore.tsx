@@ -89,20 +89,27 @@ export const Configuratore = () => {
   });
   
   const updateFormData = (data: Partial<FormData>) => {
+    console.log("📝 Updating form data:", data);
     setFormData(prev => ({ ...prev, ...data }));
   };
   
   // Function to call external API and get estimate
   const handleCalculateEstimate = async () => {
+    console.log("🔢 Starting estimate calculation...");
+    console.log("📊 Current form data for estimate:", formData);
+    
     setIsCalculatingEstimate(true);
     try {
       const estimate = await calculateEstimate(formData);
+      console.log("✅ Estimate calculated successfully:", estimate);
+      
       updateFormData({ estimate });
       toast({
         title: "Stima calcolata",
         description: "La tua stima personalizzata è pronta!",
       });
     } catch (error) {
+      console.error("❌ Error calculating estimate:", error);
       toast({
         title: "Errore nel calcolo",
         description: "Non è stato possibile calcolare la stima. Riprova più tardi.",
@@ -114,14 +121,17 @@ export const Configuratore = () => {
   };
 
   const handleNext = () => {
+    console.log(`➡️ Moving from step ${step} to step ${step + 1}`);
     setStep(prev => prev + 1);
   };
 
   const handleBack = () => {
+    console.log(`⬅️ Moving from step ${step} to step ${step - 1}`);
     setStep(prev => Math.max(0, prev - 1));
   };
 
   const handleReset = () => {
+    console.log("🔄 Resetting configurator");
     setStep(0);
     setFormData({
       tipologiaAbitazione: "",
@@ -149,7 +159,11 @@ export const Configuratore = () => {
   };
 
   const handleInviaDati = async () => {
+    console.log("🚀 Starting lead save process...");
+    console.log("📋 Complete form data:", formData);
+    
     if (!formData.estimate) {
+      console.error("❌ No estimate available");
       toast({
         title: "Errore",
         description: "Stima non disponibile. Riprova il calcolo.",
@@ -158,28 +172,37 @@ export const Configuratore = () => {
       return;
     }
 
+    console.log("📊 Estimate data:", formData.estimate);
     setIsSavingLead(true);
     
     try {
-      console.log("Saving lead data to database...");
+      console.log("💾 Attempting to save lead to database...");
       
       const leadId = await saveLeadToDatabase(formData, formData.estimate);
       
-      console.log("Lead saved successfully with ID:", leadId);
+      console.log("✅ Lead saved successfully with ID:", leadId);
       
       toast({
         title: "Richiesta inviata con successo!",
-        description: "Ti contatteremo al più presto per il sopralluogo.",
+        description: `Lead salvato con ID: ${leadId}. Ti contatteremo al più presto per il sopralluogo.`,
         duration: 5000,
       });
       
+      console.log("➡️ Moving to success page");
       setStep(prev => prev + 1);
       
     } catch (error) {
-      console.error("Error saving lead:", error);
+      console.error("❌ Critical error saving lead:", error);
+      console.error("🔍 Error details:", {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : 'No stack trace',
+        formData: formData,
+        estimate: formData.estimate
+      });
+      
       toast({
         title: "Errore",
-        description: "Non è stato possibile inviare la tua richiesta. Riprova più tardi.",
+        description: `Non è stato possibile inviare la tua richiesta: ${error instanceof Error ? error.message : 'Errore sconosciuto'}. Riprova più tardi.`,
         variant: "destructive",
         duration: 5000,
       });
@@ -190,13 +213,20 @@ export const Configuratore = () => {
 
   // Enhanced handleNext function for DatiContatto -> StimaFinale transition
   const handleNextFromDatiContatto = async () => {
+    console.log("🔄 Transitioning from DatiContatto to StimaFinale");
+    
     if (!formData.estimate) {
+      console.log("🔢 No estimate found, calculating...");
       await handleCalculateEstimate();
+    } else {
+      console.log("✅ Estimate already available, proceeding");
     }
     handleNext();
   };
 
   const renderStep = () => {
+    console.log(`🎯 Rendering step ${step}`);
+    
     switch (step) {
       case 0:
         return (
@@ -343,6 +373,7 @@ export const Configuratore = () => {
                 estimate={formData.estimate}
                 onBack={handleBack}
                 onSubmit={handleInviaDati}
+                isSubmitting={isSavingLead}
               />
             );
           }
@@ -356,6 +387,7 @@ export const Configuratore = () => {
               estimate={formData.estimate}
               onBack={handleBack}
               onSubmit={handleInviaDati}
+              isSubmitting={isSavingLead}
             />
           );
         } else {
@@ -367,6 +399,7 @@ export const Configuratore = () => {
                 estimate={formData.estimate}
                 onBack={handleBack}
                 onSubmit={handleInviaDati}
+                isSubmitting={isSavingLead}
               />
             );
           } else {

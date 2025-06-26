@@ -1,13 +1,12 @@
+
 import { FormData } from "../Configuratore";
-import { EstimateResponse } from "@/types/estimate";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, CircleDot, Calendar, Clock, Info } from "lucide-react";
-import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EstimateResponse } from "@/types/estimate";
 import { TipoProprietaSelector } from "./stimafinale/TipoProprietaSelector";
+import { CircleDot, ChevronDown, Euro, Calculator, Loader2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 type Props = {
   formData: FormData;
@@ -15,83 +14,71 @@ type Props = {
   estimate?: EstimateResponse;
   onBack: () => void;
   onSubmit: () => void;
+  isSubmitting?: boolean;
 };
 
-export const StimaFinale = ({ formData, updateFormData, estimate, onBack, onSubmit }: Props) => {
-  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
-
-  // Formatta il prezzo con separatore migliaia
-  const formatPrice = (price: number) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
-
-  // Use the estimate from external API, or provide fallback values
-  const stima = estimate ? { min: estimate.min, max: estimate.max } : { min: 0, max: 0 };
-  const stimaMedia = estimate?.average || Math.round((stima.min + stima.max) / 2);
+export const StimaFinale = ({ 
+  formData, 
+  updateFormData, 
+  estimate, 
+  onBack, 
+  onSubmit,
+  isSubmitting = false
+}: Props) => {
+  console.log("💰 StimaFinale render - estimate:", estimate);
+  console.log("📋 StimaFinale render - formData:", formData);
   
-  // Use deductions from external API if available
-  const detrazionePrimaCasa50 = estimate?.deductions?.primaCasa50 || Math.round(stimaMedia * 0.5);
-  const detrazioneSecondaCasa36 = estimate?.deductions?.secondaCasa36 || Math.round(stimaMedia * 0.36);
-
-  const toggleAccordion = (value: string) => {
-    setOpenAccordion(openAccordion === value ? null : value);
-  };
-
-  const isPrimaCasa = formData.tipoProprietà === 'prima casa';
-
-  // Show loading state if estimate is not available
   if (!estimate) {
+    console.warn("⚠️ No estimate available in StimaFinale");
     return (
       <div className="space-y-8">
         <div className="space-y-2">
-          <h1 className="text-3xl md:text-5xl font-medium text-[#1c1c1c]">Calcolo in corso...</h1>
-          <p className="text-lg md:text-xl text-[#1c1c1c] opacity-80">Stiamo preparando la tua stima personalizzata</p>
+          <h1 className="text-3xl md:text-5xl font-medium text-[#1c1c1c]">Errore nella stima</h1>
+          <p className="text-lg md:text-xl text-[#1c1c1c] opacity-80">
+            Non è stato possibile calcolare la stima. Riprova o torna indietro.
+          </p>
         </div>
-        <div className="bg-[#fbe12e] p-6 rounded-2xl space-y-4">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-300 rounded mb-4"></div>
-            <div className="h-16 bg-gray-300 rounded"></div>
-          </div>
-        </div>
+        <Button onClick={onBack} className="w-full p-6 text-lg">
+          Torna indietro
+        </Button>
       </div>
     );
   }
 
+  const totalRooms = Object.values(formData.composizione).reduce((acc, curr) => acc + curr, 0);
+
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h1 className="text-3xl md:text-5xl font-medium text-[#1c1c1c]">Stima finale</h1>
-        <p className="text-lg md:text-xl text-[#1c1c1c] opacity-80">Ecco il costo stimato della tua ristrutturazione</p>
+        <h1 className="text-3xl md:text-5xl font-medium text-[#1c1c1c]">La tua stima personalizzata</h1>
+        <p className="text-lg md:text-xl text-[#1c1c1c] opacity-80">
+          Basata sulla configurazione del tuo impianto elettrico
+        </p>
       </div>
 
-      {/* Timeline migliorata e responsive */}
+      {/* Timeline */}
       <div className="flex justify-center mb-4 sm:mb-6 -mx-2 sm:mx-0">
         <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl justify-between">
-          {/* Punto 1: Info generali (completato) */}
           <div className="flex flex-col items-center relative">
-            <div className="bg-[#d8010c] rounded-full w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 flex items-center justify-center z-10">
+            <div className="bg-[#d8010c] rounded-full p-1.5 sm:p-2 z-10">
               <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
             </div>
             <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Info generali</span>
           </div>
           
-          {/* Linea di collegamento 1-2 */}
           <div className="h-[2px] flex-grow bg-[#d8010c] mx-0.5 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
           
-          {/* Punto 2: Dati di contatto (completato) */}
           <div className="flex flex-col items-center relative">
-            <div className="bg-[#d8010c] rounded-full w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 flex items-center justify-center z-10">
+            <div className="bg-[#d8010c] rounded-full p-1.5 sm:p-2 z-10">
               <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
             </div>
             <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Dati contatto</span>
           </div>
           
-          {/* Linea di collegamento 2-3 */}
           <div className="h-[2px] flex-grow bg-[#fbe12e] mx-0.5 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
           
-          {/* Punto 3: Stima finale (attivo) */}
           <div className="flex flex-col items-center relative">
-            <div className="bg-[#fbe12e] rounded-full w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 flex items-center justify-center z-10">
+            <div className="bg-[#fbe12e] rounded-full p-1.5 sm:p-2 z-10">
               <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-black" />
             </div>
             <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Stima finale</span>
@@ -99,240 +86,87 @@ export const StimaFinale = ({ formData, updateFormData, estimate, onBack, onSubm
         </div>
       </div>
 
-      {/* Stima dei costi */}
-      <div className="bg-[#fbe12e] p-6 rounded-2xl space-y-4">
-        <h2 className="text-2xl font-medium text-[#1c1c1c]">La tua stima</h2>
-        
-        <div className="text-center py-6">
-          <span className="text-xl">da </span>
-          <span className="text-3xl md:text-5xl font-bold">€ {formatPrice(stima.min)}</span>
-          <span className="text-xl"> a </span>
-          <span className="text-3xl md:text-5xl font-bold">€ {formatPrice(stima.max)}</span>
-        </div>
-        
-        {estimate.breakdown && (
-          <div className="bg-white bg-opacity-50 p-4 rounded-lg">
-            <h3 className="font-medium mb-2">Dettaglio stima:</h3>
-            <div className="text-sm space-y-1">
-              <div className="flex justify-between">
-                <span>Costo base:</span>
-                <span>€ {formatPrice(estimate.breakdown.basePrice)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Costo stanze:</span>
-                <span>€ {formatPrice(estimate.breakdown.roomsCost)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Costo superficie:</span>
-                <span>€ {formatPrice(estimate.breakdown.surfaceCost)}</span>
-              </div>
-              {estimate.breakdown.specialFeaturesCost && (
-                <div className="flex justify-between">
-                  <span>Configurazioni speciali:</span>
-                  <span>€ {formatPrice(estimate.breakdown.specialFeaturesCost)}</span>
-                </div>
-              )}
+      {/* Stima principale */}
+      <Card className="border-2 border-[#fbe12e] bg-gradient-to-br from-[#fbe12e]/10 to-[#fbe12e]/5">
+        <CardHeader className="text-center pb-4">
+          <CardTitle className="flex items-center justify-center gap-2 text-2xl">
+            <Euro className="h-6 w-6 text-[#d8010c]" />
+            Stima del tuo progetto
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="text-center">
+            <div className="text-4xl md:text-6xl font-bold text-[#d8010c] mb-2">
+              €{estimate.min.toLocaleString()} - €{estimate.max.toLocaleString()}
+            </div>
+            <div className="text-lg text-gray-600">
+              Stima media: €{estimate.average.toLocaleString()}
             </div>
           </div>
-        )}
-        
-        <div className="bg-white bg-opacity-50 p-4 rounded-lg text-center">
-          <p className="text-lg text-[#1c1c1c]">
-            È una stima calcolata in tempo reale. Per un budget preciso richiedi un sopralluogo.
-          </p>
-          <p className="text-sm text-[#1c1c1c] opacity-70 mt-2">
-            Calcolata il: {new Date(estimate.calculatedAt).toLocaleDateString('it-IT')}
-          </p>
-        </div>
-      </div>
 
-      {/* Selezione tipo proprietà */}
-      <TipoProprietaSelector 
-        value={formData.tipoProprietà || "prima casa"}
+          {/* Breakdown della stima */}
+          {estimate.breakdown && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {Object.entries(estimate.breakdown).map(([key, value]) => (
+                <div key={key} className="bg-white p-4 rounded-lg border">
+                  <div className="text-sm text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
+                  <div className="text-lg font-semibold text-[#1c1c1c]">
+                    €{typeof value === 'number' ? value.toLocaleString() : value}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Riepilogo configurazione */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Calculator className="h-5 w-5" />
+            Riepilogo configurazione
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <span className="text-sm text-gray-600">Abitazione:</span>
+              <p className="font-medium capitalize">{formData.tipologiaAbitazione}</p>
+            </div>
+            <div>
+              <span className="text-sm text-gray-600">Superficie:</span>
+              <p className="font-medium">{formData.superficie} mq</p>
+            </div>
+            <div>
+              <span className="text-sm text-gray-600">Totale stanze:</span>
+              <p className="font-medium">{totalRooms}</p>
+            </div>
+            <div>
+              <span className="text-sm text-gray-600">Città:</span>
+              <p className="font-medium">{formData.citta}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Tipo Proprietà */}
+      <TipoProprietaSelector
+        value={formData.tipoProprietà}
         onChange={(value) => updateFormData({ tipoProprietà: value })}
       />
 
-      {/* Box Bonus e Detrazioni Fiscali */}
-      <div className="bg-[#f4f4f4] p-6 rounded-2xl space-y-6">
-        <h2 className="text-2xl font-medium text-[#1c1c1c]">Bonus e Detrazioni Fiscali</h2>
-        
-        <div className="space-y-4">
-          {/* Bonus Ristrutturazione */}
-          <Collapsible open={openAccordion === "bonus-ristrutturazione"} onOpenChange={() => toggleAccordion("bonus-ristrutturazione")}>
-            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-medium text-[#1c1c1c]">
-                    Bonus Ristrutturazione - {isPrimaCasa ? 'Prima Casa' : 'Seconda Casa'}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">
-                      Fino a € {formatPrice(isPrimaCasa ? detrazionePrimaCasa50 : detrazioneSecondaCasa36)}
-                    </div>
-                    <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
-                  </div>
-                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "bonus-ristrutturazione" ? "rotate-180" : ""}`} />
-                </div>
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-              <div className="p-4 space-y-3">
-                <p className="text-[#1c1c1c]">
-                  <strong>Descrizione:</strong> Detrazione del {isPrimaCasa ? '50%' : '36%'} su molti lavori edili in immobili residenziali {isPrimaCasa ? 'utilizzati come abitazione principale' : 'non utilizzati come abitazione principale'}.
-                </p>
-                <div className="space-y-2">
-                  <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>{isPrimaCasa ? '50% per abitazione principale' : '36% per altri immobili'}</li>
-                    <li>Detrazione in 10 anni</li>
-                    <li>Massimale di spesa: {isPrimaCasa ? '96.000 €' : '48.000 €'}</li>
-                    <li>Si applica in automatico con bonifico e fattura corretti</li>
-                    <li>Include: bagni, impianti, pavimenti, infissi</li>
-                  </ul>
-                </div>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-
-          {/* Ecobonus */}
-          <Collapsible open={openAccordion === "ecobonus"} onOpenChange={() => toggleAccordion("ecobonus")}>
-            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-medium text-[#1c1c1c]">
-                    Ecobonus 2025 - {isPrimaCasa ? 'Prima Casa' : 'Seconda Casa'}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">
-                      Fino a € {formatPrice(isPrimaCasa ? detrazionePrimaCasa50 : detrazioneSecondaCasa36)}
-                    </div>
-                    <div className="text-sm text-[#1c1c1c]">detrazione fiscale IRPEF</div>
-                  </div>
-                  <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "ecobonus" ? "rotate-180" : ""}`} />
-                </div>
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-              <div className="p-4 space-y-3">
-                <p className="text-[#1c1c1c]">
-                  <strong>Descrizione:</strong> Detrazione del {isPrimaCasa ? '50%' : '36%'} per lavori di efficientamento energetico, cumulabile con il Bonus Casa.
-                </p>
-                <div className="space-y-2">
-                  <p className="text-[#1c1c1c]"><strong>Interventi ammessi:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>Infissi e serramenti</li>
-                    <li>Schermature solari</li>
-                    <li>Pompe di calore</li>
-                    <li>Caldaie non a combustibili fossili</li>
-                    <li>Impianti elettrici: solo domotica</li>
-                  </ul>
-                  <p className="text-[#1c1c1c]"><strong>Requisiti obbligatori:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>Certificazione energetica APE prima e dopo i lavori</li>
-                    <li>Miglioramento di almeno 2 classi energetiche</li>
-                    <li>Asseverazione di un tecnico abilitato</li>
-                  </ul>
-                  <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>{isPrimaCasa ? '50% per abitazione principale' : '36% per altri immobili'}</li>
-                    <li>Valido solo su edifici esistenti</li>
-                    <li>Detrazione in 10 anni</li>
-                    <li>Cumulabile con il Bonus Ristrutturazione (massimali separati)</li>
-                  </ul>
-                </div>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-
-          {/* IVA agevolata 10% */}
-          <Collapsible open={openAccordion === "iva-agevolata"} onOpenChange={() => toggleAccordion("iva-agevolata")}>
-            <CollapsibleTrigger className="w-full bg-white p-4 rounded-lg border border-gray-200 hover:border-[#d8010c] transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-medium text-[#1c1c1c]">IVA agevolata 10%</span>
-                </div>
-                <ChevronDown className={`h-4 w-4 text-[#1c1c1c] transition-transform ${openAccordion === "iva-agevolata" ? "rotate-180" : ""}`} />
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-white rounded-lg mt-2 border border-gray-200 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-              <div className="p-4 space-y-3">
-                <p className="text-[#1c1c1c]">
-                  <strong>Descrizione:</strong> Per i lavori eseguiti da impresa con fornitura di materiali e manodopera, l'IVA scende al 10%.
-                </p>
-                <div className="space-y-2">
-                  <p className="text-[#1c1c1c]"><strong>Regole:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-[#1c1c1c] ml-4">
-                    <li>Non si applica su acquisti diretti del cliente</li>
-                    <li>Non si applica interamente su beni "significativi" (es. caldaie, infissi)</li>
-                    <li>È già considerata nella stima</li>
-                  </ul>
-                </div>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
-
-        {/* Frase finale sempre visibile */}
-        <div className="bg-white bg-opacity-60 p-4 rounded-lg border-l-4 border-[#d8010c]">
-          <p className="text-sm text-[#1c1c1c] flex items-start gap-2">
-            <Info className="h-4 w-4 text-[#d8010c] mt-0.5 flex-shrink-0" />
-            <span>Le detrazioni sono indicative e soggette a verifica fiscale. Parlane con il tuo commercialista per conferma.</span>
-          </p>
-        </div>
-      </div>
-
-      {/* Richiesta sopralluogo */}
-      <div className="space-y-6">
-        <h2 className="text-2xl font-medium text-[#1c1c1c]">Richiedi un sopralluogo gratuito</h2>
-        <p className="text-base text-[#1c1c1c] opacity-80">
-          Per un budget dettagliato, richiedi un sopralluogo. Inserisci la data e l'orario che preferisci.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <Calendar className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="dataSopralluogo" className="text-lg">Data preferita</Label>
-            </div>
-            <Input 
-              id="dataSopralluogo"
-              type="date"
-              value={formData.dataRichiestaSopralluogo || ""}
-              onChange={(e) => updateFormData({ dataRichiestaSopralluogo: e.target.value })}
-              className="text-lg p-6 rounded-lg"
-              min={new Date().toISOString().split('T')[0]}
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <Clock className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="orarioSopralluogo" className="text-lg">Orario preferito</Label>
-            </div>
-            <Input 
-              id="orarioSopralluogo"
-              type="time"
-              value={formData.orarioSopralluogo || ""}
-              onChange={(e) => updateFormData({ orarioSopralluogo: e.target.value })}
-              className="text-lg p-6 rounded-lg"
-            />
-          </div>
-          
-          <div className="md:col-span-2 space-y-2">
-            <Label htmlFor="note" className="text-lg">Note aggiuntive (opzionale)</Label>
-            <Textarea 
-              id="note"
-              value={formData.note || ""}
-              onChange={(e) => updateFormData({ note: e.target.value })}
-              className="text-lg p-6 rounded-lg min-h-[120px]"
-              placeholder="Inserisci eventuali note o richieste particolari..."
-            />
-          </div>
-        </div>
+      {/* Note aggiuntive */}
+      <div className="space-y-2">
+        <Label htmlFor="note" className="text-lg">Note aggiuntive (opzionale)</Label>
+        <Textarea
+          id="note"
+          placeholder="Aggiungi eventuali note o richieste specifiche..."
+          value={formData.note || ""}
+          onChange={(e) => updateFormData({ note: e.target.value })}
+          rows={4}
+          className="text-base"
+        />
       </div>
 
       {/* Pulsanti */}
@@ -341,17 +175,32 @@ export const StimaFinale = ({ formData, updateFormData, estimate, onBack, onSubm
           onClick={onBack}
           variant="outline"
           className="flex-1 p-6 text-lg border-[#1c1c1c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl"
+          disabled={isSubmitting}
         >
-          Torna indietro
+          Modifica dati
         </Button>
         
         <Button 
           onClick={onSubmit}
           className="flex-1 p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
+          disabled={isSubmitting}
         >
-          Richiedi sopralluogo
-          <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
+          {isSubmitting ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              Invio in corso...
+            </>
+          ) : (
+            <>
+              Invia richiesta sopralluogo
+              <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
+            </>
+          )}
         </Button>
+      </div>
+
+      <div className="text-sm text-gray-600 text-center">
+        Inviando la richiesta, un nostro tecnico ti contatterà entro 24-48h per confermare il sopralluogo
       </div>
     </div>
   );

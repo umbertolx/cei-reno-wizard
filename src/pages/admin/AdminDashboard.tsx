@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { leadStates, convertDatabaseLeadToLead } from "@/data/mockLeads";
 import { fetchLeads } from "@/services/leadService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { TrendingUp, Users, DollarSign, Calendar, RefreshCw } from "lucide-react";
+import { TrendingUp, Users, DollarSign, Calendar, RefreshCw, AlertCircle } from "lucide-react";
 
 type TimeFrame = 'oggi' | 'settimana' | 'mese' | 'anno';
 
@@ -17,19 +16,25 @@ const AdminDashboard = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrame>('mese');
   const [leads, setLeads] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Carica i lead dal database
   const loadLeads = async () => {
+    console.log("📊 Dashboard: Loading leads...");
+    setIsLoading(true);
+    setError(null);
+    
     try {
-      console.log("Loading leads for dashboard...");
-      
       const dbLeads = await fetchLeads();
-      const convertedLeads = dbLeads.map(convertDatabaseLeadToLead);
+      console.log(`📊 Dashboard: Fetched ${dbLeads.length} leads from database`);
       
-      console.log("Dashboard loaded leads:", convertedLeads);
+      const convertedLeads = dbLeads.map(convertDatabaseLeadToLead);
+      console.log("📊 Dashboard: Converted leads:", convertedLeads);
+      
       setLeads(convertedLeads);
     } catch (error) {
-      console.error("Error loading leads for dashboard:", error);
+      console.error("❌ Dashboard: Error loading leads:", error);
+      setError(error instanceof Error ? error.message : 'Errore sconosciuto');
     } finally {
       setIsLoading(false);
     }
@@ -39,7 +44,12 @@ const AdminDashboard = () => {
     loadLeads();
   }, []);
 
-  // Calcola i KPI basati sui dati reali
+  // Funzione per ricaricare manualmente i dati
+  const handleRefresh = () => {
+    console.log("🔄 Dashboard: Manual refresh requested");
+    loadLeads();
+  };
+
   const getKPIData = (timeFrame: TimeFrame) => {
     const now = new Date();
     let startDate: Date;
@@ -108,6 +118,23 @@ const AdminDashboard = () => {
     );
   }
 
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Errore nel caricamento</h2>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <Button onClick={handleRefresh} className="bg-[#d8010c] hover:bg-[#b8010a]">
+              Riprova
+            </Button>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <div className="space-y-6 w-full">
@@ -115,9 +142,25 @@ const AdminDashboard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600">Panoramica generale dei preventivi ({leads.length} totali)</p>
+            <p className="text-gray-600">
+              Panoramica generale dei preventivi ({leads.length} totali)
+              {leads.length === 0 && (
+                <span className="text-amber-600 ml-2">
+                  ⚠️ Nessun lead presente nel database
+                </span>
+              )}
+            </p>
           </div>
           <div className="flex items-center space-x-4">
+            <Button 
+              onClick={handleRefresh}
+              variant="outline"
+              className="flex items-center gap-2"
+              disabled={isLoading}
+            >
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+              Aggiorna
+            </Button>
             <Select value={timeFrame} onValueChange={(value: TimeFrame) => setTimeFrame(value)}>
               <SelectTrigger className="w-48">
                 <SelectValue placeholder="Seleziona periodo" />
@@ -137,6 +180,31 @@ const AdminDashboard = () => {
             </Button>
           </div>
         </div>
+
+        {/* Debug info per sviluppatori */}
+        {leads.length === 0 && (
+          <Card className="bg-amber-50 border-amber-200">
+            <CardContent className="pt-4">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
+                <div>
+                  <h3 className="font-medium text-amber-800">Database vuoto</h3>
+                  <p className="text-sm text-amber-700 mt-1">
+                    Per testare la dashboard, completa il configuratore sul sito principale per generare dei lead di esempio.
+                  </p>
+                  <Button 
+                    onClick={() => navigate("/")}
+                    variant="outline"
+                    size="sm"
+                    className="mt-2 border-amber-300 text-amber-700 hover:bg-amber-100"
+                  >
+                    Vai al configuratore
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -201,15 +269,24 @@ const AdminDashboard = () => {
               <CardTitle>Lead per Stato</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={leadsByState}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="stato" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="#d8010c" />
-                </BarChart>
-              </ResponsiveContainer>
+              {leads.length > 0 ? (
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={leadsByState}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="stato" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#d8010c" />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-[300px] text-gray-500">
+                  <div className="text-center">
+                    <BarChart className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                    <p>Nessun dato disponibile</p>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -219,22 +296,31 @@ const AdminDashboard = () => {
               <CardTitle>Ultimi Lead</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {recentLeads.map((lead) => (
-                  <div key={lead.id} className="flex items-center justify-between border-b pb-2">
-                    <div>
-                      <p className="font-medium">{lead.nome} {lead.cognome}</p>
-                      <p className="text-sm text-gray-600">{lead.citta}</p>
+              {recentLeads.length > 0 ? (
+                <div className="space-y-4">
+                  {recentLeads.map((lead) => (
+                    <div key={lead.id} className="flex items-center justify-between border-b pb-2">
+                      <div>
+                        <p className="font-medium">{lead.nome} {lead.cognome}</p>
+                        <p className="text-sm text-gray-600">{lead.citta}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-medium">€{lead.stimaMax.toLocaleString()}</p>
+                        <span className={`inline-block px-2 py-1 rounded-full text-xs text-white ${leadStates[lead.stato].color}`}>
+                          {leadStates[lead.stato].label}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-medium">€{lead.stimaMax.toLocaleString()}</p>
-                      <span className={`inline-block px-2 py-1 rounded-full text-xs text-white ${leadStates[lead.stato].color}`}>
-                        {leadStates[lead.stato].label}
-                      </span>
-                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-[200px] text-gray-500">
+                  <div className="text-center">
+                    <Users className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                    <p>Nessun lead recente</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
