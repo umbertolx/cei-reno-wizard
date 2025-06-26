@@ -3,7 +3,7 @@ import { Lead, leadStates, moduliDisponibili } from "@/data/mockLeads";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Phone, Mail, Home, Calendar, Euro, ChevronDown, Settings, Zap, Shield, Eye, Wrench, Calculator, Clock, Wifi, Building, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Home, Calendar, Euro, ChevronDown, Eye, User, Building2, Zap, Settings2, Calculator, Clock } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useState, useEffect } from "react";
@@ -94,6 +94,90 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
   const configurazione = parseConfigurazioneTecnica();
   const stimaDettagli = parseStimaDettagli();
 
+  // Funzione per ottenere le funzionalità selezionate
+  const getSelectedFeatures = () => {
+    const features = [];
+    const config = configurazione.tipoDomotica === 'knx' ? configurazione.knxConfig : configurazione.bTicinoConfig;
+    
+    if (!config) return features;
+
+    if (config.luci?.enabled) {
+      features.push({
+        name: 'Controllo Luci',
+        icon: '💡',
+        details: config.luci.advancedOption === 'avanzato' ? 'Sistema avanzato con DALI' : 'Controllo standard'
+      });
+    }
+
+    if (config.tapparelle?.enabled) {
+      features.push({
+        name: 'Tapparelle Motorizzate',
+        icon: '🪟',
+        details: `${config.tapparelle.value || configurazione.numeroTapparelle || 0} tapparelle`
+      });
+    }
+
+    if (config.tende?.enabled) {
+      const interne = config.tende.tendeInterne || 0;
+      const esterne = config.tende.tendeEsterne || 0;
+      features.push({
+        name: 'Tende Motorizzate',
+        icon: '🏠',
+        details: `${interne} interne, ${esterne} esterne`
+      });
+    }
+
+    if (config.clima?.enabled) {
+      features.push({
+        name: 'Controllo Clima',
+        icon: '🌡️',
+        details: config.clima.advancedOption === 'clima_vmc' ? 'Con VMC integrata' : 'Controllo temperatura'
+      });
+    }
+
+    if (config.audio?.enabled) {
+      features.push({
+        name: 'Sistema Audio',
+        icon: '🎵',
+        details: config.audio.advancedOption === 'impianto_completo' ? 'Diffusione completa' : 'Controllo audio'
+      });
+    }
+
+    if (config.videocitofono?.enabled) {
+      features.push({
+        name: 'Videocitofono Smart',
+        icon: '📹',
+        details: 'Risposta da smartphone'
+      });
+    }
+
+    if (config.sicurezza?.enabled) {
+      features.push({
+        name: 'Sistema Sicurezza',
+        icon: '🔒',
+        details: 'Sensori e telecamere'
+      });
+    }
+
+    if (config.supervisor?.enabled) {
+      features.push({
+        name: configurazione.tipoDomotica === 'knx' ? 'Supervisor KNX' : 'App MyHome',
+        icon: '📱',
+        details: 'Controllo centralizzato'
+      });
+    }
+
+    if (config.prese?.enabled) {
+      features.push({
+        name: 'Prese Intelligenti',
+        icon: '🔌',
+        details: 'Controllo remoto elettrodomestici'
+      });
+    }
+
+    return features;
+  };
+
   return (
     <Card
       ref={setNodeRef}
@@ -103,6 +187,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
       }`}
     >
       <CardContent className="p-4">
+        {/* Header della card - sempre visibile */}
         <div 
           {...attributes}
           {...listeners}
@@ -136,7 +221,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
           )}
         </div>
 
-        {/* Info di base sempre visibili */}
+        {/* Informazioni base - sempre visibili */}
         <div className="space-y-2 mb-3">
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center text-gray-600">
@@ -150,10 +235,10 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center text-gray-600">
               <Euro className="h-3 w-3 mr-1" />
-              Stima
+              Preventivo
             </span>
             <span className="font-medium text-green-600 text-xs">
-              €{lead.stimaMin.toLocaleString()} - €{lead.stimaMax.toLocaleString()}
+              €{lead.stimaMin?.toLocaleString()} - €{lead.stimaMax?.toLocaleString()}
             </span>
           </div>
 
@@ -168,470 +253,277 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
           </div>
         </div>
 
-        {/* Contatti e Moduli - sempre visibili quando non espanso */}
-        {!isExpanded && (
-          <>
-            <div className="space-y-1 mb-3">
-              <p className="text-xs text-gray-600 flex items-center truncate">
-                <Mail className="h-3 w-3 mr-1 flex-shrink-0" />
-                <span className="truncate">{lead.email}</span>
-              </p>
-              <p className="text-xs text-gray-600 flex items-center">
-                <Phone className="h-3 w-3 mr-1" />
-                {lead.telefono}
-              </p>
-            </div>
-
-            <div className="mb-3">
-              <div className="flex flex-wrap gap-1">
-                {lead.moduliCompletati.slice(0, 2).map((modulo) => (
-                  <Badge 
-                    key={modulo} 
-                    variant="secondary" 
-                    className={`text-xs ${moduliDisponibili[modulo as keyof typeof moduliDisponibili]?.color}`}
-                  >
-                    {moduliDisponibili[modulo as keyof typeof moduliDisponibili]?.label}
-                  </Badge>
-                ))}
-                {lead.moduliCompletati.length > 2 && (
-                  <Badge variant="outline" className="text-xs">
-                    +{lead.moduliCompletati.length - 2}
-                  </Badge>
-                )}
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Sezione espansa con tutti i dettagli */}
+        {/* Sezione espansa - tutti i dettagli */}
         {isExpanded && (
-          <div className="space-y-6 border-t pt-4 animate-fade-in">
-            {/* Contatti */}
-            <div className="space-y-3">
-              <h4 className="font-semibold text-base text-[#d8010c] border-b border-gray-200 pb-2">
-                📞 Informazioni di Contatto
-              </h4>
-              <div className="bg-blue-50 rounded-lg p-4 space-y-2">
-                <div className="flex items-center text-sm">
-                  <Mail className="h-4 w-4 mr-3 text-blue-600" />
-                  <span className="font-medium text-blue-800">{lead.email}</span>
+          <div className="space-y-6 border-t pt-4">
+            
+            {/* 1. ANAGRAFICA E CONTATTI */}
+            <div className="bg-blue-50 rounded-lg p-4">
+              <div className="flex items-center mb-3">
+                <User className="h-5 w-5 text-blue-600 mr-2" />
+                <h4 className="font-semibold text-lg text-blue-800">Anagrafica e Contatti</h4>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center text-sm">
+                    <span className="font-medium text-gray-700 w-20">Nome:</span>
+                    <span className="text-gray-900">{lead.nome} {lead.cognome}</span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <Mail className="h-4 w-4 text-gray-500 mr-2" />
+                    <span className="text-blue-600 underline">{lead.email}</span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <Phone className="h-4 w-4 text-gray-500 mr-2" />
+                    <span className="text-gray-900 font-medium">{lead.telefono}</span>
+                  </div>
                 </div>
-                <div className="flex items-center text-sm">
-                  <Phone className="h-4 w-4 mr-3 text-green-600" />
-                  <span className="font-medium text-green-800">{lead.telefono}</span>
-                </div>
-                <div className="flex items-center text-sm">
-                  <MapPin className="h-4 w-4 mr-3 text-gray-600" />
-                  <span className="text-gray-700">{lead.indirizzo}, {lead.citta} {lead.cap}</span>
+                <div className="space-y-2">
+                  <div className="flex items-start text-sm">
+                    <MapPin className="h-4 w-4 text-gray-500 mr-2 mt-0.5" />
+                    <div>
+                      <div className="text-gray-900">{lead.indirizzo}</div>
+                      <div className="text-gray-600">{lead.citta} {lead.cap}</div>
+                      <div className="text-gray-500">{lead.regione}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Tipo di Intervento */}
-            {configurazione.tipoRistrutturazione && (
-              <div className="space-y-3">
-                <h4 className="font-semibold text-base text-[#d8010c] border-b border-gray-200 pb-2">
-                  🏗️ Tipo di Intervento
-                </h4>
-                <div className="bg-yellow-50 rounded-lg p-4">
-                  <div className="flex items-center mb-3">
-                    <Wrench className="h-5 w-5 mr-2 text-yellow-600" />
+            {/* 2. DETTAGLI IMMOBILE */}
+            <div className="bg-green-50 rounded-lg p-4">
+              <div className="flex items-center mb-3">
+                <Building2 className="h-5 w-5 text-green-600 mr-2" />
+                <h4 className="font-semibold text-lg text-green-800">Dettagli Immobile</h4>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center p-3 bg-white rounded-lg">
+                  <div className="text-2xl mb-1">🏠</div>
+                  <div className="text-xs text-gray-600">Tipologia</div>
+                  <div className="font-medium text-sm capitalize">{lead.tipologiaAbitazione}</div>
+                </div>
+                <div className="text-center p-3 bg-white rounded-lg">
+                  <div className="text-2xl mb-1">📐</div>
+                  <div className="text-xs text-gray-600">Superficie</div>
+                  <div className="font-medium text-sm">{lead.superficie} mq</div>
+                </div>
+                <div className="text-center p-3 bg-white rounded-lg">
+                  <div className="text-2xl mb-1">🏢</div>
+                  <div className="text-xs text-gray-600">Piano</div>
+                  <div className="font-medium text-sm">{lead.piano || 'N/D'}</div>
+                </div>
+                <div className="text-center p-3 bg-white rounded-lg">
+                  <div className="text-2xl mb-1">🏷️</div>
+                  <div className="text-xs text-gray-600">Proprietà</div>
+                  <div className="font-medium text-sm capitalize">{lead.tipoProprietà}</div>
+                </div>
+              </div>
+              
+              {/* Composizione ambienti */}
+              <div className="mt-4">
+                <div className="text-sm font-medium text-gray-700 mb-2">Composizione Ambienti:</div>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(lead.composizione).map(([stanza, numero]) => (
+                    numero > 0 && (
+                      <Badge key={stanza} variant="secondary" className="text-xs">
+                        {stanza === 'cameraDoppia' ? `Camere Doppie: ${numero}` : 
+                         stanza === 'cameraSingola' ? `Camere Singole: ${numero}` : 
+                         stanza === 'bagno' ? `Bagni: ${numero}` :
+                         stanza === 'soggiorno' ? `Soggiorni: ${numero}` :
+                         stanza === 'cucina' ? `Cucine: ${numero}` :
+                         stanza === 'altro' ? `Altri: ${numero}` :
+                         `${stanza}: ${numero}`}
+                      </Badge>
+                    )
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 3. CONFIGURAZIONE DOMOTICA */}
+            {configurazione.tipoDomotica && (
+              <div className="bg-purple-50 rounded-lg p-4">
+                <div className="flex items-center mb-3">
+                  <Zap className="h-5 w-5 text-purple-600 mr-2" />
+                  <h4 className="font-semibold text-lg text-purple-800">Sistema Domotico</h4>
+                </div>
+                
+                {/* Tipo di sistema */}
+                <div className="mb-4 p-3 bg-white rounded-lg border-l-4 border-purple-400">
+                  <div className="flex items-center mb-2">
+                    <div className="text-2xl mr-3">
+                      {configurazione.tipoDomotica === 'knx' ? '🔌' : '📡'}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-800">
+                        {configurazione.tipoDomotica === 'knx' ? 'Sistema KNX (Filare)' : 'Sistema Wireless BTicino'}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        {configurazione.tipoDomotica === 'knx' ? 
+                          'Sistema professionale cablato per massima affidabilità' : 
+                          'Sistema wireless per installazione rapida'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Funzionalità selezionate */}
+                <div>
+                  <div className="text-sm font-medium text-gray-700 mb-3">Funzionalità Richieste:</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {getSelectedFeatures().map((feature, index) => (
+                      <div key={index} className="bg-white p-3 rounded-lg border border-purple-200">
+                        <div className="flex items-center mb-1">
+                          <span className="text-lg mr-2">{feature.icon}</span>
+                          <span className="font-medium text-gray-800">{feature.name}</span>
+                        </div>
+                        <div className="text-xs text-gray-600 ml-7">{feature.details}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tipo di intervento */}
+                {configurazione.tipoRistrutturazione && (
+                  <div className="mt-4 p-3 bg-white rounded-lg">
+                    <div className="text-sm font-medium text-gray-700 mb-1">Tipo di Intervento:</div>
                     <Badge className={`${
                       configurazione.tipoRistrutturazione === 'completa' ? 'bg-red-100 text-red-800' :
                       configurazione.tipoRistrutturazione === 'nuova' ? 'bg-green-100 text-green-800' :
                       'bg-yellow-100 text-yellow-800'
-                    } text-sm px-3 py-1`}>
-                      {configurazione.tipoRistrutturazione === 'completa' ? '🔧 Ristrutturazione Completa' :
-                       configurazione.tipoRistrutturazione === 'nuova' ? '🏠 Nuova Costruzione' : '⚡ Intervento Parziale'}
+                    }`}>
+                      {configurazione.tipoRistrutturazione === 'completa' ? 'Ristrutturazione Completa' :
+                       configurazione.tipoRistrutturazione === 'nuova' ? 'Nuova Costruzione' : 'Intervento Parziale'}
                     </Badge>
                   </div>
+                )}
+              </div>
+            )}
+
+            {/* 4. ANALISI ECONOMICA */}
+            <div className="bg-yellow-50 rounded-lg p-4">
+              <div className="flex items-center mb-3">
+                <Calculator className="h-5 w-5 text-yellow-600 mr-2" />
+                <h4 className="font-semibold text-lg text-yellow-800">Analisi Economica</h4>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="text-center p-4 bg-white rounded-lg border">
+                  <div className="text-sm text-gray-600 mb-1">Preventivo Minimo</div>
+                  <div className="text-xl font-bold text-green-600">€{lead.stimaMin?.toLocaleString()}</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg border">
+                  <div className="text-sm text-gray-600 mb-1">Preventivo Massimo</div>
+                  <div className="text-xl font-bold text-blue-600">€{lead.stimaMax?.toLocaleString()}</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg border">
+                  <div className="text-sm text-gray-600 mb-1">Valore Medio</div>
+                  <div className="text-xl font-bold text-gray-700">€{lead.stimaMedia?.toLocaleString()}</div>
+                </div>
+              </div>
+
+              {/* Dettaglio costi se disponibile */}
+              {stimaDettagli.breakdown && (
+                <div className="bg-white p-3 rounded-lg">
+                  <div className="text-sm font-medium text-gray-700 mb-2">Dettaglio Costi:</div>
+                  <div className="space-y-2">
+                    {stimaDettagli.breakdown.basePrice && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Prezzo Base Sistema:</span>
+                        <span className="font-medium">€{stimaDettagli.breakdown.basePrice.toLocaleString()}</span>
+                      </div>
+                    )}
+                    {stimaDettagli.breakdown.roomsCost && stimaDettagli.breakdown.roomsCost > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Costo Ambienti:</span>
+                        <span className="font-medium">€{stimaDettagli.breakdown.roomsCost.toLocaleString()}</span>
+                      </div>
+                    )}
+                    {stimaDettagli.breakdown.specialFeaturesCost && stimaDettagli.breakdown.specialFeaturesCost > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Funzioni Speciali:</span>
+                        <span className="font-medium">€{stimaDettagli.breakdown.specialFeaturesCost.toLocaleString()}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 5. INFORMAZIONI COMMERCIALI */}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <div className="flex items-center mb-3">
+                <Clock className="h-5 w-5 text-gray-600 mr-2" />
+                <h4 className="font-semibold text-lg text-gray-800">Informazioni Commerciali</h4>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <div className="bg-white p-3 rounded-lg">
+                    <div className="text-xs text-gray-600 mb-1">Data Richiesta</div>
+                    <div className="font-medium">{formatDate(lead.dataRichiesta)}</div>
+                  </div>
+                  <div className="bg-white p-3 rounded-lg">
+                    <div className="text-xs text-gray-600 mb-1">Ultimo Contatto</div>
+                    <div className="font-medium">
+                      {lead.dataUltimoContatto ? formatDate(lead.dataUltimoContatto) : 'Mai contattato'}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="bg-white p-3 rounded-lg">
+                    <div className="text-xs text-gray-600 mb-1">Moduli Completati</div>
+                    <div className="flex items-center">
+                      <span className="font-medium mr-2">{lead.moduliCompletati?.length || 0}/12</span>
+                      <div className="flex-1 bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-green-500 h-2 rounded-full" 
+                          style={{ width: `${((lead.moduliCompletati?.length || 0) / 12) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
                   
-                  {configurazione.tipoImpianto && (
-                    <div className="mt-3 p-3 bg-white rounded border">
-                      <span className="text-sm font-medium text-gray-700">Livello Impianto Richiesto: </span>
-                      <Badge variant="outline" className="ml-2">
-                        {configurazione.tipoImpianto === 'livello1' ? '⭐ Livello 1 - Base' :
-                         configurazione.tipoImpianto === 'livello2' ? '⭐⭐ Livello 2 - Intermedio' :
-                         '⭐⭐⭐ Livello 3 - Avanzato'}
-                      </Badge>
+                  {lead.sopralluogoRichiesto && (
+                    <div className="bg-orange-100 border border-orange-300 p-3 rounded-lg">
+                      <div className="flex items-center text-orange-800">
+                        <div className="text-xl mr-2">🔍</div>
+                        <span className="font-medium">Sopralluogo Richiesto</span>
+                      </div>
                     </div>
                   )}
                 </div>
               </div>
-            )}
 
-            {/* Sistema Domotico Scelto */}
-            {configurazione.tipoDomotica && (
-              <div className="space-y-3">
-                <h4 className="font-semibold text-base text-[#d8010c] border-b border-gray-200 pb-2">
-                  🏠 Sistema Domotico Selezionato
-                </h4>
-                <div className={`rounded-lg p-4 border-2 ${
-                  configurazione.tipoDomotica === 'knx' ? 'bg-blue-50 border-blue-200' : 'bg-purple-50 border-purple-200'
-                }`}>
-                  <div className="flex items-center mb-4">
-                    {configurazione.tipoDomotica === 'knx' ? (
-                      <Shield className="h-6 w-6 mr-3 text-blue-600" />
-                    ) : (
-                      <Wifi className="h-6 w-6 mr-3 text-purple-600" />
-                    )}
-                    <div>
-                      <h5 className="text-lg font-semibold text-gray-800">
-                        {configurazione.tipoDomotica === 'knx' ? '🔌 Sistema KNX (Filare)' : '📡 Sistema Wireless (BTicino)'}
-                      </h5>
-                      <p className="text-sm text-gray-600">
-                        {configurazione.tipoDomotica === 'knx' ? 
-                          'Sistema professionale con cablaggio dedicato per massima affidabilità' : 
-                          'Sistema wireless per installazione rapida senza opere murarie'}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Funzionalità Selezionate */}
-                  <div className="space-y-3">
-                    <h6 className="font-medium text-gray-800 text-sm">✅ Funzionalità Configurate:</h6>
-                    <div className="grid grid-cols-1 gap-3">
-                      
-                      {/* Controllo Luci */}
-                      {((configurazione.knxConfig?.luci?.enabled) || (configurazione.bTicinoConfig?.luci?.enabled)) && (
-                        <div className="bg-white rounded-lg p-3 border-l-4 border-yellow-400">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <div className="w-3 h-3 bg-yellow-400 rounded-full mr-3"></div>
-                              <span className="font-medium text-gray-800">💡 Controllo Luci</span>
-                            </div>
-                            {configurazione.knxConfig?.luci?.advancedOption === 'avanzato' && (
-                              <Badge className="bg-blue-100 text-blue-800 text-xs">KNX + DALI</Badge>
-                            )}
-                          </div>
-                          <p className="text-xs text-gray-600 mt-1 ml-6">
-                            {configurazione.knxConfig?.luci?.advancedOption === 'avanzato' ? 
-                              'Controllo avanzato con precisione individuale per ogni punto luce' :
-                              'Controllo standard di accensione, spegnimento e dimmerazione'}
-                          </p>
-                        </div>
-                      )}
-                      
-                      {/* Tapparelle */}
-                      {((configurazione.knxConfig?.tapparelle?.enabled) || (configurazione.bTicinoConfig?.tapparelle?.enabled)) && (
-                        <div className="bg-white rounded-lg p-3 border-l-4 border-blue-400">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <div className="w-3 h-3 bg-blue-400 rounded-full mr-3"></div>
-                              <span className="font-medium text-gray-800">🪟 Controllo Tapparelle</span>
-                            </div>
-                            {(configurazione.numeroTapparelle || configurazione.knxConfig?.tapparelle?.value || configurazione.bTicinoConfig?.tapparelle?.value) && (
-                              <Badge variant="outline" className="text-xs">
-                                {configurazione.numeroTapparelle || configurazione.knxConfig?.tapparelle?.value || configurazione.bTicinoConfig?.tapparelle?.value} tapparelle
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-xs text-gray-600 mt-1 ml-6">
-                            Gestione automatica con programmazione orari e scenari coordinati
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Tende */}
-                      {((configurazione.knxConfig?.tende?.enabled) || (configurazione.bTicinoConfig?.tende?.enabled)) && (
-                        <div className="bg-white rounded-lg p-3 border-l-4 border-cyan-400">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <div className="w-3 h-3 bg-cyan-400 rounded-full mr-3"></div>
-                              <span className="font-medium text-gray-800">🏠 Controllo Tende</span>
-                            </div>
-                            <div className="flex gap-1">
-                              {(configurazione.knxConfig?.tende?.tendeInterne || configurazione.bTicinoConfig?.tende?.tendeInterne) && (
-                                <Badge variant="outline" className="text-xs">
-                                  {configurazione.knxConfig?.tende?.tendeInterne || configurazione.bTicinoConfig?.tende?.tendeInterne} interne
-                                </Badge>
-                              )}
-                              {(configurazione.knxConfig?.tende?.tendeEsterne || configurazione.bTicinoConfig?.tende?.tendeEsterne) && (
-                                <Badge variant="outline" className="text-xs">
-                                  {configurazione.knxConfig?.tende?.tendeEsterne || configurazione.bTicinoConfig?.tende?.tendeEsterne} esterne
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                          <p className="text-xs text-gray-600 mt-1 ml-6">
-                            Controllo automatico tende interne ed esterne motorizzate
-                          </p>
-                        </div>
-                      )}
-                      
-                      {/* Clima */}
-                      {((configurazione.knxConfig?.clima?.enabled) || (configurazione.bTicinoConfig?.clima?.enabled)) && (
-                        <div className="bg-white rounded-lg p-3 border-l-4 border-green-400">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <div className="w-3 h-3 bg-green-400 rounded-full mr-3"></div>
-                              <span className="font-medium text-gray-800">🌡️ Controllo Clima</span>
-                            </div>
-                            {configurazione.knxConfig?.clima?.advancedOption === 'clima_vmc' && (
-                              <Badge className="bg-green-100 text-green-800 text-xs">+ VMC</Badge>
-                            )}
-                          </div>
-                          <p className="text-xs text-gray-600 mt-1 ml-6">
-                            {configurazione.knxConfig?.clima?.advancedOption === 'clima_vmc' ? 
-                              'Gestione temperatura e qualità aria con VMC' :
-                              'Controllo temperatura tramite sensori intelligenti'}
-                          </p>
-                        </div>
-                      )}
-                      
-                      {/* Audio */}
-                      {((configurazione.knxConfig?.audio?.enabled) || (configurazione.bTicinoConfig?.audio?.enabled)) && (
-                        <div className="bg-white rounded-lg p-3 border-l-4 border-purple-400">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <div className="w-3 h-3 bg-purple-400 rounded-full mr-3"></div>
-                              <span className="font-medium text-gray-800">🎵 Sistema Audio</span>
-                            </div>
-                            {configurazione.knxConfig?.audio?.advancedOption === 'impianto_completo' && (
-                              <Badge className="bg-purple-100 text-purple-800 text-xs">Diffusione Completa</Badge>
-                            )}
-                          </div>
-                          <p className="text-xs text-gray-600 mt-1 ml-6">
-                            {configurazione.knxConfig?.audio?.advancedOption === 'impianto_completo' ? 
-                              'Sistema completo con impianto audio diffuso professionale' :
-                              'Controllo del sistema audio esistente'}
-                          </p>
-                        </div>
-                      )}
-                      
-                      {/* Videocitofono */}
-                      {((configurazione.knxConfig?.videocitofono?.enabled) || (configurazione.bTicinoConfig?.videocitofono?.enabled)) && (
-                        <div className="bg-white rounded-lg p-3 border-l-4 border-red-400">
-                          <div className="flex items-center">
-                            <div className="w-3 h-3 bg-red-400 rounded-full mr-3"></div>
-                            <span className="font-medium text-gray-800">📹 Videocitofono Smart</span>
-                          </div>
-                          <p className="text-xs text-gray-600 mt-1 ml-6">
-                            Risposta da smartphone e integrazione con scenari domotici
-                          </p>
-                        </div>
-                      )}
-                      
-                      {/* Sicurezza */}
-                      {((configurazione.knxConfig?.sicurezza?.enabled) || (configurazione.bTicinoConfig?.sicurezza?.enabled)) && (
-                        <div className="bg-white rounded-lg p-3 border-l-4 border-orange-400">
-                          <div className="flex items-center">
-                            <div className="w-3 h-3 bg-orange-400 rounded-full mr-3"></div>
-                            <span className="font-medium text-gray-800">🔒 Sistema Sicurezza</span>
-                          </div>
-                          <p className="text-xs text-gray-600 mt-1 ml-6">
-                            Predisposizione per sensori e telecamere di sicurezza
-                          </p>
-                        </div>
-                      )}
-                      
-                      {/* Supervisor/App */}
-                      {((configurazione.knxConfig?.supervisor?.enabled) || (configurazione.bTicinoConfig?.supervisor?.enabled)) && (
-                        <div className="bg-white rounded-lg p-3 border-l-4 border-indigo-400">
-                          <div className="flex items-center">
-                            <div className="w-3 h-3 bg-indigo-400 rounded-full mr-3"></div>
-                            <span className="font-medium text-gray-800">
-                              📱 {configurazione.tipoDomotica === 'knx' ? 'Supervisor KNX' : 'App MyHome'}
-                            </span>
-                          </div>
-                          <p className="text-xs text-gray-600 mt-1 ml-6">
-                            Controllo centralizzato da app e pannello touch
-                          </p>
-                        </div>
-                      )}
-                      
-                      {/* Prese */}
-                      {((configurazione.knxConfig?.prese?.enabled) || (configurazione.bTicinoConfig?.prese?.enabled)) && (
-                        <div className="bg-white rounded-lg p-3 border-l-4 border-cyan-400">
-                          <div className="flex items-center">
-                            <div className="w-3 h-3 bg-cyan-400 rounded-full mr-3"></div>
-                            <span className="font-medium text-gray-800">🔌 Prese Intelligenti</span>
-                          </div>
-                          <p className="text-xs text-gray-600 mt-1 ml-6">
-                            Controllo remoto elettrodomestici e monitoraggio consumi
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Dettagli Immobile */}
-            <div className="space-y-3">
-              <h4 className="font-semibold text-base text-[#d8010c] border-b border-gray-200 pb-2">
-                🏡 Dettagli Immobile
-              </h4>
-              <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="bg-white p-3 rounded">
-                    <span className="text-gray-600 block text-xs">Tipologia:</span>
-                    <span className="font-medium capitalize text-gray-800">
-                      {lead.tipologiaAbitazione === 'appartamento' ? '🏢 Appartamento' :
-                       lead.tipologiaAbitazione === 'casa indipendente' ? '🏠 Casa Indipendente' : '🏘️ Villa'}
-                    </span>
-                  </div>
-                  <div className="bg-white p-3 rounded">
-                    <span className="text-gray-600 block text-xs">Superficie:</span>
-                    <span className="font-medium text-gray-800">{lead.superficie} mq</span>
-                  </div>
-                  <div className="bg-white p-3 rounded">
-                    <span className="text-gray-600 block text-xs">Piano:</span>
-                    <span className="font-medium text-gray-800">{lead.piano || 'Non specificato'}</span>
-                  </div>
-                  <div className="bg-white p-3 rounded">
-                    <span className="text-gray-600 block text-xs">Proprietà:</span>
-                    <span className="font-medium capitalize text-gray-800">
-                      {lead.tipoProprietà === 'prima casa' ? '🏠 Prima Casa' : 
-                       lead.tipoProprietà === 'seconda casa' ? '🏖️ Seconda Casa' : '💼 Investimento'}
-                    </span>
-                  </div>
-                </div>
-                
-                {/* Composizione Stanze */}
-                <div className="border-t border-gray-200 pt-3">
-                  <p className="text-sm font-medium text-gray-700 mb-2">🛏️ Composizione Ambienti:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(lead.composizione).map(([stanza, numero]) => (
-                      numero > 0 && (
-                        <Badge key={stanza} className="bg-blue-100 text-blue-800 text-xs px-3 py-1">
-                          {stanza === 'cameraDoppia' ? `🛏️ Cam. Doppia: ${numero}` : 
-                           stanza === 'cameraSingola' ? `🛏️ Cam. Singola: ${numero}` : 
-                           stanza === 'bagno' ? `🚿 Bagni: ${numero}` :
-                           stanza === 'soggiorno' ? `🛋️ Soggiorno: ${numero}` :
-                           stanza === 'cucina' ? `🍳 Cucina: ${numero}` :
-                           stanza === 'altro' ? `📦 Altro: ${numero}` :
-                           `${stanza}: ${numero}`}
-                        </Badge>
-                      )
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Analisi Costi */}
-            {stimaDettagli.breakdown && (
-              <div className="space-y-3">
-                <h4 className="font-semibold text-base text-[#d8010c] border-b border-gray-200 pb-2">
-                  💰 Analisi Costi Dettagliata
-                </h4>
-                <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-                  <div className="space-y-3">
-                    {stimaDettagli.breakdown.basePrice && (
-                      <div className="flex items-center justify-between p-2 bg-white rounded">
-                        <span className="text-sm text-gray-700 flex items-center">
-                          <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
-                          Prezzo Base Sistema:
-                        </span>
-                        <span className="font-semibold text-blue-600">€{stimaDettagli.breakdown.basePrice.toLocaleString()}</span>
-                      </div>
-                    )}
-                    {stimaDettagli.breakdown.roomsCost !== undefined && stimaDettagli.breakdown.roomsCost > 0 && (
-                      <div className="flex items-center justify-between p-2 bg-white rounded">
-                        <span className="text-sm text-gray-700 flex items-center">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
-                          Costo Ambienti:
-                        </span>
-                        <span className="font-semibold text-green-600">€{stimaDettagli.breakdown.roomsCost.toLocaleString()}</span>
-                      </div>
-                    )}
-                    {stimaDettagli.breakdown.surfaceCost && stimaDettagli.breakdown.surfaceCost > 0 && (
-                      <div className="flex items-center justify-between p-2 bg-white rounded">
-                        <span className="text-sm text-gray-700 flex items-center">
-                          <div className="w-2 h-2 bg-purple-400 rounded-full mr-2"></div>
-                          Costo Superficie:
-                        </span>
-                        <span className="font-semibold text-purple-600">€{stimaDettagli.breakdown.surfaceCost.toLocaleString()}</span>
-                      </div>
-                    )}
-                    {stimaDettagli.breakdown.specialFeaturesCost && stimaDettagli.breakdown.specialFeaturesCost > 0 && (
-                      <div className="flex items-center justify-between p-2 bg-white rounded">
-                        <span className="text-sm text-gray-700 flex items-center">
-                          <div className="w-2 h-2 bg-orange-400 rounded-full mr-2"></div>
-                          Funzioni Aggiuntive:
-                        </span>
-                        <span className="font-semibold text-orange-600">€{stimaDettagli.breakdown.specialFeaturesCost.toLocaleString()}</span>
-                      </div>
-                    )}
-                    <div className="border-t border-green-300 pt-3 mt-3">
-                      <div className="flex items-center justify-between p-3 bg-[#d8010c] text-white rounded-lg">
-                        <span className="font-semibold">💎 Range Finale:</span>
-                        <span className="text-lg font-bold">€{lead.stimaMin.toLocaleString()} - €{lead.stimaMax.toLocaleString()}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Timeline e Info Commerciali */}
-            <div className="space-y-3">
-              <h4 className="font-semibold text-base text-[#d8010c] border-b border-gray-200 pb-2">
-                📈 Informazioni Commerciali
-              </h4>
-              <div className="bg-yellow-50 rounded-lg p-4 space-y-3 border border-yellow-200">
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="bg-white p-3 rounded">
-                    <span className="text-gray-600 block text-xs">Data Richiesta:</span>
-                    <span className="font-medium text-gray-800">{formatDate(lead.dataRichiesta)}</span>
-                  </div>
-                  <div className="bg-white p-3 rounded">
-                    <span className="text-gray-600 block text-xs">Ultimo Contatto:</span>
-                    <span className="font-medium text-gray-800">
-                      {lead.dataUltimoContatto ? formatDate(lead.dataUltimoContatto) : 'Mai contattato'}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between p-3 bg-white rounded">
-                  <span className="text-sm text-gray-700">Completamento Configurazione:</span>
-                  <div className="flex items-center">
-                    <span className="font-medium text-gray-800 mr-2">{lead.moduliCompletati.length} / 12 moduli</span>
-                    <div className="w-20 bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-green-500 h-2 rounded-full" 
-                        style={{ width: `${(lead.moduliCompletati.length / 12) * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-
-                {lead.sopralluogoRichiesto && (
-                  <div className="flex items-center justify-between p-3 bg-orange-100 rounded border border-orange-200">
-                    <span className="text-sm font-medium text-orange-800">🔍 Sopralluogo Richiesto</span>
-                    <Badge className="bg-orange-200 text-orange-800">ALTA PRIORITÀ</Badge>
-                  </div>
-                )}
-                
-                {/* Moduli Completati */}
-                <div className="border-t border-yellow-300 pt-3">
-                  <p className="text-sm font-medium text-gray-700 mb-2">✅ Moduli Completati:</p>
+              {/* Moduli completati */}
+              {lead.moduliCompletati && lead.moduliCompletati.length > 0 && (
+                <div className="mt-4">
+                  <div className="text-sm font-medium text-gray-700 mb-2">Moduli Completati:</div>
                   <div className="flex flex-wrap gap-1">
                     {lead.moduliCompletati.map((modulo) => (
                       <Badge 
                         key={modulo} 
-                        variant="secondary" 
-                        className={`text-xs ${moduliDisponibili[modulo as keyof typeof moduliDisponibili]?.color}`}
+                        variant="outline" 
+                        className="text-xs"
                       >
-                        {moduliDisponibili[modulo as keyof typeof moduliDisponibili]?.label}
+                        {moduliDisponibili[modulo as keyof typeof moduliDisponibili]?.label || modulo}
                       </Badge>
                     ))}
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
-            {/* Note se presenti */}
+            {/* 6. NOTE DEL CLIENTE */}
             {lead.note && (
-              <div className="space-y-3">
-                <h4 className="font-semibold text-base text-[#d8010c] border-b border-gray-200 pb-2">
-                  📝 Note del Cliente
-                </h4>
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
-                  <p className="text-sm text-gray-700 italic">"{lead.note}"</p>
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
+                <div className="flex items-center mb-2">
+                  <div className="text-xl mr-2">💬</div>
+                  <h4 className="font-semibold text-amber-800">Note del Cliente</h4>
                 </div>
+                <p className="text-gray-700 italic">"{lead.note}"</p>
               </div>
             )}
           </div>
