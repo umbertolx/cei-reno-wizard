@@ -17,11 +17,15 @@ interface LeadDetailsProps {
 }
 
 export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
-  console.log("LeadDetails render - lead:", lead);
+  console.log("=== LeadDetails Render Start ===");
+  console.log("LeadDetails render - lead:", lead?.id, lead?.nome, lead?.cognome);
   console.log("LeadDetails render - isOpen:", isOpen);
+  console.log("LeadDetails render - lead is null?", lead === null);
+  console.log("LeadDetails render - lead is undefined?", lead === undefined);
+  console.log("=== LeadDetails Render End ===");
   
   if (!lead) {
-    console.log("LeadDetails: No lead provided");
+    console.log("LeadDetails: No lead provided, returning null");
     return null;
   }
 
@@ -79,12 +83,10 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
             case 'bticino': return 'BTicino Wireless';
             default: return value;
           }
-        case 'impiantoVecchio':
-          return value ? 'Impianto Vecchio (da rifare)' : 'Impianto Recente (a norma)';
         case 'numeroTapparelle':
           return `${value} tapparelle`;
         default:
-          return value;
+          return String(value);
       }
     };
 
@@ -94,7 +96,6 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
         case 'tipoRistrutturazione': return 'Tipo di Ristrutturazione';
         case 'elettrificareTapparelle': return 'Elettrificare Tapparelle';
         case 'tipoDomotica': return 'Sistema Domotico';
-        case 'impiantoVecchio': return 'Età Impianto';
         case 'numeroTapparelle': return 'Numero Tapparelle';
         default: return key;
       }
@@ -107,6 +108,8 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
       </div>
     );
   };
+
+  console.log("LeadDetails: About to render dialog with isOpen:", isOpen);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -164,7 +167,7 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
               Dettagli Immobile
             </h3>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               <div className="text-center p-4 bg-gray-50 rounded-lg">
                 <div className="text-2xl font-bold text-gray-900">{lead.superficie}</div>
                 <div className="text-sm text-gray-600">mq totali</div>
@@ -176,10 +179,6 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
               <div className="text-center p-4 bg-gray-50 rounded-lg">
                 <div className="text-2xl font-bold text-gray-900 capitalize">{lead.tipologiaAbitazione}</div>
                 <div className="text-sm text-gray-600">tipologia</div>
-              </div>
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
-                <div className="text-2xl font-bold text-gray-900 capitalize">{lead.tipoProprietà}</div>
-                <div className="text-sm text-gray-600">proprietà</div>
               </div>
             </div>
 
@@ -219,11 +218,16 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Configurazione Richiesta</h3>
               
               <div className="space-y-1">
-                {Object.entries(configurazione).map(([key, value]) => (
-                  <div key={key}>
-                    {renderConfigurationChoice(key, value)}
-                  </div>
-                ))}
+                {Object.entries(configurazione).map(([key, value]) => {
+                  if (key === 'knxConfig' && typeof value === 'object' && value !== null) {
+                    return null;
+                  }
+                  return (
+                    <div key={key}>
+                      {renderConfigurationChoice(key, value)}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

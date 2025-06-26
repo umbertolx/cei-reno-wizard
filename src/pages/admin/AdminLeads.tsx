@@ -47,7 +47,6 @@ const AdminLeads = () => {
     useSensor(KeyboardSensor)
   );
 
-  // Carica i lead dal database
   const loadLeads = async (showRefreshToast = false) => {
     try {
       setIsRefreshing(true);
@@ -78,12 +77,10 @@ const AdminLeads = () => {
     }
   };
 
-  // Carica i lead all'avvio
   useEffect(() => {
     loadLeads();
   }, []);
 
-  // Filtra i lead in base al termine di ricerca
   const filteredLeads = leads.filter(lead => 
     lead.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     lead.cognome.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -91,18 +88,15 @@ const AdminLeads = () => {
     lead.citta.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Combina stati predefiniti e colonne personalizzate
   const allColumns = [
     ...Object.keys(leadStates).map(state => ({ id: state, type: 'default' as const })),
     ...customColumns.map(col => ({ id: col.id, type: 'custom' as const, column: col }))
   ];
 
-  // Raggruppa i lead per stato mantenendo l'ordine personalizzato
   const leadsByState = allColumns.reduce((acc, col) => {
     const columnLeads = filteredLeads.filter(lead => lead.stato === col.id);
     const positions = leadPositions[col.id] || [];
     
-    // Ordina i lead secondo le posizioni salvate
     const orderedLeads = [...columnLeads].sort((a, b) => {
       const posA = positions.indexOf(a.id);
       const posB = positions.indexOf(b.id);
@@ -117,15 +111,22 @@ const AdminLeads = () => {
   }, {} as Record<string, Lead[]>);
 
   const handleViewDetails = (lead: Lead) => {
-    console.log("AdminLeads: handleViewDetails called with lead:", lead);
-    console.log("AdminLeads: Setting selected lead:", lead.id);
+    console.log("AdminLeads: handleViewDetails called with lead:", lead.id, lead.nome, lead.cognome);
+    console.log("AdminLeads: Current selectedLead before update:", selectedLead?.id);
+    console.log("AdminLeads: Setting selected lead to:", lead.id);
     setSelectedLead(lead);
-    console.log("AdminLeads: selectedLead state should be updated");
+    console.log("AdminLeads: selectedLead state should now be updated");
+    
+    setTimeout(() => {
+      console.log("AdminLeads: After timeout, selectedLead should be:", lead.id);
+    }, 100);
   };
 
   const handleCloseDetails = () => {
     console.log("AdminLeads: Closing lead details");
+    console.log("AdminLeads: Current selectedLead before closing:", selectedLead?.id);
     setSelectedLead(null);
+    console.log("AdminLeads: selectedLead set to null");
   };
 
   const handleDragStart = (event: DragStartEvent) => {

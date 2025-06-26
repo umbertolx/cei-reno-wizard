@@ -50,7 +50,10 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
   const handleViewDetails = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log("LeadCard: handleViewDetails clicked for lead:", lead.id, lead.nome, lead.cognome);
+    console.log("LeadCard: About to call onViewDetails function");
     onViewDetails();
+    console.log("LeadCard: onViewDetails function called");
   };
 
   const toggleExpansion = (e: React.MouseEvent) => {
