@@ -67,7 +67,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
       style={style}
       className={`hover:shadow-lg transition-all duration-300 ${
         isDragging ? 'shadow-2xl ring-2 ring-blue-500 bg-white rotate-3' : 'hover:shadow-md'
-      }`}
+      } ${isExpanded ? 'min-h-[600px]' : ''}`}
     >
       <CardContent className="p-4">
         <LeadCardHeader

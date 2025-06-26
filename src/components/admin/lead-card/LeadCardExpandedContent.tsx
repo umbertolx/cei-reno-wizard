@@ -13,7 +13,7 @@ interface LeadCardExpandedContentProps {
 
 export const LeadCardExpandedContent = ({ lead }: LeadCardExpandedContentProps) => {
   return (
-    <div className="space-y-6 border-t pt-4">
+    <div className="space-y-6 border-t pt-4 mt-4">
       <PersonalDataSection lead={lead} />
       <PropertyDataSection lead={lead} />
       <ConfigurationSection lead={lead} />
