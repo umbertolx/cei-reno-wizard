@@ -94,6 +94,9 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
   const configurazione = parseConfigurazioneTecnica();
   const stimaDettagli = parseStimaDettagli();
 
+  // Calculate average price from min and max
+  const stimaMedia = lead.stimaMin && lead.stimaMax ? Math.round((lead.stimaMin + lead.stimaMax) / 2) : 0;
+
   // Funzione per ottenere le funzionalità selezionate
   const getSelectedFeatures = () => {
     const features = [];
@@ -419,7 +422,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
                 </div>
                 <div className="text-center p-4 bg-white rounded-lg border">
                   <div className="text-sm text-gray-600 mb-1">Valore Medio</div>
-                  <div className="text-xl font-bold text-gray-700">€{lead.stimaMedia?.toLocaleString()}</div>
+                  <div className="text-xl font-bold text-gray-700">€{stimaMedia?.toLocaleString()}</div>
                 </div>
               </div>
 
