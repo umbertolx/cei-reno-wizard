@@ -28,6 +28,15 @@ export const StimaFinale = ({
   console.log("💰 StimaFinale render - estimate:", estimate);
   console.log("📋 StimaFinale render - formData:", formData);
   
+  // Aggiungi logging per il click del pulsante
+  const handleSubmitClick = () => {
+    console.log("🖱️ StimaFinale: Submit button clicked!");
+    console.log("📊 StimaFinale: Current estimate:", estimate);
+    console.log("📋 StimaFinale: Current formData:", formData);
+    console.log("⚡ StimaFinale: Calling onSubmit...");
+    onSubmit();
+  };
+  
   if (!estimate) {
     console.warn("⚠️ No estimate available in StimaFinale");
     return (
@@ -181,7 +190,7 @@ export const StimaFinale = ({
         </Button>
         
         <Button 
-          onClick={onSubmit}
+          onClick={handleSubmitClick}
           className="flex-1 p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
           disabled={isSubmitting}
         >
