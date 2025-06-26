@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
@@ -17,6 +16,8 @@ import { toast } from "@/hooks/use-toast";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
+import { calculateEstimate } from "@/services/estimateService";
+import { EstimateResponse } from "@/types/estimate";
 
 export type FormData = {
   tipologiaAbitazione: string;
@@ -53,10 +54,13 @@ export type FormData = {
   dataRichiestaSopralluogo?: string;
   orarioSopralluogo?: string;
   note?: string;
+  // New field for the estimate received from external API
+  estimate?: EstimateResponse;
 };
 
 export const Configuratore = () => {
   const [step, setStep] = useState<number>(0);
+  const [isCalculatingEstimate, setIsCalculatingEstimate] = useState(false);
   
   const [formData, setFormData] = useState<FormData>({
     tipologiaAbitazione: "",
@@ -86,36 +90,25 @@ export const Configuratore = () => {
     setFormData(prev => ({ ...prev, ...data }));
   };
   
-  const calcolaStima = (): { min: number; max: number } => {
-    // Algoritmo semplificato per la stima dei costi
-    const costoBase = {
-      "appartamento": 400,
-      "casa indipendente": 550
-    };
-    
-    // Costo base per metro quadro
-    const costoBaseMetroQuadro = formData.tipologiaAbitazione.toLowerCase() === "appartamento" 
-      ? costoBase.appartamento 
-      : costoBase["casa indipendente"];
-    
-    // Calcolo stanza per stanza
-    const { cucina, cameraDoppia, cameraSingola, bagno, soggiorno, altro } = formData.composizione;
-    let costoStanze = (cucina * 5000) + (cameraDoppia * 3000) + (cameraSingola * 2500) + (bagno * 5500) + (soggiorno * 3500) + (altro * 2000);
-    
-    // Per interventi parziali, considera solo gli ambienti selezionati
-    if (formData.tipoRistrutturazione === 'parziale' && formData.ambientiSelezionati) {
-      const percentualeAmbienti = formData.ambientiSelezionati.length / Object.values(formData.composizione).reduce((sum, count) => sum + count, 0);
-      costoStanze = costoStanze * percentualeAmbienti;
+  // Function to call external API and get estimate
+  const handleCalculateEstimate = async () => {
+    setIsCalculatingEstimate(true);
+    try {
+      const estimate = await calculateEstimate(formData);
+      updateFormData({ estimate });
+      toast({
+        title: "Stima calcolata",
+        description: "La tua stima personalizzata è pronta!",
+      });
+    } catch (error) {
+      toast({
+        title: "Errore nel calcolo",
+        description: "Non è stato possibile calcolare la stima. Riprova più tardi.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCalculatingEstimate(false);
     }
-    
-    // Calcolo totale con superficie
-    const costoTotale = (costoBaseMetroQuadro * formData.superficie) + costoStanze;
-    
-    // Range di stima con +/- 20%
-    return {
-      min: Math.round(costoTotale * 0.8),
-      max: Math.round(costoTotale * 1.2)
-    };
   };
 
   const handleNext = () => {
@@ -155,17 +148,64 @@ export const Configuratore = () => {
 
   const handleInviaDati = async () => {
     try {
-      // Qui andrebbe la logica di invio dei dati al backend
-      console.log("Dati da inviare:", formData);
+      // Here we would send all structured data to the backend:
+      // - All configuration data (formData)
+      // - Contact information
+      // - The estimate received from external API
+      // - Survey request details
       
-      // Simula un invio dati riuscito
+      const dataToSend = {
+        configuration: {
+          tipologiaAbitazione: formData.tipologiaAbitazione,
+          superficie: formData.superficie,
+          indirizzo: formData.indirizzo,
+          citta: formData.citta,
+          cap: formData.cap,
+          regione: formData.regione,
+          piano: formData.piano,
+          composizione: formData.composizione,
+          tipoProprietà: formData.tipoProprietà,
+          tipoRistrutturazione: formData.tipoRistrutturazione,
+          impiantoVecchio: formData.impiantoVecchio,
+          interventiElettrici: formData.interventiElettrici,
+          ambientiSelezionati: formData.ambientiSelezionati,
+          tipoImpianto: formData.tipoImpianto,
+          tipoDomotica: formData.tipoDomotica,
+          knxConfig: formData.knxConfig,
+          bTicinoConfig: formData.bTicinoConfig,
+          elettrificareTapparelle: formData.elettrificareTapparelle,
+          numeroTapparelle: formData.numeroTapparelle,
+        },
+        contactData: {
+          nome: formData.nome,
+          cognome: formData.cognome,
+          email: formData.email,
+          telefono: formData.telefono,
+        },
+        estimate: formData.estimate,
+        surveyRequest: {
+          dataRichiestaSopralluogo: formData.dataRichiestaSopralluogo,
+          orarioSopralluogo: formData.orarioSopralluogo,
+          note: formData.note,
+        },
+        submittedAt: new Date().toISOString()
+      };
+      
+      console.log("Structured data to send to admin dashboard:", dataToSend);
+      
+      // TODO: Replace with actual API call to save data
+      // await fetch('/api/leads', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(dataToSend)
+      // });
+      
       toast({
         title: "Richiesta inviata con successo!",
         description: "Ti contatteremo al più presto.",
         duration: 5000,
       });
       
-      // Passa allo step di conferma
       setStep(prev => prev + 1);
       
     } catch (error) {
@@ -178,7 +218,14 @@ export const Configuratore = () => {
     }
   };
 
-  // Renderizza il contenuto in base allo step corrente
+  // Enhanced handleNext function for DatiContatto -> StimaFinale transition
+  const handleNextFromDatiContatto = async () => {
+    if (!formData.estimate) {
+      await handleCalculateEstimate();
+    }
+    handleNext();
+  };
+
   const renderStep = () => {
     switch (step) {
       case 0:
@@ -205,7 +252,6 @@ export const Configuratore = () => {
           />
         );
       case 3:
-        // Per intervento parziale: mostra età impianto
         if (formData.tipoRistrutturazione === 'parziale') {
           return (
             <EtaImpiantoElettrico 
@@ -216,7 +262,6 @@ export const Configuratore = () => {
             />
           );
         } else {
-          // Per completa/nuova: mostra tipo impianto
           return (
             <TipoImpiantoElettrico 
               formData={formData} 
@@ -227,7 +272,6 @@ export const Configuratore = () => {
           );
         }
       case 4:
-        // Per intervento parziale: interventi elettrici
         if (formData.tipoRistrutturazione === 'parziale') {
           return (
             <InterventiElettrici 
@@ -238,7 +282,6 @@ export const Configuratore = () => {
             />
           );
         } else {
-          // Per completa/nuova: tipo domotica o tapparelle
           if (formData.tipoImpianto === 'livello3') {
             return (
               <TipoDomotica
@@ -260,7 +303,6 @@ export const Configuratore = () => {
           }
         }
       case 5:
-        // Per intervento parziale: NUOVO - selezione ambienti
         if (formData.tipoRistrutturazione === 'parziale') {
           return (
             <SelezioneAmbienti
@@ -271,7 +313,6 @@ export const Configuratore = () => {
             />
           );
         } else {
-          // Per completa/nuova con livello 3: configurazione domotica
           if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
             return (
               <ConfigurazioneKNX
@@ -291,47 +332,45 @@ export const Configuratore = () => {
               />
             );
           } else {
-            // Per livello 1 e 2: dati contatto
             return (
               <DatiContatto
                 formData={formData}
                 updateFormData={updateFormData}
                 onBack={handleBack}
-                onNext={handleNext}
+                onNext={handleNextFromDatiContatto}
+                isCalculatingEstimate={isCalculatingEstimate}
               />
             );
           }
         }
       case 6:
-        // Per intervento parziale: dati contatto (shift di un step)
         if (formData.tipoRistrutturazione === 'parziale') {
           return (
             <DatiContatto
               formData={formData}
               updateFormData={updateFormData}
               onBack={handleBack}
-              onNext={handleNext}
+              onNext={handleNextFromDatiContatto}
+              isCalculatingEstimate={isCalculatingEstimate}
             />
           );
         } else {
-          // Per completa/nuova con configurazione domotica: dati contatto
           if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
             return (
               <DatiContatto
                 formData={formData}
                 updateFormData={updateFormData}
                 onBack={handleBack}
-                onNext={handleNext}
+                onNext={handleNextFromDatiContatto}
+                isCalculatingEstimate={isCalculatingEstimate}
               />
             );
           } else {
-            // Per livello 1 e 2: stima finale
-            const stima = calcolaStima();
             return (
               <StimaFinale
                 formData={formData}
                 updateFormData={updateFormData}
-                stima={stima}
+                estimate={formData.estimate}
                 onBack={handleBack}
                 onSubmit={handleInviaDati}
               />
@@ -339,46 +378,38 @@ export const Configuratore = () => {
           }
         }
       case 7:
-        // Per intervento parziale: stima finale (shift di un step)
         if (formData.tipoRistrutturazione === 'parziale') {
-          const stima = calcolaStima();
           return (
             <StimaFinale
               formData={formData}
               updateFormData={updateFormData}
-              stima={stima}
+              estimate={formData.estimate}
               onBack={handleBack}
               onSubmit={handleInviaDati}
             />
           );
         } else {
-          // Per completa/nuova con configurazione domotica: stima finale
           if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
-            const stima = calcolaStima();
             return (
               <StimaFinale
                 formData={formData}
                 updateFormData={updateFormData}
-                stima={stima}
+                estimate={formData.estimate}
                 onBack={handleBack}
                 onSubmit={handleInviaDati}
               />
             );
           } else {
-            // Per livello 1 e 2: richiesta inviata
             return <RichiestaInviata onReset={handleReset} />;
           }
         }
       case 8:
-        // Per intervento parziale: richiesta inviata (shift di un step)
         if (formData.tipoRistrutturazione === 'parziale') {
           return <RichiestaInviata onReset={handleReset} />;
         } else {
-          // Solo per completa/nuova con configurazione domotica: richiesta inviata
           return <RichiestaInviata onReset={handleReset} />;
         }
       case 9:
-        // Solo per completa/nuova con configurazione domotica: ultimo step possibile
         return <RichiestaInviata onReset={handleReset} />;
       default:
         return <div>Step non valido</div>;

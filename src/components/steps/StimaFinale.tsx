@@ -1,4 +1,5 @@
 import { FormData } from "../Configuratore";
+import { EstimateResponse } from "@/types/estimate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,15 +12,12 @@ import { TipoProprietaSelector } from "./stimafinale/TipoProprietaSelector";
 type Props = {
   formData: FormData;
   updateFormData: (data: Partial<FormData>) => void;
-  stima: {
-    min: number;
-    max: number;
-  };
+  estimate?: EstimateResponse;
   onBack: () => void;
   onSubmit: () => void;
 };
 
-export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit }: Props) => {
+export const StimaFinale = ({ formData, updateFormData, estimate, onBack, onSubmit }: Props) => {
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
 
   // Formatta il prezzo con separatore migliaia
@@ -27,16 +25,37 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  // Calcola le detrazioni
-  const stimaMedia = Math.round((stima.min + stima.max) / 2);
-  const detrazionePrimaCasa50 = Math.round(stimaMedia * 0.5);
-  const detrazioneSecondaCasa36 = Math.round(stimaMedia * 0.36);
+  // Use the estimate from external API, or provide fallback values
+  const stima = estimate ? { min: estimate.min, max: estimate.max } : { min: 0, max: 0 };
+  const stimaMedia = estimate?.average || Math.round((stima.min + stima.max) / 2);
+  
+  // Use deductions from external API if available
+  const detrazionePrimaCasa50 = estimate?.deductions?.primaCasa50 || Math.round(stimaMedia * 0.5);
+  const detrazioneSecondaCasa36 = estimate?.deductions?.secondaCasa36 || Math.round(stimaMedia * 0.36);
 
   const toggleAccordion = (value: string) => {
     setOpenAccordion(openAccordion === value ? null : value);
   };
 
   const isPrimaCasa = formData.tipoProprietà === 'prima casa';
+
+  // Show loading state if estimate is not available
+  if (!estimate) {
+    return (
+      <div className="space-y-8">
+        <div className="space-y-2">
+          <h1 className="text-3xl md:text-5xl font-medium text-[#1c1c1c]">Calcolo in corso...</h1>
+          <p className="text-lg md:text-xl text-[#1c1c1c] opacity-80">Stiamo preparando la tua stima personalizzata</p>
+        </div>
+        <div className="bg-[#fbe12e] p-6 rounded-2xl space-y-4">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-300 rounded mb-4"></div>
+            <div className="h-16 bg-gray-300 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -91,9 +110,38 @@ export const StimaFinale = ({ formData, updateFormData, stima, onBack, onSubmit 
           <span className="text-3xl md:text-5xl font-bold">€ {formatPrice(stima.max)}</span>
         </div>
         
+        {estimate.breakdown && (
+          <div className="bg-white bg-opacity-50 p-4 rounded-lg">
+            <h3 className="font-medium mb-2">Dettaglio stima:</h3>
+            <div className="text-sm space-y-1">
+              <div className="flex justify-between">
+                <span>Costo base:</span>
+                <span>€ {formatPrice(estimate.breakdown.basePrice)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Costo stanze:</span>
+                <span>€ {formatPrice(estimate.breakdown.roomsCost)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Costo superficie:</span>
+                <span>€ {formatPrice(estimate.breakdown.surfaceCost)}</span>
+              </div>
+              {estimate.breakdown.specialFeaturesCost && (
+                <div className="flex justify-between">
+                  <span>Configurazioni speciali:</span>
+                  <span>€ {formatPrice(estimate.breakdown.specialFeaturesCost)}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        
         <div className="bg-white bg-opacity-50 p-4 rounded-lg text-center">
           <p className="text-lg text-[#1c1c1c]">
             È una stima calcolata in tempo reale. Per un budget preciso richiedi un sopralluogo.
+          </p>
+          <p className="text-sm text-[#1c1c1c] opacity-70 mt-2">
+            Calcolata il: {new Date(estimate.calculatedAt).toLocaleDateString('it-IT')}
           </p>
         </div>
       </div>

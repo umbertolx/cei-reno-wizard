@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { User, Phone, Mail, CircleDot, ChevronDown } from "lucide-react";
+import { User, Phone, Mail, CircleDot, ChevronDown, Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 
@@ -13,9 +13,10 @@ type Props = {
   updateFormData: (data: Partial<FormData>) => void;
   onBack: () => void;
   onNext: () => void;
+  isCalculatingEstimate?: boolean;
 };
 
-export const DatiContatto = ({ formData, updateFormData, onBack, onNext }: Props) => {
+export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalculatingEstimate = false }: Props) => {
   const validateForm = () => {
     if (!formData.nome.trim()) {
       toast({
@@ -71,7 +72,6 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext }: Props
     }
   };
 
-  // Conta il totale delle stanze
   const totalRooms = Object.values(formData.composizione).reduce((acc, curr) => acc + curr, 0);
 
   return (
@@ -248,6 +248,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext }: Props
           onClick={onBack}
           variant="outline"
           className="flex-1 p-6 text-lg border-[#1c1c1c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl"
+          disabled={isCalculatingEstimate}
         >
           Torna indietro
         </Button>
@@ -255,9 +256,19 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext }: Props
         <Button 
           onClick={handleSubmit}
           className="flex-1 p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
+          disabled={isCalculatingEstimate}
         >
-          Continua
-          <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
+          {isCalculatingEstimate ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              Calcolo in corso...
+            </>
+          ) : (
+            <>
+              Continua
+              <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
+            </>
+          )}
         </Button>
       </div>
     </div>
