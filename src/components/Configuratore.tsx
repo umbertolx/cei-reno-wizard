@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
@@ -17,6 +16,7 @@ import { StimaFinale } from "./steps/StimaFinale";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { saveLeadToDatabase } from "@/services/leadService";
+import { supabase } from "@/integrations/supabase/client";
 import { EstimateResponse } from "@/types/estimate";
 import { useConfiguratorFlow } from "@/hooks/useConfiguratorFlow";
 import { useEstimateCalculation } from "@/hooks/useEstimateCalculation";
@@ -61,6 +61,7 @@ export type FormData = {
 
 export const Configuratore = () => {
   const [isSavingLead, setIsSavingLead] = useState(false);
+  const [savedLeadId, setSavedLeadId] = useState<string | null>(null);
   
   const [formData, setFormData] = useState<FormData>({
     tipologiaAbitazione: "",
@@ -98,15 +99,39 @@ export const Configuratore = () => {
     const currentStepConfig = flow.getCurrentStepConfig();
     console.log("🔄 Handle next called for step:", currentStepConfig?.id);
 
-    // Se stiamo per andare alla stima finale, calcola la stima
+    // Se stiamo per andare alla stima finale, calcola la stima E salva il lead
     if (currentStepConfig?.id === 'dati-contatto') {
       console.log("🔢 About to move to estimate, calculating...");
       
       const calculatedEstimate = await calculateWithRetry(formData);
       if (calculatedEstimate) {
         updateFormData({ estimate: calculatedEstimate });
-        console.log("✅ Estimate calculated and saved to form data");
-        flow.goToNext();
+        console.log("✅ Estimate calculated, now saving lead...");
+        
+        // Salva il lead con la stima
+        setIsSavingLead(true);
+        try {
+          const leadId = await saveLeadToDatabase(formData, calculatedEstimate);
+          setSavedLeadId(leadId);
+          console.log("✅ Lead saved successfully with ID:", leadId);
+          
+          toast({
+            title: "Dati salvati con successo!",
+            description: "La tua richiesta è stata registrata. Puoi ora visualizzare la stima.",
+            duration: 3000,
+          });
+          
+          flow.goToNext();
+        } catch (error) {
+          console.error("❌ Error saving lead:", error);
+          toast({
+            title: "Errore nel salvare i dati",
+            description: "Si è verificato un errore. Riprova.",
+            variant: "destructive",
+          });
+        } finally {
+          setIsSavingLead(false);
+        }
       } else {
         console.error("❌ Failed to calculate estimate, cannot proceed");
         toast({
@@ -128,6 +153,7 @@ export const Configuratore = () => {
   const handleReset = () => {
     console.log("🔄 Resetting configurator");
     flow.reset();
+    setSavedLeadId(null);
     setFormData({
       tipologiaAbitazione: "",
       superficie: 0,
@@ -153,49 +179,52 @@ export const Configuratore = () => {
     });
   };
 
-  const handleSubmitLead = async () => {
-    console.log("🚀 Starting lead submission process...");
-    console.log("📋 Complete form data:", formData);
+  const handleRequestSurvey = async () => {
+    console.log("🏠 Handling survey request for lead:", savedLeadId);
     
-    const finalEstimate = estimate || formData.estimate;
-    
-    if (!finalEstimate) {
-      console.error("❌ No estimate available for submission");
+    if (!savedLeadId) {
+      console.error("❌ No saved lead ID available");
       toast({
         title: "Errore",
-        description: "Stima non disponibile. Riprova il calcolo.",
+        description: "Impossibile trovare la richiesta. Riprova.",
         variant: "destructive",
       });
       return;
     }
 
-    console.log("📊 Using estimate for submission:", finalEstimate);
     setIsSavingLead(true);
-    
     try {
-      console.log("💾 Attempting to save lead to database...");
-      
-      const leadId = await saveLeadToDatabase(formData, finalEstimate);
-      
-      console.log("✅ Lead saved successfully with ID:", leadId);
+      // Aggiorna il lead esistente con la richiesta di sopralluogo
+      const { error } = await supabase
+        .from('leads')
+        .update({ 
+          stato: 'sopralluogo_richiesto',
+          data_richiesta_sopralluogo: formData.dataRichiestaSopralluogo || new Date().toISOString().split('T')[0],
+          orario_sopralluogo: formData.orarioSopralluogo || null,
+          note: formData.note || null,
+          data_ultimo_contatto: new Date().toISOString()
+        })
+        .eq('id', savedLeadId);
+
+      if (error) {
+        throw new Error(`Errore nell'aggiornare la richiesta: ${error.message}`);
+      }
+
+      console.log("✅ Lead updated with survey request");
       
       toast({
-        title: "Richiesta inviata con successo!",
-        description: `Lead salvato con ID: ${leadId}. Ti contatteremo al più presto per il sopralluogo.`,
+        title: "Richiesta sopralluogo inviata!",
+        description: "Ti contatteremo al più presto per il sopralluogo.",
         duration: 5000,
       });
       
-      console.log("➡️ Moving to success page");
       flow.goToNext();
-      
     } catch (error) {
-      console.error("❌ Critical error saving lead:", error);
-      
+      console.error("❌ Error updating lead for survey:", error);
       toast({
         title: "Errore",
-        description: `Non è stato possibile inviare la tua richiesta: ${error instanceof Error ? error.message : 'Errore sconosciuto'}. Riprova più tardi.`,
+        description: `Non è stato possibile inviare la richiesta: ${error instanceof Error ? error.message : 'Errore sconosciuto'}`,
         variant: "destructive",
-        duration: 5000,
       });
     } finally {
       setIsSavingLead(false);
@@ -260,7 +289,7 @@ export const Configuratore = () => {
             updateFormData={updateFormData}
             onBack={handleBack}
             onNext={handleNext}
-            isCalculatingEstimate={isCalculating}
+            isCalculatingEstimate={isCalculating || isSavingLead}
           />
         );
       
@@ -271,7 +300,7 @@ export const Configuratore = () => {
             updateFormData={updateFormData}
             estimate={estimate || formData.estimate}
             onBack={handleBack}
-            onSubmit={handleSubmitLead}
+            onSubmit={handleRequestSurvey}
             isSubmitting={isSavingLead}
           />
         );

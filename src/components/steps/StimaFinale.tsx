@@ -1,4 +1,3 @@
-
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,10 +29,10 @@ export const StimaFinale = ({
   
   // Aggiungi logging per il click del pulsante
   const handleSubmitClick = () => {
-    console.log("🖱️ StimaFinale: Submit button clicked!");
+    console.log("🖱️ StimaFinale: Survey request button clicked!");
     console.log("📊 StimaFinale: Current estimate:", estimate);
     console.log("📋 StimaFinale: Current formData:", formData);
-    console.log("⚡ StimaFinale: Calling onSubmit...");
+    console.log("⚡ StimaFinale: Calling onSubmit for survey request...");
     onSubmit();
   };
   
@@ -61,7 +60,7 @@ export const StimaFinale = ({
       <div className="space-y-2">
         <h1 className="text-3xl md:text-5xl font-medium text-[#1c1c1c]">La tua stima personalizzata</h1>
         <p className="text-lg md:text-xl text-[#1c1c1c] opacity-80">
-          Basata sulla configurazione del tuo impianto elettrico
+          I tuoi dati sono stati salvati. Richiedi un sopralluogo per un preventivo dettagliato.
         </p>
       </div>
 
@@ -165,12 +164,12 @@ export const StimaFinale = ({
         onChange={(value) => updateFormData({ tipoProprietà: value })}
       />
 
-      {/* Note aggiuntive */}
+      {/* Note aggiuntive per il sopralluogo */}
       <div className="space-y-2">
-        <Label htmlFor="note" className="text-lg">Note aggiuntive (opzionale)</Label>
+        <Label htmlFor="note" className="text-lg">Note per il sopralluogo (opzionale)</Label>
         <Textarea
           id="note"
-          placeholder="Aggiungi eventuali note o richieste specifiche..."
+          placeholder="Aggiungi eventuali note o richieste specifiche per il sopralluogo..."
           value={formData.note || ""}
           onChange={(e) => updateFormData({ note: e.target.value })}
           rows={4}
@@ -197,11 +196,11 @@ export const StimaFinale = ({
           {isSubmitting ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
-              Invio in corso...
+              Invio richiesta...
             </>
           ) : (
             <>
-              Invia richiesta sopralluogo
+              Richiedi sopralluogo
               <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
             </>
           )}
@@ -209,7 +208,11 @@ export const StimaFinale = ({
       </div>
 
       <div className="text-sm text-gray-600 text-center">
-        Inviando la richiesta, un nostro tecnico ti contatterà entro 24-48h per confermare il sopralluogo
+        {isSubmitting ? (
+          "Invio della richiesta di sopralluogo in corso..."
+        ) : (
+          "Richiedendo il sopralluogo, un nostro tecnico ti contatterà entro 24-48h per confermare l'appuntamento"
+        )}
       </div>
     </div>
   );
