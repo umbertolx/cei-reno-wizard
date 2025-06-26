@@ -47,12 +47,12 @@ export const calculateEstimate = async (formData: FormData): Promise<EstimateRes
     const max = Math.round(costoFinale + variazione);
     const average = Math.round((min + max) / 2);
 
-    // Breakdown dettagliato
+    // Breakdown dettagliato - now matching the TypeScript interface
     const breakdown = {
-      costoBase: Math.round(costoBase),
-      ristrutturazione: Math.round(costoConRistrutturazione - costoBase),
-      impianto: Math.round(costoConImpianto - costoConRistrutturazione),
-      complessita: Math.round(costoFinale - costoConImpianto)
+      basePrice: Math.round(costoBase),
+      roomsCost: Math.round(costoConImpianto - costoConRistrutturazione),
+      surfaceCost: Math.round(costoConRistrutturazione - costoBase),
+      specialFeaturesCost: Math.round(costoFinale - costoConImpianto)
     };
 
     const estimate: EstimateResponse = {
