@@ -3,7 +3,7 @@ import { Lead, leadStates, moduliDisponibili } from "@/data/mockLeads";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Phone, Mail, Home, Calendar, Euro, ChevronDown, Eye, User, Building2, Zap, Settings2, Calculator, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Home, Calendar, Euro, ChevronDown, Eye, User, Building2, Zap, Settings2, Calculator, Clock, CheckCircle, X } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useState, useEffect } from "react";
@@ -97,90 +97,6 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
   // Calculate average price from min and max
   const stimaMedia = lead.stimaMin && lead.stimaMax ? Math.round((lead.stimaMin + lead.stimaMax) / 2) : 0;
 
-  // Funzione per ottenere le funzionalità selezionate
-  const getSelectedFeatures = () => {
-    const features = [];
-    const config = configurazione.tipoDomotica === 'knx' ? configurazione.knxConfig : configurazione.bTicinoConfig;
-    
-    if (!config) return features;
-
-    if (config.luci?.enabled) {
-      features.push({
-        name: 'Controllo Luci',
-        icon: '💡',
-        details: config.luci.advancedOption === 'avanzato' ? 'Sistema avanzato con DALI' : 'Controllo standard'
-      });
-    }
-
-    if (config.tapparelle?.enabled) {
-      features.push({
-        name: 'Tapparelle Motorizzate',
-        icon: '🪟',
-        details: `${config.tapparelle.value || configurazione.numeroTapparelle || 0} tapparelle`
-      });
-    }
-
-    if (config.tende?.enabled) {
-      const interne = config.tende.tendeInterne || 0;
-      const esterne = config.tende.tendeEsterne || 0;
-      features.push({
-        name: 'Tende Motorizzate',
-        icon: '🏠',
-        details: `${interne} interne, ${esterne} esterne`
-      });
-    }
-
-    if (config.clima?.enabled) {
-      features.push({
-        name: 'Controllo Clima',
-        icon: '🌡️',
-        details: config.clima.advancedOption === 'clima_vmc' ? 'Con VMC integrata' : 'Controllo temperatura'
-      });
-    }
-
-    if (config.audio?.enabled) {
-      features.push({
-        name: 'Sistema Audio',
-        icon: '🎵',
-        details: config.audio.advancedOption === 'impianto_completo' ? 'Diffusione completa' : 'Controllo audio'
-      });
-    }
-
-    if (config.videocitofono?.enabled) {
-      features.push({
-        name: 'Videocitofono Smart',
-        icon: '📹',
-        details: 'Risposta da smartphone'
-      });
-    }
-
-    if (config.sicurezza?.enabled) {
-      features.push({
-        name: 'Sistema Sicurezza',
-        icon: '🔒',
-        details: 'Sensori e telecamere'
-      });
-    }
-
-    if (config.supervisor?.enabled) {
-      features.push({
-        name: configurazione.tipoDomotica === 'knx' ? 'Supervisor KNX' : 'App MyHome',
-        icon: '📱',
-        details: 'Controllo centralizzato'
-      });
-    }
-
-    if (config.prese?.enabled) {
-      features.push({
-        name: 'Prese Intelligenti',
-        icon: '🔌',
-        details: 'Controllo remoto elettrodomestici'
-      });
-    }
-
-    return features;
-  };
-
   return (
     <Card
       ref={setNodeRef}
@@ -256,149 +172,239 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
           </div>
         </div>
 
-        {/* Sezione espansa - tutti i dettagli */}
+        {/* Sezione espansa - completamente ridisegnata */}
         {isExpanded && (
           <div className="space-y-6 border-t pt-4">
             
-            {/* 1. ANAGRAFICA E CONTATTI */}
+            {/* 1. DATI PERSONALI DEL CLIENTE */}
             <div className="bg-blue-50 rounded-lg p-4">
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-4">
                 <User className="h-5 w-5 text-blue-600 mr-2" />
-                <h4 className="font-semibold text-lg text-blue-800">Anagrafica e Contatti</h4>
+                <h4 className="font-bold text-lg text-blue-800">Dati Personali</h4>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <div className="flex items-center text-sm">
-                    <span className="font-medium text-gray-700 w-20">Nome:</span>
-                    <span className="text-gray-900">{lead.nome} {lead.cognome}</span>
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-xs font-medium text-gray-500 mb-1">NOME COMPLETO</div>
+                    <div className="text-lg font-semibold text-gray-900">{lead.nome} {lead.cognome}</div>
                   </div>
-                  <div className="flex items-center text-sm">
-                    <Mail className="h-4 w-4 text-gray-500 mr-2" />
-                    <span className="text-blue-600 underline">{lead.email}</span>
+                  <div>
+                    <div className="text-xs font-medium text-gray-500 mb-1">EMAIL</div>
+                    <div className="text-blue-600 underline">{lead.email}</div>
                   </div>
-                  <div className="flex items-center text-sm">
-                    <Phone className="h-4 w-4 text-gray-500 mr-2" />
-                    <span className="text-gray-900 font-medium">{lead.telefono}</span>
+                  <div>
+                    <div className="text-xs font-medium text-gray-500 mb-1">TELEFONO</div>
+                    <div className="font-semibold text-gray-900">{lead.telefono}</div>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-start text-sm">
-                    <MapPin className="h-4 w-4 text-gray-500 mr-2 mt-0.5" />
-                    <div>
-                      <div className="text-gray-900">{lead.indirizzo}</div>
-                      <div className="text-gray-600">{lead.citta} {lead.cap}</div>
-                      <div className="text-gray-500">{lead.regione}</div>
-                    </div>
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-xs font-medium text-gray-500 mb-1">INDIRIZZO COMPLETO</div>
+                    <div className="text-gray-900">{lead.indirizzo}</div>
+                    <div className="text-gray-600">{lead.citta} ({lead.cap})</div>
+                    <div className="text-gray-500">{lead.regione}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-medium text-gray-500 mb-1">DATA RICHIESTA</div>
+                    <div className="text-gray-900">{formatDate(lead.dataRichiesta)}</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* 2. DETTAGLI IMMOBILE */}
+            {/* 2. DATI IMMOBILE */}
             <div className="bg-green-50 rounded-lg p-4">
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-4">
                 <Building2 className="h-5 w-5 text-green-600 mr-2" />
-                <h4 className="font-semibold text-lg text-green-800">Dettagli Immobile</h4>
+                <h4 className="font-bold text-lg text-green-800">Dati Immobile</h4>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-3 bg-white rounded-lg">
-                  <div className="text-2xl mb-1">🏠</div>
-                  <div className="text-xs text-gray-600">Tipologia</div>
-                  <div className="font-medium text-sm capitalize">{lead.tipologiaAbitazione}</div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                <div className="bg-white p-3 rounded-lg text-center">
+                  <div className="text-xs font-medium text-gray-500 mb-1">TIPOLOGIA</div>
+                  <div className="font-semibold text-gray-900 capitalize">{lead.tipologiaAbitazione.replace('_', ' ')}</div>
                 </div>
-                <div className="text-center p-3 bg-white rounded-lg">
-                  <div className="text-2xl mb-1">📐</div>
-                  <div className="text-xs text-gray-600">Superficie</div>
-                  <div className="font-medium text-sm">{lead.superficie} mq</div>
+                <div className="bg-white p-3 rounded-lg text-center">
+                  <div className="text-xs font-medium text-gray-500 mb-1">SUPERFICIE</div>
+                  <div className="font-semibold text-gray-900">{lead.superficie} mq</div>
                 </div>
-                <div className="text-center p-3 bg-white rounded-lg">
-                  <div className="text-2xl mb-1">🏢</div>
-                  <div className="text-xs text-gray-600">Piano</div>
-                  <div className="font-medium text-sm">{lead.piano || 'N/D'}</div>
+                <div className="bg-white p-3 rounded-lg text-center">
+                  <div className="text-xs font-medium text-gray-500 mb-1">PIANO</div>
+                  <div className="font-semibold text-gray-900">{lead.piano || 'N/D'}</div>
                 </div>
-                <div className="text-center p-3 bg-white rounded-lg">
-                  <div className="text-2xl mb-1">🏷️</div>
-                  <div className="text-xs text-gray-600">Proprietà</div>
-                  <div className="font-medium text-sm capitalize">{lead.tipoProprietà}</div>
+                <div className="bg-white p-3 rounded-lg text-center">
+                  <div className="text-xs font-medium text-gray-500 mb-1">PROPRIETÀ</div>
+                  <div className="font-semibold text-gray-900 capitalize">{lead.tipoProprietà}</div>
                 </div>
               </div>
               
-              {/* Composizione ambienti */}
-              <div className="mt-4">
-                <div className="text-sm font-medium text-gray-700 mb-2">Composizione Ambienti:</div>
-                <div className="flex flex-wrap gap-2">
+              {/* Composizione dettagliata */}
+              <div className="bg-white p-3 rounded-lg">
+                <div className="text-xs font-medium text-gray-500 mb-2">COMPOSIZIONE AMBIENTI</div>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
                   {Object.entries(lead.composizione).map(([stanza, numero]) => (
                     numero > 0 && (
-                      <Badge key={stanza} variant="secondary" className="text-xs">
-                        {stanza === 'cameraDoppia' ? `Camere Doppie: ${numero}` : 
-                         stanza === 'cameraSingola' ? `Camere Singole: ${numero}` : 
-                         stanza === 'bagno' ? `Bagni: ${numero}` :
-                         stanza === 'soggiorno' ? `Soggiorni: ${numero}` :
-                         stanza === 'cucina' ? `Cucine: ${numero}` :
-                         stanza === 'altro' ? `Altri: ${numero}` :
-                         `${stanza}: ${numero}`}
-                      </Badge>
+                      <div key={stanza} className="text-center">
+                        <div className="text-lg font-bold text-gray-900">{numero}</div>
+                        <div className="text-xs text-gray-600">
+                          {stanza === 'cameraDoppia' ? 'Cam. Doppie' : 
+                           stanza === 'cameraSingola' ? 'Cam. Singole' : 
+                           stanza === 'bagno' ? 'Bagni' :
+                           stanza === 'soggiorno' ? 'Soggiorni' :
+                           stanza === 'cucina' ? 'Cucine' :
+                           stanza === 'altro' ? 'Altri' : stanza}
+                        </div>
+                      </div>
                     )
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* 3. CONFIGURAZIONE DOMOTICA */}
-            {configurazione.tipoDomotica && (
+            {/* 3. RICHIESTE E CONFIGURAZIONE DOMOTICA */}
+            {configurazione && Object.keys(configurazione).length > 0 && (
               <div className="bg-purple-50 rounded-lg p-4">
-                <div className="flex items-center mb-3">
+                <div className="flex items-center mb-4">
                   <Zap className="h-5 w-5 text-purple-600 mr-2" />
-                  <h4 className="font-semibold text-lg text-purple-800">Sistema Domotico</h4>
-                </div>
-                
-                {/* Tipo di sistema */}
-                <div className="mb-4 p-3 bg-white rounded-lg border-l-4 border-purple-400">
-                  <div className="flex items-center mb-2">
-                    <div className="text-2xl mr-3">
-                      {configurazione.tipoDomotica === 'knx' ? '🔌' : '📡'}
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-800">
-                        {configurazione.tipoDomotica === 'knx' ? 'Sistema KNX (Filare)' : 'Sistema Wireless BTicino'}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {configurazione.tipoDomotica === 'knx' ? 
-                          'Sistema professionale cablato per massima affidabilità' : 
-                          'Sistema wireless per installazione rapida'}
-                      </div>
-                    </div>
-                  </div>
+                  <h4 className="font-bold text-lg text-purple-800">Configurazione Richiesta</h4>
                 </div>
 
-                {/* Funzionalità selezionate */}
-                <div>
-                  <div className="text-sm font-medium text-gray-700 mb-3">Funzionalità Richieste:</div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {getSelectedFeatures().map((feature, index) => (
-                      <div key={index} className="bg-white p-3 rounded-lg border border-purple-200">
-                        <div className="flex items-center mb-1">
-                          <span className="text-lg mr-2">{feature.icon}</span>
-                          <span className="font-medium text-gray-800">{feature.name}</span>
-                        </div>
-                        <div className="text-xs text-gray-600 ml-7">{feature.details}</div>
-                      </div>
-                    ))}
+                {/* Tipo di sistema domotico */}
+                {configurazione.tipoDomotica && (
+                  <div className="mb-4 p-4 bg-white rounded-lg border-l-4 border-purple-400">
+                    <div className="text-xs font-medium text-gray-500 mb-1">SISTEMA DOMOTICO SCELTO</div>
+                    <div className="text-xl font-bold text-purple-800 mb-2">
+                      {configurazione.tipoDomotica === 'knx' ? '🔌 Sistema KNX (Filare)' : '📡 Sistema Wireless BTicino'}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      {configurazione.tipoDomotica === 'knx' ? 
+                        'Sistema professionale cablato per massima affidabilità e prestazioni' : 
+                        'Sistema wireless per installazione rapida senza opere murarie'}
+                    </div>
                   </div>
-                </div>
+                )}
 
-                {/* Tipo di intervento */}
+                {/* Tipo di ristrutturazione */}
                 {configurazione.tipoRistrutturazione && (
-                  <div className="mt-4 p-3 bg-white rounded-lg">
-                    <div className="text-sm font-medium text-gray-700 mb-1">Tipo di Intervento:</div>
-                    <Badge className={`${
+                  <div className="mb-4 p-3 bg-white rounded-lg">
+                    <div className="text-xs font-medium text-gray-500 mb-1">TIPO DI INTERVENTO</div>
+                    <Badge className={`text-sm ${
                       configurazione.tipoRistrutturazione === 'completa' ? 'bg-red-100 text-red-800' :
                       configurazione.tipoRistrutturazione === 'nuova' ? 'bg-green-100 text-green-800' :
-                      'bg-yellow-100 text-yellow-800'
+                      configurazione.tipoRistrutturazione === 'parziale' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-gray-100 text-gray-800'
                     }`}>
-                      {configurazione.tipoRistrutturazione === 'completa' ? 'Ristrutturazione Completa' :
-                       configurazione.tipoRistrutturazione === 'nuova' ? 'Nuova Costruzione' : 'Intervento Parziale'}
+                      {configurazione.tipoRistrutturazione === 'completa' ? '🏗️ Ristrutturazione Completa' :
+                       configurazione.tipoRistrutturazione === 'nuova' ? '🏠 Nuova Costruzione' : 
+                       configurazione.tipoRistrutturazione === 'parziale' ? '🔧 Intervento Parziale' :
+                       configurazione.tipoRistrutturazione}
                     </Badge>
+                  </div>
+                )}
+
+                {/* Età impianto */}
+                {configurazione.impiantoVecchio !== undefined && (
+                  <div className="mb-4 p-3 bg-white rounded-lg">
+                    <div className="text-xs font-medium text-gray-500 mb-1">ETÀ IMPIANTO ELETTRICO</div>
+                    <div className="flex items-center">
+                      {configurazione.impiantoVecchio ? (
+                        <div className="flex items-center text-orange-600">
+                          <X className="h-4 w-4 mr-1" />
+                          <span className="font-medium">Impianto vecchio (da rifare)</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center text-green-600">
+                          <CheckCircle className="h-4 w-4 mr-1" />
+                          <span className="font-medium">Impianto recente (a norma)</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Funzionalità richieste */}
+                {(configurazione.knxConfig || configurazione.bTicinoConfig) && (
+                  <div className="bg-white p-4 rounded-lg">
+                    <div className="text-xs font-medium text-gray-500 mb-3">FUNZIONALITÀ RICHIESTE</div>
+                    <div className="space-y-3">
+                      {(() => {
+                        const config = configurazione.tipoDomotica === 'knx' ? configurazione.knxConfig : configurazione.bTicinoConfig;
+                        if (!config) return null;
+
+                        return Object.entries(config).map(([key, value]) => {
+                          if (typeof value === 'object' && value?.enabled) {
+                            return (
+                              <div key={key} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                                <div className="flex items-center">
+                                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                                  <span className="font-medium text-gray-900">
+                                    {key === 'luci' ? '💡 Controllo Luci' :
+                                     key === 'tapparelle' ? '🪟 Tapparelle Motorizzate' :
+                                     key === 'tende' ? '🏠 Tende Motorizzate' :
+                                     key === 'clima' ? '🌡️ Controllo Clima' :
+                                     key === 'audio' ? '🎵 Sistema Audio' :
+                                     key === 'videocitofono' ? '📹 Videocitofono Smart' :
+                                     key === 'sicurezza' ? '🔒 Sistema Sicurezza' :
+                                     key === 'supervisor' ? '📱 Controllo Centralizzato' :
+                                     key === 'prese' ? '🔌 Prese Intelligenti' :
+                                     key}
+                                  </span>
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                  {value.advancedOption && (
+                                    <span className="bg-gray-100 px-2 py-1 rounded text-xs">
+                                      {value.advancedOption}
+                                    </span>
+                                  )}
+                                  {value.value && (
+                                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs ml-1">
+                                      {value.value}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          }
+                          return null;
+                        });
+                      })()}
+                    </div>
+                  </div>
+                )}
+
+                {/* Interventi elettrici */}
+                {configurazione.interventiElettrici && Object.keys(configurazione.interventiElettrici).length > 0 && (
+                  <div className="mt-4 bg-white p-4 rounded-lg">
+                    <div className="text-xs font-medium text-gray-500 mb-3">INTERVENTI ELETTRICI RICHIESTI</div>
+                    <div className="space-y-2">
+                      {Object.entries(configurazione.interventiElettrici).map(([key, value]) => {
+                        if (typeof value === 'object' && value?.enabled) {
+                          return (
+                            <div key={key} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                              <div className="flex items-center">
+                                <CheckCircle className="h-4 w-4 text-blue-500 mr-2" />
+                                <span className="font-medium text-gray-900">
+                                  {key === 'tapparelleElettriche' ? '⚡ Elettrificare Tapparelle' :
+                                   key === 'puntiLuce' ? '💡 Nuovi Punti Luce' :
+                                   key === 'modificareTracce' ? '🔧 Modificare Tracce' :
+                                   key === 'sostituirePreseInterruttori' ? '🔌 Sostituire Prese/Interruttori' :
+                                   key === 'comandiSmart' ? '📱 Comandi Smart' :
+                                   key}
+                                </span>
+                              </div>
+                              {value.value && (
+                                <div className="text-sm text-gray-600">
+                                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
+                                    {value.value} {key === 'tapparelleElettriche' ? 'tapparelle' : key === 'puntiLuce' ? 'punti luce' : ''}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
@@ -406,114 +412,61 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
 
             {/* 4. ANALISI ECONOMICA */}
             <div className="bg-yellow-50 rounded-lg p-4">
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-4">
                 <Calculator className="h-5 w-5 text-yellow-600 mr-2" />
-                <h4 className="font-semibold text-lg text-yellow-800">Analisi Economica</h4>
+                <h4 className="font-bold text-lg text-yellow-800">Analisi Economica</h4>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="text-center p-4 bg-white rounded-lg border">
-                  <div className="text-sm text-gray-600 mb-1">Preventivo Minimo</div>
-                  <div className="text-xl font-bold text-green-600">€{lead.stimaMin?.toLocaleString()}</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white p-4 rounded-lg border-l-4 border-green-400">
+                  <div className="text-xs font-medium text-gray-500 mb-1">PREVENTIVO MINIMO</div>
+                  <div className="text-2xl font-bold text-green-600">€{lead.stimaMin?.toLocaleString()}</div>
                 </div>
-                <div className="text-center p-4 bg-white rounded-lg border">
-                  <div className="text-sm text-gray-600 mb-1">Preventivo Massimo</div>
-                  <div className="text-xl font-bold text-blue-600">€{lead.stimaMax?.toLocaleString()}</div>
+                <div className="bg-white p-4 rounded-lg border-l-4 border-blue-400">
+                  <div className="text-xs font-medium text-gray-500 mb-1">PREVENTIVO MASSIMO</div>
+                  <div className="text-2xl font-bold text-blue-600">€{lead.stimaMax?.toLocaleString()}</div>
                 </div>
-                <div className="text-center p-4 bg-white rounded-lg border">
-                  <div className="text-sm text-gray-600 mb-1">Valore Medio</div>
-                  <div className="text-xl font-bold text-gray-700">€{stimaMedia?.toLocaleString()}</div>
+                <div className="bg-white p-4 rounded-lg border-l-4 border-gray-400">
+                  <div className="text-xs font-medium text-gray-500 mb-1">VALORE MEDIO</div>
+                  <div className="text-2xl font-bold text-gray-700">€{stimaMedia?.toLocaleString()}</div>
                 </div>
               </div>
-
-              {/* Dettaglio costi se disponibile */}
-              {stimaDettagli.breakdown && (
-                <div className="bg-white p-3 rounded-lg">
-                  <div className="text-sm font-medium text-gray-700 mb-2">Dettaglio Costi:</div>
-                  <div className="space-y-2">
-                    {stimaDettagli.breakdown.basePrice && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Prezzo Base Sistema:</span>
-                        <span className="font-medium">€{stimaDettagli.breakdown.basePrice.toLocaleString()}</span>
-                      </div>
-                    )}
-                    {stimaDettagli.breakdown.roomsCost && stimaDettagli.breakdown.roomsCost > 0 && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Costo Ambienti:</span>
-                        <span className="font-medium">€{stimaDettagli.breakdown.roomsCost.toLocaleString()}</span>
-                      </div>
-                    )}
-                    {stimaDettagli.breakdown.specialFeaturesCost && stimaDettagli.breakdown.specialFeaturesCost > 0 && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Funzioni Speciali:</span>
-                        <span className="font-medium">€{stimaDettagli.breakdown.specialFeaturesCost.toLocaleString()}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
 
-            {/* 5. INFORMAZIONI COMMERCIALI */}
+            {/* 5. INFO COMMERCIALI */}
             <div className="bg-gray-50 rounded-lg p-4">
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-4">
                 <Clock className="h-5 w-5 text-gray-600 mr-2" />
-                <h4 className="font-semibold text-lg text-gray-800">Informazioni Commerciali</h4>
+                <h4 className="font-bold text-lg text-gray-800">Info Commerciali</h4>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="bg-white p-3 rounded-lg">
-                    <div className="text-xs text-gray-600 mb-1">Data Richiesta</div>
-                    <div className="font-medium">{formatDate(lead.dataRichiesta)}</div>
-                  </div>
-                  <div className="bg-white p-3 rounded-lg">
-                    <div className="text-xs text-gray-600 mb-1">Ultimo Contatto</div>
-                    <div className="font-medium">
-                      {lead.dataUltimoContatto ? formatDate(lead.dataUltimoContatto) : 'Mai contattato'}
-                    </div>
+                <div className="bg-white p-3 rounded-lg">
+                  <div className="text-xs font-medium text-gray-500 mb-1">ULTIMO CONTATTO</div>
+                  <div className="font-medium text-gray-900">
+                    {lead.dataUltimoContatto ? formatDate(lead.dataUltimoContatto) : 'Mai contattato'}
                   </div>
                 </div>
                 
-                <div className="space-y-3">
-                  <div className="bg-white p-3 rounded-lg">
-                    <div className="text-xs text-gray-600 mb-1">Moduli Completati</div>
-                    <div className="flex items-center">
-                      <span className="font-medium mr-2">{lead.moduliCompletati?.length || 0}/12</span>
-                      <div className="flex-1 bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-green-500 h-2 rounded-full" 
-                          style={{ width: `${((lead.moduliCompletati?.length || 0) / 12) * 100}%` }}
-                        ></div>
-                      </div>
+                <div className="bg-white p-3 rounded-lg">
+                  <div className="text-xs font-medium text-gray-500 mb-1">MODULI COMPLETATI</div>
+                  <div className="flex items-center">
+                    <span className="font-bold text-gray-900 mr-2">{lead.moduliCompletati?.length || 0}/12</span>
+                    <div className="flex-1 bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-green-500 h-2 rounded-full" 
+                        style={{ width: `${((lead.moduliCompletati?.length || 0) / 12) * 100}%` }}
+                      ></div>
                     </div>
                   </div>
-                  
-                  {lead.sopralluogoRichiesto && (
-                    <div className="bg-orange-100 border border-orange-300 p-3 rounded-lg">
-                      <div className="flex items-center text-orange-800">
-                        <div className="text-xl mr-2">🔍</div>
-                        <span className="font-medium">Sopralluogo Richiesto</span>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
 
-              {/* Moduli completati */}
-              {lead.moduliCompletati && lead.moduliCompletati.length > 0 && (
-                <div className="mt-4">
-                  <div className="text-sm font-medium text-gray-700 mb-2">Moduli Completati:</div>
-                  <div className="flex flex-wrap gap-1">
-                    {lead.moduliCompletati.map((modulo) => (
-                      <Badge 
-                        key={modulo} 
-                        variant="outline" 
-                        className="text-xs"
-                      >
-                        {moduliDisponibili[modulo as keyof typeof moduliDisponibili]?.label || modulo}
-                      </Badge>
-                    ))}
+              {lead.sopralluogoRichiesto && (
+                <div className="mt-4 bg-orange-100 border border-orange-300 p-3 rounded-lg">
+                  <div className="flex items-center text-orange-800">
+                    <div className="text-xl mr-2">🔍</div>
+                    <span className="font-bold">SOPRALLUOGO RICHIESTO</span>
                   </div>
                 </div>
               )}
@@ -524,9 +477,11 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
               <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
                 <div className="flex items-center mb-2">
                   <div className="text-xl mr-2">💬</div>
-                  <h4 className="font-semibold text-amber-800">Note del Cliente</h4>
+                  <h4 className="font-bold text-amber-800">Note del Cliente</h4>
                 </div>
-                <p className="text-gray-700 italic">"{lead.note}"</p>
+                <div className="bg-white p-3 rounded italic text-gray-700">
+                  "{lead.note}"
+                </div>
               </div>
             )}
           </div>
