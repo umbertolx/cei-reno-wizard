@@ -17,6 +17,7 @@ import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
 import { calculateEstimate } from "@/services/estimateService";
+import { saveLeadToDatabase } from "@/services/leadService";
 import { EstimateResponse } from "@/types/estimate";
 
 export type FormData = {
@@ -61,6 +62,7 @@ export type FormData = {
 export const Configuratore = () => {
   const [step, setStep] = useState<number>(0);
   const [isCalculatingEstimate, setIsCalculatingEstimate] = useState(false);
+  const [isSavingLead, setIsSavingLead] = useState(false);
   
   const [formData, setFormData] = useState<FormData>({
     tipologiaAbitazione: "",
@@ -147,74 +149,42 @@ export const Configuratore = () => {
   };
 
   const handleInviaDati = async () => {
+    if (!formData.estimate) {
+      toast({
+        title: "Errore",
+        description: "Stima non disponibile. Riprova il calcolo.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSavingLead(true);
+    
     try {
-      // Here we would send all structured data to the backend:
-      // - All configuration data (formData)
-      // - Contact information
-      // - The estimate received from external API
-      // - Survey request details
+      console.log("Saving lead data to database...");
       
-      const dataToSend = {
-        configuration: {
-          tipologiaAbitazione: formData.tipologiaAbitazione,
-          superficie: formData.superficie,
-          indirizzo: formData.indirizzo,
-          citta: formData.citta,
-          cap: formData.cap,
-          regione: formData.regione,
-          piano: formData.piano,
-          composizione: formData.composizione,
-          tipoProprietà: formData.tipoProprietà,
-          tipoRistrutturazione: formData.tipoRistrutturazione,
-          impiantoVecchio: formData.impiantoVecchio,
-          interventiElettrici: formData.interventiElettrici,
-          ambientiSelezionati: formData.ambientiSelezionati,
-          tipoImpianto: formData.tipoImpianto,
-          tipoDomotica: formData.tipoDomotica,
-          knxConfig: formData.knxConfig,
-          bTicinoConfig: formData.bTicinoConfig,
-          elettrificareTapparelle: formData.elettrificareTapparelle,
-          numeroTapparelle: formData.numeroTapparelle,
-        },
-        contactData: {
-          nome: formData.nome,
-          cognome: formData.cognome,
-          email: formData.email,
-          telefono: formData.telefono,
-        },
-        estimate: formData.estimate,
-        surveyRequest: {
-          dataRichiestaSopralluogo: formData.dataRichiestaSopralluogo,
-          orarioSopralluogo: formData.orarioSopralluogo,
-          note: formData.note,
-        },
-        submittedAt: new Date().toISOString()
-      };
+      const leadId = await saveLeadToDatabase(formData, formData.estimate);
       
-      console.log("Structured data to send to admin dashboard:", dataToSend);
-      
-      // TODO: Replace with actual API call to save data
-      // await fetch('/api/leads', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(dataToSend)
-      // });
+      console.log("Lead saved successfully with ID:", leadId);
       
       toast({
         title: "Richiesta inviata con successo!",
-        description: "Ti contatteremo al più presto.",
+        description: "Ti contatteremo al più presto per il sopralluogo.",
         duration: 5000,
       });
       
       setStep(prev => prev + 1);
       
     } catch (error) {
+      console.error("Error saving lead:", error);
       toast({
         title: "Errore",
         description: "Non è stato possibile inviare la tua richiesta. Riprova più tardi.",
         variant: "destructive",
         duration: 5000,
       });
+    } finally {
+      setIsSavingLead(false);
     }
   };
 

@@ -1,4 +1,6 @@
+import { DatabaseLead } from "@/services/leadService";
 
+// Manteniamo i tipi esistenti per compatibilità
 export interface Lead {
   id: string;
   nome: string;
@@ -6,32 +8,76 @@ export interface Lead {
   email: string;
   telefono: string;
   citta: string;
-  cap: string;
-  stato: keyof typeof leadStates;
-  tipologiaAbitazione: 'appartamento' | 'casa indipendente' | 'villa';
+  indirizzo: string;
+  tipologiaAbitazione: string;
   superficie: number;
   stimaMin: number;
   stimaMax: number;
+  stato: keyof typeof leadStates;
   dataRichiesta: string;
   dataUltimoContatto: string;
-  moduliCompletati: string[];
-  // Adding missing properties
-  composizione: {
-    cucina: number;
-    cameraDoppia: number;
-    cameraSingola: number;
-    bagno: number;
-    soggiorno: number;
-    altro: number;
-  };
-  piano: string;
-  tipoProprietà: string;
-  indirizzo: string;
-  regione: string;
   note?: string;
 }
 
-export const mockLeads: Lead[] = [
+// Funzione per convertire DatabaseLead in Lead (per compatibilità con l'UI esistente)
+export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
+  return {
+    id: dbLead.id,
+    nome: dbLead.nome,
+    cognome: dbLead.cognome,
+    email: dbLead.email,
+    telefono: dbLead.telefono,
+    citta: dbLead.citta,
+    indirizzo: dbLead.indirizzo,
+    tipologiaAbitazione: dbLead.tipologia_abitazione,
+    superficie: dbLead.superficie,
+    stimaMin: dbLead.stima_min || 0,
+    stimaMax: dbLead.stima_max || 0,
+    stato: dbLead.stato as keyof typeof leadStates,
+    dataRichiesta: dbLead.data_creazione,
+    dataUltimoContatto: dbLead.data_ultimo_contatto,
+    note: dbLead.note || undefined,
+  };
+};
+
+export const leadStates = {
+  nuovo: {
+    label: "Nuovo",
+    color: "bg-gray-100 text-gray-700"
+  },
+  in_contatto: {
+    label: "In Contatto",
+    color: "bg-blue-100 text-blue-700"
+  },
+  preventivo_inviato: {
+    label: "Preventivo Inviato",
+    color: "bg-yellow-100 text-yellow-700"
+  },
+  sopralluogo_programmato: {
+    label: "Sopralluogo Programmato",
+    color: "bg-purple-100 text-purple-700"
+  },
+  in_trattativa: {
+    label: "In Trattativa",
+    color: "bg-orange-100 text-orange-700"
+  },
+  chiuso: {
+    label: "Chiuso",
+    color: "bg-green-100 text-green-700"
+  },
+  perso: {
+    label: "Perso",
+    color: "bg-red-100 text-red-700"
+  }
+};
+
+export interface CustomColumn {
+  id: string;
+  label: string;
+  color: string;
+}
+
+export const mockLeads = [
   {
     id: "1",
     nome: "Mario",
@@ -39,388 +85,167 @@ export const mockLeads: Lead[] = [
     email: "mario.rossi@example.com",
     telefono: "3331234567",
     citta: "Roma",
-    cap: "00100",
+    indirizzo: "Via Roma, 1",
+    tipologiaAbitazione: "Appartamento",
+    superficie: 100,
+    stimaMin: 10000,
+    stimaMax: 15000,
     stato: "nuovo",
-    tipologiaAbitazione: "appartamento",
-    superficie: 80,
-    stimaMin: 250000,
-    stimaMax: 300000,
     dataRichiesta: "2024-01-20T10:00:00.000Z",
     dataUltimoContatto: "2024-01-20T10:00:00.000Z",
-    moduliCompletati: ["modulo1", "modulo2"],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 1,
-      cameraSingola: 1,
-      bagno: 1,
-      soggiorno: 1,
-      altro: 0
-    },
-    piano: "2°",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Roma 123",
-    regione: "Lazio",
-    note: "Cliente interessato a ristrutturazione completa"
+    note: "Richiede sopralluogo urgente"
   },
   {
     id: "2",
-    nome: "Giulia",
+    nome: "Giuseppe",
     cognome: "Verdi",
-    email: "giulia.verdi@example.com",
-    telefono: "3459876543",
+    email: "giuseppe.verdi@example.com",
+    telefono: "3337654321",
     citta: "Milano",
-    cap: "20121",
-    stato: "contattato",
-    tipologiaAbitazione: "casa indipendente",
-    superficie: 120,
-    stimaMin: 400000,
-    stimaMax: 450000,
-    dataRichiesta: "2024-02-15T14:30:00.000Z",
-    dataUltimoContatto: "2024-02-16T16:00:00.000Z",
-    moduliCompletati: ["modulo1", "modulo3"],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 2,
-      cameraSingola: 0,
-      bagno: 2,
-      soggiorno: 1,
-      altro: 1
-    },
-    piano: "Piano Terra",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Milano 45",
-    regione: "Lombardia"
+    indirizzo: "Via Milano, 2",
+    tipologiaAbitazione: "Villa",
+    superficie: 200,
+    stimaMin: 20000,
+    stimaMax: 25000,
+    stato: "in_contatto",
+    dataRichiesta: "2024-01-15T14:30:00.000Z",
+    dataUltimoContatto: "2024-01-22T09:00:00.000Z",
+    note: "Interessato a domotica"
   },
   {
     id: "3",
-    nome: "Luca",
+    nome: "Anna",
     cognome: "Bianchi",
-    email: "luca.bianchi@example.com",
-    telefono: "3205551212",
+    email: "anna.bianchi@example.com",
+    telefono: "3331122334",
     citta: "Napoli",
-    cap: "80100",
-    stato: "qualificato",
-    tipologiaAbitazione: "villa",
-    superficie: 200,
-    stimaMin: 700000,
-    stimaMax: 800000,
-    dataRichiesta: "2024-03-01T09:15:00.000Z",
-    dataUltimoContatto: "2024-03-05T11:00:00.000Z",
-    moduliCompletati: ["modulo1", "modulo2", "modulo3"],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 3,
-      cameraSingola: 2,
-      bagno: 3,
-      soggiorno: 2,
-      altro: 2
-    },
-    piano: "Su due livelli",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Napoli 78",
-    regione: "Campania",
-    note: "Villa con giardino, richiede preventivo dettagliato"
+    indirizzo: "Via Napoli, 3",
+    tipologiaAbitazione: "Appartamento",
+    superficie: 80,
+    stimaMin: 8000,
+    stimaMax: 12000,
+    stato: "preventivo_inviato",
+    dataRichiesta: "2024-01-10T09:15:00.000Z",
+    dataUltimoContatto: "2024-01-25T16:45:00.000Z",
+    note: "In attesa di feedback sul preventivo"
   },
   {
     id: "4",
-    nome: "Francesca",
+    nome: "Luigi",
     cognome: "Neri",
-    email: "francesca.neri@example.com",
-    telefono: "3494448888",
+    email: "luigi.neri@example.com",
+    telefono: "3334455667",
     citta: "Torino",
-    cap: "10100",
-    stato: "proposta",
-    tipologiaAbitazione: "appartamento",
-    superficie: 65,
-    stimaMin: 200000,
-    stimaMax: 230000,
-    dataRichiesta: "2024-03-10T16:45:00.000Z",
-    dataUltimoContatto: "2024-03-12T18:00:00.000Z",
-    moduliCompletati: ["modulo1"],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 1,
-      cameraSingola: 0,
-      bagno: 1,
-      soggiorno: 1,
-      altro: 0
-    },
-    piano: "3°",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Torino 12",
-    regione: "Piemonte"
+    indirizzo: "Via Torino, 4",
+    tipologiaAbitazione: "Casa indipendente",
+    superficie: 150,
+    stimaMin: 15000,
+    stimaMax: 20000,
+    stato: "sopralluogo_programmato",
+    dataRichiesta: "2024-01-05T16:00:00.000Z",
+    dataUltimoContatto: "2024-01-28T11:30:00.000Z",
+    note: "Sopralluogo confermato per il 30/01"
   },
   {
     id: "5",
-    nome: "Marco",
+    nome: "Francesca",
     cognome: "Gialli",
-    email: "marco.gialli@example.com",
-    telefono: "3387772222",
+    email: "francesca.gialli@example.com",
+    telefono: "3339988776",
     citta: "Palermo",
-    cap: "90100",
-    stato: "chiuso",
-    tipologiaAbitazione: "casa indipendente",
-    superficie: 150,
-    stimaMin: 500000,
-    stimaMax: 550000,
-    dataRichiesta: "2024-04-01T11:30:00.000Z",
-    dataUltimoContatto: "2024-04-05T15:00:00.000Z",
-    moduliCompletati: ["modulo1", "modulo2", "modulo3", "modulo4"],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 2,
-      cameraSingola: 1,
-      bagno: 2,
-      soggiorno: 1,
-      altro: 1
-    },
-    piano: "Piano Terra + Primo",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Palermo 56",
-    regione: "Sicilia",
-    note: "Progetto completato con successo"
+    indirizzo: "Via Palermo, 5",
+    tipologiaAbitazione: "Appartamento",
+    superficie: 90,
+    stimaMin: 9000,
+    stimaMax: 14000,
+    stato: "in_trattativa",
+    dataRichiesta: "2023-12-28T11:45:00.000Z",
+    dataUltimoContatto: "2024-02-01T14:00:00.000Z",
+    note: "Offerta in corso"
   },
   {
     id: "6",
-    nome: "Elena",
-    cognome: "Rosa",
-    email: "elena.rosa@example.com",
-    telefono: "3476663333",
+    nome: "Giovanni",
+    cognome: "Moretti",
+    email: "giovanni.moretti@example.com",
+    telefono: "3332233445",
     citta: "Bologna",
-    cap: "40100",
-    stato: "perso",
-    tipologiaAbitazione: "villa",
-    superficie: 250,
-    stimaMin: 900000,
-    stimaMax: 1000000,
-    dataRichiesta: "2024-04-15T08:00:00.000Z",
-    dataUltimoContatto: "2024-04-18T12:00:00.000Z",
-    moduliCompletati: ["modulo1", "modulo2"],
-    composizione: {
-      cucina: 2,
-      cameraDoppia: 4,
-      cameraSingola: 2,
-      bagno: 4,
-      soggiorno: 2,
-      altro: 3
-    },
-    piano: "Su tre livelli",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Bologna 89",
-    regione: "Emilia-Romagna",
-    note: "Cliente non più interessato"
+    indirizzo: "Via Bologna, 6",
+    tipologiaAbitazione: "Villa a schiera",
+    superficie: 180,
+    stimaMin: 18000,
+    stimaMax: 23000,
+    stato: "chiuso",
+    dataRichiesta: "2023-12-20T18:30:00.000Z",
+    dataUltimoContatto: "2024-02-05T10:15:00.000Z",
+    note: "Contratto firmato"
   },
   {
     id: "7",
-    nome: "Roberto",
-    cognome: "Marrone",
-    email: "roberto.marrone@example.com",
-    telefono: "3395554444",
-    citta: "Firenze",
-    cap: "50100",
-    stato: "nuovo",
-    tipologiaAbitazione: "appartamento",
+    nome: "Elena",
+    cognome: "Marino",
+    email: "elena.marino@example.com",
+    telefono: "3335566778",
+    citta: "Catania",
+    indirizzo: "Via Catania, 7",
+    tipologiaAbitazione: "Appartamento",
     superficie: 70,
-    stimaMin: 220000,
-    stimaMax: 260000,
-    dataRichiesta: "2024-05-01T13:45:00.000Z",
-    dataUltimoContatto: "2024-05-01T13:45:00.000Z",
-    moduliCompletati: [],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 1,
-      cameraSingola: 1,
-      bagno: 1,
-      soggiorno: 1,
-      altro: 0
-    },
-    piano: "1°",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Firenze 34",
-    regione: "Toscana"
+    stimaMin: 7000,
+    stimaMax: 11000,
+    stato: "perso",
+    dataRichiesta: "2023-12-15T13:00:00.000Z",
+    dataUltimoContatto: "2024-02-10T17:45:00.000Z",
+    note: "Cliente non interessato"
   },
   {
     id: "8",
-    nome: "Alessandra",
-    cognome: "Grigi",
-    email: "alessandra.grigi@example.com",
-    telefono: "3468889999",
+    nome: "Riccardo",
+    cognome: "Greco",
+    email: "riccardo.greco@example.com",
+    telefono: "3338899001",
     citta: "Genova",
-    cap: "16100",
-    stato: "contattato",
-    tipologiaAbitazione: "casa indipendente",
-    superficie: 130,
-    stimaMin: 450000,
-    stimaMax: 500000,
-    dataRichiesta: "2024-05-10T17:30:00.000Z",
-    dataUltimoContatto: "2024-05-12T09:00:00.000Z",
-    moduliCompletati: ["modulo1", "modulo3"],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 2,
-      cameraSingola: 1,
-      bagno: 2,
-      soggiorno: 1,
-      altro: 1
-    },
-    piano: "Piano Terra + Primo",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Genova 67",
-    regione: "Liguria"
+    indirizzo: "Via Genova, 8",
+    tipologiaAbitazione: "Attico",
+    superficie: 120,
+    stimaMin: 12000,
+    stimaMax: 17000,
+    stato: "nuovo",
+    dataRichiesta: "2023-12-10T08:45:00.000Z",
+    dataUltimoContatto: "2024-02-15T08:45:00.000Z",
+    note: "Da ricontattare"
   },
   {
     id: "9",
-    nome: "Simone",
-    cognome: "Azzurri",
-    email: "simone.azzurri@example.com",
-    telefono: "3283337777",
-    citta: "Cagliari",
-    cap: "09100",
-    stato: "qualificato",
-    tipologiaAbitazione: "villa",
-    superficie: 180,
-    stimaMin: 650000,
-    stimaMax: 750000,
-    dataRichiesta: "2024-05-15T10:15:00.000Z",
-    dataUltimoContatto: "2024-05-18T14:00:00.000Z",
-    moduliCompletati: ["modulo1", "modulo2", "modulo3"],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 3,
-      cameraSingola: 1,
-      bagno: 3,
-      soggiorno: 2,
-      altro: 2
-    },
-    piano: "Piano Terra + Primo",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Cagliari 23",
-    regione: "Sardegna"
+    nome: "Alessia",
+    cognome: "Bruno",
+    email: "alessia.bruno@example.com",
+    telefono: "3336677889",
+    citta: "Firenze",
+    indirizzo: "Via Firenze, 9",
+    tipologiaAbitazione: "Loft",
+    superficie: 60,
+    stimaMin: 6000,
+    stimaMax: 10000,
+    stato: "in_contatto",
+    dataRichiesta: "2023-12-05T15:30:00.000Z",
+    dataUltimoContatto: "2024-02-20T12:30:00.000Z",
+    note: "Ha richiesto maggiori informazioni"
   },
   {
     id: "10",
-    nome: "Chiara",
-    cognome: "Viola",
-    email: "chiara.viola@example.com",
-    telefono: "3452225555",
-    citta: "Venezia",
-    cap: "30100",
-    stato: "proposta",
-    tipologiaAbitazione: "appartamento",
-    superficie: 55,
-    stimaMin: 180000,
-    stimaMax: 210000,
-    dataRichiesta: "2024-06-01T19:00:00.000Z",
-    dataUltimoContatto: "2024-06-03T11:00:00.000Z",
-    moduliCompletati: ["modulo1"],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 1,
-      cameraSingola: 0,
-      bagno: 1,
-      soggiorno: 1,
-      altro: 0
-    },
-    piano: "2°",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Venezia 91",
-    regione: "Veneto"
-  },
-  {
-    id: "11",
-    nome: "Davide",
-    cognome: "Arancio",
-    email: "davide.arancio@example.com",
-    telefono: "3339991111",
-    citta: "Ancona",
-    cap: "60100",
-    stato: "chiuso",
-    tipologiaAbitazione: "casa indipendente",
-    superficie: 140,
-    stimaMin: 480000,
-    stimaMax: 530000,
-    dataRichiesta: "2024-06-10T14:45:00.000Z",
-    dataUltimoContatto: "2024-06-15T16:00:00.000Z",
-    moduliCompletati: ["modulo1", "modulo2", "modulo3", "modulo4"],
-    composizione: {
-      cucina: 1,
-      cameraDoppia: 2,
-      cameraSingola: 1,
-      bagno: 2,
-      soggiorno: 1,
-      altro: 1
-    },
-    piano: "Piano Terra + Primo",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Ancona 15",
-    regione: "Marche"
-  },
-  {
-    id: "12",
-    nome: "Valentina",
-    cognome: "Verde",
-    email: "valentina.verde@example.com",
-    telefono: "3497774444",
-    citta: "Trieste",
-    cap: "34100",
-    stato: "perso",
-    tipologiaAbitazione: "villa",
+    nome: "Simone",
+    cognome: "Russo",
+    email: "simone.russo@example.com",
+    telefono: "3333344556",
+    citta: "Bari",
+    indirizzo: "Via Bari, 10",
+    tipologiaAbitazione: "Casa a corte",
     superficie: 220,
-    stimaMin: 850000,
-    stimaMax: 950000,
-    dataRichiesta: "2024-06-15T07:30:00.000Z",
-    dataUltimoContatto: "2024-06-18T10:00:00.000Z",
-    moduliCompletati: ["modulo1", "modulo2"],
-    composizione: {
-      cucina: 2,
-      cameraDoppia: 4,
-      cameraSingola: 1,
-      bagno: 4,
-      soggiorno: 2,
-      altro: 2
-    },
-    piano: "Su tre livelli",
-    tipoProprietà: "Proprietà",
-    indirizzo: "Via Trieste 88",
-    regione: "Friuli-Venezia Giulia",
-    note: "Budget non sufficiente per il progetto richiesto"
-  },
-];
-
-export const leadStates = {
-  nuovo: { label: "Nuovo", color: "bg-blue-500" },
-  contattato: { label: "Contattato", color: "bg-yellow-500" },
-  qualificato: { label: "Qualificato", color: "bg-purple-500" },
-  proposta: { label: "Proposta Inviata", color: "bg-orange-500" },
-  chiuso: { label: "Chiuso", color: "bg-green-500" },
-  perso: { label: "Perso", color: "bg-red-500" }
-} as const;
-
-export const moduliDisponibili = {
-  modulo1: { label: "Modulo 1", color: "bg-blue-100 text-blue-700" },
-  modulo2: { label: "Modulo 2", color: "bg-green-100 text-green-700" },
-  modulo3: { label: "Modulo 3", color: "bg-purple-100 text-purple-700" },
-  modulo4: { label: "Modulo 4", color: "bg-yellow-100 text-yellow-700" },
-};
-
-export interface CustomColumn {
-  id: string;
-  label: string;
-  color: string;
-  order: number;
-}
-
-export const availableColors = [
-  "bg-blue-500",
-  "bg-green-500", 
-  "bg-purple-500",
-  "bg-pink-500",
-  "bg-indigo-500",
-  "bg-teal-500",
-  "bg-cyan-500",
-  "bg-emerald-500",
-  "bg-violet-500",
-  "bg-fuchsia-500",
-  "bg-rose-500",
-  "bg-amber-500"
+    stimaMin: 22000,
+    stimaMax: 27000,
+    stato: "preventivo_inviato",
+    dataRichiesta: "2023-11-30T20:00:00.000Z",
+    dataUltimoContatto: "2024-02-25T19:00:00.000Z",
+    note: "In attesa di approvazione preventivo"
+  }
 ];

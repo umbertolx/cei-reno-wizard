@@ -9,7 +9,137 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      estimates: {
+        Row: {
+          average_price: number
+          breakdown: Json
+          calculated_at: string | null
+          configuration_snapshot: Json
+          deductions: Json | null
+          id: string
+          lead_id: string | null
+          max_price: number
+          min_price: number
+        }
+        Insert: {
+          average_price: number
+          breakdown?: Json
+          calculated_at?: string | null
+          configuration_snapshot?: Json
+          deductions?: Json | null
+          id?: string
+          lead_id?: string | null
+          max_price: number
+          min_price: number
+        }
+        Update: {
+          average_price?: number
+          breakdown?: Json
+          calculated_at?: string | null
+          configuration_snapshot?: Json
+          deductions?: Json | null
+          id?: string
+          lead_id?: string | null
+          max_price?: number
+          min_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estimates_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          accetto_termini: boolean | null
+          cap: string
+          citta: string
+          cognome: string
+          composizione: Json
+          configurazione_tecnica: Json | null
+          data_creazione: string | null
+          data_richiesta_sopralluogo: string | null
+          data_ultimo_contatto: string | null
+          email: string
+          id: string
+          indirizzo: string
+          nome: string
+          note: string | null
+          orario_sopralluogo: string | null
+          piano: string
+          regione: string
+          stato: string | null
+          stima_dettagli: Json | null
+          stima_max: number | null
+          stima_media: number | null
+          stima_min: number | null
+          superficie: number
+          telefono: string
+          tipo_proprieta: string | null
+          tipologia_abitazione: string
+        }
+        Insert: {
+          accetto_termini?: boolean | null
+          cap: string
+          citta: string
+          cognome: string
+          composizione?: Json
+          configurazione_tecnica?: Json | null
+          data_creazione?: string | null
+          data_richiesta_sopralluogo?: string | null
+          data_ultimo_contatto?: string | null
+          email: string
+          id?: string
+          indirizzo: string
+          nome: string
+          note?: string | null
+          orario_sopralluogo?: string | null
+          piano: string
+          regione: string
+          stato?: string | null
+          stima_dettagli?: Json | null
+          stima_max?: number | null
+          stima_media?: number | null
+          stima_min?: number | null
+          superficie: number
+          telefono: string
+          tipo_proprieta?: string | null
+          tipologia_abitazione: string
+        }
+        Update: {
+          accetto_termini?: boolean | null
+          cap?: string
+          citta?: string
+          cognome?: string
+          composizione?: Json
+          configurazione_tecnica?: Json | null
+          data_creazione?: string | null
+          data_richiesta_sopralluogo?: string | null
+          data_ultimo_contatto?: string | null
+          email?: string
+          id?: string
+          indirizzo?: string
+          nome?: string
+          note?: string | null
+          orario_sopralluogo?: string | null
+          piano?: string
+          regione?: string
+          stato?: string | null
+          stima_dettagli?: Json | null
+          stima_max?: number | null
+          stima_media?: number | null
+          stima_min?: number | null
+          superficie?: number
+          telefono?: string
+          tipo_proprieta?: string | null
+          tipologia_abitazione?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,70 +1,112 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
-import { mockLeads, leadStates } from "@/data/mockLeads";
+import { leadStates, convertDatabaseLeadToLead } from "@/data/mockLeads";
+import { fetchLeads } from "@/services/leadService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { TrendingUp, Users, DollarSign, Calendar } from "lucide-react";
+import { TrendingUp, Users, DollarSign, Calendar, RefreshCw } from "lucide-react";
 
 type TimeFrame = 'oggi' | 'settimana' | 'mese' | 'anno';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [timeFrame, setTimeFrame] = useState<TimeFrame>('mese');
+  const [leads, setLeads] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Simula dati diversi per diversi periodi
+  // Carica i lead dal database
+  const loadLeads = async () => {
+    try {
+      console.log("Loading leads for dashboard...");
+      
+      const dbLeads = await fetchLeads();
+      const convertedLeads = dbLeads.map(convertDatabaseLeadToLead);
+      
+      console.log("Dashboard loaded leads:", convertedLeads);
+      setLeads(convertedLeads);
+    } catch (error) {
+      console.error("Error loading leads for dashboard:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadLeads();
+  }, []);
+
+  // Calcola i KPI basati sui dati reali
   const getKPIData = (timeFrame: TimeFrame) => {
-    const baseData = {
-      oggi: {
-        totalLeads: 2,
-        totalValue: 120000,
-        avgValue: 60000,
-        acquired: 0,
-        comparison: { total: '+15%', value: '+8%', avg: '+3%', acquired: '+0%' },
-        benchmark: 'rispetto a ieri'
-      },
-      settimana: {
-        totalLeads: 8,
-        totalValue: 450000,
-        avgValue: 56250,
-        acquired: 1,
-        comparison: { total: '+25%', value: '+12%', avg: '-5%', acquired: '+100%' },
-        benchmark: 'rispetto alla settimana scorsa'
-      },
-      mese: {
-        totalLeads: mockLeads.length,
-        totalValue: mockLeads.reduce((sum, lead) => sum + lead.stimaMax, 0),
-        avgValue: mockLeads.reduce((sum, lead) => sum + lead.stimaMax, 0) / mockLeads.length,
-        acquired: mockLeads.filter(lead => lead.stato === 'chiuso').length,
-        comparison: { total: '+12%', value: '+8%', avg: '+5%', acquired: '+20%' },
-        benchmark: 'rispetto al mese scorso'
-      },
-      anno: {
-        totalLeads: 145,
-        totalValue: 8500000,
-        avgValue: 58620,
-        acquired: 28,
-        comparison: { total: '+35%', value: '+42%', avg: '+8%', acquired: '+25%' },
-        benchmark: 'rispetto all\'anno scorso'
-      }
+    const now = new Date();
+    let startDate: Date;
+
+    switch (timeFrame) {
+      case 'oggi':
+        startDate = new Date(now);
+        startDate.setHours(0, 0, 0, 0);
+        break;
+      case 'settimana':
+        startDate = new Date(now);
+        startDate.setDate(now.getDate() - 7);
+        break;
+      case 'mese':
+        startDate = new Date(now);
+        startDate.setMonth(now.getMonth() - 1);
+        break;
+      case 'anno':
+        startDate = new Date(now);
+        startDate.setFullYear(now.getFullYear() - 1);
+        break;
+    }
+
+    const filteredLeads = leads.filter(lead => {
+      const leadDate = new Date(lead.dataRichiesta);
+      return leadDate >= startDate;
+    });
+
+    const totalLeads = filteredLeads.length;
+    const totalValue = filteredLeads.reduce((sum, lead) => sum + lead.stimaMax, 0);
+    const avgValue = totalLeads > 0 ? totalValue / totalLeads : 0;
+    const acquired = filteredLeads.filter(lead => lead.stato === 'chiuso').length;
+
+    return {
+      totalLeads,
+      totalValue,
+      avgValue,
+      acquired,
+      comparison: { total: 'N/A', value: 'N/A', avg: 'N/A', acquired: 'N/A' },
+      benchmark: `negli ultimi ${timeFrame === 'oggi' ? 'oggi' : timeFrame === 'settimana' ? '7 giorni' : timeFrame === 'mese' ? '30 giorni' : '365 giorni'}`
     };
-    return baseData[timeFrame];
   };
 
   const data = getKPIData(timeFrame);
 
   const leadsByState = Object.keys(leadStates).map(state => ({
     stato: leadStates[state as keyof typeof leadStates].label,
-    count: mockLeads.filter(lead => lead.stato === state).length,
+    count: leads.filter(lead => lead.stato === state).length,
     color: leadStates[state as keyof typeof leadStates].color
   }));
 
-  const recentLeads = mockLeads
+  const recentLeads = leads
     .sort((a, b) => new Date(b.dataRichiesta).getTime() - new Date(a.dataRichiesta).getTime())
     .slice(0, 5);
+
+  if (isLoading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
+            <p>Caricamento dashboard...</p>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -73,7 +115,7 @@ const AdminDashboard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600">Panoramica generale dei preventivi</p>
+            <p className="text-gray-600">Panoramica generale dei preventivi ({leads.length} totali)</p>
           </div>
           <div className="flex items-center space-x-4">
             <Select value={timeFrame} onValueChange={(value: TimeFrame) => setTimeFrame(value)}>

@@ -1,13 +1,13 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
 import { LeadDetails } from "@/components/admin/LeadDetails";
 import { AddColumnDialog } from "@/components/admin/AddColumnDialog";
-import { mockLeads, leadStates, Lead, CustomColumn } from "@/data/mockLeads";
+import { leadStates, Lead, CustomColumn, convertDatabaseLeadToLead } from "@/data/mockLeads";
+import { fetchLeads, updateLeadStatus } from "@/services/leadService";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Filter, Download, Plus } from "lucide-react";
+import { Search, Filter, Download, Plus, RefreshCw } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { 
   DndContext, 
@@ -25,7 +25,7 @@ import { LeadCard } from "@/components/admin/LeadCard";
 import { arrayMove } from "@dnd-kit/sortable";
 
 const AdminLeads = () => {
-  const [leads, setLeads] = useState<Lead[]>(mockLeads);
+  const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -33,6 +33,8 @@ const AdminLeads = () => {
   const [customColumns, setCustomColumns] = useState<CustomColumn[]>([]);
   const [isAddColumnOpen, setIsAddColumnOpen] = useState(false);
   const [leadPositions, setLeadPositions] = useState<Record<string, string[]>>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -42,6 +44,42 @@ const AdminLeads = () => {
     }),
     useSensor(KeyboardSensor)
   );
+
+  // Carica i lead dal database
+  const loadLeads = async (showRefreshToast = false) => {
+    try {
+      setIsRefreshing(true);
+      console.log("Loading leads from database...");
+      
+      const dbLeads = await fetchLeads();
+      const convertedLeads = dbLeads.map(convertDatabaseLeadToLead);
+      
+      console.log("Loaded leads:", convertedLeads);
+      setLeads(convertedLeads);
+      
+      if (showRefreshToast) {
+        toast({
+          title: "Dati aggiornati",
+          description: `Caricati ${convertedLeads.length} lead dal database`,
+        });
+      }
+    } catch (error) {
+      console.error("Error loading leads:", error);
+      toast({
+        title: "Errore",
+        description: "Impossibile caricare i lead dal database",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
+    }
+  };
+
+  // Carica i lead all'avvio
+  useEffect(() => {
+    loadLeads();
+  }, []);
 
   // Filtra i lead in base al termine di ricerca
   const filteredLeads = leads.filter(lead => 
@@ -116,7 +154,7 @@ const AdminLeads = () => {
     }
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     
     if (!over) {
@@ -137,14 +175,33 @@ const AdminLeads = () => {
     const targetColumn = overLead ? overLead.stato : overId;
 
     if (activeLead.stato !== targetColumn) {
-      const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
-                        customColumns.find(col => col.id === targetColumn);
-      const displayName = customTitles[targetColumn] || columnInfo?.label || targetColumn;
-      
-      toast({
-        title: "Lead aggiornato",
-        description: `${activeLead.nome} ${activeLead.cognome} è stato spostato in "${displayName}"`,
-      });
+      try {
+        // Aggiorna nel database
+        await updateLeadStatus(activeId, targetColumn);
+        
+        const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
+                          customColumns.find(col => col.id === targetColumn);
+        const displayName = customTitles[targetColumn] || columnInfo?.label || targetColumn;
+        
+        toast({
+          title: "Lead aggiornato",
+          description: `${activeLead.nome} ${activeLead.cognome} è stato spostato in "${displayName}"`,
+        });
+      } catch (error) {
+        console.error("Error updating lead status:", error);
+        toast({
+          title: "Errore",
+          description: "Impossibile aggiornare lo stato del lead",
+          variant: "destructive",
+        });
+        
+        // Ripristina lo stato precedente in caso di errore
+        setLeads(prev => prev.map(lead =>
+          lead.id === activeId 
+            ? { ...lead, stato: activeLead.stato }
+            : lead
+        ));
+      }
     }
 
     if (overLead && activeLead.stato === overLead.stato) {
@@ -217,6 +274,17 @@ const AdminLeads = () => {
   };
 
   const handleExport = () => {
+    const csvContent = leads.map(lead => 
+      `${lead.nome},${lead.cognome},${lead.email},${lead.telefono},${lead.citta},${lead.stimaMax},${lead.stato}`
+    ).join('\n');
+    
+    const blob = new Blob([`Nome,Cognome,Email,Telefono,Città,Stima Max,Stato\n${csvContent}`], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `leads_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    
     toast({
       title: "Export completato",
       description: "I dati sono stati esportati in formato CSV",
@@ -225,8 +293,18 @@ const AdminLeads = () => {
 
   const activeLead = activeId ? leads.find(lead => lead.id === activeId) : null;
 
-  console.log("AdminLeads render - selectedLead:", selectedLead);
-  console.log("AdminLeads render - isOpen:", !!selectedLead);
+  if (isLoading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
+            <p>Caricamento lead...</p>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -235,7 +313,7 @@ const AdminLeads = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Gestione Lead</h1>
-            <p className="text-gray-600">Visualizza e gestisci tutti i preventivi richiesti</p>
+            <p className="text-gray-600">Visualizza e gestisci tutti i preventivi richiesti ({leads.length} totali)</p>
           </div>
         </div>
 
@@ -252,6 +330,15 @@ const AdminLeads = () => {
               />
             </div>
             <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => loadLeads(true)}
+                disabled={isRefreshing}
+              >
+                <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+                Aggiorna
+              </Button>
               <Button variant="outline" size="sm">
                 <Filter className="h-4 w-4 mr-2" />
                 Filtri
