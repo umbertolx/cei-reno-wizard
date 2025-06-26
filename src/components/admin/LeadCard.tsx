@@ -94,6 +94,19 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
   const configurazione = parseConfigurazioneTecnica();
   const stimaDettagli = parseStimaDettagli();
 
+  // Helper function to check if an object has the expected structure
+  const hasEnabledProperty = (obj: any): obj is { enabled: boolean } => {
+    return obj && typeof obj === 'object' && typeof obj.enabled === 'boolean';
+  };
+
+  const hasValueProperty = (obj: any): obj is { value: any } => {
+    return obj && typeof obj === 'object' && 'value' in obj;
+  };
+
+  const hasAdvancedOptionProperty = (obj: any): obj is { advancedOption: string } => {
+    return obj && typeof obj === 'object' && typeof obj.advancedOption === 'string';
+  };
+
   // Calculate average price from min and max
   const stimaMedia = lead.stimaMin && lead.stimaMax ? Math.round((lead.stimaMin + lead.stimaMax) / 2) : 0;
 
@@ -332,7 +345,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
                         if (!config) return null;
 
                         return Object.entries(config).map(([key, value]) => {
-                          if (typeof value === 'object' && value?.enabled) {
+                          if (hasEnabledProperty(value) && value.enabled) {
                             return (
                               <div key={key} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                                 <div className="flex items-center">
@@ -351,12 +364,12 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
                                   </span>
                                 </div>
                                 <div className="text-sm text-gray-600">
-                                  {value.advancedOption && (
+                                  {hasAdvancedOptionProperty(value) && value.advancedOption && (
                                     <span className="bg-gray-100 px-2 py-1 rounded text-xs">
                                       {value.advancedOption}
                                     </span>
                                   )}
-                                  {value.value && (
+                                  {hasValueProperty(value) && value.value && (
                                     <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs ml-1">
                                       {value.value}
                                     </span>
@@ -378,7 +391,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
                     <div className="text-xs font-medium text-gray-500 mb-3">INTERVENTI ELETTRICI RICHIESTI</div>
                     <div className="space-y-2">
                       {Object.entries(configurazione.interventiElettrici).map(([key, value]) => {
-                        if (typeof value === 'object' && value?.enabled) {
+                        if (hasEnabledProperty(value) && value.enabled) {
                           return (
                             <div key={key} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                               <div className="flex items-center">
@@ -392,7 +405,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
                                    key}
                                 </span>
                               </div>
-                              {value.value && (
+                              {hasValueProperty(value) && value.value && (
                                 <div className="text-sm text-gray-600">
                                   <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
                                     {value.value} {key === 'tapparelleElettriche' ? 'tapparelle' : key === 'puntiLuce' ? 'punti luce' : ''}
