@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
 import { InformazioniGenerali } from "./steps/InformazioniGenerali";
@@ -10,15 +11,15 @@ import { TipoDomotica } from "./steps/TipoDomotica";
 import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
 import { ConfigurazioneBTicino } from "./steps/ConfigurazioneBTicino";
 import { TapparelleElettriche } from "./steps/TapparelleElettriche";
-import { RiepilogoFinale } from "./steps/RiepilogoFinale";
-import { Card, CardContent } from "@/components/ui/card";
-import { toast } from "@/hooks/use-toast";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
-import { calculateEstimate } from "@/services/estimateService";
+import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
 import { saveLeadToDatabase } from "@/services/leadService";
 import { EstimateResponse } from "@/types/estimate";
+import { useConfiguratorFlow } from "@/hooks/useConfiguratorFlow";
+import { useEstimateCalculation } from "@/hooks/useEstimateCalculation";
 
 export type FormData = {
   tipologiaAbitazione: string;
@@ -55,13 +56,10 @@ export type FormData = {
   dataRichiestaSopralluogo?: string;
   orarioSopralluogo?: string;
   note?: string;
-  // New field for the estimate received from external API
   estimate?: EstimateResponse;
 };
 
 export const Configuratore = () => {
-  const [step, setStep] = useState<number>(0);
-  const [isCalculatingEstimate, setIsCalculatingEstimate] = useState(false);
   const [isSavingLead, setIsSavingLead] = useState(false);
   
   const [formData, setFormData] = useState<FormData>({
@@ -87,52 +85,49 @@ export const Configuratore = () => {
     accettoTermini: false,
     tipoProprietà: "prima casa"
   });
+
+  const flow = useConfiguratorFlow(formData);
+  const { estimate, isCalculating, calculateWithRetry } = useEstimateCalculation();
   
   const updateFormData = (data: Partial<FormData>) => {
     console.log("📝 Updating form data:", data);
     setFormData(prev => ({ ...prev, ...data }));
   };
-  
-  // Function to call external API and get estimate
-  const handleCalculateEstimate = async () => {
-    console.log("🔢 Starting estimate calculation...");
-    console.log("📊 Current form data for estimate:", formData);
-    
-    setIsCalculatingEstimate(true);
-    try {
-      const estimate = await calculateEstimate(formData);
-      console.log("✅ Estimate calculated successfully:", estimate);
+
+  const handleNext = async () => {
+    const currentStepConfig = flow.getCurrentStepConfig();
+    console.log("🔄 Handle next called for step:", currentStepConfig?.id);
+
+    // Se stiamo per andare alla stima finale, calcola la stima
+    if (currentStepConfig?.id === 'dati-contatto') {
+      console.log("🔢 About to move to estimate, calculating...");
       
-      updateFormData({ estimate });
-      toast({
-        title: "Stima calcolata",
-        description: "La tua stima personalizzata è pronta!",
-      });
-    } catch (error) {
-      console.error("❌ Error calculating estimate:", error);
-      toast({
-        title: "Errore nel calcolo",
-        description: "Non è stato possibile calcolare la stima. Riprova più tardi.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsCalculatingEstimate(false);
+      const calculatedEstimate = await calculateWithRetry(formData);
+      if (calculatedEstimate) {
+        updateFormData({ estimate: calculatedEstimate });
+        console.log("✅ Estimate calculated and saved to form data");
+        flow.goToNext();
+      } else {
+        console.error("❌ Failed to calculate estimate, cannot proceed");
+        toast({
+          title: "Errore",
+          description: "Non è stato possibile calcolare la stima. Riprova.",
+          variant: "destructive",
+        });
+      }
+    } else {
+      // Per tutti gli altri step, procedi normalmente
+      flow.goToNext();
     }
   };
 
-  const handleNext = () => {
-    console.log(`➡️ Moving from step ${step} to step ${step + 1}`);
-    setStep(prev => prev + 1);
-  };
-
   const handleBack = () => {
-    console.log(`⬅️ Moving from step ${step} to step ${step - 1}`);
-    setStep(prev => Math.max(0, prev - 1));
+    flow.goToBack();
   };
 
   const handleReset = () => {
     console.log("🔄 Resetting configurator");
-    setStep(0);
+    flow.reset();
     setFormData({
       tipologiaAbitazione: "",
       superficie: 0,
@@ -158,12 +153,14 @@ export const Configuratore = () => {
     });
   };
 
-  const handleInviaDati = async () => {
-    console.log("🚀 Starting lead save process...");
+  const handleSubmitLead = async () => {
+    console.log("🚀 Starting lead submission process...");
     console.log("📋 Complete form data:", formData);
     
-    if (!formData.estimate) {
-      console.error("❌ No estimate available");
+    const finalEstimate = estimate || formData.estimate;
+    
+    if (!finalEstimate) {
+      console.error("❌ No estimate available for submission");
       toast({
         title: "Errore",
         description: "Stima non disponibile. Riprova il calcolo.",
@@ -172,13 +169,13 @@ export const Configuratore = () => {
       return;
     }
 
-    console.log("📊 Estimate data:", formData.estimate);
+    console.log("📊 Using estimate for submission:", finalEstimate);
     setIsSavingLead(true);
     
     try {
       console.log("💾 Attempting to save lead to database...");
       
-      const leadId = await saveLeadToDatabase(formData, formData.estimate);
+      const leadId = await saveLeadToDatabase(formData, finalEstimate);
       
       console.log("✅ Lead saved successfully with ID:", leadId);
       
@@ -189,16 +186,10 @@ export const Configuratore = () => {
       });
       
       console.log("➡️ Moving to success page");
-      setStep(prev => prev + 1);
+      flow.goToNext();
       
     } catch (error) {
       console.error("❌ Critical error saving lead:", error);
-      console.error("🔍 Error details:", {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : 'No stack trace',
-        formData: formData,
-        estimate: formData.estimate
-      });
       
       toast({
         title: "Errore",
@@ -211,211 +202,85 @@ export const Configuratore = () => {
     }
   };
 
-  // Enhanced handleNext function for DatiContatto -> StimaFinale transition
-  const handleNextFromDatiContatto = async () => {
-    console.log("🔄 Transitioning from DatiContatto to StimaFinale");
+  const renderCurrentStep = () => {
+    const currentStepConfig = flow.getCurrentStepConfig();
     
-    if (!formData.estimate) {
-      console.log("🔢 No estimate found, calculating...");
-      await handleCalculateEstimate();
-    } else {
-      console.log("✅ Estimate already available, proceeding");
+    if (!currentStepConfig) {
+      console.error("❌ No valid step configuration found");
+      return <div>Errore: Step non valido</div>;
     }
-    handleNext();
-  };
 
-  const renderStep = () => {
-    console.log(`🎯 Rendering step ${step}`);
+    console.log(`🎯 Rendering step: ${currentStepConfig.id} (${currentStepConfig.component})`);
     
-    switch (step) {
-      case 0:
+    const commonProps = {
+      formData,
+      updateFormData,
+      onNext: handleNext,
+      onBack: handleBack
+    };
+
+    switch (currentStepConfig.component) {
+      case 'WelcomePage':
+        return <WelcomePage onStart={handleNext} />;
+      
+      case 'InformazioniGenerali':
+        return <InformazioniGenerali {...commonProps} />;
+      
+      case 'ConfiguratoreElettrico':
+        return <ConfiguratoreElettrico {...commonProps} />;
+      
+      case 'EtaImpiantoElettrico':
+        return <EtaImpiantoElettrico {...commonProps} />;
+      
+      case 'InterventiElettrici':
+        return <InterventiElettrici {...commonProps} />;
+      
+      case 'SelezioneAmbienti':
+        return <SelezioneAmbienti {...commonProps} />;
+      
+      case 'TipoImpiantoElettrico':
+        return <TipoImpiantoElettrico {...commonProps} />;
+      
+      case 'TipoDomotica':
+        return <TipoDomotica {...commonProps} />;
+      
+      case 'ConfigurazioneKNX':
+        return <ConfigurazioneKNX {...commonProps} />;
+      
+      case 'ConfigurazioneBTicino':
+        return <ConfigurazioneBTicino {...commonProps} />;
+      
+      case 'TapparelleElettriche':
+        return <TapparelleElettriche {...commonProps} />;
+      
+      case 'DatiContatto':
         return (
-          <WelcomePage 
-            onStart={handleNext} 
-          />
-        );
-      case 1:
-        return (
-          <InformazioniGenerali 
-            formData={formData} 
-            updateFormData={updateFormData} 
-            onNext={handleNext} 
-          />
-        );
-      case 2:
-        return (
-          <ConfiguratoreElettrico 
-            formData={formData} 
-            updateFormData={updateFormData} 
-            onNext={handleNext} 
+          <DatiContatto
+            formData={formData}
+            updateFormData={updateFormData}
             onBack={handleBack}
+            onNext={handleNext}
+            isCalculatingEstimate={isCalculating}
           />
         );
-      case 3:
-        if (formData.tipoRistrutturazione === 'parziale') {
-          return (
-            <EtaImpiantoElettrico 
-              formData={formData} 
-              updateFormData={updateFormData} 
-              onNext={handleNext} 
-              onBack={handleBack}
-            />
-          );
-        } else {
-          return (
-            <TipoImpiantoElettrico 
-              formData={formData} 
-              updateFormData={updateFormData} 
-              onNext={handleNext} 
-              onBack={handleBack}
-            />
-          );
-        }
-      case 4:
-        if (formData.tipoRistrutturazione === 'parziale') {
-          return (
-            <InterventiElettrici 
-              formData={formData} 
-              updateFormData={updateFormData} 
-              onNext={handleNext} 
-              onBack={handleBack}
-            />
-          );
-        } else {
-          if (formData.tipoImpianto === 'livello3') {
-            return (
-              <TipoDomotica
-                formData={formData}
-                updateFormData={updateFormData}
-                onNext={handleNext}
-                onBack={handleBack}
-              />
-            );
-          } else {
-            return (
-              <TapparelleElettriche 
-                formData={formData} 
-                updateFormData={updateFormData} 
-                onNext={handleNext} 
-                onBack={handleBack}
-              />
-            );
-          }
-        }
-      case 5:
-        if (formData.tipoRistrutturazione === 'parziale') {
-          return (
-            <SelezioneAmbienti
-              formData={formData}
-              updateFormData={updateFormData}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          );
-        } else {
-          if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'knx') {
-            return (
-              <ConfigurazioneKNX
-                formData={formData}
-                updateFormData={updateFormData}
-                onNext={handleNext}
-                onBack={handleBack}
-              />
-            );
-          } else if (formData.tipoImpianto === 'livello3' && formData.tipoDomotica === 'wireless') {
-            return (
-              <ConfigurazioneBTicino
-                formData={formData}
-                updateFormData={updateFormData}
-                onNext={handleNext}
-                onBack={handleBack}
-              />
-            );
-          } else {
-            return (
-              <DatiContatto
-                formData={formData}
-                updateFormData={updateFormData}
-                onBack={handleBack}
-                onNext={handleNextFromDatiContatto}
-                isCalculatingEstimate={isCalculatingEstimate}
-              />
-            );
-          }
-        }
-      case 6:
-        if (formData.tipoRistrutturazione === 'parziale') {
-          return (
-            <DatiContatto
-              formData={formData}
-              updateFormData={updateFormData}
-              onBack={handleBack}
-              onNext={handleNextFromDatiContatto}
-              isCalculatingEstimate={isCalculatingEstimate}
-            />
-          );
-        } else {
-          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
-            return (
-              <DatiContatto
-                formData={formData}
-                updateFormData={updateFormData}
-                onBack={handleBack}
-                onNext={handleNextFromDatiContatto}
-                isCalculatingEstimate={isCalculatingEstimate}
-              />
-            );
-          } else {
-            return (
-              <StimaFinale
-                formData={formData}
-                updateFormData={updateFormData}
-                estimate={formData.estimate}
-                onBack={handleBack}
-                onSubmit={handleInviaDati}
-                isSubmitting={isSavingLead}
-              />
-            );
-          }
-        }
-      case 7:
-        if (formData.tipoRistrutturazione === 'parziale') {
-          return (
-            <StimaFinale
-              formData={formData}
-              updateFormData={updateFormData}
-              estimate={formData.estimate}
-              onBack={handleBack}
-              onSubmit={handleInviaDati}
-              isSubmitting={isSavingLead}
-            />
-          );
-        } else {
-          if (formData.tipoImpianto === 'livello3' && (formData.tipoDomotica === 'knx' || formData.tipoDomotica === 'wireless')) {
-            return (
-              <StimaFinale
-                formData={formData}
-                updateFormData={updateFormData}
-                estimate={formData.estimate}
-                onBack={handleBack}
-                onSubmit={handleInviaDati}
-                isSubmitting={isSavingLead}
-              />
-            );
-          } else {
-            return <RichiestaInviata onReset={handleReset} />;
-          }
-        }
-      case 8:
-        if (formData.tipoRistrutturazione === 'parziale') {
-          return <RichiestaInviata onReset={handleReset} />;
-        } else {
-          return <RichiestaInviata onReset={handleReset} />;
-        }
-      case 9:
+      
+      case 'StimaFinale':
+        return (
+          <StimaFinale
+            formData={formData}
+            updateFormData={updateFormData}
+            estimate={estimate || formData.estimate}
+            onBack={handleBack}
+            onSubmit={handleSubmitLead}
+            isSubmitting={isSavingLead}
+          />
+        );
+      
+      case 'RichiestaInviata':
         return <RichiestaInviata onReset={handleReset} />;
+      
       default:
-        return <div>Step non valido</div>;
+        return <div>Componente non trovato: {currentStepConfig.component}</div>;
     }
   };
 
@@ -423,7 +288,7 @@ export const Configuratore = () => {
     <Card className="w-full max-w-4xl rounded-[20px] shadow-lg overflow-hidden">
       <CardContent className="p-4 sm:p-6 md:p-8">
         <div className="flex flex-col">
-          {renderStep()}
+          {renderCurrentStep()}
         </div>
       </CardContent>
     </Card>
