@@ -349,14 +349,21 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-200">
                   {configurazione.tipoDomotica && (
                     <div className="mb-3">
-                      {getTipoDomotica() && (
-                        <div className="flex items-center space-x-2 mb-2">
-                          <getTipoDomotica()!.icon className="h-5 w-5 text-blue-600" />
-                          <Badge className={`${getTipoDomotica()!.color} font-medium`}>
-                            {getTipoDomotica()!.label}
-                          </Badge>
-                        </div>
-                      )}
+                      {(() => {
+                        const domoticaInfo = getTipoDomotica();
+                        if (domoticaInfo) {
+                          const IconComponent = domoticaInfo.icon;
+                          return (
+                            <div className="flex items-center space-x-2 mb-2">
+                              <IconComponent className="h-5 w-5 text-blue-600" />
+                              <Badge className={`${domoticaInfo.color} font-medium`}>
+                                {domoticaInfo.label}
+                              </Badge>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
                     </div>
                   )}
                   
