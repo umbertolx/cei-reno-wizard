@@ -1,6 +1,7 @@
+
 import { DatabaseLead } from "@/services/leadService";
 
-// Manteniamo i tipi esistenti per compatibilità
+// Lead interface updated to match what the UI components expect
 export interface Lead {
   id: string;
   nome: string;
@@ -8,7 +9,10 @@ export interface Lead {
   email: string;
   telefono: string;
   citta: string;
+  cap: string;
+  regione: string;
   indirizzo: string;
+  piano: string;
   tipologiaAbitazione: string;
   superficie: number;
   stimaMin: number;
@@ -17,6 +21,16 @@ export interface Lead {
   dataRichiesta: string;
   dataUltimoContatto: string;
   note?: string;
+  composizione: {
+    cucina: number;
+    cameraDoppia: number;
+    cameraSingola: number;
+    bagno: number;
+    soggiorno: number;
+    altro: number;
+  };
+  moduliCompletati: string[];
+  tipoProprietà: string;
 }
 
 // Funzione per convertire DatabaseLead in Lead (per compatibilità con l'UI esistente)
@@ -28,7 +42,10 @@ export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
     email: dbLead.email,
     telefono: dbLead.telefono,
     citta: dbLead.citta,
+    cap: dbLead.cap,
+    regione: dbLead.regione,
     indirizzo: dbLead.indirizzo,
+    piano: dbLead.piano,
     tipologiaAbitazione: dbLead.tipologia_abitazione,
     superficie: dbLead.superficie,
     stimaMin: dbLead.stima_min || 0,
@@ -37,6 +54,16 @@ export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
     dataRichiesta: dbLead.data_creazione,
     dataUltimoContatto: dbLead.data_ultimo_contatto,
     note: dbLead.note || undefined,
+    composizione: dbLead.composizione as Lead['composizione'] || {
+      cucina: 0,
+      cameraDoppia: 0,
+      cameraSingola: 0,
+      bagno: 0,
+      soggiorno: 0,
+      altro: 0
+    },
+    moduliCompletati: ['configurazione-base', 'stima-ricevuta'],
+    tipoProprietà: dbLead.tipo_proprieta || 'prima casa',
   };
 };
 
@@ -68,6 +95,43 @@ export const leadStates = {
   perso: {
     label: "Perso",
     color: "bg-red-100 text-red-700"
+  }
+};
+
+export interface CustomColumn {
+  id: string;
+  label: string;
+  color: string;
+  order: number;
+}
+
+export const availableColors = [
+  "bg-red-500",
+  "bg-blue-500",
+  "bg-green-500",
+  "bg-yellow-500",
+  "bg-purple-500",
+  "bg-pink-500",
+  "bg-indigo-500",
+  "bg-gray-500"
+];
+
+export const moduliDisponibili = {
+  'configurazione-base': {
+    label: 'Configurazione Base',
+    color: 'bg-blue-100 text-blue-800'
+  },
+  'stima-ricevuta': {
+    label: 'Stima Ricevuta',
+    color: 'bg-green-100 text-green-800'
+  },
+  'sopralluogo-richiesto': {
+    label: 'Sopralluogo Richiesto',
+    color: 'bg-orange-100 text-orange-800'
+  },
+  'preventivo-personalizzato': {
+    label: 'Preventivo Personalizzato',
+    color: 'bg-purple-100 text-purple-800'
   }
 };
 
