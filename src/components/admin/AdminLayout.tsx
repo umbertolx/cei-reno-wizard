@@ -1,8 +1,16 @@
 
-import { ReactNode, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Home, Users, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { 
+  LayoutDashboard, 
+  Users, 
+  Settings, 
+  LogOut, 
+  Home,
+  Database
+} from "lucide-react";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -11,77 +19,91 @@ interface AdminLayoutProps {
 export const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  const handleLogout = () => {
-    navigate("/admin");
-  };
 
   const menuItems = [
-    { icon: Home, label: "Dashboard", path: "/admin/dashboard" },
-    { icon: Users, label: "Leads", path: "/admin/leads" },
+    {
+      icon: LayoutDashboard,
+      label: "Dashboard",
+      path: "/admin/dashboard",
+      active: location.pathname === "/admin/dashboard"
+    },
+    {
+      icon: Users,
+      label: "Gestione Lead",
+      path: "/admin/leads",
+      active: location.pathname === "/admin/leads"
+    },
+    {
+      icon: Database,
+      label: "Database Info",
+      path: "/admin/database-info",
+      active: location.pathname === "/admin/database-info"
+    },
+    {
+      icon: Settings,
+      label: "Impostazioni",
+      path: "/admin/settings",
+      active: false
+    }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 w-full overflow-hidden">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b w-full">
-        <div className="px-6 py-4 flex items-center justify-between">
+      <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-[#d8010c]">CEI Admin</h1>
-            <span className="text-gray-500">|</span>
-            <span className="text-gray-600">Dashboard Preventivi</span>
+            <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
           </div>
-          <Button 
-            variant="outline" 
-            onClick={handleLogout}
-            className="flex items-center space-x-2"
-          >
-            <LogOut className="h-4 w-4" />
-            <span>Logout</span>
-          </Button>
+          <div className="flex items-center space-x-4">
+            <Button
+              variant="outline"
+              onClick={() => navigate("/")}
+              className="flex items-center space-x-2"
+            >
+              <Home className="h-4 w-4" />
+              <span>Torna al Sito</span>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/admin/login")}
+              className="flex items-center space-x-2"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Logout</span>
+            </Button>
+          </div>
         </div>
       </header>
 
-      <div className="flex w-full h-[calc(100vh-73px)]">
+      <div className="flex">
         {/* Sidebar */}
-        <aside className={`${sidebarCollapsed ? 'w-16' : 'w-64'} bg-white shadow-sm h-full border-r transition-all duration-300 flex flex-col flex-shrink-0`}>
-          <div className="p-4 flex-1">
-            <nav>
-              <ul className="space-y-2">
-                {menuItems.map((item) => (
-                  <li key={item.path}>
-                    <Button
-                      variant={location.pathname === item.path ? "default" : "ghost"}
-                      className={`w-full ${sidebarCollapsed ? 'justify-center px-2' : 'justify-start'}`}
-                      onClick={() => navigate(item.path)}
-                      title={sidebarCollapsed ? item.label : undefined}
-                    >
-                      <item.icon className="h-4 w-4" />
-                      {!sidebarCollapsed && <span className="ml-2">{item.label}</span>}
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+        <nav className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-73px)]">
+          <div className="p-4 space-y-2">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Button
+                  key={item.path}
+                  variant={item.active ? "default" : "ghost"}
+                  className={`w-full justify-start ${
+                    item.active 
+                      ? "bg-[#d8010c] hover:bg-[#b8010a] text-white" 
+                      : "text-gray-700 hover:text-gray-900"
+                  }`}
+                  onClick={() => navigate(item.path)}
+                >
+                  <Icon className="h-4 w-4 mr-2" />
+                  {item.label}
+                </Button>
+              );
+            })}
           </div>
-          
-          {/* Collapse Toggle */}
-          <div className="p-4 border-t">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="w-full justify-center"
-            >
-              {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-            </Button>
-          </div>
-        </aside>
+        </nav>
 
         {/* Main Content */}
-        <main className="flex-1 min-w-0 overflow-hidden">
-          <div className="h-full overflow-y-auto p-6">
+        <main className="flex-1 p-6">
+          <div className="max-w-7xl mx-auto">
             {children}
           </div>
         </main>
