@@ -224,6 +224,22 @@ export const fetchLeads = async (): Promise<DatabaseLead[]> => {
 export const updateLeadStatus = async (leadId: string, newStatus: string): Promise<void> => {
   console.log("🔄 Updating lead status:", { leadId, newStatus });
 
+  // Validate the status before sending to database
+  const validStatuses = [
+    'nuovo',
+    'in_contatto', 
+    'preventivo_inviato',
+    'sopralluogo_fissato',
+    'lavori_in_corso',
+    'lavori_conclusi',
+    'perso'
+  ];
+
+  if (!validStatuses.includes(newStatus)) {
+    console.error("❌ Invalid status:", newStatus);
+    throw new Error(`Stato non valido: ${newStatus}. Stati validi: ${validStatuses.join(', ')}`);
+  }
+
   try {
     const { error } = await supabase
       .from('leads')
