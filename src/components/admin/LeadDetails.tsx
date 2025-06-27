@@ -9,6 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Phone, Mail, Calendar, Euro, User, Building } from "lucide-react";
+import { ConfigurationSection } from "./lead-card/sections/ConfigurationSection";
 
 interface LeadDetailsProps {
   lead: Lead | null;
@@ -46,74 +47,11 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
 
   const stimaMedia = lead.stimaMin && lead.stimaMax ? Math.round((lead.stimaMin + lead.stimaMax) / 2) : 0;
 
-  const parseConfigurazioneTecnica = () => {
-    try {
-      return typeof lead.configurazioneTecnica === 'string' 
-        ? JSON.parse(lead.configurazioneTecnica) 
-        : lead.configurazioneTecnica || {};
-    } catch {
-      return {};
-    }
-  };
-
-  const configurazione = parseConfigurazioneTecnica();
-
-  const renderConfigurationChoice = (key: string, value: any) => {
-    const getConfigurationLabel = (key: string, value: any) => {
-      switch (key) {
-        case 'tipoImpianto':
-          switch (value) {
-            case 'livello1': return 'Livello 1 - Standard Minimo';
-            case 'livello2': return 'Livello 2 - Impianto Avanzato';
-            case 'livello3': return 'Livello 3 - Domotico e Smart Home';
-            default: return value;
-          }
-        case 'tipoRistrutturazione':
-          switch (value) {
-            case 'completa': return 'Ristrutturazione Completa';
-            case 'parziale': return 'Intervento Parziale';
-            case 'nuova': return 'Nuova Costruzione';
-            default: return value;
-          }
-        case 'elettrificareTapparelle':
-          return value === 'si' ? 'Sì, elettrificare le tapparelle' : 'No';
-        case 'tipoDomotica':
-          switch (value) {
-            case 'knx': return 'Sistema KNX (Cablato)';
-            case 'bticino': return 'BTicino Wireless';
-            default: return value;
-          }
-        case 'numeroTapparelle':
-          return `${value} tapparelle`;
-        default:
-          return String(value);
-      }
-    };
-
-    const getFieldLabel = (key: string) => {
-      switch (key) {
-        case 'tipoImpianto': return 'Tipo di Impianto';
-        case 'tipoRistrutturazione': return 'Tipo di Ristrutturazione';
-        case 'elettrificareTapparelle': return 'Elettrificare Tapparelle';
-        case 'tipoDomotica': return 'Sistema Domotico';
-        case 'numeroTapparelle': return 'Numero Tapparelle';
-        default: return key;
-      }
-    };
-
-    return (
-      <div className="grid grid-cols-3 gap-4 py-3 border-b border-gray-100">
-        <div className="font-medium text-gray-900">{getFieldLabel(key)}</div>
-        <div className="col-span-2 text-gray-700">{getConfigurationLabel(key, value)}</div>
-      </div>
-    );
-  };
-
   console.log("LeadDetails: About to render dialog with isOpen:", isOpen);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-6 border-b">
           <DialogTitle className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
@@ -212,25 +150,8 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
 
           <Separator />
 
-          {/* 3. Configurazione Tecnica */}
-          {configurazione && Object.keys(configurazione).length > 0 && (
-            <div className="bg-white border rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Configurazione Richiesta</h3>
-              
-              <div className="space-y-1">
-                {Object.entries(configurazione).map(([key, value]) => {
-                  if (key === 'knxConfig' && typeof value === 'object' && value !== null) {
-                    return null;
-                  }
-                  return (
-                    <div key={key}>
-                      {renderConfigurationChoice(key, value)}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {/* 3. Configurazione Tecnica Dettagliata */}
+          <ConfigurationSection lead={lead} />
 
           <Separator />
 
