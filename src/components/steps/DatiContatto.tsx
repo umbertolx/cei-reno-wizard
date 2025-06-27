@@ -1,10 +1,11 @@
+
 import { FormData } from "../Configuratore";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { User, Phone, Mail, CircleDot, ChevronDown, Loader2, Home, MapPin, Layers, Building2, CheckCircle } from "lucide-react";
+import { User, Phone, Mail, CircleDot, ChevronDown, Loader2, Home, MapPin } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 
@@ -116,92 +117,51 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
         </div>
       </div>
 
-      {/* Nuovo box di riepilogo abitazione completamente rifatto */}
-      <div className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-3xl p-8 shadow-lg">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="bg-[#d8010c] rounded-full p-2">
-            <Home className="h-6 w-6 text-white" />
-          </div>
-          <h2 className="text-2xl font-semibold text-[#1c1c1c]">La tua abitazione</h2>
+      {/* Box di riepilogo abitazione in stile CEI */}
+      <div className="bg-[#f4f4f4] border border-gray-200 rounded-xl p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <Home className="h-6 w-6 text-[#d8010c]" />
+          <h2 className="text-xl font-medium text-[#1c1c1c]">Riepilogo della tua abitazione</h2>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Sezione Proprietà */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <Building2 className="h-5 w-5 text-[#d8010c]" />
-                <h3 className="text-lg font-medium text-[#1c1c1c]">Proprietà</h3>
-              </div>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Tipologia</span>
-                  <span className="font-medium capitalize bg-[#fbe12e] bg-opacity-30 px-3 py-1 rounded-full text-sm">
-                    {formData.tipologiaAbitazione}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Superficie</span>
-                  <span className="font-medium text-[#d8010c]">{formData.superficie} mq</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Piano</span>
-                  <span className="font-medium capitalize">{formData.piano}</span>
-                </div>
-              </div>
+        <div className="space-y-4">
+          {/* Informazioni principali in formato semplice */}
+          <div className="flex flex-wrap gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">Tipologia:</span>
+              <span className="font-medium text-[#1c1c1c] capitalize">{formData.tipologiaAbitazione}</span>
             </div>
-
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <MapPin className="h-5 w-5 text-[#d8010c]" />
-                <h3 className="text-lg font-medium text-[#1c1c1c]">Posizione</h3>
-              </div>
-              <div className="space-y-2">
-                <p className="font-medium text-[#1c1c1c]">{formData.indirizzo}</p>
-                <p className="text-gray-600">{formData.citta} {formData.cap}</p>
-                <p className="text-gray-600">{formData.regione}</p>
-              </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">Superficie:</span>
+              <span className="font-medium text-[#d8010c]">{formData.superficie} mq</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">Piano:</span>
+              <span className="font-medium text-[#1c1c1c] capitalize">{formData.piano}</span>
             </div>
           </div>
 
-          {/* Sezione Composizione */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <Layers className="h-5 w-5 text-[#d8010c]" />
-                <h3 className="text-lg font-medium text-[#1c1c1c]">Composizione</h3>
-                <span className="bg-[#d8010c] text-white text-xs px-2 py-1 rounded-full ml-auto">
-                  {totalRooms} stanze
-                </span>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                {Object.entries(formData.composizione).map(([key, value]) => 
-                  value > 0 && (
-                    <div key={key} className="flex items-center justify-between bg-gray-50 rounded-xl p-3">
-                      <span className="text-sm font-medium capitalize text-gray-700">
-                        {key === 'cameraDoppia' ? 'Camera doppia' : 
-                         key === 'cameraSingola' ? 'Camera singola' : key}
-                      </span>
-                      <div className="bg-[#fbe12e] text-[#1c1c1c] text-sm font-bold px-2 py-1 rounded-full min-w-[24px] text-center">
-                        {value}
-                      </div>
-                    </div>
-                  )
-                )}
-              </div>
+          {/* Indirizzo */}
+          <div className="flex items-start gap-2">
+            <MapPin className="h-4 w-4 text-[#d8010c] mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-[#1c1c1c] font-medium">{formData.indirizzo}</p>
+              <p className="text-gray-600 text-sm">{formData.citta} {formData.cap}, {formData.regione}</p>
             </div>
+          </div>
 
-            {/* Indicatore di progresso */}
-            <div className="bg-gradient-to-r from-[#d8010c] to-[#fbe12e] rounded-2xl p-6 text-white">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold text-lg">Configurazione completa</h3>
-                  <p className="text-sm opacity-90">Tutti i dati sono stati inseriti correttamente</p>
-                </div>
-                <div className="bg-white bg-opacity-20 rounded-full p-3">
-                  <CheckCircle className="h-6 w-6" />
-                </div>
-              </div>
+          {/* Composizione stanze */}
+          <div>
+            <p className="text-gray-600 mb-2">Composizione ({totalRooms} stanze totali):</p>
+            <div className="flex flex-wrap gap-3">
+              {Object.entries(formData.composizione).map(([key, value]) => 
+                value > 0 && (
+                  <span key={key} className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                    {value} {key === 'cameraDoppia' ? 'cam. doppia' : 
+                           key === 'cameraSingola' ? 'cam. singola' : key}
+                  </span>
+                )
+              )}
             </div>
           </div>
         </div>
