@@ -95,11 +95,12 @@ const AdminDashboard = () => {
 
   const data = getKPIData(timeFrame);
 
+  // Fixed leadsByState with proper null checks
   const leadsByState = Object.keys(leadStates).map(state => ({
     stato: leadStates[state as keyof typeof leadStates].label,
     count: leads.filter(lead => lead.stato === state).length,
     color: leadStates[state as keyof typeof leadStates].color
-  }));
+  })).filter(item => item.count > 0); // Only show states that have leads
 
   const recentLeads = leads
     .sort((a, b) => new Date(b.dataRichiesta).getTime() - new Date(a.dataRichiesta).getTime())
@@ -269,7 +270,7 @@ const AdminDashboard = () => {
               <CardTitle>Lead per Stato</CardTitle>
             </CardHeader>
             <CardContent>
-              {leads.length > 0 ? (
+              {leadsByState.length > 0 ? (
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={leadsByState}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -298,20 +299,25 @@ const AdminDashboard = () => {
             <CardContent>
               {recentLeads.length > 0 ? (
                 <div className="space-y-4">
-                  {recentLeads.map((lead) => (
-                    <div key={lead.id} className="flex items-center justify-between border-b pb-2">
-                      <div>
-                        <p className="font-medium">{lead.nome} {lead.cognome}</p>
-                        <p className="text-sm text-gray-600">{lead.citta}</p>
+                  {recentLeads.map((lead) => {
+                    const leadStateInfo = leadStates[lead.stato as keyof typeof leadStates];
+                    return (
+                      <div key={lead.id} className="flex items-center justify-between border-b pb-2">
+                        <div>
+                          <p className="font-medium">{lead.nome} {lead.cognome}</p>
+                          <p className="text-sm text-gray-600">{lead.citta}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-medium">€{lead.stimaMax.toLocaleString()}</p>
+                          {leadStateInfo && (
+                            <span className={`inline-block px-2 py-1 rounded-full text-xs text-white ${leadStateInfo.color}`}>
+                              {leadStateInfo.label}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-medium">€{lead.stimaMax.toLocaleString()}</p>
-                        <span className={`inline-block px-2 py-1 rounded-full text-xs text-white ${leadStates[lead.stato].color}`}>
-                          {leadStates[lead.stato].label}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="flex items-center justify-center h-[200px] text-gray-500">
