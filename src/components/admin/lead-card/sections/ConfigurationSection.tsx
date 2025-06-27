@@ -1,3 +1,4 @@
+
 import { Lead } from "@/data/mockLeads";
 import { Zap, CheckCircle, X, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -57,24 +58,10 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         <h4 className="font-semibold text-gray-900">Configurazione Richiesta</h4>
       </div>
 
-      {/* Tipo di sistema domotico */}
-      {configurazione.tipoDomotica && (
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-          <div className="text-sm font-medium text-gray-700 mb-2">Sistema Domotico</div>
-          <div className="text-lg font-semibold text-gray-900">
-            {configurazione.tipoDomotica === 'knx' ? (
-              <>🔌 Sistema KNX (Filare)</>
-            ) : (
-              <>📡 Sistema Wireless BTicino</>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Tipo di ristrutturazione */}
+      {/* 1. Tipo di ristrutturazione */}
       {configurazione.tipoRistrutturazione && (
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-          <div className="text-sm font-medium text-gray-700 mb-2">Tipo di Intervento</div>
+        <div className="mb-4 p-3 border rounded">
+          <div className="text-sm font-medium text-gray-700 mb-1">Tipo di Intervento</div>
           <Badge variant="outline" className="text-sm">
             {configurazione.tipoRistrutturazione === 'completa' ? '🏗️ Ristrutturazione Completa' :
              configurazione.tipoRistrutturazione === 'nuova' ? '🏠 Nuova Costruzione' : 
@@ -84,10 +71,10 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         </div>
       )}
 
-      {/* Tipo impianto elettrico */}
+      {/* 2. Livello impianto elettrico */}
       {configurazione.tipoImpianto && (
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-          <div className="text-sm font-medium text-gray-700 mb-2">Livello Impianto Elettrico</div>
+        <div className="mb-4 p-3 border rounded">
+          <div className="text-sm font-medium text-gray-700 mb-1">Livello Impianto Elettrico</div>
           <Badge variant="outline" className="text-sm">
             {configurazione.tipoImpianto === 'livello1' ? '⚡ Livello 1 - Standard Minimo' :
              configurazione.tipoImpianto === 'livello2' ? '🔧 Livello 2 - Impianto Avanzato' : 
@@ -97,10 +84,10 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         </div>
       )}
 
-      {/* Età impianto */}
+      {/* 3. Età impianto */}
       {configurazione.impiantoVecchio !== undefined && (
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-          <div className="text-sm font-medium text-gray-700 mb-2">Età Impianto Elettrico</div>
+        <div className="mb-4 p-3 border rounded">
+          <div className="text-sm font-medium text-gray-700 mb-1">Età Impianto Elettrico</div>
           <div className="flex items-center">
             {configurazione.impiantoVecchio ? (
               <div className="flex items-center text-orange-600">
@@ -117,10 +104,24 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         </div>
       )}
 
-      {/* Elettrificare tapparelle */}
+      {/* 4. Tipo di sistema domotico */}
+      {configurazione.tipoDomotica && (
+        <div className="mb-6 p-3 border rounded">
+          <div className="text-sm font-medium text-gray-700 mb-1">Sistema Domotico</div>
+          <div className="text-base font-medium text-gray-900">
+            {configurazione.tipoDomotica === 'knx' ? (
+              <>🔌 Sistema KNX (Filare)</>
+            ) : (
+              <>📡 Sistema Wireless BTicino</>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 5. Elettrificare tapparelle */}
       {configurazione.elettrificareTapparelle && (
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-          <div className="text-sm font-medium text-gray-700 mb-2">Elettrificare Tapparelle</div>
+        <div className="mb-4 p-3 border rounded">
+          <div className="text-sm font-medium text-gray-700 mb-1">Elettrificare Tapparelle</div>
           <div className="flex items-center justify-between">
             <div className="flex items-center text-blue-600">
               <CheckCircle className="h-4 w-4 mr-2" />
@@ -135,9 +136,9 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         </div>
       )}
 
-      {/* Ambienti selezionati */}
+      {/* 6. Ambienti selezionati */}
       {configurazione.ambientiSelezionati && configurazione.ambientiSelezionati.length > 0 && (
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+        <div className="mb-6 p-3 border rounded">
           <div className="text-sm font-medium text-gray-700 mb-2">Ambienti da Domotizzare</div>
           <div className="flex flex-wrap gap-2">
             {configurazione.ambientiSelezionati.map((ambiente: string, index: number) => (
@@ -157,11 +158,11 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         </div>
       )}
 
-      {/* Funzionalità KNX/BTicino richieste */}
+      {/* 7. Funzionalità KNX/BTicino richieste */}
       {(configurazione.knxConfig || configurazione.bTicinoConfig) && (
-        <div className="p-4 bg-gray-50 rounded-lg mb-6">
+        <div className="p-3 border rounded mb-4">
           <div className="text-sm font-medium text-gray-700 mb-3">Funzionalità Domotiche Richieste</div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {(() => {
               const config = configurazione.tipoDomotica === 'knx' ? configurazione.knxConfig : configurazione.bTicinoConfig;
               if (!config) return null;
@@ -258,11 +259,11 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         </div>
       )}
 
-      {/* Interventi elettrici */}
+      {/* 8. Interventi elettrici */}
       {configurazione.interventiElettrici && Object.keys(configurazione.interventiElettrici).length > 0 && (
-        <div className="p-4 bg-gray-50 rounded-lg">
+        <div className="p-3 border rounded">
           <div className="text-sm font-medium text-gray-700 mb-3">Interventi Elettrici Richiesti</div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {Object.entries(configurazione.interventiElettrici).map(([key, value]) => {
               if (hasActiveProperty(value) && value.active) {
                 const getInterventoIcon = (key: string) => {
