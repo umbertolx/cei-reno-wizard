@@ -266,7 +266,6 @@ const AdminLeads = () => {
       }
     }
 
-    const originalStatus = activeLead.stato;
     console.log("🔄 Status change attempt:", originalStatus, "→", targetColumn);
 
     // If same column, handle reordering
