@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
@@ -86,47 +85,6 @@ const AdminLeads = () => {
   useEffect(() => {
     loadLeads();
   }, []);
-
-  const retryUpdate = async (leadId: string, newStatus: string, retryCount = 0): Promise<boolean> => {
-    const maxRetries = 3;
-    const retryDelay = Math.pow(2, retryCount) * 1000; // Exponential backoff
-    
-    try {
-      console.log(`🔄 Attempting update for lead ${leadId} to status ${newStatus} (attempt ${retryCount + 1})`);
-      await updateLeadStatus(leadId, newStatus);
-      console.log(`✅ Update successful for lead ${leadId}`);
-      return true;
-    } catch (error) {
-      console.error(`❌ Update failed for lead ${leadId} (attempt ${retryCount + 1}):`, error);
-      
-      if (retryCount < maxRetries) {
-        console.log(`⏳ Retrying in ${retryDelay}ms...`);
-        await new Promise(resolve => setTimeout(resolve, retryDelay));
-        return retryUpdate(leadId, newStatus, retryCount + 1);
-      }
-      
-      return false;
-    }
-  };
-
-  const verifyUpdate = async (leadId: string, expectedStatus: string): Promise<boolean> => {
-    try {
-      console.log(`🔍 Verifying update for lead ${leadId}, expected status: ${expectedStatus}`);
-      const dbLeads = await fetchLeads();
-      const updatedLead = dbLeads.find(lead => lead.id === leadId);
-      
-      if (updatedLead && updatedLead.stato === expectedStatus) {
-        console.log(`✅ Update verified for lead ${leadId}`);
-        return true;
-      } else {
-        console.log(`⚠️ Update verification failed for lead ${leadId}. Expected: ${expectedStatus}, Found: ${updatedLead?.stato || 'not found'}`);
-        return false;
-      }
-    } catch (error) {
-      console.error(`❌ Error verifying update for lead ${leadId}:`, error);
-      return false;
-    }
-  };
 
   const filteredLeads = leads.filter(lead => 
     lead.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -235,46 +193,24 @@ const AdminLeads = () => {
 
     // Handle status change
     if (originalStatus !== targetColumn) {
-      // Add to pending updates
-      setPendingUpdates(prev => new Set([...prev, activeId]));
-      setLastUpdateAttempt(prev => ({ ...prev, [activeId]: Date.now() }));
-
       try {
         console.log("💾 Starting database update process");
         
-        // Show loading state
-        toast({
-          title: "Aggiornamento in corso...",
-          description: `Spostando ${activeLead.nome} ${activeLead.cognome}...`,
-        });
-
-        // Attempt update with retry logic
-        const updateSuccess = await retryUpdate(activeId, targetColumn);
+        // Update database immediately
+        await updateLeadStatus(activeId, targetColumn);
+        console.log("✅ Database update successful");
         
-        if (updateSuccess) {
-          // Verify the update
-          const verificationSuccess = await verifyUpdate(activeId, targetColumn);
-          
-          if (verificationSuccess) {
-            console.log("✅ Update and verification successful");
-            
-            // Refresh data to ensure synchronization
-            await loadLeads();
-            
-            const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
-                              customColumns.find(col => col.id === targetColumn);
-            const displayName = customTitles[targetColumn] || columnInfo?.label || targetColumn;
-            
-            toast({
-              title: "✅ Lead aggiornato",
-              description: `${activeLead.nome} ${activeLead.cognome} è stato spostato in "${displayName}"`,
-            });
-          } else {
-            throw new Error("Update verification failed");
-          }
-        } else {
-          throw new Error("Update failed after retries");
-        }
+        // Refresh data to ensure synchronization
+        await loadLeads();
+        
+        const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
+                          customColumns.find(col => col.id === targetColumn);
+        const displayName = customTitles[targetColumn] || columnInfo?.label || targetColumn;
+        
+        toast({
+          title: "✅ Lead aggiornato",
+          description: `${activeLead.nome} ${activeLead.cognome} è stato spostato in "${displayName}"`,
+        });
       } catch (error) {
         console.error("💥 Database update failed:", error);
         
@@ -290,13 +226,6 @@ const AdminLeads = () => {
           title: "❌ Errore",
           description: "Impossibile aggiornare lo stato del lead. Modifiche annullate.",
           variant: "destructive",
-        });
-      } finally {
-        // Remove from pending updates
-        setPendingUpdates(prev => {
-          const newSet = new Set(prev);
-          newSet.delete(activeId);
-          return newSet;
         });
       }
     }
