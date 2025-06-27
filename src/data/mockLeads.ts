@@ -1,77 +1,47 @@
-
-export const leadStates = {
-  nuovo: { label: "Nuovo", color: "bg-blue-500" },
-  contattato: { label: "Contattato", color: "bg-yellow-500" },
-  sopralluogo_richiesto: { label: "Sopralluogo Richiesto", color: "bg-orange-500" },
-  sopralluogo_programmato: { label: "Sopralluogo Programmato", color: "bg-purple-500" },
-  preventivo_inviato: { label: "Preventivo Inviato", color: "bg-indigo-500" },
-  chiuso: { label: "Chiuso", color: "bg-green-500" },
-  perso: { label: "Perso", color: "bg-red-500" },
-};
-
-export const moduliDisponibili = {
-  informazioni_generali: { label: "Informazioni Generali", color: "bg-blue-100 text-blue-800" },
-  configuratore_elettrico: { label: "Configuratore Elettrico", color: "bg-green-100 text-green-800" },
-  eta_impianto: { label: "Età Impianto", color: "bg-yellow-100 text-yellow-800" },
-  tipo_impianto: { label: "Tipo Impianto", color: "bg-purple-100 text-purple-800" },
-  interventi_elettrici: { label: "Interventi Elettrici", color: "bg-red-100 text-red-800" },
-  selezione_ambienti: { label: "Selezione Ambienti", color: "bg-indigo-100 text-indigo-800" },
-  tipo_domotica: { label: "Tipo Domotica", color: "bg-pink-100 text-pink-800" },
-  configurazione_bticino: { label: "Configurazione BTicino", color: "bg-orange-100 text-orange-800" },
-  configurazione_knx: { label: "Configurazione KNX", color: "bg-teal-100 text-teal-800" },
-  tapparelle_elettriche: { label: "Tapparelle Elettriche", color: "bg-gray-100 text-gray-800" },
-  dati_contatto: { label: "Dati Contatto", color: "bg-emerald-100 text-emerald-800" },
-  stima_finale: { label: "Stima Finale", color: "bg-cyan-100 text-cyan-800" },
-};
-
-export const availableColors = [
-  "bg-red-500",
-  "bg-blue-500",
-  "bg-green-500",
-  "bg-yellow-500",
-  "bg-purple-500",
-  "bg-pink-500",
-  "bg-indigo-500",
-  "bg-gray-500",
-  "bg-orange-500",
-  "bg-teal-500",
-  "bg-cyan-500",
-  "bg-emerald-500"
-];
-
 export interface Lead {
   id: string;
   nome: string;
   cognome: string;
   email: string;
   telefono: string;
-  indirizzo: string;
   citta: string;
-  cap: string;
-  regione: string;
-  tipologiaAbitazione: string;
-  superficie: number;
-  piano: string;
-  composizione: {
-    cucina: number;
-    cameraDoppia: number;
-    cameraSingola: number;
-    bagno: number;
-    soggiorno: number;
-    altro: number;
-  };
-  tipoProprietà: string;
-  stato: keyof typeof leadStates;
-  dataRichiesta: string;
-  dataUltimoContatto?: string;
-  stimaMin: number;
   stimaMax: number;
-  moduliCompletati: string[];
-  note?: string;
-  sopralluogoRichiesto?: boolean;
-  configurazioneTecnica?: any;
-  stimaDettagli?: any;
+  stato: keyof typeof leadStates;
+  dataUltimoContatto: string;
 }
+
+export const leadStates = {
+  nuovo: { label: "Nuovo", color: "bg-gray-500" },
+  in_contatto: { label: "In Contatto", color: "bg-blue-500" },
+  preventivo_inviato: { label: "Preventivo Inviato", color: "bg-yellow-500" },
+  sopralluogo_fissato: { label: "Sopralluogo Fissato", color: "bg-green-500" },
+  lavori_in_corso: { label: "Lavori in Corso", color: "bg-purple-500" },
+  lavori_conclusi: { label: "Lavori Conclusi", color: "bg-teal-500" },
+  perso: { label: "Perso", color: "bg-red-500" },
+};
+
+export const availableColors = [
+  "bg-red-500",
+  "bg-green-500",
+  "bg-blue-500",
+  "bg-yellow-500",
+  "bg-purple-500",
+  "bg-pink-500",
+  "bg-gray-500",
+  "bg-indigo-500",
+];
+
+export const convertDatabaseLeadToLead = (dbLead: any): Lead => ({
+  id: dbLead.id,
+  nome: dbLead.nome,
+  cognome: dbLead.cognome,
+  email: dbLead.email,
+  telefono: dbLead.telefono,
+  citta: dbLead.citta,
+  stimaMax: dbLead.stima_max,
+  stato: dbLead.stato,
+  dataUltimoContatto: dbLead.data_ultimo_contatto,
+});
 
 export interface CustomColumn {
   id: string;
@@ -80,123 +50,20 @@ export interface CustomColumn {
   order: number;
 }
 
-export interface DatabaseLead {
+export interface DatabaseCustomColumn {
   id: string;
-  nome: string;
-  cognome: string;
-  email: string;
-  telefono: string;
-  tipologia_abitazione: string;
-  superficie: number;
-  indirizzo: string;
-  citta: string;
-  cap: string;
-  regione: string;
-  piano: string;
-  composizione: any;
-  configurazione_tecnica: any;
-  stima_min: number | null;
-  stima_max: number | null;
-  stima_media: number | null;
-  stima_dettagli: any;
-  data_richiesta_sopralluogo: string | null;
-  orario_sopralluogo: string | null;
-  note: string | null;
-  tipo_proprieta: string;
-  stato: string;
-  data_creazione: string;
-  data_ultimo_contatto: string;
-  accetto_termini: boolean;
+  label: string;
+  color: string;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
 }
 
-// Funzione helper per determinare i moduli completati dalla configurazione
-const getModuliCompletatiFromConfig = (config: any): string[] => {
-  const moduli: string[] = [];
-  
-  if (!config) return moduli;
-
-  // Sempre presente se il lead esiste
-  moduli.push('informazioni_generali');
-  moduli.push('dati_contatto');
-  
-  // Controlli specifici basati sui dati della configurazione
-  if (config.tipoRistrutturazione) {
-    moduli.push('configuratore_elettrico');
-  }
-  
-  if (config.impiantoVecchio) {
-    moduli.push('eta_impianto');
-  }
-  
-  if (config.tipoImpianto) {
-    moduli.push('tipo_impianto');
-  }
-  
-  if (config.interventiElettrici) {
-    moduli.push('interventi_elettrici');
-  }
-  
-  if (config.ambientiSelezionati) {
-    moduli.push('selezione_ambienti');
-  }
-  
-  if (config.tipoDomotica) {
-    moduli.push('tipo_domotica');
-    
-    // Se ha scelto KNX o BTicino, aggiungi il modulo corrispondente
-    if (config.tipoDomotica === 'knx' && config.knxConfig) {
-      moduli.push('configurazione_knx');
-    } else if (config.tipoDomotica === 'wireless' && config.bTicinoConfig) {
-      moduli.push('configurazione_bticino');
-    }
-  }
-  
-  if (config.elettrificareTapparelle || config.numeroTapparelle) {
-    moduli.push('tapparelle_elettriche');
-  }
-  
-  // Se c'è una stima, significa che ha completato tutto
-  if (config.stimaMin || config.stimaMax) {
-    moduli.push('stima_finale');
-  }
-  
-  return moduli;
-};
-
-export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
-  const config = dbLead.configurazione_tecnica || {};
-  
+export const convertDatabaseCustomColumnToCustomColumn = (dbColumn: DatabaseCustomColumn): CustomColumn => {
   return {
-    id: dbLead.id,
-    nome: dbLead.nome,
-    cognome: dbLead.cognome,
-    email: dbLead.email,
-    telefono: dbLead.telefono,
-    indirizzo: dbLead.indirizzo,
-    citta: dbLead.citta,
-    cap: dbLead.cap,
-    regione: dbLead.regione,
-    tipologiaAbitazione: dbLead.tipologia_abitazione,
-    superficie: dbLead.superficie,
-    piano: dbLead.piano,
-    composizione: {
-      cucina: dbLead.composizione?.cucina || 0,
-      cameraDoppia: dbLead.composizione?.cameraDoppia || 0,
-      cameraSingola: dbLead.composizione?.cameraSingola || 0,
-      bagno: dbLead.composizione?.bagno || 0,
-      soggiorno: dbLead.composizione?.soggiorno || 0,
-      altro: dbLead.composizione?.altro || 0,
-    },
-    tipoProprietà: dbLead.tipo_proprieta,
-    stato: dbLead.stato as keyof typeof leadStates,
-    dataRichiesta: dbLead.data_creazione,
-    dataUltimoContatto: dbLead.data_ultimo_contatto,
-    stimaMin: dbLead.stima_min || 0,
-    stimaMax: dbLead.stima_max || 0,
-    moduliCompletati: getModuliCompletatiFromConfig(config),
-    note: dbLead.note,
-    sopralluogoRichiesto: dbLead.data_richiesta_sopralluogo ? true : false,
-    configurazioneTecnica: config,
-    stimaDettagli: dbLead.stima_dettagli,
+    id: dbColumn.id,
+    label: dbColumn.label,
+    color: dbColumn.color,
+    order: dbColumn.display_order,
   };
 };

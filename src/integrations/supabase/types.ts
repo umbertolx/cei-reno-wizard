@@ -9,6 +9,33 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      custom_columns: {
+        Row: {
+          color: string
+          created_at: string
+          display_order: number
+          id: string
+          label: string
+          updated_at: string
+        }
+        Insert: {
+          color: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          label: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          label?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       estimates: {
         Row: {
           average_price: number
