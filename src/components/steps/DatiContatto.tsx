@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { User, Phone, Mail, CircleDot, ChevronDown, Loader2, Home, MapPin } from "lucide-react";
+import { User, Phone, Mail, CircleDot, ChevronDown, Loader2, Home, MapPin, Settings } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 
@@ -74,6 +74,51 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
   };
 
   const totalRooms = Object.values(formData.composizione).reduce((acc, curr) => acc + curr, 0);
+
+  // Funzione per generare il riassunto della configurazione
+  const getConfigurationSummary = () => {
+    const config = [];
+    
+    if (formData.tipoRistrutturazione) {
+      config.push(`Ristrutturazione ${formData.tipoRistrutturazione}`);
+    }
+    
+    if (formData.tipoImpianto) {
+      const tipoImpianto = formData.tipoImpianto === 'livello1' ? 'Base' : 
+                          formData.tipoImpianto === 'livello2' ? 'Avanzato' : 
+                          formData.tipoImpianto === 'livello3' ? 'Domotico' : formData.tipoImpianto;
+      config.push(`Impianto ${tipoImpianto}`);
+    }
+    
+    if (formData.tipoDomotica) {
+      const domotica = formData.tipoDomotica === 'knx' ? 'KNX' : 
+                      formData.tipoDomotica === 'wireless' ? 'BTicino Wireless' : formData.tipoDomotica;
+      config.push(`Domotica ${domotica}`);
+    }
+    
+    if (formData.elettrificareTapparelle === 'si' && formData.numeroTapparelle) {
+      config.push(`${formData.numeroTapparelle} tapparelle elettrificate`);
+    }
+    
+    // Aggiungi features KNX se presenti
+    if (formData.knxConfig && Object.keys(formData.knxConfig).length > 0) {
+      const knxFeatures = Object.keys(formData.knxConfig);
+      if (knxFeatures.includes('luci')) config.push('Controllo luci intelligente');
+      if (knxFeatures.includes('clima')) config.push('Controllo clima');
+      if (knxFeatures.includes('sicurezza')) config.push('Predisposizione sicurezza');
+    }
+    
+    // Aggiungi features BTicino se presenti
+    if (formData.bTicinoConfig && Object.keys(formData.bTicinoConfig).length > 0) {
+      const bTicinoFeatures = Object.keys(formData.bTicinoConfig);
+      if (bTicinoFeatures.includes('luci')) config.push('Controllo luci wireless');
+      if (bTicinoFeatures.includes('clima')) config.push('Controllo clima wireless');
+    }
+    
+    return config;
+  };
+
+  const configSummary = getConfigurationSummary();
 
   return (
     <div className="space-y-8">
@@ -164,6 +209,23 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
               )}
             </div>
           </div>
+
+          {/* Riassunto configurazione */}
+          {configSummary.length > 0 && (
+            <div className="border-t border-gray-200 pt-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Settings className="h-4 w-4 text-[#d8010c]" />
+                <p className="text-gray-600 font-medium">Configurazione scelta:</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {configSummary.map((item, index) => (
+                  <span key={index} className="bg-white border border-gray-200 text-[#1c1c1c] px-3 py-1 rounded-full text-sm">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
