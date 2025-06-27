@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
@@ -13,6 +14,7 @@ import {
   DndContext, 
   DragEndEvent, 
   DragStartEvent,
+  DragOverlay,
   closestCorners,
   KeyboardSensor,
   PointerSensor,
