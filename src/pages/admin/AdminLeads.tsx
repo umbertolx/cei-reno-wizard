@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
@@ -35,6 +36,8 @@ const AdminLeads = () => {
   const [leadPositions, setLeadPositions] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [pendingUpdates, setPendingUpdates] = useState<Set<string>>(new Set());
+  const [lastUpdateAttempt, setLastUpdateAttempt] = useState<Record<string, number>>({});
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -48,12 +51,17 @@ const AdminLeads = () => {
   const loadLeads = async (showRefreshToast = false) => {
     try {
       setIsRefreshing(true);
-      console.log("Loading leads from database...");
+      console.log("🔄 Loading leads from database...");
       
       const dbLeads = await fetchLeads();
       const convertedLeads = dbLeads.map(convertDatabaseLeadToLead);
       
-      console.log("Loaded leads:", convertedLeads);
+      console.log("✅ Loaded leads:", convertedLeads.length, "leads");
+      console.log("📊 Lead states distribution:", convertedLeads.reduce((acc, lead) => {
+        acc[lead.stato] = (acc[lead.stato] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>));
+      
       setLeads(convertedLeads);
       
       if (showRefreshToast) {
@@ -63,7 +71,7 @@ const AdminLeads = () => {
         });
       }
     } catch (error) {
-      console.error("Error loading leads:", error);
+      console.error("❌ Error loading leads:", error);
       toast({
         title: "Errore",
         description: "Impossibile caricare i lead dal database",
@@ -78,6 +86,47 @@ const AdminLeads = () => {
   useEffect(() => {
     loadLeads();
   }, []);
+
+  const retryUpdate = async (leadId: string, newStatus: string, retryCount = 0): Promise<boolean> => {
+    const maxRetries = 3;
+    const retryDelay = Math.pow(2, retryCount) * 1000; // Exponential backoff
+    
+    try {
+      console.log(`🔄 Attempting update for lead ${leadId} to status ${newStatus} (attempt ${retryCount + 1})`);
+      await updateLeadStatus(leadId, newStatus);
+      console.log(`✅ Update successful for lead ${leadId}`);
+      return true;
+    } catch (error) {
+      console.error(`❌ Update failed for lead ${leadId} (attempt ${retryCount + 1}):`, error);
+      
+      if (retryCount < maxRetries) {
+        console.log(`⏳ Retrying in ${retryDelay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, retryDelay));
+        return retryUpdate(leadId, newStatus, retryCount + 1);
+      }
+      
+      return false;
+    }
+  };
+
+  const verifyUpdate = async (leadId: string, expectedStatus: string): Promise<boolean> => {
+    try {
+      console.log(`🔍 Verifying update for lead ${leadId}, expected status: ${expectedStatus}`);
+      const dbLeads = await fetchLeads();
+      const updatedLead = dbLeads.find(lead => lead.id === leadId);
+      
+      if (updatedLead && updatedLead.stato === expectedStatus) {
+        console.log(`✅ Update verified for lead ${leadId}`);
+        return true;
+      } else {
+        console.log(`⚠️ Update verification failed for lead ${leadId}. Expected: ${expectedStatus}, Found: ${updatedLead?.stato || 'not found'}`);
+        return false;
+      }
+    } catch (error) {
+      console.error(`❌ Error verifying update for lead ${leadId}:`, error);
+      return false;
+    }
+  };
 
   const filteredLeads = leads.filter(lead => 
     lead.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -110,25 +159,18 @@ const AdminLeads = () => {
 
   const handleViewDetails = (lead: Lead) => {
     console.log("AdminLeads: handleViewDetails called with lead:", lead.id, lead.nome, lead.cognome);
-    console.log("AdminLeads: Current selectedLead before update:", selectedLead?.id);
-    console.log("AdminLeads: Setting selected lead to:", lead.id);
     setSelectedLead(lead);
-    console.log("AdminLeads: selectedLead state should now be updated");
-    
-    setTimeout(() => {
-      console.log("AdminLeads: After timeout, selectedLead should be:", lead.id);
-    }, 100);
   };
 
   const handleCloseDetails = () => {
     console.log("AdminLeads: Closing lead details");
-    console.log("AdminLeads: Current selectedLead before closing:", selectedLead?.id);
     setSelectedLead(null);
-    console.log("AdminLeads: selectedLead set to null");
   };
 
   const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(event.active.id as string);
+    const leadId = event.active.id as string;
+    console.log("🎯 Drag started for lead:", leadId);
+    setActiveId(leadId);
   };
 
   const handleDragOver = (event: DragOverEvent) => {
@@ -145,7 +187,11 @@ const AdminLeads = () => {
       const overLead = leads.find(lead => lead.id === overId);
       const targetColumn = overLead ? overLead.stato : overId;
 
+      console.log("🔄 Drag over - Active lead:", activeId, "Target column:", targetColumn);
+
+      // Optimistic update - immediately update UI
       if (activeLead.stato !== targetColumn) {
+        console.log("🚀 Applying optimistic update");
         setLeads(prev => prev.map(lead =>
           lead.id === activeId 
             ? { ...lead, stato: targetColumn as keyof typeof leadStates, dataUltimoContatto: new Date().toISOString() }
@@ -159,6 +205,7 @@ const AdminLeads = () => {
     const { active, over } = event;
     
     if (!over) {
+      console.log("🚫 Drag ended without target");
       setActiveId(null);
       return;
     }
@@ -166,56 +213,110 @@ const AdminLeads = () => {
     const activeId = active.id as string;
     const overId = over.id as string;
 
+    console.log("🎯 Drag ended - Active:", activeId, "Over:", overId);
+
     const activeLead = leads.find(lead => lead.id === activeId);
     if (!activeLead) {
+      console.log("❌ Active lead not found");
       setActiveId(null);
       return;
     }
 
     const overLead = leads.find(lead => lead.id === overId);
     const targetColumn = overLead ? overLead.stato : overId;
+    const originalStatus = activeLead.stato;
 
-    if (activeLead.stato !== targetColumn) {
+    console.log("📋 Lead status change:", {
+      leadId: activeId,
+      from: originalStatus,
+      to: targetColumn,
+      leadName: `${activeLead.nome} ${activeLead.cognome}`
+    });
+
+    // Handle status change
+    if (originalStatus !== targetColumn) {
+      // Add to pending updates
+      setPendingUpdates(prev => new Set([...prev, activeId]));
+      setLastUpdateAttempt(prev => ({ ...prev, [activeId]: Date.now() }));
+
       try {
-        await updateLeadStatus(activeId, targetColumn);
+        console.log("💾 Starting database update process");
         
-        const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
-                          customColumns.find(col => col.id === targetColumn);
-        const displayName = customTitles[targetColumn] || columnInfo?.label || targetColumn;
-        
+        // Show loading state
         toast({
-          title: "Lead aggiornato",
-          description: `${activeLead.nome} ${activeLead.cognome} è stato spostato in "${displayName}"`,
+          title: "Aggiornamento in corso...",
+          description: `Spostando ${activeLead.nome} ${activeLead.cognome}...`,
         });
+
+        // Attempt update with retry logic
+        const updateSuccess = await retryUpdate(activeId, targetColumn);
+        
+        if (updateSuccess) {
+          // Verify the update
+          const verificationSuccess = await verifyUpdate(activeId, targetColumn);
+          
+          if (verificationSuccess) {
+            console.log("✅ Update and verification successful");
+            
+            // Refresh data to ensure synchronization
+            await loadLeads();
+            
+            const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
+                              customColumns.find(col => col.id === targetColumn);
+            const displayName = customTitles[targetColumn] || columnInfo?.label || targetColumn;
+            
+            toast({
+              title: "✅ Lead aggiornato",
+              description: `${activeLead.nome} ${activeLead.cognome} è stato spostato in "${displayName}"`,
+            });
+          } else {
+            throw new Error("Update verification failed");
+          }
+        } else {
+          throw new Error("Update failed after retries");
+        }
       } catch (error) {
-        console.error("Error updating lead status:", error);
-        toast({
-          title: "Errore",
-          description: "Impossibile aggiornare lo stato del lead",
-          variant: "destructive",
-        });
+        console.error("💥 Database update failed:", error);
         
+        // Rollback optimistic update
+        console.log("🔄 Rolling back optimistic update");
         setLeads(prev => prev.map(lead =>
           lead.id === activeId 
-            ? { ...lead, stato: activeLead.stato }
+            ? { ...lead, stato: originalStatus, dataUltimoContatto: activeLead.dataUltimoContatto }
             : lead
         ));
+        
+        toast({
+          title: "❌ Errore",
+          description: "Impossibile aggiornare lo stato del lead. Modifiche annullate.",
+          variant: "destructive",
+        });
+      } finally {
+        // Remove from pending updates
+        setPendingUpdates(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(activeId);
+          return newSet;
+        });
       }
     }
 
-    if (overLead && activeLead.stato === overLead.stato) {
-      const columnLeads = leadsByState[activeLead.stato];
+    // Handle position reordering within same column
+    if (overLead && originalStatus === overLead.stato) {
+      const columnLeads = leadsByState[originalStatus];
       const activeIndex = columnLeads.findIndex(lead => lead.id === activeId);
       const overIndex = columnLeads.findIndex(lead => lead.id === overId);
 
       if (activeIndex !== overIndex) {
+        console.log("📝 Reordering within column:", originalStatus);
         const newOrder = arrayMove(columnLeads, activeIndex, overIndex);
         setLeadPositions(prev => ({
           ...prev,
-          [activeLead.stato]: newOrder.map(lead => lead.id)
+          [originalStatus]: newOrder.map(lead => lead.id)
         }));
       }
-    } else {
+    } else if (originalStatus !== targetColumn) {
+      // Update position for moved lead
       setLeadPositions(prev => ({
         ...prev,
         [targetColumn]: [...(prev[targetColumn] || []).filter(id => id !== activeId), activeId]
@@ -311,7 +412,14 @@ const AdminLeads = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Gestione Lead</h1>
-            <p className="text-gray-600">Visualizza e gestisci tutti i preventivi richiesti ({leads.length} totali)</p>
+            <p className="text-gray-600">
+              Visualizza e gestisci tutti i preventivi richiesti ({leads.length} totali)
+              {pendingUpdates.size > 0 && (
+                <span className="ml-2 text-orange-600">
+                  ({pendingUpdates.size} aggiornamenti in corso...)
+                </span>
+              )}
+            </p>
           </div>
         </div>
 
