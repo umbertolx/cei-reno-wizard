@@ -52,7 +52,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
   const [isActivated, setIsActivated] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('standard');
-  const [inputValue, setInputValue] = useState<number>(0);
+  const [inputValue, setInputValue] = useState<number>(1);
   const [multipleInputValues, setMultipleInputValues] = useState<Record<string, number>>({});
 
   const handleActivate = () => {
@@ -108,7 +108,7 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
   const handleMultipleInputChange = (inputId: string, value: number) => {
     setMultipleInputValues(prev => ({
       ...prev,
-      [inputId]: value
+      [inputId]: Math.max(1, value) // Ensure minimum value is 1
     }));
   };
 
@@ -157,13 +157,13 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
 
   const featureImage = getFeatureImage();
 
-  // Validation for continue button - allow 0 values for optional inputs
-  const canContinue = !feature.advancedOption?.requiresInput || inputValue >= 0;
+  // Validation for continue button - ensure minimum value is 1
+  const canContinue = !feature.advancedOption?.requiresInput || inputValue >= 1;
   
-  // Validation for multiple inputs - allow 0 values
+  // Validation for multiple inputs - ensure minimum value is 1
   const canContinueMultiple = !feature.advancedOption?.requiresMultipleInputs || 
     (feature.advancedOption.inputs && feature.advancedOption.inputs.some(input => 
-      multipleInputValues[input.id] >= 0
+      (multipleInputValues[input.id] || 1) >= 1
     ));
 
   const finalCanContinue = feature.advancedOption?.requiresMultipleInputs ? canContinueMultiple : canContinue;
@@ -290,35 +290,35 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                       {feature.advancedOption.inputLabel}
                     </Label>
                     <span className="text-sm font-bold text-[#d8010c]">
-                      {inputValue || 0}
+                      {inputValue || 1}
                     </span>
                   </div>
                   
                   {feature.advancedOption.useSlider ? (
                     <div className="space-y-2">
                       <Slider
-                        value={[inputValue || 0]}
+                        value={[inputValue || 1]}
                         onValueChange={handleSingleSliderChange}
-                        max={feature.advancedOption.inputMax}
-                        min={feature.advancedOption.inputMin}
+                        max={feature.advancedOption.inputMax || 20}
+                        min={feature.advancedOption.inputMin || 1}
                         step={1}
                         className="py-2"
                         onClick={(e) => e.stopPropagation()}
                       />
                       
                       <div className="flex justify-between text-xs text-gray-500">
-                        <span>{feature.advancedOption.inputMin}</span>
-                        <span>{feature.advancedOption.inputMax}</span>
+                        <span>{feature.advancedOption.inputMin || 1}</span>
+                        <span>{feature.advancedOption.inputMax || 20}</span>
                       </div>
                     </div>
                   ) : (
                     <Input
                       id={`${feature.id}-input`}
-                      type={feature.advancedOption.inputType || "text"}
-                      min={feature.advancedOption.inputMin}
-                      max={feature.advancedOption.inputMax}
-                      value={inputValue || ""}
-                      onChange={(e) => setInputValue(parseInt(e.target.value) || 0)}
+                      type={feature.advancedOption.inputType || "number"}
+                      min={feature.advancedOption.inputMin || 1}
+                      max={feature.advancedOption.inputMax || 20}
+                      value={inputValue || 1}
+                      onChange={(e) => setInputValue(Math.max(1, parseInt(e.target.value) || 1))}
                       placeholder={feature.advancedOption.inputPlaceholder}
                       className="text-sm h-10"
                       onClick={(e) => e.stopPropagation()}
@@ -337,24 +337,24 @@ export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
                           {input.label}
                         </Label>
                         <span className="text-sm font-bold text-[#d8010c]">
-                          {multipleInputValues[input.id] || 0}
+                          {multipleInputValues[input.id] || 1}
                         </span>
                       </div>
                       
                       <div className="space-y-2">
                         <Slider
-                          value={[multipleInputValues[input.id] || 0]}
+                          value={[multipleInputValues[input.id] || 1]}
                           onValueChange={(values) => handleMultipleSliderChange(input.id, values)}
-                          max={input.inputMax}
-                          min={input.inputMin}
+                          max={20}
+                          min={1}
                           step={1}
                           className="py-2"
                           onClick={(e) => e.stopPropagation()}
                         />
                         
                         <div className="flex justify-between text-xs text-gray-500">
-                          <span>{input.inputMin}</span>
-                          <span>{input.inputMax}</span>
+                          <span>1</span>
+                          <span>20</span>
                         </div>
                       </div>
                     </div>
