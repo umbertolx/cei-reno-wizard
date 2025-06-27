@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
-import { KanbanColumn } from "@/components/admin/KanbanColumn";
+import { SortableKanbanColumn } from "@/components/admin/SortableKanbanColumn";
 import { LeadDetails } from "@/components/admin/LeadDetails";
 import { AddColumnDialog } from "@/components/admin/AddColumnDialog";
 import { leadStates, Lead, CustomColumn, convertDatabaseLeadToLead } from "@/data/mockLeads";
@@ -22,7 +22,11 @@ import {
   DragOverEvent
 } from "@dnd-kit/core";
 import { LeadCard } from "@/components/admin/LeadCard";
-import { arrayMove } from "@dnd-kit/sortable";
+import { 
+  SortableContext, 
+  arrayMove, 
+  horizontalListSortingStrategy 
+} from "@dnd-kit/sortable";
 
 const AdminLeads = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -36,6 +40,7 @@ const AdminLeads = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [columnOrder, setColumnOrder] = useState<string[]>([]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -85,6 +90,17 @@ const AdminLeads = () => {
     loadLeads();
   }, []);
 
+  // Initialize column order when data loads
+  useEffect(() => {
+    if (columnOrder.length === 0 && (Object.keys(leadStates).length > 0 || customColumns.length > 0)) {
+      const defaultOrder = [
+        ...Object.keys(leadStates),
+        ...customColumns.map(col => col.id)
+      ];
+      setColumnOrder(defaultOrder);
+    }
+  }, [customColumns, columnOrder.length]);
+
   const filteredLeads = leads.filter(lead => 
     lead.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
     lead.cognome.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -114,6 +130,20 @@ const AdminLeads = () => {
     return acc;
   }, {} as Record<string, Lead[]>);
 
+  const orderedColumns = columnOrder.length > 0 
+    ? columnOrder.map(id => {
+        const defaultCol = Object.keys(leadStates).find(state => state === id);
+        const customCol = customColumns.find(col => col.id === id);
+        
+        if (defaultCol) {
+          return { id: defaultCol, type: 'default' as const };
+        } else if (customCol) {
+          return { id: customCol.id, type: 'custom' as const, column: customCol };
+        }
+        return null;
+      }).filter(Boolean)
+    : allColumns;
+
   const handleViewDetails = (lead: Lead) => {
     console.log("AdminLeads: handleViewDetails called with lead:", lead.id, lead.nome, lead.cognome);
     setSelectedLead(lead);
@@ -125,9 +155,20 @@ const AdminLeads = () => {
   };
 
   const handleDragStart = (event: DragStartEvent) => {
-    const leadId = event.active.id as string;
-    console.log("🎯 Drag started for lead:", leadId);
-    setActiveId(leadId);
+    const activeId = event.active.id as string;
+    console.log("🎯 Drag started:", activeId);
+    
+    // Check if dragging a column or a lead
+    const isColumn = orderedColumns.some(col => col?.id === activeId);
+    
+    if (isColumn) {
+      console.log("🎯 Dragging column:", activeId);
+      setActiveId(null); // Don't show lead overlay for columns
+    } else {
+      console.log("🎯 Dragging lead:", activeId);
+      setActiveId(activeId);
+    }
+    
     setDragOverColumn(null);
   };
 
@@ -176,13 +217,33 @@ const AdminLeads = () => {
     const activeId = active.id as string;
     const overId = over.id as string;
 
+    // Check if reordering columns
+    const isActiveColumn = orderedColumns.some(col => col?.id === activeId);
+    const isOverColumn = orderedColumns.some(col => col?.id === overId);
+
+    if (isActiveColumn && isOverColumn && activeId !== overId) {
+      console.log("🔄 Reordering columns:", activeId, "→", overId);
+      
+      const oldIndex = columnOrder.indexOf(activeId);
+      const newIndex = columnOrder.indexOf(overId);
+      
+      const newOrder = [...columnOrder];
+      const [removed] = newOrder.splice(oldIndex, 1);
+      newOrder.splice(newIndex, 0, removed);
+      
+      setColumnOrder(newOrder);
+      return;
+    }
+
+    // Handle lead drag (existing logic)
     const activeLead = leads.find(lead => lead.id === activeId);
     if (!activeLead) {
       console.log("❌ Active lead not found:", activeId);
       return;
     }
 
-    console.log("📋 Active lead found:", activeLead.nome, activeLead.cognome, "Current state:", activeLead.stato);
+    const originalStatus = activeLead.stato;
+    console.log("🔄 Status change attempt:", originalStatus, "→", overId);
 
     // Determine target column
     let targetColumn: string;
@@ -295,6 +356,7 @@ const AdminLeads = () => {
       id: `custom_${Date.now()}`
     };
     setCustomColumns(prev => [...prev, newColumn]);
+    setColumnOrder(prev => [...prev, newColumn.id]);
     toast({
       title: "Colonna aggiunta",
       description: `La colonna "${columnData.label}" è stata aggiunta con successo`,
@@ -312,6 +374,7 @@ const AdminLeads = () => {
     }
 
     setCustomColumns(prev => prev.filter(col => col.id !== columnId));
+    setColumnOrder(prev => prev.filter(id => id !== columnId));
     setLeadPositions(prev => {
       const { [columnId]: removed, ...rest } = prev;
       return rest;
@@ -415,20 +478,29 @@ const AdminLeads = () => {
           onDragEnd={handleDragEnd}
         >
           <div className="flex gap-6 overflow-x-auto pb-4">
-            {allColumns.map((col) => (
-              <KanbanColumn
-                key={col.id}
-                stato={col.id}
-                leads={leadsByState[col.id] || []}
-                onViewDetails={handleViewDetails}
-                customTitle={customTitles[col.id]}
-                onTitleChange={handleTitleChange}
-                customColumn={col.type === 'custom' ? col.column : undefined}
-                onDeleteColumn={handleDeleteColumn}
-                isDefaultColumn={col.type === 'default'}
-                isDraggedOver={dragOverColumn === col.id}
-              />
-            ))}
+            <SortableContext
+              items={columnOrder}
+              strategy={horizontalListSortingStrategy}
+            >
+              {orderedColumns.map((col) => {
+                if (!col) return null;
+                
+                return (
+                  <SortableKanbanColumn
+                    key={col.id}
+                    stato={col.id}
+                    leads={leadsByState[col.id] || []}
+                    onViewDetails={handleViewDetails}
+                    customTitle={customTitles[col.id]}
+                    onTitleChange={handleTitleChange}
+                    customColumn={col.type === 'custom' ? col.column : undefined}
+                    onDeleteColumn={handleDeleteColumn}
+                    isDefaultColumn={col.type === 'default'}
+                    isDraggedOver={dragOverColumn === col.id}
+                  />
+                );
+              })}
+            </SortableContext>
           </div>
           
           <DragOverlay>

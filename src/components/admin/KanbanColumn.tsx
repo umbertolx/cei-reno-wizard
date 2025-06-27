@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { Lead, leadStates, CustomColumn } from "@/data/mockLeads";
 import { LeadCard } from "./LeadCard";
+import { DeleteColumnDialog } from "./DeleteColumnDialog";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Edit2, Check, X, Trash2 } from "lucide-react";
+import { Edit2, Check, X, Trash2, GripVertical } from "lucide-react";
 
 interface KanbanColumnProps {
   stato: string;
@@ -19,6 +20,7 @@ interface KanbanColumnProps {
   isDefaultColumn?: boolean;
   allCardsExpanded?: boolean;
   isDraggedOver?: boolean;
+  isDraggable?: boolean;
 }
 
 export const KanbanColumn = ({ 
@@ -31,7 +33,8 @@ export const KanbanColumn = ({
   onDeleteColumn,
   isDefaultColumn = false,
   allCardsExpanded = false,
-  isDraggedOver = false
+  isDraggedOver = false,
+  isDraggable = false
 }: KanbanColumnProps) => {
   const { setNodeRef, isOver } = useDroppable({
     id: stato,
@@ -44,6 +47,7 @@ export const KanbanColumn = ({
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState(customTitle || customColumn?.label || leadStates[stato as keyof typeof leadStates]?.label || stato);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const stateInfo = customColumn || leadStates[stato as keyof typeof leadStates];
   const displayTitle = customTitle || customColumn?.label || stateInfo?.label || stato;
@@ -61,7 +65,11 @@ export const KanbanColumn = ({
     setIsEditingTitle(false);
   };
 
-  const handleDeleteColumn = () => {
+  const handleDeleteClick = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
     if (onDeleteColumn && customColumn && !isDefaultColumn) {
       onDeleteColumn(customColumn.id);
     }
@@ -76,94 +84,112 @@ export const KanbanColumn = ({
   console.log("KanbanColumn render:", { stato, isDragActive, isOver, isDraggedOver, leadsCount: leads.length });
 
   return (
-    <div className="flex-1 min-w-80 max-w-80">
-      <div className="mb-4 bg-white rounded-lg p-3 shadow-sm border">
-        <div className="flex items-center justify-between">
-          {isEditingTitle ? (
-            <div className="flex items-center space-x-2 flex-1">
-              <Input
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-                className="text-sm font-semibold"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSaveTitle();
-                  if (e.key === 'Escape') handleCancelEdit();
-                }}
-                autoFocus
-              />
-              <Button size="sm" variant="ghost" onClick={handleSaveTitle}>
-                <Check className="h-3 w-3" />
-              </Button>
-              <Button size="sm" variant="ghost" onClick={handleCancelEdit}>
-                <X className="h-3 w-3" />
-              </Button>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-2 flex-1">
-              <h3 className="font-semibold text-gray-900 text-sm">{displayTitle}</h3>
-              <Button 
-                size="sm" 
-                variant="ghost" 
-                onClick={() => setIsEditingTitle(true)}
-                className="h-6 w-6 p-0"
-              >
-                <Edit2 className="h-3 w-3" />
-              </Button>
-              {customColumn && !isDefaultColumn && (
-                <Button 
-                  size="sm" 
-                  variant="ghost" 
-                  onClick={handleDeleteColumn}
-                  className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
-                >
-                  <Trash2 className="h-3 w-3" />
-                </Button>
+    <>
+      <div className="flex-1 min-w-80 max-w-80">
+        <div className="mb-4 bg-white rounded-lg p-3 shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {isDraggable && (
+                <div className="cursor-grab hover:cursor-grabbing">
+                  <GripVertical className="h-4 w-4 text-gray-400" />
+                </div>
+              )}
+              
+              {isEditingTitle ? (
+                <div className="flex items-center space-x-2 flex-1">
+                  <Input
+                    value={editedTitle}
+                    onChange={(e) => setEditedTitle(e.target.value)}
+                    className="text-sm font-semibold"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleSaveTitle();
+                      if (e.key === 'Escape') handleCancelEdit();
+                    }}
+                    autoFocus
+                  />
+                  <Button size="sm" variant="ghost" onClick={handleSaveTitle}>
+                    <Check className="h-3 w-3" />
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={handleCancelEdit}>
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2 flex-1">
+                  <h3 className="font-semibold text-gray-900 text-sm">{displayTitle}</h3>
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    onClick={() => setIsEditingTitle(true)}
+                    className="h-6 w-6 p-0"
+                  >
+                    <Edit2 className="h-3 w-3" />
+                  </Button>
+                  {customColumn && !isDefaultColumn && (
+                    <Button 
+                      size="sm" 
+                      variant="ghost" 
+                      onClick={handleDeleteClick}
+                      className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  )}
+                </div>
               )}
             </div>
-          )}
-          <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-sm font-medium ${columnColor}`}>
-            {leads.length}
-          </span>
+            <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-sm font-medium ${columnColor}`}>
+              {leads.length}
+            </span>
+          </div>
+        </div>
+
+        <div
+          ref={setNodeRef}
+          className={`bg-gray-50 rounded-lg p-4 h-[calc(100vh-280px)] overflow-y-auto transition-all duration-300 min-h-32 ${dragOverClass}`}
+        >
+          <SortableContext
+            items={leads.map(lead => lead.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {leads.length === 0 ? (
+              <div className="text-center text-gray-500 py-8 h-full flex flex-col justify-center">
+                <p className="mb-2">Nessun lead in questo stato</p>
+                {isDragActive && (
+                  <div className="text-blue-600 font-medium text-sm animate-pulse bg-white/80 rounded-lg p-4 border-2 border-dashed border-blue-300">
+                    <p>🎯 Rilascia qui per spostare il lead</p>
+                    <p className="text-xs mt-1">in "{displayTitle}"</p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {leads.map((lead) => (
+                  <LeadCard
+                    key={lead.id}
+                    lead={lead}
+                    onViewDetails={() => onViewDetails(lead)}
+                    forceExpanded={allCardsExpanded}
+                  />
+                ))}
+                {isDragActive && (
+                  <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-lg bg-white/80 mx-2">
+                    <p>🎯 Rilascia qui per aggiungere a "{displayTitle}"</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </SortableContext>
         </div>
       </div>
 
-      <div
-        ref={setNodeRef}
-        className={`bg-gray-50 rounded-lg p-4 h-[calc(100vh-280px)] overflow-y-auto transition-all duration-300 min-h-32 ${dragOverClass}`}
-      >
-        <SortableContext
-          items={leads.map(lead => lead.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          {leads.length === 0 ? (
-            <div className="text-center text-gray-500 py-8 h-full flex flex-col justify-center">
-              <p className="mb-2">Nessun lead in questo stato</p>
-              {isDragActive && (
-                <div className="text-blue-600 font-medium text-sm animate-pulse bg-white/80 rounded-lg p-4 border-2 border-dashed border-blue-300">
-                  <p>🎯 Rilascia qui per spostare il lead</p>
-                  <p className="text-xs mt-1">in "{displayTitle}"</p>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {leads.map((lead) => (
-                <LeadCard
-                  key={lead.id}
-                  lead={lead}
-                  onViewDetails={() => onViewDetails(lead)}
-                  forceExpanded={allCardsExpanded}
-                />
-              ))}
-              {isDragActive && (
-                <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-lg bg-white/80 mx-2">
-                  <p>🎯 Rilascia qui per aggiungere a "{displayTitle}"</p>
-                </div>
-              )}
-            </div>
-          )}
-        </SortableContext>
-      </div>
-    </div>
+      <DeleteColumnDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        columnName={displayTitle}
+        leadCount={leads.length}
+      />
+    </>
   );
 };
