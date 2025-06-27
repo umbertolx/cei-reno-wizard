@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { User, Phone, Mail, CircleDot, ChevronDown, Loader2 } from "lucide-react";
+import { User, Phone, Mail, CircleDot, ChevronDown, Loader2, Home, MapPin, Layers, Building2, CheckCircle } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 
@@ -116,43 +116,92 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
         </div>
       </div>
 
-      {/* Riepilogo dati abitazione */}
-      <div className="bg-[#f4f4f4] p-6 rounded-2xl space-y-4">
-        <h2 className="text-2xl font-medium text-[#1c1c1c]">Riepilogo abitazione</h2>
+      {/* Nuovo box di riepilogo abitazione completamente rifatto */}
+      <div className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-3xl p-8 shadow-lg">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="bg-[#d8010c] rounded-full p-2">
+            <Home className="h-6 w-6 text-white" />
+          </div>
+          <h2 className="text-2xl font-semibold text-[#1c1c1c]">La tua abitazione</h2>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <p className="text-sm text-[#1c1c1c] opacity-70">Tipologia</p>
-            <p className="text-lg font-medium capitalize">{formData.tipologiaAbitazione}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Sezione Proprietà */}
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <Building2 className="h-5 w-5 text-[#d8010c]" />
+                <h3 className="text-lg font-medium text-[#1c1c1c]">Proprietà</h3>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Tipologia</span>
+                  <span className="font-medium capitalize bg-[#fbe12e] bg-opacity-30 px-3 py-1 rounded-full text-sm">
+                    {formData.tipologiaAbitazione}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Superficie</span>
+                  <span className="font-medium text-[#d8010c]">{formData.superficie} mq</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Piano</span>
+                  <span className="font-medium capitalize">{formData.piano}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <MapPin className="h-5 w-5 text-[#d8010c]" />
+                <h3 className="text-lg font-medium text-[#1c1c1c]">Posizione</h3>
+              </div>
+              <div className="space-y-2">
+                <p className="font-medium text-[#1c1c1c]">{formData.indirizzo}</p>
+                <p className="text-gray-600">{formData.citta} {formData.cap}</p>
+                <p className="text-gray-600">{formData.regione}</p>
+              </div>
+            </div>
           </div>
-          
-          <div>
-            <p className="text-sm text-[#1c1c1c] opacity-70">Superficie</p>
-            <p className="text-lg font-medium">{formData.superficie} mq</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-[#1c1c1c] opacity-70">Indirizzo</p>
-            <p className="text-lg font-medium">{formData.indirizzo}</p>
-            <p className="text-md">{formData.citta}, {formData.cap}, {formData.regione}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-[#1c1c1c] opacity-70">Piano</p>
-            <p className="text-lg font-medium capitalize">{formData.piano}</p>
-          </div>
-          
-          <div className="md:col-span-2">
-            <p className="text-sm text-[#1c1c1c] opacity-70">Composizione ({totalRooms} stanze totali)</p>
-            <div className="flex flex-wrap gap-4 mt-2">
-              {Object.entries(formData.composizione).map(([key, value]) => 
-                value > 0 && (
-                  <div key={key} className="bg-white px-4 py-2 rounded-lg">
-                    <span className="capitalize">{key}: </span>
-                    <span className="font-medium">{value}</span>
-                  </div>
-                )
-              )}
+
+          {/* Sezione Composizione */}
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <Layers className="h-5 w-5 text-[#d8010c]" />
+                <h3 className="text-lg font-medium text-[#1c1c1c]">Composizione</h3>
+                <span className="bg-[#d8010c] text-white text-xs px-2 py-1 rounded-full ml-auto">
+                  {totalRooms} stanze
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {Object.entries(formData.composizione).map(([key, value]) => 
+                  value > 0 && (
+                    <div key={key} className="flex items-center justify-between bg-gray-50 rounded-xl p-3">
+                      <span className="text-sm font-medium capitalize text-gray-700">
+                        {key === 'cameraDoppia' ? 'Camera doppia' : 
+                         key === 'cameraSingola' ? 'Camera singola' : key}
+                      </span>
+                      <div className="bg-[#fbe12e] text-[#1c1c1c] text-sm font-bold px-2 py-1 rounded-full min-w-[24px] text-center">
+                        {value}
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+
+            {/* Indicatore di progresso */}
+            <div className="bg-gradient-to-r from-[#d8010c] to-[#fbe12e] rounded-2xl p-6 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-semibold text-lg">Configurazione completa</h3>
+                  <p className="text-sm opacity-90">Tutti i dati sono stati inseriti correttamente</p>
+                </div>
+                <div className="bg-white bg-opacity-20 rounded-full p-3">
+                  <CheckCircle className="h-6 w-6" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
