@@ -3,7 +3,6 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
 import { LeadDetails } from "@/components/admin/LeadDetails";
 import { AddColumnDialog } from "@/components/admin/AddColumnDialog";
-import { CardExpansionToggle } from "@/components/admin/CardExpansionToggle";
 import { leadStates, Lead, CustomColumn, convertDatabaseLeadToLead } from "@/data/mockLeads";
 import { fetchLeads, updateLeadStatus } from "@/services/leadService";
 import { Input } from "@/components/ui/input";
@@ -36,7 +35,6 @@ const AdminLeads = () => {
   const [leadPositions, setLeadPositions] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [allCardsExpanded, setAllCardsExpanded] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -274,10 +272,6 @@ const AdminLeads = () => {
     });
   };
 
-  const handleToggleAllExpansion = () => {
-    setAllCardsExpanded(!allCardsExpanded);
-  };
-
   const handleExport = () => {
     const csvContent = leads.map(lead => 
       `${lead.nome},${lead.cognome},${lead.email},${lead.telefono},${lead.citta},${lead.stimaMax},${lead.stato}`
@@ -333,10 +327,6 @@ const AdminLeads = () => {
               />
             </div>
             <div className="flex gap-2">
-              <CardExpansionToggle 
-                allExpanded={allCardsExpanded}
-                onToggle={handleToggleAllExpansion}
-              />
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -381,7 +371,6 @@ const AdminLeads = () => {
                 customColumn={col.type === 'custom' ? col.column : undefined}
                 onDeleteColumn={handleDeleteColumn}
                 isDefaultColumn={col.type === 'default'}
-                allCardsExpanded={allCardsExpanded}
               />
             ))}
           </div>
@@ -391,7 +380,6 @@ const AdminLeads = () => {
               <LeadCard 
                 lead={activeLead} 
                 onViewDetails={() => {}} 
-                forceExpanded={allCardsExpanded}
               />
             ) : null}
           </DragOverlay>

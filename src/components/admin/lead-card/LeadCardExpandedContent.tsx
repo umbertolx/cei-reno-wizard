@@ -1,6 +1,5 @@
 
 import { Lead } from "@/data/mockLeads";
-import { PersonalDataSection } from "./sections/PersonalDataSection";
 import { PropertyDataSection } from "./sections/PropertyDataSection";
 import { ConfigurationSection } from "./sections/ConfigurationSection";
 import { EconomicAnalysisSection } from "./sections/EconomicAnalysisSection";
@@ -13,8 +12,7 @@ interface LeadCardExpandedContentProps {
 
 export const LeadCardExpandedContent = ({ lead }: LeadCardExpandedContentProps) => {
   return (
-    <div className="space-y-6 border-t pt-4 mt-4">
-      <PersonalDataSection lead={lead} />
+    <div className="space-y-6">
       <PropertyDataSection lead={lead} />
       <ConfigurationSection lead={lead} />
       <EconomicAnalysisSection lead={lead} />
