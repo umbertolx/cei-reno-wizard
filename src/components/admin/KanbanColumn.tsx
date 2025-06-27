@@ -37,7 +37,8 @@ export const KanbanColumn = ({
     id: stato,
     data: {
       type: 'column',
-      stato: stato
+      stato: stato,
+      accepts: ['lead']
     }
   });
 
@@ -67,9 +68,12 @@ export const KanbanColumn = ({
   };
 
   // Enhanced visual feedback for drag over
-  const dragOverClass = (isOver || isDraggedOver) 
-    ? 'bg-blue-50 border-2 border-blue-300 border-dashed ring-2 ring-blue-200 ring-opacity-50' 
+  const isDragActive = isOver || isDraggedOver;
+  const dragOverClass = isDragActive
+    ? 'bg-blue-50 border-2 border-blue-300 border-dashed ring-2 ring-blue-200 ring-opacity-50 shadow-lg' 
     : '';
+
+  console.log("KanbanColumn render:", { stato, isDragActive, isOver, isDraggedOver, leadsCount: leads.length });
 
   return (
     <div className="flex-1 min-w-80 max-w-80">
@@ -125,7 +129,7 @@ export const KanbanColumn = ({
 
       <div
         ref={setNodeRef}
-        className={`bg-gray-50 rounded-lg p-4 h-[calc(100vh-280px)] overflow-y-auto transition-all duration-200 min-h-32 ${dragOverClass}`}
+        className={`bg-gray-50 rounded-lg p-4 h-[calc(100vh-280px)] overflow-y-auto transition-all duration-300 min-h-32 ${dragOverClass}`}
       >
         <SortableContext
           items={leads.map(lead => lead.id)}
@@ -134,8 +138,8 @@ export const KanbanColumn = ({
           {leads.length === 0 ? (
             <div className="text-center text-gray-500 py-8 h-full flex flex-col justify-center">
               <p className="mb-2">Nessun lead in questo stato</p>
-              {(isOver || isDraggedOver) && (
-                <div className="text-blue-600 font-medium text-sm animate-pulse">
+              {isDragActive && (
+                <div className="text-blue-600 font-medium text-sm animate-pulse bg-white/80 rounded-lg p-4 border-2 border-dashed border-blue-300">
                   <p>🎯 Rilascia qui per spostare il lead</p>
                   <p className="text-xs mt-1">in "{displayTitle}"</p>
                 </div>
@@ -151,8 +155,8 @@ export const KanbanColumn = ({
                   forceExpanded={allCardsExpanded}
                 />
               ))}
-              {(isOver || isDraggedOver) && (
-                <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-lg bg-white/50">
+              {isDragActive && (
+                <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-lg bg-white/80 mx-2">
                   <p>🎯 Rilascia qui per aggiungere a "{displayTitle}"</p>
                 </div>
               )}

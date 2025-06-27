@@ -40,7 +40,7 @@ const AdminLeads = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 3,
       },
     }),
     useSensor(KeyboardSensor)
@@ -132,88 +132,84 @@ const AdminLeads = () => {
   };
 
   const handleDragOver = (event: DragOverEvent) => {
-    const { over } = event;
+    const { over, active } = event;
     
-    if (!over) {
+    if (!over || !active) {
       setDragOverColumn(null);
       return;
     }
 
     const overId = over.id as string;
+    const activeId = active.id as string;
     
-    // Check if we're over a column directly
-    const isColumn = allColumns.some(col => col.id === overId);
-    
-    if (isColumn) {
+    console.log("🎯 Drag over event:", { overId, activeId });
+
+    // Check if we're over a column
+    const targetColumn = allColumns.find(col => col.id === overId);
+    if (targetColumn) {
       setDragOverColumn(overId);
       console.log("🎯 Dragging over column:", overId);
-    } else {
-      // We're over a lead, find which column it belongs to
-      const overLead = leads.find(lead => lead.id === overId);
-      if (overLead) {
-        setDragOverColumn(overLead.stato);
-        console.log("🎯 Dragging over lead in column:", overLead.stato);
-      }
+      return;
+    }
+
+    // Check if we're over a lead card
+    const overLead = leads.find(lead => lead.id === overId);
+    if (overLead) {
+      setDragOverColumn(overLead.stato);
+      console.log("🎯 Dragging over lead in column:", overLead.stato);
     }
   };
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     
-    setDragOverColumn(null);
+    console.log("🎯 Drag end event:", { active: active?.id, over: over?.id });
     
-    if (!over) {
-      console.log("🚫 Drag ended without target");
-      setActiveId(null);
+    setDragOverColumn(null);
+    setActiveId(null);
+    
+    if (!over || !active) {
+      console.log("🚫 Drag ended without valid target");
       return;
     }
 
     const activeId = active.id as string;
     const overId = over.id as string;
 
-    console.log("🎯 Drag ended - Active:", activeId, "Over:", overId);
-
     const activeLead = leads.find(lead => lead.id === activeId);
     if (!activeLead) {
-      console.log("❌ Active lead not found");
-      setActiveId(null);
+      console.log("❌ Active lead not found:", activeId);
       return;
     }
+
+    console.log("📋 Active lead found:", activeLead.nome, activeLead.cognome, "Current state:", activeLead.stato);
 
     // Determine target column
     let targetColumn: string;
     
-    // Check if overId is a column ID first
-    const isColumnId = allColumns.some(col => col.id === overId);
+    // First check if overId is directly a column
+    const isDirectColumn = allColumns.some(col => col.id === overId);
     
-    if (isColumnId) {
-      // Dropped directly on a column
+    if (isDirectColumn) {
       targetColumn = overId;
-      console.log("📋 Dropped on column:", targetColumn);
+      console.log("📍 Dropped directly on column:", targetColumn);
     } else {
-      // Dropped on a lead, find the lead's column
+      // Check if dropped on another lead
       const overLead = leads.find(lead => lead.id === overId);
       if (overLead) {
         targetColumn = overLead.stato;
-        console.log("📋 Dropped on lead in column:", targetColumn);
+        console.log("📍 Dropped on lead, target column:", targetColumn);
       } else {
-        console.log("❌ Could not determine target column");
-        setActiveId(null);
+        console.log("❌ Could not determine target column for:", overId);
         return;
       }
     }
 
     const originalStatus = activeLead.stato;
+    console.log("🔄 Status change attempt:", originalStatus, "→", targetColumn);
 
-    console.log("📋 Lead status change:", {
-      leadId: activeId,
-      from: originalStatus,
-      to: targetColumn,
-      leadName: `${activeLead.nome} ${activeLead.cognome}`
-    });
-
-    // If same column and not dropped on column directly, handle reordering
-    if (originalStatus === targetColumn && !isColumnId) {
+    // If same column, handle reordering
+    if (originalStatus === targetColumn && !isDirectColumn) {
       const overLead = leads.find(lead => lead.id === overId);
       if (overLead) {
         const columnLeads = leadsByState[originalStatus];
@@ -221,7 +217,7 @@ const AdminLeads = () => {
         const overIndex = columnLeads.findIndex(lead => lead.id === overId);
 
         if (activeIndex !== overIndex) {
-          console.log("📝 Reordering within column:", originalStatus);
+          console.log("📝 Reordering within column");
           const newOrder = arrayMove(columnLeads, activeIndex, overIndex);
           setLeadPositions(prev => ({
             ...prev,
@@ -229,14 +225,13 @@ const AdminLeads = () => {
           }));
         }
       }
-      setActiveId(null);
       return;
     }
 
     // Different column - update status
     if (originalStatus !== targetColumn) {
       try {
-        console.log("💾 Updating lead status in database...");
+        console.log("💾 Updating lead status:", activeId, "to", targetColumn);
         
         // Update UI optimistically
         setLeads(prev => prev.map(lead =>
@@ -268,7 +263,6 @@ const AdminLeads = () => {
         console.error("💥 Database update failed:", error);
         
         // Rollback optimistic update
-        console.log("🔄 Rolling back optimistic update");
         setLeads(prev => prev.map(lead =>
           lead.id === activeId 
             ? { ...lead, stato: originalStatus as keyof typeof leadStates, dataUltimoContatto: activeLead.dataUltimoContatto }
@@ -277,13 +271,11 @@ const AdminLeads = () => {
         
         toast({
           title: "❌ Errore",
-          description: "Impossibile aggiornare lo stato del lead. Modifiche annullate.",
+          description: "Impossibile aggiornare lo stato del lead",
           variant: "destructive",
         });
       }
     }
-
-    setActiveId(null);
   };
 
   const handleTitleChange = (stato: string, title: string) => {
@@ -441,10 +433,12 @@ const AdminLeads = () => {
           
           <DragOverlay>
             {activeLead ? (
-              <LeadCard 
-                lead={activeLead} 
-                onViewDetails={() => {}} 
-              />
+              <div className="transform rotate-3 scale-105">
+                <LeadCard 
+                  lead={activeLead} 
+                  onViewDetails={() => {}} 
+                />
+              </div>
             ) : null}
           </DragOverlay>
         </DndContext>
