@@ -12,7 +12,6 @@ import { toast } from "@/hooks/use-toast";
 import { 
   DndContext, 
   DragEndEvent, 
-  DragOverlay, 
   DragStartEvent,
   closestCorners,
   KeyboardSensor,
@@ -149,9 +148,29 @@ const AdminLeads = () => {
       return;
     }
 
-    // Determine target column
-    const overLead = leads.find(lead => lead.id === overId);
-    const targetColumn = overLead ? overLead.stato : overId;
+    // Determine target column - check if overId is a column or a lead
+    let targetColumn: string;
+    
+    // Check if overId is a column ID
+    const isColumnId = allColumns.some(col => col.id === overId);
+    
+    if (isColumnId) {
+      // Dropped directly on a column
+      targetColumn = overId;
+      console.log("📋 Dropped on column:", targetColumn);
+    } else {
+      // Dropped on a lead, find the lead's column
+      const overLead = leads.find(lead => lead.id === overId);
+      if (overLead) {
+        targetColumn = overLead.stato;
+        console.log("📋 Dropped on lead in column:", targetColumn);
+      } else {
+        console.log("❌ Could not determine target column");
+        setActiveId(null);
+        return;
+      }
+    }
+
     const originalStatus = activeLead.stato;
 
     console.log("📋 Lead status change:", {
@@ -162,7 +181,8 @@ const AdminLeads = () => {
     });
 
     // If no status change, just handle reordering
-    if (originalStatus === targetColumn) {
+    if (originalStatus === targetColumn && !isColumnId) {
+      const overLead = leads.find(lead => lead.id === overId);
       if (overLead) {
         const columnLeads = leadsByState[originalStatus];
         const activeIndex = columnLeads.findIndex(lead => lead.id === activeId);
