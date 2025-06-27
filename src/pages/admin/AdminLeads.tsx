@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { KanbanColumn } from "@/components/admin/KanbanColumn";
@@ -19,7 +18,8 @@ import {
   KeyboardSensor,
   PointerSensor,
   useSensor,
-  useSensors
+  useSensors,
+  DragOverEvent
 } from "@dnd-kit/core";
 import { LeadCard } from "@/components/admin/LeadCard";
 import { arrayMove } from "@dnd-kit/sortable";
@@ -35,6 +35,7 @@ const AdminLeads = () => {
   const [leadPositions, setLeadPositions] = useState<Record<string, string[]>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -127,10 +128,39 @@ const AdminLeads = () => {
     const leadId = event.active.id as string;
     console.log("🎯 Drag started for lead:", leadId);
     setActiveId(leadId);
+    setDragOverColumn(null);
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
+    const { over } = event;
+    
+    if (!over) {
+      setDragOverColumn(null);
+      return;
+    }
+
+    const overId = over.id as string;
+    
+    // Check if we're over a column directly
+    const isColumn = allColumns.some(col => col.id === overId);
+    
+    if (isColumn) {
+      setDragOverColumn(overId);
+      console.log("🎯 Dragging over column:", overId);
+    } else {
+      // We're over a lead, find which column it belongs to
+      const overLead = leads.find(lead => lead.id === overId);
+      if (overLead) {
+        setDragOverColumn(overLead.stato);
+        console.log("🎯 Dragging over lead in column:", overLead.stato);
+      }
+    }
   };
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
+    
+    setDragOverColumn(null);
     
     if (!over) {
       console.log("🚫 Drag ended without target");
@@ -150,10 +180,10 @@ const AdminLeads = () => {
       return;
     }
 
-    // Determine target column - check if overId is a column or a lead
+    // Determine target column
     let targetColumn: string;
     
-    // Check if overId is a column ID
+    // Check if overId is a column ID first
     const isColumnId = allColumns.some(col => col.id === overId);
     
     if (isColumnId) {
@@ -182,7 +212,7 @@ const AdminLeads = () => {
       leadName: `${activeLead.nome} ${activeLead.cognome}`
     });
 
-    // If no status change, just handle reordering
+    // If same column and not dropped on column directly, handle reordering
     if (originalStatus === targetColumn && !isColumnId) {
       const overLead = leads.find(lead => lead.id === overId);
       if (overLead) {
@@ -203,52 +233,54 @@ const AdminLeads = () => {
       return;
     }
 
-    // Status change - update database
-    try {
-      console.log("💾 Updating lead status in database...");
-      
-      // First update the UI optimistically
-      setLeads(prev => prev.map(lead =>
-        lead.id === activeId 
-          ? { ...lead, stato: targetColumn as keyof typeof leadStates, dataUltimoContatto: new Date().toISOString() }
-          : lead
-      ));
+    // Different column - update status
+    if (originalStatus !== targetColumn) {
+      try {
+        console.log("💾 Updating lead status in database...");
+        
+        // Update UI optimistically
+        setLeads(prev => prev.map(lead =>
+          lead.id === activeId 
+            ? { ...lead, stato: targetColumn as keyof typeof leadStates, dataUltimoContatto: new Date().toISOString() }
+            : lead
+        ));
 
-      // Then update the database
-      await updateLeadStatus(activeId, targetColumn);
-      console.log("✅ Database update successful");
-      
-      const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
-                        customColumns.find(col => col.id === targetColumn);
-      const displayName = customTitles[targetColumn] || columnInfo?.label || targetColumn;
-      
-      toast({
-        title: "✅ Lead aggiornato",
-        description: `${activeLead.nome} ${activeLead.cognome} è stato spostato in "${displayName}"`,
-      });
+        // Update database
+        await updateLeadStatus(activeId, targetColumn);
+        console.log("✅ Database update successful");
+        
+        const columnInfo = leadStates[targetColumn as keyof typeof leadStates] || 
+                          customColumns.find(col => col.id === targetColumn);
+        const displayName = customTitles[targetColumn] || columnInfo?.label || targetColumn;
+        
+        toast({
+          title: "✅ Lead aggiornato",
+          description: `${activeLead.nome} ${activeLead.cognome} è stato spostato in "${displayName}"`,
+        });
 
-      // Update position for moved lead
-      setLeadPositions(prev => ({
-        ...prev,
-        [targetColumn]: [...(prev[targetColumn] || []).filter(id => id !== activeId), activeId]
-      }));
+        // Update position for moved lead
+        setLeadPositions(prev => ({
+          ...prev,
+          [targetColumn]: [...(prev[targetColumn] || []).filter(id => id !== activeId), activeId]
+        }));
 
-    } catch (error) {
-      console.error("💥 Database update failed:", error);
-      
-      // Rollback optimistic update
-      console.log("🔄 Rolling back optimistic update");
-      setLeads(prev => prev.map(lead =>
-        lead.id === activeId 
-          ? { ...lead, stato: originalStatus as keyof typeof leadStates, dataUltimoContatto: activeLead.dataUltimoContatto }
-          : lead
-      ));
-      
-      toast({
-        title: "❌ Errore",
-        description: "Impossibile aggiornare lo stato del lead. Modifiche annullate.",
-        variant: "destructive",
-      });
+      } catch (error) {
+        console.error("💥 Database update failed:", error);
+        
+        // Rollback optimistic update
+        console.log("🔄 Rolling back optimistic update");
+        setLeads(prev => prev.map(lead =>
+          lead.id === activeId 
+            ? { ...lead, stato: originalStatus as keyof typeof leadStates, dataUltimoContatto: activeLead.dataUltimoContatto }
+            : lead
+        ));
+        
+        toast({
+          title: "❌ Errore",
+          description: "Impossibile aggiornare lo stato del lead. Modifiche annullate.",
+          variant: "destructive",
+        });
+      }
     }
 
     setActiveId(null);
@@ -386,7 +418,8 @@ const AdminLeads = () => {
         <DndContext 
           sensors={sensors}
           collisionDetection={closestCorners}
-          onDragStart={handleDragStart} 
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
           <div className="flex gap-6 overflow-x-auto pb-4">
@@ -401,6 +434,7 @@ const AdminLeads = () => {
                 customColumn={col.type === 'custom' ? col.column : undefined}
                 onDeleteColumn={handleDeleteColumn}
                 isDefaultColumn={col.type === 'default'}
+                isDraggedOver={dragOverColumn === col.id}
               />
             ))}
           </div>

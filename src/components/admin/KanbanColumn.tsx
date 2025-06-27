@@ -18,6 +18,7 @@ interface KanbanColumnProps {
   onDeleteColumn?: (columnId: string) => void;
   isDefaultColumn?: boolean;
   allCardsExpanded?: boolean;
+  isDraggedOver?: boolean;
 }
 
 export const KanbanColumn = ({ 
@@ -29,7 +30,8 @@ export const KanbanColumn = ({
   customColumn,
   onDeleteColumn,
   isDefaultColumn = false,
-  allCardsExpanded = false
+  allCardsExpanded = false,
+  isDraggedOver = false
 }: KanbanColumnProps) => {
   const { setNodeRef, isOver } = useDroppable({
     id: stato,
@@ -63,6 +65,11 @@ export const KanbanColumn = ({
       onDeleteColumn(customColumn.id);
     }
   };
+
+  // Enhanced visual feedback for drag over
+  const dragOverClass = (isOver || isDraggedOver) 
+    ? 'bg-blue-50 border-2 border-blue-300 border-dashed ring-2 ring-blue-200 ring-opacity-50' 
+    : '';
 
   return (
     <div className="flex-1 min-w-80 max-w-80">
@@ -118,21 +125,20 @@ export const KanbanColumn = ({
 
       <div
         ref={setNodeRef}
-        className={`bg-gray-50 rounded-lg p-4 h-[calc(100vh-280px)] overflow-y-auto transition-colors ${
-          isOver ? 'bg-blue-50 border-2 border-blue-300 border-dashed' : ''
-        }`}
+        className={`bg-gray-50 rounded-lg p-4 h-[calc(100vh-280px)] overflow-y-auto transition-all duration-200 min-h-32 ${dragOverClass}`}
       >
         <SortableContext
           items={leads.map(lead => lead.id)}
           strategy={verticalListSortingStrategy}
         >
           {leads.length === 0 ? (
-            <div className="text-center text-gray-500 py-8">
-              <p>Nessun lead in questo stato</p>
-              {isOver && (
-                <p className="text-blue-600 font-medium mt-2">
-                  Rilascia qui per spostare il lead
-                </p>
+            <div className="text-center text-gray-500 py-8 h-full flex flex-col justify-center">
+              <p className="mb-2">Nessun lead in questo stato</p>
+              {(isOver || isDraggedOver) && (
+                <div className="text-blue-600 font-medium text-sm animate-pulse">
+                  <p>🎯 Rilascia qui per spostare il lead</p>
+                  <p className="text-xs mt-1">in "{displayTitle}"</p>
+                </div>
               )}
             </div>
           ) : (
@@ -145,6 +151,11 @@ export const KanbanColumn = ({
                   forceExpanded={allCardsExpanded}
                 />
               ))}
+              {(isOver || isDraggedOver) && (
+                <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-lg bg-white/50">
+                  <p>🎯 Rilascia qui per aggiungere a "{displayTitle}"</p>
+                </div>
+              )}
             </div>
           )}
         </SortableContext>
