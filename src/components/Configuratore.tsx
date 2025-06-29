@@ -87,7 +87,11 @@ export const Configuratore = () => {
     tipoProprietà: "prima casa"
   });
 
-  const flow = useConfiguratorFlow(formData);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const flow = useConfiguratorFlow(formData, scrollToTop);
   const { estimate, isCalculating, calculateWithRetry } = useEstimateCalculation();
   
   const updateFormData = (data: Partial<FormData>) => {
@@ -231,6 +235,11 @@ export const Configuratore = () => {
     }
   };
 
+  const handleWelcomeStart = () => {
+    scrollToTop();
+    handleNext();
+  };
+
   const renderCurrentStep = () => {
     const currentStepConfig = flow.getCurrentStepConfig();
     
@@ -250,7 +259,7 @@ export const Configuratore = () => {
 
     switch (currentStepConfig.component) {
       case 'WelcomePage':
-        return <WelcomePage onStart={handleNext} />;
+        return <WelcomePage onStart={handleWelcomeStart} />;
       
       case 'InformazioniGenerali':
         return <InformazioniGenerali {...commonProps} />;

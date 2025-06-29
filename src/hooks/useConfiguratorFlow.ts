@@ -9,7 +9,7 @@ export interface StepConfig {
   skipConditions?: (formData: FormData) => boolean;
 }
 
-export const useConfiguratorFlow = (formData: FormData) => {
+export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => void) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   // Definizione lineare dei step senza logica complessa
@@ -81,24 +81,37 @@ export const useConfiguratorFlow = (formData: FormData) => {
       const nextStep = currentStep + 1;
       console.log(`➡️ Moving from step ${currentStep} (${activeSteps[currentStep]?.id}) to step ${nextStep} (${activeSteps[nextStep]?.id})`);
       setCurrentStep(nextStep);
+      
+      // Call scroll to top after a brief delay to ensure rendering is complete
+      setTimeout(() => {
+        onStepChange?.();
+      }, 50);
+      
       return true;
     }
     return false;
-  }, [currentStep, getActiveSteps]);
+  }, [currentStep, getActiveSteps, onStepChange]);
 
   const goToBack = useCallback(() => {
     console.log(`⬅️ Moving back from step ${currentStep}`);
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
+      
+      // Call scroll to top after a brief delay to ensure rendering is complete
+      setTimeout(() => {
+        onStepChange?.();
+      }, 50);
+      
       return true;
     }
     return false;
-  }, [currentStep]);
+  }, [currentStep, onStepChange]);
 
   const reset = useCallback(() => {
     console.log("🔄 Resetting configurator flow");
     setCurrentStep(0);
-  }, []);
+    onStepChange?.();
+  }, [onStepChange]);
 
   return {
     currentStep,
