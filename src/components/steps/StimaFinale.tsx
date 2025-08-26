@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EstimateResponse } from "@/types/estimate";
 import { TipoProprietaSelector } from "./stimafinale/TipoProprietaSelector";
-import { CircleDot, ChevronDown, Euro, Calculator, Loader2 } from "lucide-react";
+import { CircleDot, ChevronDown, Euro, Calculator, Loader2, Receipt, TrendingDown } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
@@ -107,24 +107,32 @@ export const StimaFinale = ({
             <div className="text-4xl md:text-6xl font-bold text-[#d8010c] mb-2">
               €{estimate.min.toLocaleString()} - €{estimate.max.toLocaleString()}
             </div>
-            <div className="text-lg text-gray-600">
-              Stima media: €{estimate.average.toLocaleString()}
-            </div>
           </div>
 
-          {/* Breakdown della stima */}
-          {estimate.breakdown && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {Object.entries(estimate.breakdown).map(([key, value]) => (
-                <div key={key} className="bg-white p-4 rounded-lg border">
-                  <div className="text-sm text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
-                  <div className="text-lg font-semibold text-[#1c1c1c]">
-                    €{typeof value === 'number' ? value.toLocaleString() : value}
-                  </div>
-                </div>
-              ))}
+          {/* Sezione IVA e Detrazioni Fiscali */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Receipt className="h-5 w-5 text-red-600" />
+                <span className="text-sm font-bold text-red-600 uppercase tracking-wide">IVA (22%)</span>
+              </div>
+              <div className="text-lg font-bold text-red-700 mb-1">
+                €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()}
+              </div>
+              <div className="text-sm text-red-600">Da aggiungere al preventivo</div>
             </div>
-          )}
+            
+            <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingDown className="h-5 w-5 text-emerald-600" />
+                <span className="text-sm font-bold text-emerald-600 uppercase tracking-wide">Detrazione Fiscale (50%)</span>
+              </div>
+              <div className="text-lg font-bold text-emerald-700 mb-1">
+                €{Math.round(estimate.min * 0.50).toLocaleString()} - €{Math.round(estimate.max * 0.50).toLocaleString()}
+              </div>
+              <div className="text-sm text-emerald-600">Risparmio fiscale in 10 anni</div>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
