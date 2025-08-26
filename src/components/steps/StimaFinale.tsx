@@ -110,67 +110,17 @@ export const StimaFinale = ({
           </div>
 
           {/* Sezione IVA e Detrazioni Fiscali */}
-          <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6">
-            {/* Badge informativo */}
-            <div className="flex justify-center mb-2">
-              <div className="inline-flex items-center gap-1.5 bg-[#fcec3c] text-[#1c1c1c] px-2.5 py-1 rounded-full text-xs font-medium border border-yellow-300">
-                <Sparkles className="h-3 w-3" />
-                Informazioni fiscali
-              </div>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
-              <div className="p-4 md:p-6">
-                {/* Header section */}
-                <div className="text-center mb-4">
-                  <div className="text-xs text-gray-500 mb-1 font-medium">
-                    IVA da aggiungere al preventivo
-                  </div>
-                  <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
-                    €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()}
-                  </div>
-                  
-                  {/* Tax deductions */}
-                  <div className="text-sm md:text-base text-green-700 font-semibold mb-3">
-                    Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa
-                  </div>
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
+            <div className="p-4 md:p-6">
+              <div className="text-center">
+                <div className="text-xs text-gray-500 mb-1 font-medium">
+                  IVA da aggiungere al preventivo
                 </div>
-
-                {/* Details section with divider */}
-                <div className="border-t border-gray-200 pt-3">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {/* IVA details */}
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Receipt className="h-2.5 w-2.5 text-orange-600" />
-                        </div>
-                        <span className="text-sm text-gray-700">IVA 22% applicata</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Check className="h-2.5 w-2.5 text-gray-600" />
-                        </div>
-                        <span className="text-sm text-gray-700">Prezzi al netto</span>
-                      </div>
-                    </div>
-                    
-                    {/* Tax deduction details */}
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <TrendingDown className="h-2.5 w-2.5 text-green-600" />
-                        </div>
-                        <span className="text-sm text-gray-700">Detrazione 50%</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Check className="h-2.5 w-2.5 text-green-600" />
-                        </div>
-                        <span className="text-sm text-gray-700">Recupero in 10 anni</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                  €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()}
+                </div>
+                <div className="text-sm md:text-base text-green-700 font-semibold">
+                  Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa
                 </div>
               </div>
             </div>
@@ -187,6 +137,21 @@ export const StimaFinale = ({
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Moduli completati */}
+          <div className="mb-6">
+            <span className="text-sm text-gray-600 mb-3 block">Moduli completati:</span>
+            <div className="flex gap-3">
+              <div className="flex items-center gap-2 bg-[#fbe12e]/10 border border-[#fbe12e]/30 rounded-lg px-3 py-2">
+                <img 
+                  src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
+                  alt="Impianto elettrico" 
+                  className="h-5 w-5"
+                />
+                <span className="text-sm font-medium">Impianto elettrico</span>
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <span className="text-sm text-gray-600">Abitazione:</span>
