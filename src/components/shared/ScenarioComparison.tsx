@@ -68,7 +68,7 @@ export const ScenarioComparison = ({
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col">
       {/* Badge */}
       <div className="flex justify-center pt-6 pb-4">
         <div className="bg-[#d8010c] text-white px-6 py-3 rounded-full text-sm font-medium shadow-lg">
