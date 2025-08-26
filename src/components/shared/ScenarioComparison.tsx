@@ -77,7 +77,7 @@ export const ScenarioComparison = ({
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 px-4 sm:px-6 lg:px-8">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
