@@ -324,7 +324,7 @@ export const Configuratore = () => {
 
   return (
     <Card className="w-full max-w-4xl rounded-[20px] shadow-lg overflow-hidden">
-      <CardContent className="p-4 sm:p-6 md:p-8">
+      <CardContent className="p-2 sm:p-4 md:p-6">
         <div className="flex flex-col">
           {renderCurrentStep()}
         </div>
