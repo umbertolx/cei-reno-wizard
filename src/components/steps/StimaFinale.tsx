@@ -110,27 +110,39 @@ export const StimaFinale = ({
           </div>
 
           {/* Sezione IVA e Detrazioni Fiscali */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-              <div className="flex items-center gap-2 mb-2">
-                <Receipt className="h-5 w-5 text-red-600" />
-                <span className="text-sm font-bold text-red-600 uppercase tracking-wide">IVA (22%)</span>
-              </div>
-              <div className="text-lg font-bold text-red-700 mb-1">
-                €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()}
-              </div>
-              <div className="text-sm text-red-600">Da aggiungere al preventivo</div>
+          <div className="space-y-4">
+            <div className="text-center text-sm text-gray-600 font-medium">
+              Informazioni fiscali aggiuntive
             </div>
             
-            <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingDown className="h-5 w-5 text-emerald-600" />
-                <span className="text-sm font-bold text-emerald-600 uppercase tracking-wide">Detrazione Fiscale (50%)</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 p-5 rounded-xl border border-orange-200 hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-2 mb-3">
+                  <Receipt className="h-5 w-5 text-orange-600" />
+                  <span className="text-sm font-semibold text-orange-800">IVA (22%)</span>
+                </div>
+                <div className="text-xl font-bold text-orange-700 mb-1">
+                  €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()}
+                </div>
+                <div className="text-xs text-orange-600">Da aggiungere al preventivo</div>
               </div>
-              <div className="text-lg font-bold text-emerald-700 mb-1">
-                €{Math.round(estimate.min * 0.50).toLocaleString()} - €{Math.round(estimate.max * 0.50).toLocaleString()}
+              
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl border border-green-200 hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-2 mb-3">
+                  <TrendingDown className="h-5 w-5 text-green-600" />
+                  <span className="text-sm font-semibold text-green-800">Detrazione Fiscale</span>
+                </div>
+                <div className="text-xl font-bold text-green-700 mb-1">
+                  €{Math.round(estimate.min * 0.50).toLocaleString()} - €{Math.round(estimate.max * 0.50).toLocaleString()}
+                </div>
+                <div className="text-xs text-green-600">Recupero in 10 anni (50%)</div>
               </div>
-              <div className="text-sm text-emerald-600">Risparmio fiscale in 10 anni</div>
+            </div>
+            
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="text-sm text-gray-700 text-center">
+                <strong>Costo finale indicativo:</strong> €{Math.round(estimate.min * 1.22).toLocaleString()} - €{Math.round(estimate.max * 1.22).toLocaleString()} (IVA inclusa)
+              </div>
             </div>
           </div>
         </CardContent>
