@@ -127,40 +127,6 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
         <p className="text-lg md:text-xl text-[#1c1c1c] opacity-80">Inserisci i tuoi dati di contatto per procedere</p>
       </div>
 
-      {/* Timeline migliorata e responsive */}
-      <div className="flex justify-center mb-4 sm:mb-6 -mx-2 sm:mx-0">
-        <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl justify-between">
-          {/* Punto 1: Info generali (completato) */}
-          <div className="flex flex-col items-center relative">
-            <div className="bg-[#d8010c] rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
-            </div>
-            <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Info generali</span>
-          </div>
-          
-          {/* Linea di collegamento 1-2 */}
-          <div className="h-[2px] flex-grow bg-[#fbe12e] mx-0.5 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
-          
-          {/* Punto 2: Dati di contatto (attivo) */}
-          <div className="flex flex-col items-center relative">
-            <div className="bg-[#fbe12e] rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-black" />
-            </div>
-            <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Dati contatto</span>
-          </div>
-          
-          {/* Linea di collegamento 2-3 */}
-          <div className="h-[2px] flex-grow bg-gray-300 mx-0.5 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
-          
-          {/* Punto 3: Stima dei costi (inattivo) */}
-          <div className="flex flex-col items-center relative">
-            <div className="bg-gray-200 rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400" />
-            </div>
-            <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center text-gray-500">Stima finale</span>
-          </div>
-        </div>
-      </div>
 
       {/* Box di riepilogo abitazione in stile CEI */}
       <div className="bg-[#f4f4f4] border border-gray-200 rounded-xl p-6">
