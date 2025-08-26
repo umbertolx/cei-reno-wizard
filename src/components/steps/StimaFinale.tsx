@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EstimateResponse } from "@/types/estimate";
 import { TipoProprietaSelector } from "./stimafinale/TipoProprietaSelector";
-import { CircleDot, ChevronDown, Euro, Calculator, Loader2, Receipt, TrendingDown } from "lucide-react";
+import { CircleDot, ChevronDown, Euro, Calculator, Loader2, Receipt, TrendingDown, Sparkles, Check } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
@@ -110,34 +110,68 @@ export const StimaFinale = ({
           </div>
 
           {/* Sezione IVA e Detrazioni Fiscali */}
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
-            <div className="text-center mb-6">
-              <div className="text-xs text-gray-500 mb-2 font-medium">
-                Informazioni fiscali aggiuntive
+          <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6">
+            {/* Badge informativo */}
+            <div className="flex justify-center mb-2">
+              <div className="inline-flex items-center gap-1.5 bg-[#fcec3c] text-[#1c1c1c] px-2.5 py-1 rounded-full text-xs font-medium border border-yellow-300">
+                <Sparkles className="h-3 w-3" />
+                Informazioni fiscali
               </div>
-              
-              {/* IVA Section */}
-              <div className="mb-4">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Receipt className="h-5 w-5 text-orange-600" />
-                  <span className="text-lg font-semibold text-orange-800">IVA (22%)</span>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
+              <div className="p-4 md:p-6">
+                {/* Header section */}
+                <div className="text-center mb-4">
+                  <div className="text-xs text-gray-500 mb-1 font-medium">
+                    IVA da aggiungere al preventivo
+                  </div>
+                  <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
+                    €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()}
+                  </div>
+                  
+                  {/* Tax deductions */}
+                  <div className="text-sm md:text-base text-green-700 font-semibold mb-3">
+                    Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa
+                  </div>
                 </div>
-                <div className="text-2xl md:text-3xl font-bold text-orange-700 mb-1">
-                  €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()}
+
+                {/* Details section with divider */}
+                <div className="border-t border-gray-200 pt-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* IVA details */}
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Receipt className="h-2.5 w-2.5 text-orange-600" />
+                        </div>
+                        <span className="text-sm text-gray-700">IVA 22% applicata</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Check className="h-2.5 w-2.5 text-gray-600" />
+                        </div>
+                        <span className="text-sm text-gray-700">Prezzi al netto</span>
+                      </div>
+                    </div>
+                    
+                    {/* Tax deduction details */}
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <TrendingDown className="h-2.5 w-2.5 text-green-600" />
+                        </div>
+                        <span className="text-sm text-gray-700">Detrazione 50%</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Check className="h-2.5 w-2.5 text-green-600" />
+                        </div>
+                        <span className="text-sm text-gray-700">Recupero in 10 anni</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-sm text-orange-600">Da aggiungere al preventivo</div>
-              </div>
-              
-              {/* Detrazione Fiscale */}
-              <div className="text-lg md:text-xl text-green-700 font-semibold bg-green-50 rounded-xl p-4 border border-green-200">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <TrendingDown className="h-5 w-5 text-green-600" />
-                  <span>Detrazione Fiscale</span>
-                </div>
-                <div className="text-xl font-bold">
-                  Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa
-                </div>
-                <div className="text-sm text-green-600 mt-1">Recupero in 10 anni (50%)</div>
               </div>
             </div>
           </div>
