@@ -59,9 +59,6 @@ export const StimaFinale = ({
     <div className="space-y-8">
       <div className="space-y-2">
         <h1 className="text-2xl md:text-4xl font-bold text-[#1c1c1c] leading-[1.05] mb-1 md:mb-2">La tua stima personalizzata</h1>
-        <p className="text-sm md:text-base text-gray-600">
-          Abbiamo calcolato un budget per questo. Richiedi un sopralluogo per un preventivo dettagliato.
-        </p>
       </div>
 
       {/* Stima principale */}
