@@ -95,33 +95,45 @@ export const StimaFinale = ({
           {/* Checklist */}
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <Check className="h-3 w-3 text-white" />
+              </div>
               <span className="text-gray-700 capitalize">{formData.tipologiaAbitazione}</span>
             </div>
             
             <div className="flex items-center gap-3">
-              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <Check className="h-3 w-3 text-white" />
+              </div>
               <span className="text-gray-700">{formData.superficie} mq</span>
             </div>
             
             <div className="flex items-center gap-3">
-              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <Check className="h-3 w-3 text-white" />
+              </div>
               <span className="text-gray-700">{formData.citta}</span>
             </div>
             
             <div className="flex items-center gap-3">
-              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <Check className="h-3 w-3 text-white" />
+              </div>
               <span className="text-gray-700">{totalRooms} locali</span>
             </div>
             
             <div className="flex items-center gap-3">
-              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <Check className="h-3 w-3 text-white" />
+              </div>
               <span className="text-gray-700">Impianto elettrico</span>
             </div>
             
             {formData.tipoDomotica && formData.tipoDomotica !== 'nessuna' && (
               <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Check className="h-3 w-3 text-white" />
+                </div>
                 <span className="text-gray-700">Domotica {formData.tipoDomotica.toUpperCase()}</span>
               </div>
             )}
