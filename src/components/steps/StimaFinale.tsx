@@ -57,8 +57,8 @@ export const StimaFinale = ({
 
   return (
     <div className="space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-2xl md:text-4xl font-bold text-[#1c1c1c] leading-[1.05] mb-1 md:mb-2">La tua stima personalizzata</h1>
+      <div className="text-center mb-8">
+        <h1 className="text-3xl md:text-5xl font-bold text-[#1c1c1c] leading-tight">La tua stima personalizzata</h1>
       </div>
 
       {/* Stima principale */}
