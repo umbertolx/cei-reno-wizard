@@ -60,38 +60,8 @@ export const StimaFinale = ({
       <div className="space-y-2">
         <h1 className="text-3xl md:text-5xl font-medium text-[#1c1c1c]">La tua stima personalizzata</h1>
         <p className="text-lg md:text-xl text-[#1c1c1c] opacity-80">
-          I tuoi dati sono stati salvati. Richiedi un sopralluogo per un preventivo dettagliato.
+          Abbiamo calcolato un budget per questo. Richiedi un sopralluogo per un preventivo dettagliato.
         </p>
-      </div>
-
-      {/* Timeline */}
-      <div className="flex justify-center mb-4 sm:mb-6 -mx-2 sm:mx-0">
-        <div className="flex items-center w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl justify-between">
-          <div className="flex flex-col items-center relative">
-            <div className="bg-[#d8010c] rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
-            </div>
-            <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Info generali</span>
-          </div>
-          
-          <div className="h-[2px] flex-grow bg-[#d8010c] mx-0.5 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
-          
-          <div className="flex flex-col items-center relative">
-            <div className="bg-[#d8010c] rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white" />
-            </div>
-            <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Dati contatto</span>
-          </div>
-          
-          <div className="h-[2px] flex-grow bg-[#fbe12e] mx-0.5 sm:mx-2 relative top-[8px] sm:top-[10px]"></div>
-          
-          <div className="flex flex-col items-center relative">
-            <div className="bg-[#fbe12e] rounded-full p-1.5 sm:p-2 z-10">
-              <CircleDot className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-black" />
-            </div>
-            <span className="text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center">Stima finale</span>
-          </div>
-        </div>
       </div>
 
       {/* Stima principale */}
@@ -106,9 +76,21 @@ export const StimaFinale = ({
               €{estimate.min.toLocaleString()} - €{estimate.max.toLocaleString()}
             </div>
             
-            <div className="text-lg md:text-xl text-green-600 font-semibold">
-              Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa (1ª)
+            {/* IVA esclusa */}
+            <div className="text-base md:text-lg text-gray-600">
+              IVA €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()} esclusa
             </div>
+            
+            {/* Detrazione fiscale dinamica */}
+            {formData.tipoProprietà === 'seconda_casa' ? (
+              <div className="text-lg md:text-xl text-green-600 font-semibold">
+                Fino a €{Math.round(estimate.max * 0.36).toLocaleString()} Detrazione (36%)
+              </div>
+            ) : (
+              <div className="text-lg md:text-xl text-green-600 font-semibold">
+                Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa (50%)
+              </div>
+            )}
           </div>
 
           <hr className="my-6 border-gray-200" />
