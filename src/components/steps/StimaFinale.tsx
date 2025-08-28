@@ -95,35 +95,57 @@ export const StimaFinale = ({
       </div>
 
       {/* Stima principale */}
-      <Card className="border-2 border-[#fbe12e] bg-gradient-to-br from-[#fbe12e]/10 to-[#fbe12e]/5">
-        <CardHeader className="text-center pb-4">
-          <CardTitle className="flex items-center justify-center gap-2 text-2xl">
-            <Euro className="h-6 w-6 text-[#d8010c]" />
-            Stima del tuo progetto
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="text-center">
-            <div className="text-4xl md:text-6xl font-bold text-[#d8010c] mb-2">
+      <Card className="border-3 border-[#fbe12e] rounded-3xl bg-white shadow-lg overflow-hidden">
+        <CardContent className="p-6 md:p-8">
+          <div className="text-center space-y-4">
+            <h2 className="text-lg md:text-xl text-gray-600 font-medium">
+              Budget stimato per questo progetto
+            </h2>
+            
+            <div className="text-4xl md:text-5xl font-bold text-gray-900">
               €{estimate.min.toLocaleString()} - €{estimate.max.toLocaleString()}
+            </div>
+            
+            <div className="text-lg md:text-xl text-green-600 font-semibold">
+              Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa (1ª)
             </div>
           </div>
 
-          {/* Sezione IVA e Detrazioni Fiscali */}
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
-            <div className="p-4 md:p-6">
-              <div className="text-center">
-                <div className="text-xs text-gray-500 mb-1 font-medium">
-                  IVA da aggiungere al preventivo
-                </div>
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                  €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()}
-                </div>
-                <div className="text-sm md:text-base text-green-700 font-semibold">
-                  Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa
-                </div>
-              </div>
+          <hr className="my-6 border-gray-200" />
+
+          {/* Checklist */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <span className="text-gray-700 capitalize">{formData.tipologiaAbitazione}</span>
             </div>
+            
+            <div className="flex items-center gap-3">
+              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <span className="text-gray-700">{formData.superficie} mq</span>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <span className="text-gray-700">{formData.citta}</span>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <span className="text-gray-700">{totalRooms} locali</span>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+              <span className="text-gray-700">Impianto elettrico</span>
+            </div>
+            
+            {formData.tipoDomotica && formData.tipoDomotica !== 'nessuna' && (
+              <div className="flex items-center gap-3">
+                <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+                <span className="text-gray-700">Domotica {formData.tipoDomotica.toUpperCase()}</span>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
