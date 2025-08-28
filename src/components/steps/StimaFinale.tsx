@@ -65,7 +65,7 @@ export const StimaFinale = ({
       <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
         <div className="p-4 md:p-6">
           <div className="text-center space-y-4">
-            <div className="text-xs text-gray-500 mb-1 font-medium">
+            <div className="text-sm text-gray-500 mb-1 font-medium">
               Budget stimato per questo progetto
             </div>
             
