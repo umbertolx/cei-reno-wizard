@@ -79,7 +79,7 @@ export const StimaFinale = ({
             </div>
             
             {/* Detrazione fiscale dinamica */}
-            {formData.tipoProprietà === 'seconda_casa' ? (
+            {formData.tipoProprietà === 'seconda casa' ? (
               <div className="text-lg md:text-xl text-green-600 font-semibold">
                 Fino a €{Math.round(estimate.max * 0.36).toLocaleString()} Detrazione (36%)
               </div>
