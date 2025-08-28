@@ -65,12 +65,12 @@ export const StimaFinale = ({
       </div>
 
       {/* Stima principale */}
-      <Card className="border-3 border-[#fbe12e] rounded-3xl bg-white shadow-lg overflow-hidden">
-        <CardContent className="p-6 md:p-8">
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
+        <div className="p-4 md:p-6">
           <div className="text-center space-y-4">
-            <h2 className="text-lg md:text-xl text-gray-600 font-medium">
+            <div className="text-xs text-gray-500 mb-1 font-medium">
               Budget stimato per questo progetto
-            </h2>
+            </div>
             
             <div className="text-4xl md:text-5xl font-bold text-gray-900">
               €{estimate.min.toLocaleString()} - €{estimate.max.toLocaleString()}
@@ -129,53 +129,8 @@ export const StimaFinale = ({
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Riepilogo configurazione */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calculator className="h-5 w-5" />
-            Riepilogo configurazione
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Moduli completati */}
-          <div className="mb-6">
-            <span className="text-sm text-gray-600 mb-3 block">Moduli completati:</span>
-            <div className="flex gap-3">
-              <div className="flex items-center gap-2 bg-[#fbe12e]/10 border border-[#fbe12e]/30 rounded-lg px-3 py-2">
-                <img 
-                  src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
-                  alt="Impianto elettrico" 
-                  className="h-5 w-5"
-                />
-                <span className="text-sm font-medium">Impianto elettrico</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <span className="text-sm text-gray-600">Abitazione:</span>
-              <p className="font-medium capitalize">{formData.tipologiaAbitazione}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600">Superficie:</span>
-              <p className="font-medium">{formData.superficie} mq</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600">Totale stanze:</span>
-              <p className="font-medium">{totalRooms}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600">Città:</span>
-              <p className="font-medium">{formData.citta}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Tipo Proprietà */}
       <TipoProprietaSelector
