@@ -79,20 +79,20 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
   const getConfigurationSummary = () => {
     const config = [];
     
-    if (formData.tipoRistrutturazione) {
-      config.push(`Ristrutturazione ${formData.tipoRistrutturazione}`);
+    if (formData.moduloElettrico?.tipoRistrutturazione) {
+      config.push(`Ristrutturazione ${formData.moduloElettrico.tipoRistrutturazione}`);
     }
     
-    if (formData.tipoImpianto) {
-      const tipoImpianto = formData.tipoImpianto === 'livello1' ? 'Base' : 
-                          formData.tipoImpianto === 'livello2' ? 'Avanzato' : 
-                          formData.tipoImpianto === 'livello3' ? 'Domotico' : formData.tipoImpianto;
+    if (formData.moduloElettrico?.tipoImpianto) {
+      const tipoImpianto = formData.moduloElettrico.tipoImpianto === 'livello1' ? 'Base' : 
+                          formData.moduloElettrico.tipoImpianto === 'livello2' ? 'Avanzato' : 
+                          formData.moduloElettrico.tipoImpianto === 'livello3' ? 'Domotico' : formData.moduloElettrico.tipoImpianto;
       config.push(`Impianto ${tipoImpianto}`);
     }
     
-    if (formData.tipoDomotica) {
-      const domotica = formData.tipoDomotica === 'knx' ? 'KNX' : 
-                      formData.tipoDomotica === 'wireless' ? 'BTicino Wireless' : formData.tipoDomotica;
+    if (formData.moduloElettrico?.tipoDomotica) {
+      const domotica = formData.moduloElettrico.tipoDomotica === 'knx' ? 'KNX' : 
+                      formData.moduloElettrico.tipoDomotica === 'wireless' ? 'BTicino Wireless' : formData.moduloElettrico.tipoDomotica;
       config.push(`Domotica ${domotica}`);
     }
     
