@@ -12,11 +12,14 @@ type Props = {
 };
 
 export const EtaImpiantoElettrico = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const [impiantoVecchio, setImpiantoVecchio] = useState<string>(formData.impiantoVecchio || "");
+  const [impiantoVecchio, setImpiantoVecchio] = useState<string>(formData.moduloElettrico?.impiantoVecchio || "");
 
   const handleSubmit = () => {
     updateFormData({ 
-      impiantoVecchio 
+      moduloElettrico: {
+        ...formData.moduloElettrico,
+        impiantoVecchio
+      }
     });
     onNext();
   };

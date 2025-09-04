@@ -12,7 +12,7 @@ export interface StepConfig {
 export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => void) => {
   const [currentStep, setCurrentStep] = useState(0);
 
-  // Definizione lineare dei step senza logica complessa
+  // Definizione step con flusso logico corretto
   const steps: StepConfig[] = [
     { id: 'welcome', component: 'WelcomePage' },
     { id: 'info-generali', component: 'InformazioniGenerali' },
@@ -21,15 +21,11 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       component: 'ConfiguratoreElettrico',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico')
     },
+    // Se intervento parziale: età impianto → interventi → ambienti
     { 
       id: 'eta-impianto', 
       component: 'EtaImpiantoElettrico',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione !== 'parziale'
-    },
-    { 
-      id: 'tipo-impianto', 
-      component: 'TipoImpiantoElettrico',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione === 'parziale'
     },
     { 
       id: 'interventi-elettrici', 
@@ -37,14 +33,21 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione !== 'parziale'
     },
     { 
-      id: 'tipo-domotica', 
-      component: 'TipoDomotica',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione === 'parziale' || data.moduloElettrico?.tipoImpianto !== 'livello3'
-    },
-    { 
       id: 'selezione-ambienti', 
       component: 'SelezioneAmbienti',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione !== 'parziale'
+    },
+    // Se completa/nuova: tipo impianto
+    { 
+      id: 'tipo-impianto', 
+      component: 'TipoImpiantoElettrico',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione === 'parziale'
+    },
+    // Se livello 3: domotica → KNX/BTicino
+    { 
+      id: 'tipo-domotica', 
+      component: 'TipoDomotica',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione === 'parziale' || data.moduloElettrico?.tipoImpianto !== 'livello3'
     },
     { 
       id: 'configurazione-knx', 
@@ -56,10 +59,11 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       component: 'ConfigurazioneBTicino',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoImpianto !== 'livello3' || data.moduloElettrico?.tipoDomotica !== 'wireless'
     },
+    // Se livello 1/2: tapparelle
     { 
       id: 'tapparelle-elettriche', 
       component: 'TapparelleElettriche',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoImpianto === 'livello3' || data.moduloElettrico?.tipoRistrutturazione === 'parziale'
+      skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione === 'parziale' || data.moduloElettrico?.tipoImpianto === 'livello3'
     },
     // Step fotovoltaico
     { 

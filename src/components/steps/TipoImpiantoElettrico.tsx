@@ -10,15 +10,15 @@ type Props = {
 };
 
 export const TipoImpiantoElettrico = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const [tipoImpianto, setTipoImpianto] = useState<string>(formData.tipoImpianto || "");
+  const [tipoImpianto, setTipoImpianto] = useState<string>(formData.moduloElettrico?.tipoImpianto || "");
 
   const handleSubmit = () => {
     updateFormData({ 
-      tipoImpianto 
+      moduloElettrico: {
+        ...formData.moduloElettrico,
+        tipoImpianto
+      }
     });
-    
-    // Per Livello 3, vai alla pagina di scelta domotica
-    // Per Livello 1 e 2, vai alla pagina delle tapparelle
     onNext();
   };
 
