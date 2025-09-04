@@ -73,7 +73,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
     }
   };
 
-  const totalRooms = Object.values(formData.composizione).reduce((acc, curr) => acc + curr, 0);
+  const totalRooms = formData.composizione ? Object.values(formData.composizione).reduce((acc, curr) => acc + curr, 0) : 0;
 
   // Funzione per generare il riassunto della configurazione
   const getConfigurationSummary = () => {
@@ -165,7 +165,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
           <div>
             <p className="text-gray-600 mb-2">Composizione ({totalRooms} stanze totali):</p>
             <div className="flex flex-wrap gap-3">
-              {Object.entries(formData.composizione).map(([key, value]) => 
+              {formData.composizione && Object.entries(formData.composizione).map(([key, value]) => 
                 value > 0 && (
                   <span key={key} className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                     {value} {key === 'cameraDoppia' ? 'cam. doppia' : 
