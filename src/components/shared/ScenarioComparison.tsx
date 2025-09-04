@@ -100,198 +100,102 @@ export const ScenarioComparison = ({
             </div>
           </div>
           
-          {/* Comparison Cards */}
-          <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-8">
+          {/* Comparison Cards - Always vertical */}
+          <div className="space-y-4">
             {options.map((option) => {
               const isSelected = selectedValue === option.id;
               const isExpanded = expandedCards.includes(option.id);
               
               return (
                 <div key={option.id}>
-                  {/* Mobile Version */}
-                  <div className="block lg:hidden">
-                    <div
+                  <div
+                    className={`
+                      relative border rounded-xl transition-all duration-300 overflow-hidden
+                      ${isSelected 
+                        ? 'border-[#d8010c] shadow-lg' 
+                        : 'border-gray-200 hover:border-[#d8010c] hover:shadow-md'
+                      }
+                    `}
+                  >
+                    {/* Header - Clickable for selection */}
+                    <div 
                       className={`
-                        relative border rounded-xl transition-all duration-300 overflow-hidden
+                        p-4 md:p-6 cursor-pointer transition-all duration-200
                         ${isSelected 
-                          ? 'border-[#d8010c] shadow-lg' 
-                          : 'border-gray-200 hover:border-[#d8010c] hover:shadow-md'
+                          ? 'bg-[#d8010c]/5' 
+                          : 'bg-white hover:bg-gray-50'
                         }
                       `}
+                      onClick={() => handleCardClick(option.id)}
                     >
-                      {/* Mobile Header - Clickable for selection */}
-                      <div 
-                        className={`
-                          p-4 cursor-pointer transition-all duration-200
-                          ${isSelected 
-                            ? 'bg-[#d8010c]/5' 
-                            : 'bg-white hover:bg-gray-50'
-                          }
-                        `}
-                        onClick={() => handleCardClick(option.id)}
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1 pr-4">
-                            <h3 className="text-lg font-semibold text-[#1c1c1c] mb-2 leading-tight">
-                              {option.title}
-                            </h3>
-                            <p className="text-gray-600 font-medium text-sm leading-tight mb-4">
-                              {option.subtitle}
-                            </p>
-                            
-                            {/* Features List */}
-                            <div className="space-y-2">
-                              {option.features.slice(0, 4).map((feature, index) => {
-                                const IconComponent = feature.icon;
-                                return (
-                                  <div key={index} className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
-                                      <IconComponent className="w-3 h-3 text-[#d8010c]" />
-                                    </div>
-                                    <span className="text-xs text-gray-800 font-medium">{feature.text}</span>
-                                  </div>
-                                );
-                              })}
-                              
-                              {/* Remaining features for wireless (after 4) */}
-                              {option.id === 'wireless' && option.features.slice(4).map((feature, index) => {
-                                const IconComponent = feature.icon;
-                                return (
-                                  <div key={index + 4} className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
-                                      <IconComponent className="w-3 h-3 text-[#d8010c]" />
-                                    </div>
-                                    <span className="text-xs text-gray-800 font-medium">{feature.text}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 pr-4">
+                          <h3 className="text-lg md:text-xl font-semibold text-[#1c1c1c] mb-2 leading-tight">
+                            {option.title}
+                          </h3>
+                          <p className="text-gray-600 font-medium text-sm md:text-base leading-tight mb-4">
+                            {option.subtitle}
+                          </p>
                           
-                          {/* Selection Indicator */}
-                          <div className={`
-                            w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200 border-2
-                            ${isSelected 
-                              ? 'bg-[#d8010c] border-[#d8010c] shadow-lg' 
-                              : 'border-gray-300 bg-white'
-                            }
-                          `}>
-                            {isSelected && <Check className="w-3 h-3 text-white" />}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Mobile Expand/Collapse */}
-                      <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
-                        <CollapsibleTrigger className="w-full border-t border-gray-200 px-4 py-3 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50/80 transition-colors text-sm font-medium">
-                          <span>
-                            {isExpanded ? 'Nascondi dettagli' : 'Maggiori informazioni'}
-                          </span>
-                          <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
-                        </CollapsibleTrigger>
-                        
-                        <CollapsibleContent>
-                          <div className="p-4 pt-0 bg-gray-50/30">
-                            <p className="text-sm text-gray-700 leading-relaxed bg-white p-3 rounded-lg border border-gray-100">
-                              {option.description}
-                            </p>
-                          </div>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    </div>
-                  </div>
-
-                  {/* Desktop Version */}
-                  <div className="hidden lg:block">
-                    <div
-                      className={`
-                        relative rounded-xl border transition-all duration-300 overflow-hidden
-                        ${isSelected 
-                          ? 'border-[#d8010c] bg-[#d8010c]/5 shadow-xl transform scale-[1.02]' 
-                          : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-white hover:transform hover:scale-[1.01]'
-                        }
-                      `}
-                    >
-                      {/* Desktop Header - Clickable for selection */}
-                      <div 
-                        className="p-6 cursor-pointer"
-                        onClick={() => handleCardClick(option.id)}
-                      >
-                        <div className="flex items-start justify-between mb-6">
-                          <div className="flex-1 pr-4">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2 leading-tight">
-                              {option.title}
-                            </h3>
-                            <p className="text-gray-600 font-medium text-base">
-                              {option.subtitle}
-                            </p>
-                          </div>
-
-                          {/* Selection Indicator */}
-                          <div className={`
-                            w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 border-2
-                            ${isSelected 
-                              ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                              : 'border-gray-300 bg-white hover:border-gray-400'
-                            }
-                          `}>
-                            {isSelected && <Check className="w-5 h-5 text-white" />}
-                          </div>
-                        </div>
-
-                        {/* Features List - Show first 4 for both cards */}
-                        <div className="space-y-4">
-                          {option.features.slice(0, 4).map((feature, index) => {
-                            const IconComponent = feature.icon;
-                            return (
-                              <div key={index} className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
-                                  <IconComponent className="w-5 h-5 text-[#d8010c]" />
+                          {/* Features List */}
+                          <div className="space-y-2 md:space-y-4">
+                            {option.features.slice(0, 4).map((feature, index) => {
+                              const IconComponent = feature.icon;
+                              return (
+                                <div key={index} className="flex items-center gap-3">
+                                  <div className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
+                                    <IconComponent className="w-3 h-3 md:w-5 md:h-5 text-[#d8010c]" />
+                                  </div>
+                                  <span className="text-xs md:text-base text-gray-800 font-medium">{feature.text}</span>
                                 </div>
-                                <span className="text-gray-800 font-medium">{feature.text}</span>
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
+                            
+                            {/* Remaining features for wireless (after 4) */}
+                            {option.id === 'wireless' && option.features.slice(4).map((feature, index) => {
+                              const IconComponent = feature.icon;
+                              return (
+                                <div key={index + 4} className="flex items-center gap-3">
+                                  <div className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
+                                    <IconComponent className="w-3 h-3 md:w-5 md:h-5 text-[#d8010c]" />
+                                  </div>
+                                  <span className="text-xs md:text-base text-gray-800 font-medium">{feature.text}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                        
+                        {/* Selection Indicator */}
+                        <div className={`
+                          w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200 border-2
+                          ${isSelected 
+                            ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                            : 'border-gray-300 bg-white hover:border-gray-400'
+                          }
+                        `}>
+                          {isSelected && <Check className="w-3 h-3 md:w-5 md:h-5 text-white" />}
                         </div>
                       </div>
-
-                      {/* Desktop Expand/Collapse */}
-                      <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
-                        <CollapsibleTrigger className="w-full border-t border-gray-200 px-6 py-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50/80 transition-colors text-sm font-medium">
-                          <span>
-                            {isExpanded ? 'Nascondi dettagli' : 'Maggiori informazioni'}
-                          </span>
-                          <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
-                        </CollapsibleTrigger>
-                        
-                        <CollapsibleContent>
-                          <div className="px-6 pb-6">
-                            {/* Show remaining features for wireless card */}
-                            {option.id === 'wireless' && option.features.slice(4).length > 0 && (
-                              <div className="space-y-4 mb-4">
-                                {option.features.slice(4).map((feature, index) => {
-                                  const IconComponent = feature.icon;
-                                  return (
-                                    <div key={index + 4} className="flex items-center gap-3">
-                                      <div className="w-8 h-8 rounded-full bg-[#d8010c]/10 flex items-center justify-center flex-shrink-0">
-                                        <IconComponent className="w-5 h-5 text-[#d8010c]" />
-                                      </div>
-                                      <span className="text-gray-800 font-medium">{feature.text}</span>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            )}
-                            
-                            <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                              <p className="text-gray-700 leading-relaxed text-sm">
-                                {option.description}
-                              </p>
-                            </div>
-                          </div>
-                        </CollapsibleContent>
-                      </Collapsible>
                     </div>
+
+                    {/* Expand/Collapse */}
+                    <Collapsible open={isExpanded} onOpenChange={() => toggleCardExpansion(option.id)}>
+                      <CollapsibleTrigger className="w-full border-t border-gray-200 px-4 md:px-6 py-3 md:py-4 flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50/80 transition-colors text-sm font-medium">
+                        <span>
+                          {isExpanded ? 'Nascondi dettagli' : 'Maggiori informazioni'}
+                        </span>
+                        <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                      </CollapsibleTrigger>
+                      
+                      <CollapsibleContent>
+                        <div className="p-4 md:px-6 md:pb-6 pt-0 bg-gray-50/30">
+                          <p className="text-sm text-gray-700 leading-relaxed bg-white p-3 md:p-4 rounded-lg border border-gray-100">
+                            {option.description}
+                          </p>
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
                   </div>
                 </div>
               );
