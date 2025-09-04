@@ -1,16 +1,15 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Sun, Shield, Thermometer, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 
 type Props = {
-  onStart: () => void;
+  onStart: (selectedModules: string[]) => void;
 };
 
 type Modulo = {
   id: string;
   nome: string;
-  icon: React.ComponentType<any>;
   descrizione: string;
 };
 
@@ -38,22 +37,18 @@ export const WelcomePage = ({
   const moduli: Modulo[] = [{
     id: 'impianto-elettrico',
     nome: 'Impianto elettrico',
-    icon: Zap,
     descrizione: 'Rifacimento completo impianto'
   }, {
     id: 'fotovoltaico',
     nome: 'Impianto fotovoltaico',
-    icon: Sun,
     descrizione: 'Pannelli solari e storage'
   }, {
     id: 'sicurezza',
     nome: 'Impianto di sicurezza',
-    icon: Shield,
     descrizione: 'Allarmi e videosorveglianza'
   }, {
     id: 'termotecnico',
     nome: 'Impianto termotecnico',
-    icon: Thermometer,
     descrizione: 'Riscaldamento e climatizzazione'
   }];
 
@@ -219,7 +214,7 @@ export const WelcomePage = ({
 
         {/* CTA Button */}
         <div className="space-y-3">
-          <Button onClick={onStart} disabled={moduliSelezionati.length === 0} className="
+          <Button onClick={() => onStart(moduliSelezionati)} disabled={moduliSelezionati.length === 0} className="
               w-full px-6 py-4 md:py-5
               text-base md:text-lg 
               bg-[#d8010c] hover:bg-[#b8000a]

@@ -10,6 +10,7 @@ import { TipoDomotica } from "./steps/TipoDomotica";
 import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
 import { ConfigurazioneBTicino } from "./steps/ConfigurazioneBTicino";
 import { TapparelleElettriche } from "./steps/TapparelleElettriche";
+import { TipoInterventoFotovoltaico } from "./steps/TipoInterventoFotovoltaico";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
@@ -22,14 +23,77 @@ import { useConfiguratorFlow } from "@/hooks/useConfiguratorFlow";
 import { useEstimateCalculation } from "@/hooks/useEstimateCalculation";
 
 export type FormData = {
-  tipologiaAbitazione: string;
-  superficie: number;
-  indirizzo: string;
-  citta: string;
-  cap: string;
-  regione: string;
-  piano: string;
-  composizione: {
+  // Dati comuni a tutti i moduli
+  informazioniGenerali: {
+    tipologiaAbitazione: string;
+    superficie: number;
+    indirizzo: string;
+    citta: string;
+    cap: string;
+    regione: string;
+    piano: string;
+    composizione: {
+      cucina: number;
+      cameraDoppia: number;
+      cameraSingola: number;
+      bagno: number;
+      soggiorno: number;
+      altro: number;
+    };
+  };
+  
+  // Contatti (comune)
+  contatti: {
+    nome: string;
+    cognome: string;
+    email: string;
+    telefono: string;
+    accettoTermini: boolean;
+    tipoProprietà: string;
+    dataRichiestaSopralluogo?: string;
+    orarioSopralluogo?: string;
+    note?: string;
+  };
+  
+  // Moduli selezionati
+  moduliSelezionati: string[];
+  
+  // Modulo Elettrico (compartimento stagno)
+  moduloElettrico?: {
+    tipoRistrutturazione: string;
+    impiantoVecchio?: string;
+    interventiElettrici?: Record<string, any>;
+    ambientiSelezionati?: string[];
+    tipoImpianto?: string;
+    tipoDomotica?: string;
+    knxConfig?: Record<string, any>;
+    bTicinoConfig?: Record<string, any>;
+    elettrificareTapparelle?: string;
+    numeroTapparelle?: number;
+    estimate?: EstimateResponse;
+  };
+  
+  // Modulo Fotovoltaico (compartimento stagno)
+  moduloFotovoltaico?: {
+    tipoInterventoFotovoltaico: string; // "nuovo" o "ampliamento"
+    estimate?: EstimateResponse;
+  };
+  
+  // Stima finale cumulativa
+  stimaFinale?: {
+    totale: EstimateResponse;
+    breakdown: Record<string, EstimateResponse>; // stima per ogni modulo
+  };
+
+  // DEPRECATED: Manteniamo temporaneamente per retrocompatibilità
+  tipologiaAbitazione?: string;
+  superficie?: number;
+  indirizzo?: string;
+  citta?: string;
+  cap?: string;
+  regione?: string;
+  piano?: string;
+  composizione?: {
     cucina: number;
     cameraDoppia: number;
     cameraSingola: number;
@@ -37,12 +101,12 @@ export type FormData = {
     soggiorno: number;
     altro: number;
   };
-  nome: string;
-  cognome: string;
-  email: string;
-  telefono: string;
-  accettoTermini: boolean;
-  tipoProprietà: string;
+  nome?: string;
+  cognome?: string;
+  email?: string;
+  telefono?: string;
+  accettoTermini?: boolean;
+  tipoProprietà?: string;
   tipoRistrutturazione?: string;
   impiantoVecchio?: string;
   interventiElettrici?: Record<string, any>;
@@ -64,27 +128,32 @@ export const Configuratore = () => {
   const [savedLeadId, setSavedLeadId] = useState<string | null>(null);
   
   const [formData, setFormData] = useState<FormData>({
-    tipologiaAbitazione: "",
-    superficie: 0,
-    indirizzo: "",
-    citta: "",
-    cap: "",
-    regione: "",
-    piano: "",
-    composizione: {
-      cucina: 0,
-      cameraDoppia: 0,
-      cameraSingola: 0,
-      bagno: 0,
-      soggiorno: 0,
-      altro: 0,
+    moduliSelezionati: [],
+    informazioniGenerali: {
+      tipologiaAbitazione: "",
+      superficie: 0,
+      indirizzo: "",
+      citta: "",
+      cap: "",
+      regione: "",
+      piano: "",
+      composizione: {
+        cucina: 0,
+        cameraDoppia: 0,
+        cameraSingola: 0,
+        bagno: 0,
+        soggiorno: 0,
+        altro: 0,
+      },
     },
-    nome: "",
-    cognome: "",
-    email: "",
-    telefono: "",
-    accettoTermini: false,
-    tipoProprietà: "prima casa"
+    contatti: {
+      nome: "",
+      cognome: "",
+      email: "",
+      telefono: "",
+      accettoTermini: false,
+      tipoProprietà: "prima casa"
+    }
   });
 
   const scrollToTop = () => {
@@ -159,27 +228,32 @@ export const Configuratore = () => {
     flow.reset();
     setSavedLeadId(null);
     setFormData({
-      tipologiaAbitazione: "",
-      superficie: 0,
-      indirizzo: "",
-      citta: "",
-      cap: "",
-      regione: "",
-      piano: "",
-      composizione: {
-        cucina: 0,
-        cameraDoppia: 0,
-        cameraSingola: 0,
-        bagno: 0,
-        soggiorno: 0,
-        altro: 0,
+      moduliSelezionati: [],
+      informazioniGenerali: {
+        tipologiaAbitazione: "",
+        superficie: 0,
+        indirizzo: "",
+        citta: "",
+        cap: "",
+        regione: "",
+        piano: "",
+        composizione: {
+          cucina: 0,
+          cameraDoppia: 0,
+          cameraSingola: 0,
+          bagno: 0,
+          soggiorno: 0,
+          altro: 0,
+        },
       },
-      nome: "",
-      cognome: "",
-      email: "",
-      telefono: "",
-      accettoTermini: false,
-      tipoProprietà: "prima casa"
+      contatti: {
+        nome: "",
+        cognome: "",
+        email: "",
+        telefono: "",
+        accettoTermini: false,
+        tipoProprietà: "prima casa"
+      }
     });
   };
 
@@ -235,7 +309,9 @@ export const Configuratore = () => {
     }
   };
 
-  const handleWelcomeStart = () => {
+  const handleWelcomeStart = (selectedModules: string[]) => {
+    console.log("🎯 Starting configurator with modules:", selectedModules);
+    updateFormData({ moduliSelezionati: selectedModules });
     scrollToTop();
     handleNext();
   };
@@ -290,6 +366,9 @@ export const Configuratore = () => {
       
       case 'TapparelleElettriche':
         return <TapparelleElettriche {...commonProps} />;
+      
+      case 'TipoInterventoFotovoltaico':
+        return <TipoInterventoFotovoltaico {...commonProps} />;
       
       case 'DatiContatto':
         return (
