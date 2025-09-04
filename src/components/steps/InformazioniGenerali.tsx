@@ -16,31 +16,51 @@ type Props = {
 };
 
 export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props) => {
-  // Pre-compila i dati se non sono già presenti
-  if (!formData.tipologiaAbitazione) {
+  // Pre-compila i dati se non sono già presenti nella nuova struttura
+  if (!formData.informazioniGenerali?.tipologiaAbitazione) {
     updateFormData({
-      tipologiaAbitazione: "appartamento",
-      superficie: 85,
-      indirizzo: "Via Roma 123, Milano, 20100, Lombardia",
-      citta: "Milano",
-      cap: "20100",
-      regione: "Lombardia",
-      composizione: {
-        ...formData.composizione,
-        cucina: 1,
-        cameraDoppia: 1,
-        cameraSingola: 1,
-        soggiorno: 1,
-        bagno: 2,
-        altro: 0
+      informazioniGenerali: {
+        tipologiaAbitazione: "appartamento",
+        superficie: 85,
+        indirizzo: "Via Roma 123",
+        citta: "Milano",
+        cap: "20100",
+        regione: "Lombardia",
+        piano: "2",
+        composizione: {
+          cucina: 1,
+          cameraDoppia: 1,
+          cameraSingola: 1,
+          soggiorno: 1,
+          bagno: 2,
+          altro: 0
+        }
       }
     });
   }
 
-  const totalRooms = Object.values(formData.composizione).reduce((sum, count) => sum + count, 0);
+  const info = formData.informazioniGenerali || {
+    tipologiaAbitazione: "",
+    superficie: 0,
+    indirizzo: "",
+    citta: "",
+    cap: "",
+    regione: "",
+    piano: "",
+    composizione: {
+      cucina: 0,
+      cameraDoppia: 0,
+      cameraSingola: 0,
+      bagno: 0,
+      soggiorno: 0,
+      altro: 0
+    }
+  };
+
+  const totalRooms = Object.values(info.composizione).reduce((sum, count) => sum + count, 0);
   
   const validateForm = () => {
-    if (!formData.tipologiaAbitazione) {
+    if (!info.tipologiaAbitazione) {
       toast({
         title: "Attenzione",
         description: "Seleziona la tipologia di abitazione",
@@ -49,7 +69,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       return false;
     }
     
-    if (!formData.superficie || formData.superficie <= 0) {
+    if (!info.superficie || info.superficie <= 0) {
       toast({
         title: "Attenzione",
         description: "Inserisci una superficie valida",
@@ -58,7 +78,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       return false;
     }
     
-    if (!formData.indirizzo) {
+    if (!info.indirizzo) {
       toast({
         title: "Attenzione",
         description: "Inserisci l'indirizzo completo",
@@ -67,7 +87,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       return false;
     }
     
-    const { cucina, cameraDoppia, cameraSingola, soggiorno, bagno } = formData.composizione;
+    const { cucina, cameraDoppia, cameraSingola, soggiorno, bagno } = info.composizione;
     if (cucina + cameraDoppia + cameraSingola + soggiorno + bagno === 0) {
       toast({
         title: "Attenzione",
@@ -83,10 +103,13 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
   const selectLocation = (location: string) => {
     const [indirizzo, citta, cap, regione] = location.split(", ");
     updateFormData({
-      indirizzo: location,
-      citta,
-      cap,
-      regione
+      informazioniGenerali: {
+        ...info,
+        indirizzo: location,
+        citta,
+        cap,
+        regione
+      }
     });
   };
   
@@ -96,11 +119,14 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     }
   };
 
-  const handleChangeComposizione = (tipo: keyof FormData['composizione'], value: number) => {
+  const handleChangeComposizione = (tipo: keyof typeof info.composizione, value: number) => {
     updateFormData({
-      composizione: {
-        ...formData.composizione,
-        [tipo]: value
+      informazioniGenerali: {
+        ...info,
+        composizione: {
+          ...info.composizione,
+          [tipo]: value
+        }
       }
     });
   };
@@ -129,23 +155,29 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       {/* Contenuto principale */}
       <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8">
         <TipoAbitazione 
-          value={formData.tipologiaAbitazione}
-          onChange={(value) => updateFormData({ tipologiaAbitazione: value })}
+          value={info.tipologiaAbitazione}
+          onChange={(value) => updateFormData({ 
+            informazioniGenerali: { ...info, tipologiaAbitazione: value } 
+          })}
         />
 
         <SuperficieSlider
-          value={formData.superficie || 85}
-          onChange={(value) => updateFormData({ superficie: value })}
+          value={info.superficie || 85}
+          onChange={(value) => updateFormData({ 
+            informazioniGenerali: { ...info, superficie: value } 
+          })}
         />
 
         <IndirizzoField
-          value={formData.indirizzo}
-          onChange={(value) => updateFormData({ indirizzo: value })}
+          value={info.indirizzo}
+          onChange={(value) => updateFormData({ 
+            informazioniGenerali: { ...info, indirizzo: value } 
+          })}
           onSelectLocation={selectLocation}
         />
 
         <SuddivisioneSpazi
-          composizione={formData.composizione}
+          composizione={info.composizione}
           onChangeStanza={handleChangeComposizione}
           totalRooms={totalRooms}
         />

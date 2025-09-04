@@ -28,8 +28,14 @@ export interface DatabaseLead {
   tipo_proprieta: string;
   stato: string;
   data_creazione: string;
-  data_ultimo_contatto: string;
-  accetto_termini: boolean;
+  data_ultimo_contatto: string | null;
+  accetto_termini: boolean | null;
+  // Nuovi campi modular
+  moduli_selezionati?: string[];
+  informazioni_generali?: any;
+  modulo_elettrico?: any;
+  modulo_fotovoltaico?: any;
+  stima_finale?: any;
 }
 
 export const saveLeadToDatabase = async (
@@ -40,13 +46,34 @@ export const saveLeadToDatabase = async (
   console.log("📋 Input formData:", JSON.stringify(formData, null, 2));
   console.log("📊 Input estimate:", JSON.stringify(estimate, null, 2));
 
+  // Get data from new modular structure with fallback to old structure for backward compatibility
+  const contatti = formData.contatti || {
+    nome: formData.nome || '',
+    cognome: formData.cognome || '',
+    email: formData.email || '',
+    telefono: formData.telefono || '',
+    accettoTermini: formData.accettoTermini || false,
+    tipoProprietà: formData.tipoProprietà || 'prima casa'
+  };
+
+  const info = formData.informazioniGenerali || {
+    tipologiaAbitazione: formData.tipologiaAbitazione || '',
+    superficie: formData.superficie || 0,
+    indirizzo: formData.indirizzo || '',
+    citta: formData.citta || '',
+    cap: formData.cap || '',
+    regione: formData.regione || '',
+    piano: formData.piano || '',
+    composizione: formData.composizione || {}
+  };
+
   // Validation checks
-  if (!formData.nome || !formData.cognome || !formData.email || !formData.telefono) {
+  if (!contatti.nome || !contatti.cognome || !contatti.email || !contatti.telefono) {
     const missingFields = [];
-    if (!formData.nome) missingFields.push('nome');
-    if (!formData.cognome) missingFields.push('cognome');
-    if (!formData.email) missingFields.push('email');
-    if (!formData.telefono) missingFields.push('telefono');
+    if (!contatti.nome) missingFields.push('nome');
+    if (!contatti.cognome) missingFields.push('cognome');
+    if (!contatti.email) missingFields.push('email');
+    if (!contatti.telefono) missingFields.push('telefono');
     
     const error = `Campi obbligatori mancanti: ${missingFields.join(', ')}`;
     console.error("❌ Validation error:", error);
@@ -59,31 +86,48 @@ export const saveLeadToDatabase = async (
     throw new Error(error);
   }
 
-  // Prepara i dati per il database
+  // Prepara i dati per il database (rimuovi estimates dai moduli per evitare conflitti di tipo)
+  const moduloElettricoForDB = formData.moduloElettrico ? {
+    ...formData.moduloElettrico,
+    estimate: undefined // Remove estimate from module data
+  } : null;
+
+  const moduloFotovoltaicoForDB = formData.moduloFotovoltaico ? {
+    ...formData.moduloFotovoltaico,
+    estimate: undefined // Remove estimate from module data
+  } : null;
+
   const leadData = {
-    nome: formData.nome,
-    cognome: formData.cognome,
-    email: formData.email,
-    telefono: formData.telefono,
-    tipologia_abitazione: formData.tipologiaAbitazione,
-    superficie: formData.superficie,
-    indirizzo: formData.indirizzo,
-    citta: formData.citta,
-    cap: formData.cap,
-    regione: formData.regione,
-    piano: formData.piano,
-    composizione: formData.composizione,
+    nome: contatti.nome,
+    cognome: contatti.cognome,
+    email: contatti.email,
+    telefono: contatti.telefono,
+    tipologia_abitazione: info.tipologiaAbitazione,
+    superficie: info.superficie,
+    indirizzo: info.indirizzo,
+    citta: info.citta,
+    cap: info.cap,
+    regione: info.regione,
+    piano: info.piano,
+    composizione: info.composizione,
+    // Nuovi campi modular
+    moduli_selezionati: formData.moduliSelezionati || [],
+    informazioni_generali: info,
+    modulo_elettrico: moduloElettricoForDB,
+    modulo_fotovoltaico: moduloFotovoltaicoForDB,
+    stima_finale: formData.stimaFinale ? JSON.parse(JSON.stringify(formData.stimaFinale)) : null,
+    // Configurazione tecnica per retrocompatibilità
     configurazione_tecnica: {
-      tipoRistrutturazione: formData.tipoRistrutturazione,
-      impiantoVecchio: formData.impiantoVecchio,
-      interventiElettrici: formData.interventiElettrici,
-      ambientiSelezionati: formData.ambientiSelezionati,
-      tipoImpianto: formData.tipoImpianto,
-      tipoDomotica: formData.tipoDomotica,
-      knxConfig: formData.knxConfig,
-      bTicinoConfig: formData.bTicinoConfig,
-      elettrificareTapparelle: formData.elettrificareTapparelle,
-      numeroTapparelle: formData.numeroTapparelle,
+      tipoRistrutturazione: formData.tipoRistrutturazione || formData.moduloElettrico?.tipoRistrutturazione,
+      impiantoVecchio: formData.impiantoVecchio || formData.moduloElettrico?.impiantoVecchio,
+      interventiElettrici: formData.interventiElettrici || formData.moduloElettrico?.interventiElettrici,
+      ambientiSelezionati: formData.ambientiSelezionati || formData.moduloElettrico?.ambientiSelezionati,
+      tipoImpianto: formData.tipoImpianto || formData.moduloElettrico?.tipoImpianto,
+      tipoDomotica: formData.tipoDomotica || formData.moduloElettrico?.tipoDomotica,
+      knxConfig: formData.knxConfig || formData.moduloElettrico?.knxConfig,
+      bTicinoConfig: formData.bTicinoConfig || formData.moduloElettrico?.bTicinoConfig,
+      elettrificareTapparelle: formData.elettrificareTapparelle || formData.moduloElettrico?.elettrificareTapparelle,
+      numeroTapparelle: formData.numeroTapparelle || formData.moduloElettrico?.numeroTapparelle
     },
     stima_min: estimate.min,
     stima_max: estimate.max,
@@ -91,14 +135,14 @@ export const saveLeadToDatabase = async (
     stima_dettagli: {
       breakdown: estimate.breakdown,
       deductions: estimate.deductions,
-      calculatedAt: estimate.calculatedAt,
+      calculatedAt: estimate.calculatedAt
     },
-    data_richiesta_sopralluogo: formData.dataRichiestaSopralluogo || null,
-    orario_sopralluogo: formData.orarioSopralluogo || null,
-    note: formData.note || null,
-    tipo_proprieta: formData.tipoProprietà,
-    stato: 'nuovo',
-    accetto_termini: formData.accettoTermini,
+    data_richiesta_sopralluogo: contatti.dataRichiestaSopralluogo || null,
+    orario_sopralluogo: contatti.orarioSopralluogo || null,
+    note: contatti.note || null,
+    tipo_proprieta: contatti.tipoProprietà,
+    accetto_termini: contatti.accettoTermini,
+    stato: "nuovo"
   };
 
   console.log("📦 Prepared lead data for database:", JSON.stringify(leadData, null, 2));

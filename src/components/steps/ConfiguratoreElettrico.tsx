@@ -11,13 +11,15 @@ type Props = {
 };
 
 export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const [tipoRistrutturazione, setTipoRistrutturazione] = useState<string>(formData.tipoRistrutturazione || "");
+  const currentValue = formData.moduloElettrico?.tipoRistrutturazione || "";
 
-  const handleSubmit = () => {
+  const handleSelectionChange = (value: string) => {
     updateFormData({ 
-      tipoRistrutturazione 
+      moduloElettrico: { 
+        ...formData.moduloElettrico, 
+        tipoRistrutturazione: value 
+      } 
     });
-    onNext();
   };
 
   const options: QuestionOption[] = [
@@ -49,9 +51,9 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
       description="Scegli il tipo di lavoro che meglio descrive il tuo progetto elettrico"
       infoBox={infoBox}
       options={options}
-      selectedValue={tipoRistrutturazione}
-      onSelectionChange={setTipoRistrutturazione}
-      onNext={handleSubmit}
+      selectedValue={currentValue}
+      onSelectionChange={handleSelectionChange}
+      onNext={onNext}
       onBack={onBack}
     />
   );
