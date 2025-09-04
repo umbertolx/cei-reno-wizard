@@ -12,10 +12,15 @@ type Props = {
 };
 
 export const TipoDomotica = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const [tipoDomotica, setTipoDomotica] = useState<string>(formData.tipoDomotica || "");
+  const [tipoDomotica, setTipoDomotica] = useState<string>(formData.moduloElettrico?.tipoDomotica || "");
 
   const handleSubmit = () => {
-    updateFormData({ tipoDomotica });
+    updateFormData({ 
+      moduloElettrico: {
+        ...formData.moduloElettrico,
+        tipoDomotica
+      }
+    });
     onNext();
   };
 

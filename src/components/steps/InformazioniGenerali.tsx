@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -17,27 +17,29 @@ type Props = {
 
 export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props) => {
   // Pre-compila i dati se non sono già presenti nella nuova struttura
-  if (!formData.informazioniGenerali?.tipologiaAbitazione) {
-    updateFormData({
-      informazioniGenerali: {
-        tipologiaAbitazione: "appartamento",
-        superficie: 85,
-        indirizzo: "Via Roma 123",
-        citta: "Milano",
-        cap: "20100",
-        regione: "Lombardia",
-        piano: "2",
-        composizione: {
-          cucina: 1,
-          cameraDoppia: 1,
-          cameraSingola: 1,
-          soggiorno: 1,
-          bagno: 2,
-          altro: 0
+  useEffect(() => {
+    if (!formData.informazioniGenerali?.tipologiaAbitazione) {
+      updateFormData({
+        informazioniGenerali: {
+          tipologiaAbitazione: "appartamento",
+          superficie: 85,
+          indirizzo: "Via Roma 123",
+          citta: "Milano",
+          cap: "20100",
+          regione: "Lombardia",
+          piano: "2",
+          composizione: {
+            cucina: 1,
+            cameraDoppia: 1,
+            cameraSingola: 1,
+            soggiorno: 1,
+            bagno: 2,
+            altro: 0
+          }
         }
-      }
-    });
-  }
+      });
+    }
+  }, [formData.informazioniGenerali, updateFormData]);
 
   const info = formData.informazioniGenerali || {
     tipologiaAbitazione: "",
