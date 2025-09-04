@@ -20,7 +20,14 @@ export const SelezioneAmbienti = ({ formData, updateFormData, onNext, onBack }: 
   // Genera la lista degli ambienti dalla composizione
   const generaAmbienti = (): string[] => {
     const ambienti: string[] = [];
-    const { composizione } = formData;
+    const composizione = formData.informazioniGenerali?.composizione || formData.composizione || {
+      soggiorno: 0,
+      cucina: 0,
+      cameraDoppia: 0,
+      cameraSingola: 0,
+      bagno: 0,
+      altro: 0
+    };
 
     if (composizione.soggiorno > 0) {
       for (let i = 1; i <= composizione.soggiorno; i++) {
