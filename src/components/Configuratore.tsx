@@ -88,7 +88,7 @@ export type FormData = {
     conosceConsumi?: string; // "si" | "no"
     consumiKWh?: number; // kWh annui da bolletta
     spesaMensile?: number; // spesa media mensile in €
-    nuoveVociConsumo?: string[]; // nuove voci di consumo pianificate
+    nuoveVociConsumo?: Record<string, any>; // configurazioni delle nuove voci di consumo pianificate
     estimate?: EstimateResponse;
   };
   
