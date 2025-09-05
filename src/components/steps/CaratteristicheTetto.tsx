@@ -25,12 +25,12 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
   ];
 
   const orientamentoOptions = [
-    { id: "sud", label: "Sud" },
+    { id: "sud", label: "Sud", description: "Efficienza maggiore" },
     { id: "sud-est", label: "Sud-Est" },
     { id: "sud-ovest", label: "Sud-Ovest" },
     { id: "est", label: "Est" },
     { id: "ovest", label: "Ovest" },
-    { id: "est-ovest", label: "Est-Ovest" },
+    { id: "est-ovest", label: "Est-Ovest", description: "Tipico dei tetti a falda multipla" },
     { id: "non-so", label: "Non lo so" }
   ];
 
@@ -92,6 +92,11 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
           <div className="font-semibold text-base text-[#1c1c1c]">
             {option.label}
           </div>
+          {option.description && (
+            <div className="text-sm text-gray-600 mt-1">
+              {option.description}
+            </div>
+          )}
         </div>
         {isSelected && (
           <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
