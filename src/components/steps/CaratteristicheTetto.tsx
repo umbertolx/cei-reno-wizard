@@ -27,7 +27,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
   const orientamentoOptions = [
     { id: "sud", label: "Sud", description: "Efficienza massima ~100%" },
     { id: "sud-est", label: "Sud-Est", description: "Ottima efficienza ~95%" },
-    { id: "sud-ovest", label: "Sud-Ovest", description: "Ottima efficienza ~95%" },
+    { id: "sud-ovest", label: "Sud-Ovest", description: "Molto comune in tetti a falda multipla" },
     { id: "est", label: "Est", description: "Buona efficienza ~85%" },
     { id: "ovest", label: "Ovest", description: "Buona efficienza ~85%" },
     { id: "est-ovest", label: "Est-Ovest", description: "Ideale per tetti a falda multipla" }
