@@ -87,7 +87,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
         }
       `}
     >
-      <div className={`flex items-center justify-between ${!option.description ? 'h-full' : ''}`}>
+      <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
           <div className="font-semibold text-base text-[#1c1c1c]">
             {option.label}
@@ -95,9 +95,6 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
               <div className="text-xs text-gray-500 font-normal mt-1 hidden sm:block">
                 {option.description}
               </div>
-            )}
-            {!option.description && (
-              <div className="h-5 hidden sm:block"></div>
             )}
           </div>
         </div>
