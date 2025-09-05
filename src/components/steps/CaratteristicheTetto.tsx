@@ -1,11 +1,8 @@
 import { FormData } from "../Configuratore";
-import { Badge } from "@/components/ui/badge";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Info, ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
-import { Info } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 type Props = {
   formData: FormData;
@@ -16,16 +13,15 @@ type Props = {
 
 export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const [infoBoxOpen, setInfoBoxOpen] = useState(false);
-  const isMobile = useIsMobile();
   
   const tipoFalda = formData.moduloFotovoltaico?.tipoFalda || "";
   const orientamentoTetto = formData.moduloFotovoltaico?.orientamentoTetto || "";
   const zoneOmbra = formData.moduloFotovoltaico?.zoneOmbra || "";
 
   const tipoFaldaOptions = [
-    { id: "piano", label: "Tetto piano", description: "Superficie piana o quasi piana" },
-    { id: "singola", label: "Tetto a falda singola", description: "Una sola pendenza" },
-    { id: "multiple", label: "Tetto a falde multiple", description: "Più pendenze diverse" }
+    { id: "piano", label: "Tetto piano" },
+    { id: "singola", label: "Tetto a falda singola" },
+    { id: "multiple", label: "Tetto a falde multiple" }
   ];
 
   const orientamentoOptions = [
@@ -39,9 +35,9 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
   ];
 
   const zoneOmbraOptions = [
-    { id: "nessuna", label: "Nessuna ombra", description: "Il tetto è sempre esposto al sole" },
-    { id: "leggera", label: "Qualche ombra leggera", description: "Ombre parziali in alcuni momenti" },
-    { id: "importante", label: "Ombre importanti", description: "Ombre significative durante il giorno" }
+    { id: "nessuna", label: "Nessuna ombra" },
+    { id: "leggera", label: "Qualche ombra leggera" },
+    { id: "importante", label: "Ombre importanti" }
   ];
 
   const handleTipoFaldaChange = (value: string) => {
@@ -80,27 +76,30 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
   };
 
   const renderOptionButton = (option: any, isSelected: boolean, onClick: () => void) => (
-    <button
+    <div
       key={option.id}
       onClick={onClick}
       className={`
-        relative p-4 rounded-lg border-2 text-left transition-all duration-200 w-full
+        rounded-xl transition-all duration-300 border cursor-pointer p-4
         ${isSelected 
-          ? 'border-[#d8010c] bg-[#d8010c]/5 text-[#1c1c1c]' 
-          : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 text-[#1c1c1c]'
+          ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+          : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
         }
       `}
     >
-      {isSelected && (
-        <CheckCircle className="absolute top-3 right-3 h-5 w-5 text-[#d8010c]" />
-      )}
-      <div className="pr-8">
-        <div className="font-medium text-base mb-1">{option.label}</div>
-        {option.description && (
-          <div className="text-sm text-gray-600">{option.description}</div>
+      <div className="flex items-center justify-between">
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-base text-[#1c1c1c]">
+            {option.label}
+          </div>
+        </div>
+        {isSelected && (
+          <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
+            <Check className="h-3 w-3 text-white" />
+          </div>
         )}
       </div>
-    </button>
+    </div>
   );
 
   const infoBox = {
@@ -109,59 +108,81 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <Badge variant="secondary" className="mb-4 bg-[#d8010c]/10 text-[#d8010c] border-[#d8010c]/20">
+    <div className="space-y-6">
+      {/* Badge */}
+      <div className="flex justify-center">
+        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
           Impianto fotovoltaico
-        </Badge>
-        
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-[#d8010c]/10 rounded-full flex items-center justify-center">
-            <img 
-              src="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png" 
-              alt="House icon" 
-              className="h-6 w-6"
-            />
-          </div>
         </div>
-        
-        <h1 className="text-2xl md:text-3xl font-bold text-[#1c1c1c] mb-3">
-          Caratteristiche del tuo tetto
-        </h1>
-        <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-          Per dimensionare correttamente l'impianto fotovoltaico, abbiamo bisogno di alcune informazioni sul tuo tetto
-        </p>
       </div>
 
-      {/* Info Box */}
-      {isMobile ? (
-        <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen} className="mb-8">
-          <CollapsibleTrigger className="flex items-center gap-2 text-[#d8010c] font-medium mb-2">
-            <Info className="h-4 w-4" />
-            {infoBox.title}
-          </CollapsibleTrigger>
-          <CollapsibleContent className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-gray-700">
-            {infoBox.content}
-          </CollapsibleContent>
-        </Collapsible>
-      ) : (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
-          <div className="flex items-center gap-2 text-amber-600 font-medium mb-2">
-            <Info className="h-4 w-4" />
-            {infoBox.title}
+      {/* Contenuto principale */}
+      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
+        <div className="space-y-4 md:space-y-6">
+          {/* Header - Layout responsive */}
+          <div className="flex items-center gap-4 px-3 md:px-0">
+            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
+              <img 
+                src="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
+                alt="House icon"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div>
+              <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Caratteristiche del tuo tetto</h2>
+              <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">
+                Per dimensionare correttamente l'impianto fotovoltaico, abbiamo bisogno di alcune informazioni sul tuo tetto
+              </p>
+            </div>
           </div>
-          <p className="text-sm text-gray-700">{infoBox.content}</p>
-        </div>
-      )}
 
-      <div className="space-y-8">
-        {/* Tipo di falda */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-[#1c1c1c]">
-            Che tipo di tetto hai?
-          </h3>
-          <div className="grid gap-3">
+          {/* Box informativo - collassabile su mobile, sempre aperto su desktop */}
+          <div>
+            {/* Versione mobile - collassabile */}
+            <div className="block md:hidden">
+              <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
+                <CollapsibleTrigger className="w-full">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
+                        <span className="text-sm font-medium text-yellow-800 text-left">
+                          {infoBox.title}
+                        </span>
+                      </div>
+                      <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    {infoBoxOpen && (
+                      <div className="mt-3 pt-3 border-t border-yellow-200">
+                        <p className="text-sm text-yellow-800 text-left">
+                          {infoBox.content}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </CollapsibleTrigger>
+              </Collapsible>
+            </div>
+
+            {/* Versione desktop - sempre aperto */}
+            <div className="hidden md:block">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-yellow-800">
+                    <p className="font-medium mb-1">{infoBox.title}</p>
+                    <p>{infoBox.content}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Tipo di falda */}
+          <div className="space-y-3 md:space-y-4">
+            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
+              Che tipo di tetto hai?
+            </h3>
             {tipoFaldaOptions.map((option) =>
               renderOptionButton(
                 option,
@@ -170,15 +191,13 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
               )
             )}
           </div>
-        </div>
 
-        {/* Orientamento del tetto */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-[#1c1c1c]">
-            Qual è l'orientamento del tetto?
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-            {orientamentoOptions.filter(opt => opt.id !== 'non-so').map((option) =>
+          {/* Orientamento del tetto */}
+          <div className="space-y-3 md:space-y-4">
+            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
+              Qual è l'orientamento del tetto?
+            </h3>
+            {orientamentoOptions.map((option) =>
               renderOptionButton(
                 option,
                 orientamentoTetto === option.id,
@@ -186,26 +205,15 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
               )
             )}
           </div>
-          <div className="pt-2 border-t border-gray-200">
-            {orientamentoOptions.filter(opt => opt.id === 'non-so').map((option) =>
-              renderOptionButton(
-                option,
-                orientamentoTetto === option.id,
-                () => handleOrientamentoChange(option.id)
-              )
-            )}
-          </div>
-        </div>
 
-        {/* Zone in ombra */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-[#1c1c1c]">
-            Il tetto ha zone in ombra durante il giorno?
-          </h3>
-          <p className="text-sm text-gray-600">
-            Considera alberi, palazzi, camini o altre strutture che possono fare ombra
-          </p>
-          <div className="grid gap-3">
+          {/* Zone in ombra */}
+          <div className="space-y-3 md:space-y-4">
+            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
+              Il tetto ha zone in ombra durante il giorno?
+            </h3>
+            <p className="text-sm text-[#1c1c1c] opacity-70 px-3 md:px-0">
+              Considera alberi, palazzi, camini o altre strutture che possono fare ombra
+            </p>
             {zoneOmbraOptions.map((option) =>
               renderOptionButton(
                 option,
@@ -217,6 +225,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
         </div>
       </div>
 
+      {/* Pulsanti di navigazione */}
       <StickyNavigationBar
         onBack={onBack}
         onNext={handleNext}
