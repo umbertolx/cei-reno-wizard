@@ -86,18 +86,18 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
       className={`
         relative p-4 rounded-lg border-2 text-left transition-all duration-200 w-full
         ${isSelected 
-          ? 'border-primary bg-primary/5 text-foreground' 
-          : 'border-border bg-background hover:border-primary/30 hover:bg-primary/5 text-foreground'
+          ? 'border-[#d8010c] bg-[#d8010c]/5 text-[#1c1c1c]' 
+          : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 text-[#1c1c1c]'
         }
       `}
     >
       {isSelected && (
-        <CheckCircle className="absolute top-3 right-3 h-5 w-5 text-primary" />
+        <CheckCircle className="absolute top-3 right-3 h-5 w-5 text-[#d8010c]" />
       )}
       <div className="pr-8">
         <div className="font-medium text-base mb-1">{option.label}</div>
         {option.description && (
-          <div className="text-sm text-muted-foreground">{option.description}</div>
+          <div className="text-sm text-gray-600">{option.description}</div>
         )}
       </div>
     </button>
@@ -117,7 +117,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
         </Badge>
         
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+          <div className="w-12 h-12 bg-[#d8010c]/10 rounded-full flex items-center justify-center">
             <img 
               src="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png" 
               alt="House icon" 
@@ -126,10 +126,10 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
           </div>
         </div>
         
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+        <h1 className="text-2xl md:text-3xl font-bold text-[#1c1c1c] mb-3">
           Caratteristiche del tuo tetto
         </h1>
-        <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+        <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
           Per dimensionare correttamente l'impianto fotovoltaico, abbiamo bisogno di alcune informazioni sul tuo tetto
         </p>
       </div>
@@ -137,28 +137,28 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
       {/* Info Box */}
       {isMobile ? (
         <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen} className="mb-8">
-          <CollapsibleTrigger className="flex items-center gap-2 text-primary font-medium mb-2">
+          <CollapsibleTrigger className="flex items-center gap-2 text-[#d8010c] font-medium mb-2">
             <Info className="h-4 w-4" />
             {infoBox.title}
           </CollapsibleTrigger>
-          <CollapsibleContent className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
+          <CollapsibleContent className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-gray-700">
             {infoBox.content}
           </CollapsibleContent>
         </Collapsible>
       ) : (
-        <div className="bg-muted/50 rounded-lg p-4 mb-8">
-          <div className="flex items-center gap-2 text-primary font-medium mb-2">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
+          <div className="flex items-center gap-2 text-amber-600 font-medium mb-2">
             <Info className="h-4 w-4" />
             {infoBox.title}
           </div>
-          <p className="text-sm text-muted-foreground">{infoBox.content}</p>
+          <p className="text-sm text-gray-700">{infoBox.content}</p>
         </div>
       )}
 
       <div className="space-y-8">
         {/* Tipo di falda */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">
+          <h3 className="text-lg font-semibold text-[#1c1c1c]">
             Che tipo di tetto hai?
           </h3>
           <div className="grid gap-3">
@@ -174,7 +174,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
 
         {/* Orientamento del tetto */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">
+          <h3 className="text-lg font-semibold text-[#1c1c1c]">
             Qual è l'orientamento del tetto?
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
@@ -186,7 +186,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
               )
             )}
           </div>
-          <div className="pt-2 border-t border-border">
+          <div className="pt-2 border-t border-gray-200">
             {orientamentoOptions.filter(opt => opt.id === 'non-so').map((option) =>
               renderOptionButton(
                 option,
@@ -199,10 +199,10 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
 
         {/* Zone in ombra */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">
+          <h3 className="text-lg font-semibold text-[#1c1c1c]">
             Il tetto ha zone in ombra durante il giorno?
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-600">
             Considera alberi, palazzi, camini o altre strutture che possono fare ombra
           </p>
           <div className="grid gap-3">
