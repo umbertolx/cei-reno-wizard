@@ -101,22 +101,22 @@ export const ScenarioComparison = ({
           </div>
           
           {/* Comparison Cards - Responsive layout */}
-          <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-6">
+          <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-stretch">
             {options.map((option) => {
               const isSelected = selectedValue === option.id;
               const isExpanded = expandedCards.includes(option.id);
               
               return (
-                <div key={option.id}>
-                  <div
-                    className={`
-                      relative border rounded-xl transition-all duration-300 overflow-hidden
-                      ${isSelected 
-                        ? 'border-[#d8010c] shadow-lg' 
-                        : 'border-gray-200 hover:border-[#d8010c] hover:shadow-md'
-                      }
-                    `}
-                  >
+                 <div key={option.id} className="h-full">
+                   <div
+                     className={`
+                       relative border rounded-xl transition-all duration-300 overflow-hidden h-full flex flex-col
+                       ${isSelected 
+                         ? 'border-[#d8010c] shadow-lg' 
+                         : 'border-gray-200 hover:border-[#d8010c] hover:shadow-md'
+                       }
+                     `}
+                   >
                     {/* Header - Clickable for selection */}
                     <div 
                       className={`
