@@ -80,7 +80,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
       key={option.id}
       onClick={onClick}
       className={`
-        rounded-xl transition-all duration-300 border cursor-pointer p-4
+        rounded-xl transition-all duration-300 border cursor-pointer p-4 mx-3 md:mx-0
         ${isSelected 
           ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
           : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
@@ -89,12 +89,12 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
     >
       <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-base text-[#1c1c1c] flex items-center gap-2">
+          <div className="font-semibold text-base text-[#1c1c1c]">
             {option.label}
             {option.description && (
-              <span className="text-xs text-gray-500 font-normal">
-                ({option.description})
-              </span>
+              <div className="text-xs text-gray-500 font-normal mt-1 hidden sm:block">
+                {option.description}
+              </div>
             )}
           </div>
         </div>
@@ -199,7 +199,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
             <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
               Qual è l'orientamento del tetto?
             </h3>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {orientamentoOptions.map((option) =>
                 renderOptionButton(
                   option,
