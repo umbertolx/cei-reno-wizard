@@ -131,16 +131,6 @@ const NuoveVociConsumo = ({ formData, updateFormData, onNext, onBack }: Props) =
               ))}
             </div>
 
-            {/* Info box */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-medium text-blue-900 mb-2">
-                Perché ti chiediamo queste informazioni?
-              </h4>
-              <p className="text-sm text-blue-800">
-                Conoscere i tuoi piani futuri ci aiuta a dimensionare correttamente l'impianto fotovoltaico, 
-                considerando anche i consumi aggiuntivi che potrebbero aumentare nel tempo.
-              </p>
-            </div>
           </div>
         </div>
       </div>
