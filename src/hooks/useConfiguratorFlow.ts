@@ -81,6 +81,11 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       component: 'ObiettiviConsumi',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
     },
+    { 
+      id: 'consumi-annui', 
+      component: 'ConsumiAnnui',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
+    },
     { id: 'dati-contatto', component: 'DatiContatto' },
     { id: 'stima-finale', component: 'StimaFinale', requiresEstimate: true },
     { id: 'richiesta-inviata', component: 'RichiestaInviata' }

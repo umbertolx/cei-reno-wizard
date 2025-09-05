@@ -13,6 +13,7 @@ import { TapparelleElettriche } from "./steps/TapparelleElettriche";
 import { TipoInterventoFotovoltaico } from "./steps/TipoInterventoFotovoltaico";
 import { CaratteristicheTetto } from "./steps/CaratteristicheTetto";
 import { ObiettiviConsumi } from "./steps/ObiettiviConsumi";
+import { ConsumiAnnui } from "./steps/ConsumiAnnui";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
@@ -83,6 +84,9 @@ export type FormData = {
     zoneOmbra?: string; // "nessuna" | "leggera" | "importante"
     obiettivoPrincipale?: string; // "risparmio-bolletta" | "indipendenza-energetica"
     consumoEnergetico?: number[]; // percentuale consumo giorno/sera [0-100]
+    conosceConsumi?: string; // "si" | "no"
+    consumiKWh?: number; // kWh annui da bolletta
+    spesaMensile?: number; // spesa media mensile in €
     estimate?: EstimateResponse;
   };
   
@@ -382,6 +386,9 @@ export const Configuratore = () => {
       
       case 'ObiettiviConsumi':
         return <ObiettiviConsumi {...commonProps} />;
+      
+      case 'ConsumiAnnui':
+        return <ConsumiAnnui {...commonProps} />;
       
       case 'DatiContatto':
         return (
