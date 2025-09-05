@@ -112,7 +112,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
     <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="text-center mb-8">
-        <Badge variant="secondary" className="mb-4">
+        <Badge variant="secondary" className="mb-4 bg-[#d8010c]/10 text-[#d8010c] border-[#d8010c]/20">
           Impianto fotovoltaico
         </Badge>
         
