@@ -170,37 +170,35 @@ export const ObiettiviConsumi = ({ formData, updateFormData, onNext, onBack }: P
             </h3>
             
             <div className="px-3 md:px-0">
-              <div className="bg-white border border-gray-200 rounded-xl p-8">
-                <div className="space-y-8">
-                  {/* Slider */}
-                  <div className="px-4 py-2">
-                    <Slider
-                      value={consumoEnergetico}
-                      onValueChange={handleConsumoChange}
-                      max={100}
-                      min={0}
-                      step={10}
-                      className="w-full"
-                    />
+              <div className="space-y-8">
+                {/* Slider */}
+                <div className="px-4 py-2">
+                  <Slider
+                    value={consumoEnergetico}
+                    onValueChange={handleConsumoChange}
+                    max={100}
+                    min={0}
+                    step={10}
+                    className="w-full"
+                  />
+                </div>
+                
+                {/* Labels e percentuali */}
+                <div className="flex items-center justify-between px-2">
+                  <div className="flex items-center gap-2">
+                    <Sun className="h-5 w-5 text-yellow-500" />
+                    <div className="text-center">
+                      <div className="text-sm font-medium text-[#1c1c1c]">Giorno</div>
+                      <div className="text-lg font-bold text-[#d8010c]">{consumoEnergetico[0]}%</div>
+                    </div>
                   </div>
                   
-                  {/* Labels e percentuali */}
-                  <div className="flex items-center justify-between px-2">
-                    <div className="flex items-center gap-2">
-                      <Sun className="h-5 w-5 text-yellow-500" />
-                      <div className="text-center">
-                        <div className="text-sm font-medium text-[#1c1c1c]">Giorno</div>
-                        <div className="text-lg font-bold text-[#d8010c]">{consumoEnergetico[0]}%</div>
-                      </div>
+                  <div className="flex items-center gap-2">
+                    <div className="text-center">
+                      <div className="text-sm font-medium text-[#1c1c1c]">Sera</div>
+                      <div className="text-lg font-bold text-[#d8010c]">{100 - consumoEnergetico[0]}%</div>
                     </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <div className="text-center">
-                        <div className="text-sm font-medium text-[#1c1c1c]">Sera</div>
-                        <div className="text-lg font-bold text-[#d8010c]">{100 - consumoEnergetico[0]}%</div>
-                      </div>
-                      <Moon className="h-5 w-5 text-indigo-500" />
-                    </div>
+                    <Moon className="h-5 w-5 text-indigo-500" />
                   </div>
                 </div>
               </div>
