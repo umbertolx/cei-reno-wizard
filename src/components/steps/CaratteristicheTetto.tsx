@@ -25,13 +25,12 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
   ];
 
   const orientamentoOptions = [
-    { id: "sud", label: "Sud", description: "Efficienza maggiore" },
-    { id: "sud-est", label: "Sud-Est" },
-    { id: "sud-ovest", label: "Sud-Ovest" },
-    { id: "est", label: "Est" },
-    { id: "ovest", label: "Ovest" },
-    { id: "est-ovest", label: "Est-Ovest", description: "Tipico dei tetti a falda multipla" },
-    { id: "non-so", label: "Non lo so" }
+    { id: "sud", label: "Sud", description: "Efficienza massima ~100%" },
+    { id: "sud-est", label: "Sud-Est", description: "Ottima efficienza ~95%" },
+    { id: "sud-ovest", label: "Sud-Ovest", description: "Ottima efficienza ~95%" },
+    { id: "est", label: "Est", description: "Buona efficienza ~85%" },
+    { id: "ovest", label: "Ovest", description: "Buona efficienza ~85%" },
+    { id: "est-ovest", label: "Est-Ovest", description: "Ideale per tetti a falda multipla" }
   ];
 
   const zoneOmbraOptions = [
