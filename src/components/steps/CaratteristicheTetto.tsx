@@ -80,14 +80,14 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
       key={option.id}
       onClick={onClick}
       className={`
-        rounded-xl transition-all duration-300 border cursor-pointer p-4 mx-3 md:mx-0 min-h-[72px] md:min-h-[80px]
+        rounded-xl transition-all duration-300 border cursor-pointer p-4 mx-3 md:mx-0
         ${isSelected 
           ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
           : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
         }
       `}
     >
-      <div className="flex items-center justify-between h-full">
+      <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
           <div className="font-semibold text-base text-[#1c1c1c]">
             {option.label}
