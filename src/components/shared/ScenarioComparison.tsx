@@ -100,8 +100,8 @@ export const ScenarioComparison = ({
             </div>
           </div>
           
-          {/* Comparison Cards - Always vertical */}
-          <div className="space-y-4">
+          {/* Comparison Cards - Responsive layout */}
+          <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-6">
             {options.map((option) => {
               const isSelected = selectedValue === option.id;
               const isExpanded = expandedCards.includes(option.id);
