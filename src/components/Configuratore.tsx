@@ -12,6 +12,7 @@ import { ConfigurazioneBTicino } from "./steps/ConfigurazioneBTicino";
 import { TapparelleElettriche } from "./steps/TapparelleElettriche";
 import { TipoInterventoFotovoltaico } from "./steps/TipoInterventoFotovoltaico";
 import { CaratteristicheTetto } from "./steps/CaratteristicheTetto";
+import { ObiettiviConsumi } from "./steps/ObiettiviConsumi";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
@@ -80,6 +81,8 @@ export type FormData = {
     tipoFalda?: string; // "piano" | "singola" | "multiple"
     orientamentoTetto?: string; // "sud" | "sud-est" | "sud-ovest" | "est" | "ovest" | "est-ovest" | "non-so"
     zoneOmbra?: string; // "nessuna" | "leggera" | "importante"
+    obiettivoPrincipale?: string; // "risparmio-bolletta" | "indipendenza-energetica"
+    consumoEnergetico?: number[]; // percentuale consumo giorno/sera [0-100]
     estimate?: EstimateResponse;
   };
   
@@ -376,6 +379,9 @@ export const Configuratore = () => {
       
       case 'CaratteristicheTetto':
         return <CaratteristicheTetto {...commonProps} />;
+      
+      case 'ObiettiviConsumi':
+        return <ObiettiviConsumi {...commonProps} />;
       
       case 'DatiContatto':
         return (
