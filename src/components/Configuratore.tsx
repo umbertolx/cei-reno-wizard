@@ -11,6 +11,7 @@ import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
 import { ConfigurazioneBTicino } from "./steps/ConfigurazioneBTicino";
 import { TapparelleElettriche } from "./steps/TapparelleElettriche";
 import { TipoInterventoFotovoltaico } from "./steps/TipoInterventoFotovoltaico";
+import { CaratteristicheTetto } from "./steps/CaratteristicheTetto";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
@@ -76,6 +77,9 @@ export type FormData = {
   // Modulo Fotovoltaico (compartimento stagno)
   moduloFotovoltaico?: {
     tipoInterventoFotovoltaico: string; // "nuovo" o "ampliamento"
+    tipoFalda?: string; // "piano" | "singola" | "multiple"
+    orientamentoTetto?: string; // "sud" | "sud-est" | "sud-ovest" | "est" | "ovest" | "est-ovest" | "non-so"
+    zoneOmbra?: string; // "nessuna" | "leggera" | "importante"
     estimate?: EstimateResponse;
   };
   
@@ -369,6 +373,9 @@ export const Configuratore = () => {
       
       case 'TipoInterventoFotovoltaico':
         return <TipoInterventoFotovoltaico {...commonProps} />;
+      
+      case 'CaratteristicheTetto':
+        return <CaratteristicheTetto {...commonProps} />;
       
       case 'DatiContatto':
         return (
