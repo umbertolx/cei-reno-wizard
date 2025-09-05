@@ -213,9 +213,6 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
             <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
               Il tetto ha zone in ombra durante il giorno?
             </h3>
-            <p className="text-sm text-[#1c1c1c] opacity-70 px-3 md:px-0">
-              Considera alberi, palazzi, camini o altre strutture che possono fare ombra
-            </p>
             {zoneOmbraOptions.map((option) =>
               renderOptionButton(
                 option,
