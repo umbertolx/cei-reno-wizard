@@ -97,8 +97,8 @@ export const ConsumiAnnui = ({ formData, updateFormData, onNext, onBack }: Props
   );
 
   const infoBox = {
-    title: "Perché questi dati sono utili?",
-    content: "Per una stima più precisa è meglio inserire i tuoi dati reali di consumo. Se non li conosci, nessun problema: li stimeremo noi basandoci sulle caratteristiche dell'immobile, sulle abitudini di consumo e sulle voci di consumo principali che inseriresti."
+    title: "Perché ti chiediamo questi dati?",
+    content: "Inserire i tuoi consumi reali ci permette di fare una stima molto più precisa dell'impianto. Se non li conosci, nessun problema: possiamo calcolarli noi in base alle caratteristiche della casa, alle tue abitudini e agli elettrodomestici principali che utilizzi."
   };
 
   return (
