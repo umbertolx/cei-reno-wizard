@@ -19,27 +19,55 @@ const NuoveVociConsumo = ({ formData, updateFormData, onNext, onBack }: Props) =
     {
       id: 'climatizzatori',
       title: 'Climatizzatori',
-      description: 'Sistemi di climatizzazione per riscaldamento e raffrescamento'
+      description: 'Terremo conto di un utilizzo medio, calcolato su un impianto di nuova generazione che copre la superficie dell\'intero appartamento. Il consumo è legato all\'utilizzo della casa come prima o seconda abitazione e al numero di soggetti che abitano l\'immobile.'
     },
     {
       id: 'pompa_calore',
       title: 'Pompa di calore (riscaldamento + raffrescamento)',
-      description: 'Sistema efficiente per riscaldamento e raffrescamento'
+      description: 'Vale sia per aria acqua che per acqua acqua e prevede riscaldamento invernale e raffrescamento estivo sia per sistemi a pavimento che a radiatori. Sistema ad alta efficienza energetica.'
     },
     {
       id: 'boiler_elettrico',
       title: 'Boiler elettrico (scaldabagno)',
-      description: 'Scaldabagno elettrico per acqua calda sanitaria'
+      description: 'Il consumo verrà dimensionato in base al numero di bagni, alla frequenza di utilizzo dell\'immobile come prima o seconda casa e al numero di inquilini che utilizzano l\'abitazione.'
     },
     {
       id: 'auto_elettrica',
       title: 'Auto elettrica',
-      description: 'Ricarica domestica per veicoli elettrici'
+      description: 'Consideriamo 15.000 km annuali con un\'auto media di nuova generazione. Puoi personalizzare i chilometri percorsi annualmente.',
+      advancedOption: {
+        title: 'Chilometraggio annuale personalizzato',
+        description: 'Specifica quanti chilometri percorri mediamente all\'anno per calcolare il consumo energetico più preciso per la ricarica domestica.',
+        requiresInput: true,
+        inputType: 'number',
+        inputPlaceholder: '15000',
+        inputLabel: 'Chilometri annuali',
+        inputMin: 5000,
+        inputMax: 50000,
+        useSlider: true,
+        defaultValue: 15000
+      }
     },
     {
       id: 'piscina',
       title: 'Piscina',
-      description: 'Sistemi di filtrazione e riscaldamento per piscina'
+      description: 'L\'opzione base prevede pompe e filtraggio. Puoi aggiungere anche il riscaldamento per un utilizzo esteso durante l\'anno.',
+      advancedOption: {
+        title: 'Configurazione piscina',
+        description: 'Scegli se la tua piscina include solo filtrazione e pompe o anche il sistema di riscaldamento per un utilizzo prolungato.',
+        options: [
+          { 
+            id: 'solo_filtraggio', 
+            label: 'Solo pompe e filtraggio',
+            description: 'Sistema base per mantenimento e pulizia dell\'acqua'
+          },
+          { 
+            id: 'con_riscaldamento', 
+            label: 'Pompe, filtraggio + riscaldamento',
+            description: 'Sistema completo per utilizzo esteso durante l\'anno'
+          }
+        ]
+      }
     }
   ];
 
