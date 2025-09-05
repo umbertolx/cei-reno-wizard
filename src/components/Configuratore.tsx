@@ -14,6 +14,7 @@ import { TipoInterventoFotovoltaico } from "./steps/TipoInterventoFotovoltaico";
 import { CaratteristicheTetto } from "./steps/CaratteristicheTetto";
 import { ObiettiviConsumi } from "./steps/ObiettiviConsumi";
 import { ConsumiAnnui } from "./steps/ConsumiAnnui";
+import NuoveVociConsumo from "./steps/NuoveVociConsumo";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
@@ -87,6 +88,7 @@ export type FormData = {
     conosceConsumi?: string; // "si" | "no"
     consumiKWh?: number; // kWh annui da bolletta
     spesaMensile?: number; // spesa media mensile in €
+    nuoveVociConsumo?: string[]; // nuove voci di consumo pianificate
     estimate?: EstimateResponse;
   };
   
@@ -389,6 +391,9 @@ export const Configuratore = () => {
       
       case 'ConsumiAnnui':
         return <ConsumiAnnui {...commonProps} />;
+      
+      case 'NuoveVociConsumo':
+        return <NuoveVociConsumo {...commonProps} />;
       
       case 'DatiContatto':
         return (
