@@ -170,10 +170,10 @@ export const ObiettiviConsumi = ({ formData, updateFormData, onNext, onBack }: P
             </h3>
             
             <div className="px-3 md:px-0">
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="space-y-6">
+              <div className="bg-white border border-gray-200 rounded-xl p-8">
+                <div className="space-y-8">
                   {/* Slider */}
-                  <div className="px-4">
+                  <div className="px-4 py-2">
                     <Slider
                       value={consumoEnergetico}
                       onValueChange={handleConsumoChange}
