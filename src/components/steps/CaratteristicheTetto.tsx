@@ -130,9 +130,6 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
             </div>
             <div>
               <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Caratteristiche del tuo tetto</h2>
-              <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">
-                Per dimensionare correttamente l'impianto fotovoltaico, abbiamo bisogno di alcune informazioni sul tuo tetto
-              </p>
             </div>
           </div>
 
@@ -210,9 +207,14 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
 
           {/* Zone in ombra */}
           <div className="space-y-3 md:space-y-4">
-            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
-              Il tetto ha zone in ombra durante il giorno?
-            </h3>
+            <div>
+              <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
+                Il tetto ha zone in ombra durante il giorno?
+              </h3>
+              <p className="text-xs text-gray-500 mt-1 px-3 md:px-0 italic">
+                Considera alberi, palazzi, camini o altre strutture
+              </p>
+            </div>
             {zoneOmbraOptions.map((option) =>
               renderOptionButton(
                 option,
