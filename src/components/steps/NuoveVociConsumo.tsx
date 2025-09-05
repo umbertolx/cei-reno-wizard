@@ -19,25 +19,25 @@ const NuoveVociConsumo = ({ formData, updateFormData, onNext, onBack }: Props) =
     {
       id: 'climatizzatori',
       title: 'Climatizzatori',
-      description: 'Terremo conto di un utilizzo medio, calcolato su un impianto di nuova generazione che copre la superficie dell\'intero appartamento. Il consumo è legato all\'utilizzo della casa come prima o seconda abitazione e al numero di soggetti che abitano l\'immobile.'
+      description: 'Stima basata su un impianto moderno che raffresca tutta la casa. Consideriamo quante persone abitano l\'immobile e se è prima o seconda casa.'
     },
     {
       id: 'pompa_calore',
       title: 'Pompa di calore (riscaldamento + raffrescamento)',
-      description: 'Vale sia per aria acqua che per acqua acqua e prevede riscaldamento invernale e raffrescamento estivo sia per sistemi a pavimento che a radiatori. Sistema ad alta efficienza energetica.'
+      description: 'Copre sia inverno che estate, a pavimento o con radiatori. È un sistema ad alta efficienza che sostituisce gas e stufe.'
     },
     {
       id: 'boiler_elettrico',
       title: 'Boiler elettrico (scaldabagno)',
-      description: 'Il consumo verrà dimensionato in base al numero di bagni, alla frequenza di utilizzo dell\'immobile come prima o seconda casa e al numero di inquilini che utilizzano l\'abitazione.'
+      description: 'Il consumo dipende da quanti bagni ci sono, quante persone vivono in casa e se è abitazione principale o secondaria.'
     },
     {
       id: 'auto_elettrica',
       title: 'Auto elettrica',
-      description: 'Consideriamo 15.000 km annuali con un\'auto media di nuova generazione. Puoi personalizzare i chilometri percorsi annualmente.',
+      description: 'Stima basata su 15.000 km/anno con un\'auto di nuova generazione. Puoi personalizzare il tuo chilometraggio.',
       advancedOption: {
         title: 'Chilometraggio annuale personalizzato',
-        description: 'Specifica quanti chilometri percorri mediamente all\'anno per calcolare il consumo energetico più preciso per la ricarica domestica.',
+        description: 'Inserisci i km annui (default: 15.000, range: 5.000–50.000).',
         requiresInput: true,
         inputType: 'number',
         inputPlaceholder: '15000',
@@ -51,7 +51,7 @@ const NuoveVociConsumo = ({ formData, updateFormData, onNext, onBack }: Props) =
     {
       id: 'piscina',
       title: 'Piscina',
-      description: 'L\'opzione base prevede pompe e filtraggio. Puoi aggiungere anche il riscaldamento per un utilizzo esteso durante l\'anno.',
+      description: 'Consumo base per pompe e filtraggio. Se la piscina è riscaldata, aggiungiamo l\'energia per mantenere l\'acqua.',
       advancedOption: {
         title: 'Configurazione piscina',
         description: 'Scegli se la tua piscina include solo filtrazione e pompe o anche il sistema di riscaldamento per un utilizzo prolungato.',
