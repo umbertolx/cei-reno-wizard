@@ -89,14 +89,14 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
     >
       <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-base text-[#1c1c1c]">
+          <div className="font-semibold text-base text-[#1c1c1c] flex items-center gap-2">
             {option.label}
+            {option.description && (
+              <span className="text-xs text-gray-500 font-normal">
+                ({option.description})
+              </span>
+            )}
           </div>
-          {option.description && (
-            <div className="text-sm text-gray-600 mt-1">
-              {option.description}
-            </div>
-          )}
         </div>
         {isSelected && (
           <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
