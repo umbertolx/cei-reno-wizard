@@ -117,17 +117,17 @@ export const ScenarioComparison = ({
                        }
                      `}
                    >
-                    {/* Header - Clickable for selection */}
-                    <div 
-                      className={`
-                        p-4 md:p-6 cursor-pointer transition-all duration-200
-                        ${isSelected 
-                          ? 'bg-[#d8010c]/5' 
-                          : 'bg-white hover:bg-gray-50'
-                        }
-                      `}
-                      onClick={() => handleCardClick(option.id)}
-                    >
+                     {/* Header - Clickable for selection */}
+                     <div 
+                       className={`
+                         p-4 md:p-6 cursor-pointer transition-all duration-200 flex-1 flex flex-col
+                         ${isSelected 
+                           ? 'bg-[#d8010c]/5' 
+                           : 'bg-white hover:bg-gray-50'
+                         }
+                       `}
+                       onClick={() => handleCardClick(option.id)}
+                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1 pr-4">
                           <h3 className="text-lg md:text-xl font-semibold text-[#1c1c1c] mb-2 leading-tight">
