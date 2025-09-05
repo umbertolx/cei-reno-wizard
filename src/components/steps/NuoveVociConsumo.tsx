@@ -94,7 +94,7 @@ const NuoveVociConsumo = ({ formData, updateFormData, onNext, onBack }: Props) =
         {/* Badge */}
         <div className="flex justify-center">
           <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
-            Fotovoltaico
+            Impianto fotovoltaico
           </div>
         </div>
 
