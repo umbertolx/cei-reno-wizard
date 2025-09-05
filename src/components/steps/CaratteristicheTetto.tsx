@@ -197,13 +197,15 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
             <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
               Qual è l'orientamento del tetto?
             </h3>
-            {orientamentoOptions.map((option) =>
-              renderOptionButton(
-                option,
-                orientamentoTetto === option.id,
-                () => handleOrientamentoChange(option.id)
-              )
-            )}
+            <div className="grid grid-cols-2 gap-3">
+              {orientamentoOptions.map((option) =>
+                renderOptionButton(
+                  option,
+                  orientamentoTetto === option.id,
+                  () => handleOrientamentoChange(option.id)
+                )
+              )}
+            </div>
           </div>
 
           {/* Zone in ombra */}
