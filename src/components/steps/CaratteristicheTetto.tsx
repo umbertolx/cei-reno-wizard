@@ -40,21 +40,59 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
   ];
 
   const handleTipoFaldaChange = (value: string) => {
+    // Reset orientamento quando cambia il tipo di falda
+    let newOrientamento: string | string[] = "";
+    if (value === 'piano') {
+      newOrientamento = ""; // Tetto piano non ha orientamento
+    } else if (value === 'multiple') {
+      newOrientamento = []; // Falde multiple usano array
+    }
+    
     updateFormData({ 
       moduloFotovoltaico: { 
         ...formData.moduloFotovoltaico, 
-        tipoFalda: value 
+        tipoFalda: value,
+        orientamentoTetto: newOrientamento
       } 
     });
   };
 
   const handleOrientamentoChange = (value: string) => {
-    updateFormData({ 
-      moduloFotovoltaico: { 
-        ...formData.moduloFotovoltaico, 
-        orientamentoTetto: value 
-      } 
-    });
+    if (tipoFalda === 'multiple') {
+      // Per falde multiple, gestiamo un array di orientamenti
+      const currentOrientamenti = Array.isArray(formData.moduloFotovoltaico?.orientamentoTetto) 
+        ? formData.moduloFotovoltaico.orientamentoTetto 
+        : formData.moduloFotovoltaico?.orientamentoTetto ? [formData.moduloFotovoltaico.orientamentoTetto] : [];
+      
+      let newOrientamenti;
+      if (currentOrientamenti.includes(value)) {
+        // Se già selezionato, rimuovilo
+        newOrientamenti = currentOrientamenti.filter(o => o !== value);
+      } else {
+        // Se non selezionato e abbiamo meno di 2 selezioni, aggiungilo
+        if (currentOrientamenti.length < 2) {
+          newOrientamenti = [...currentOrientamenti, value];
+        } else {
+          // Se abbiamo già 2 selezioni, sostituisci la prima con la nuova
+          newOrientamenti = [currentOrientamenti[1], value];
+        }
+      }
+      
+      updateFormData({ 
+        moduloFotovoltaico: { 
+          ...formData.moduloFotovoltaico, 
+          orientamentoTetto: newOrientamenti 
+        } 
+      });
+    } else {
+      // Per falda singola, comportamento normale
+      updateFormData({ 
+        moduloFotovoltaico: { 
+          ...formData.moduloFotovoltaico, 
+          orientamentoTetto: value 
+        } 
+      });
+    }
   };
 
   const handleZoneOmbraChange = (value: string) => {
@@ -66,7 +104,11 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
     });
   };
 
-  const canProceed = tipoFalda && orientamentoTetto && zoneOmbra;
+  const canProceed = tipoFalda && zoneOmbra && (
+    tipoFalda === 'piano' || // Per tetto piano non serve orientamento
+    (tipoFalda === 'singola' && orientamentoTetto) || // Per falda singola serve un orientamento
+    (tipoFalda === 'multiple' && Array.isArray(orientamentoTetto) && orientamentoTetto.length >= 1) // Per falde multiple serve almeno un orientamento
+  );
 
   const handleNext = () => {
     if (canProceed) {
@@ -74,7 +116,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
     }
   };
 
-  const renderOptionButton = (option: any, isSelected: boolean, onClick: () => void) => (
+  const renderOptionButton = (option: any, isSelected: boolean, onClick: () => void, isMultiple = false) => (
     <div
       key={option.id}
       onClick={onClick}
@@ -101,6 +143,9 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
           <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
             <Check className="h-3 w-3 text-white" />
           </div>
+        )}
+        {isMultiple && !isSelected && (
+          <div className="w-5 h-5 border-2 border-gray-300 rounded-full ml-3"></div>
         )}
       </div>
     </div>
@@ -193,21 +238,36 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
             )}
           </div>
 
-          {/* Orientamento del tetto */}
-          <div className="space-y-3 md:space-y-4">
-            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
-              Qual è l'orientamento del tetto?
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {orientamentoOptions.map((option) =>
-                renderOptionButton(
-                  option,
-                  orientamentoTetto === option.id,
-                  () => handleOrientamentoChange(option.id)
-                )
-              )}
+          {/* Orientamento del tetto - Solo se non è tetto piano */}
+          {tipoFalda !== 'piano' && (
+            <div className="space-y-3 md:space-y-4">
+              <div>
+                <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
+                  Qual è l'orientamento del tetto?
+                </h3>
+                {tipoFalda === 'multiple' && (
+                  <p className="text-xs text-gray-500 mt-1 px-3 md:px-0 italic">
+                    Puoi selezionare fino a 2 orientamenti per le diverse falde
+                  </p>
+                )}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {orientamentoOptions.map((option) => {
+                  const currentOrientamenti = Array.isArray(orientamentoTetto) ? orientamentoTetto : (orientamentoTetto ? [orientamentoTetto] : []);
+                  const isSelected = tipoFalda === 'multiple' 
+                    ? currentOrientamenti.includes(option.id)
+                    : orientamentoTetto === option.id;
+                  
+                  return renderOptionButton(
+                    option,
+                    isSelected,
+                    () => handleOrientamentoChange(option.id),
+                    tipoFalda === 'multiple'
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Zone in ombra */}
           <div className="space-y-3 md:space-y-4">

@@ -81,7 +81,7 @@ export type FormData = {
   moduloFotovoltaico?: {
     tipoInterventoFotovoltaico: string; // "nuovo" o "ampliamento"
     tipoFalda?: string; // "piano" | "singola" | "multiple"
-    orientamentoTetto?: string; // "sud" | "sud-est" | "sud-ovest" | "est" | "ovest" | "est-ovest" | "non-so"
+    orientamentoTetto?: string | string[]; // "sud" | "sud-est" | "sud-ovest" | "est" | "ovest" | "est-ovest" | "non-so" o array per falde multiple
     zoneOmbra?: string; // "nessuna" | "leggera" | "importante"
     obiettivoPrincipale?: string; // "risparmio-bolletta" | "indipendenza-energetica"
     consumoEnergetico?: number[]; // percentuale consumo giorno/sera [0-100]
