@@ -96,6 +96,11 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       component: 'NuoveVociConsumo',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.conosceConsumi !== 'si'
     },
+    { 
+      id: 'batteria-accumulo', 
+      component: 'BatteriaAccumulo',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
+    },
     { id: 'dati-contatto', component: 'DatiContatto' },
     { id: 'stima-finale', component: 'StimaFinale', requiresEstimate: true },
     { id: 'richiesta-inviata', component: 'RichiestaInviata' }

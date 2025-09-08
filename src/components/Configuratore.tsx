@@ -16,6 +16,7 @@ import { ObiettiviConsumi } from "./steps/ObiettiviConsumi";
 import { ConsumiAnnui } from "./steps/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/NuoveVociConsumo";
 import { DefinizioneConsumiStandard } from "./steps/DefinizioneConsumiStandard";
+import { BatteriaAccumulo } from "./steps/BatteriaAccumulo";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
@@ -91,6 +92,7 @@ export type FormData = {
     spesaMensile?: number; // spesa media mensile in €
     definizioneConsumiStandard?: Record<string, any>; // configurazioni per consumi standard quando non conosce i consumi
     nuoveVociConsumo?: Record<string, any>; // configurazioni delle nuove voci di consumo pianificate
+    batteriaAccumulo?: string; // "si" | "no"
     estimate?: EstimateResponse;
   };
   
@@ -399,6 +401,9 @@ export const Configuratore = () => {
       
       case 'NuoveVociConsumo':
         return <NuoveVociConsumo {...commonProps} />;
+      
+      case 'BatteriaAccumulo':
+        return <BatteriaAccumulo {...commonProps} />;
       
       case 'DatiContatto':
         return (
