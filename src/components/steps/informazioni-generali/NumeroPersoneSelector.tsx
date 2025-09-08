@@ -19,8 +19,8 @@ export const NumeroPersoneSelector = ({ value, onChange }: NumeroPersoneSelector
       <div className="flex items-center gap-4 px-3 md:px-0">
         <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
           <img 
-            src="/lovable-uploads/85e3fe85-3d4a-498d-9bba-3b25c28bae0c.png" 
-            alt="People icon" 
+            src="/lovable-uploads/417ced15-f2dc-47e1-8b8c-d0faf5b9717e.png" 
+            alt="Floor plan icon" 
             className="w-full h-full object-contain"
           />
         </div>

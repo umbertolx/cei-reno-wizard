@@ -24,9 +24,11 @@ export const TipoProprietaSelector = ({ value, onChange }: TipoProprietaSelector
     <div className="space-y-4 md:space-y-6">
       <div className="flex items-center gap-4 px-3 md:px-0">
         <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-          <div className="w-full h-full flex items-center justify-center bg-[#f4f4f4] rounded-2xl">
-            <Home className="w-8 h-8 md:w-12 md:h-12 text-[#d8010c]" />
-          </div>
+          <img 
+            src="/lovable-uploads/417ced15-f2dc-47e1-8b8c-d0faf5b9717e.png" 
+            alt="Floor plan icon" 
+            className="w-full h-full object-contain"
+          />
         </div>
         <div>
           <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Tipo di proprietà</h2>
