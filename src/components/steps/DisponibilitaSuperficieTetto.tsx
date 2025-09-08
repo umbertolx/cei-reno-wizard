@@ -139,16 +139,14 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
     onNext();
   };
 
-  const isFormValid = currentValue && (currentValue !== 'no' || (superficiePersonalizzata?.trim() && Number(superficiePersonalizzata) > 0));
-
-  // Creo il campo condizionale da mostrare dopo le opzioni
+  // Contenuto condizionale per il campo superficie
   const conditionalContent = currentValue === 'no' ? (
-    <div className="mt-6 px-4">
+    <div className="mt-4">
       <Card>
         <CardContent className="pt-4">
           <div className="space-y-3">
             <Label htmlFor="superficie-effettiva" className="text-base font-medium text-[#1c1c1c]">
-              Quanti metri quadri di tetto puoi effettivamente destinare ai pannelli solari?
+              Inserisci il numero di mq:
             </Label>
             <div className="flex items-center gap-3">
               <Input
@@ -170,24 +168,21 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
   ) : null;
 
   return (
-    <div className="w-full">
-      <QuestionWithOptions
-        badge="Impianto fotovoltaico"
-        icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
-        iconAlt="Casa"
-        title={`Hai ${superficieMin}-${superficieMax} mq di superficie disponibile sul tetto?`}
-        description="In base alle tue esigenze energetiche e alle caratteristiche del tetto, abbiamo calcolato la superficie necessaria per il tuo impianto fotovoltaico personalizzato."
-        infoBox={infoBox}
-        options={options}
-        selectedValue={currentValue}
-        onSelectionChange={handleSelectionChange}
-        onNext={handleNext}
-        onBack={onBack}
-        nextButtonText="Continua"
-        backButtonText="Indietro"
-      />
-      
-      {conditionalContent}
-    </div>
+    <QuestionWithOptions
+      badge="Impianto fotovoltaico"
+      icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
+      iconAlt="Casa"
+      title={`Hai ${superficieMin}-${superficieMax} mq di superficie disponibile sul tetto?`}
+      description="In base alle tue esigenze energetiche e alle caratteristiche del tetto, abbiamo calcolato la superficie necessaria per il tuo impianto fotovoltaico personalizzato."
+      infoBox={infoBox}
+      options={options}
+      selectedValue={currentValue}
+      onSelectionChange={handleSelectionChange}
+      onNext={handleNext}
+      onBack={onBack}
+      nextButtonText="Continua"
+      backButtonText="Indietro"
+      conditionalContent={conditionalContent}
+    />
   );
 };

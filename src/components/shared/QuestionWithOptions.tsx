@@ -28,6 +28,7 @@ export type QuestionWithOptionsProps = {
   onBack: () => void;
   nextButtonText?: string;
   backButtonText?: string;
+  conditionalContent?: React.ReactNode;
 };
 
 export const QuestionWithOptions = ({
@@ -43,7 +44,8 @@ export const QuestionWithOptions = ({
   onNext,
   onBack,
   nextButtonText = "Avanti",
-  backButtonText = "Indietro"
+  backButtonText = "Indietro",
+  conditionalContent
 }: QuestionWithOptionsProps) => {
   const [infoBoxOpen, setInfoBoxOpen] = useState<boolean>(false);
 
@@ -163,6 +165,9 @@ export const QuestionWithOptions = ({
               );
             })}
           </div>
+          
+          {/* Contenuto condizionale */}
+          {conditionalContent}
         </div>
       </div>
 
