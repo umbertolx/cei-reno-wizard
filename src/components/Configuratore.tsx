@@ -16,6 +16,7 @@ import { ObiettiviConsumi } from "./steps/ObiettiviConsumi";
 import { ConsumiAnnui } from "./steps/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/NuoveVociConsumo";
 import { DefinizioneConsumiStandard } from "./steps/DefinizioneConsumiStandard";
+import { DisponibilitaSuperficieTetto } from "./steps/DisponibilitaSuperficieTetto";
 import { BatteriaAccumulo } from "./steps/BatteriaAccumulo";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
@@ -93,6 +94,7 @@ export type FormData = {
     definizioneConsumiStandard?: Record<string, any>; // configurazioni per consumi standard quando non conosce i consumi
     nuoveVociConsumo?: Record<string, any>; // configurazioni delle nuove voci di consumo pianificate
     batteriaAccumulo?: string; // "si" | "no"
+    superficieDisponibile?: string; // "si" | "no"
     estimate?: EstimateResponse;
   };
   
@@ -404,6 +406,9 @@ export const Configuratore = () => {
       
       case 'BatteriaAccumulo':
         return <BatteriaAccumulo {...commonProps} />;
+      
+      case 'DisponibilitaSuperficieTetto':
+        return <DisponibilitaSuperficieTetto {...commonProps} />;
       
       case 'DatiContatto':
         return (
