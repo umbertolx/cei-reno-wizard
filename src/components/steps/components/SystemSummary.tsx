@@ -73,30 +73,32 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
   const hasBatteria = formData.moduloFotovoltaico?.batteriaAccumulo === 'si';
 
   return (
-    <div className="space-y-3">
-      <h4 className="font-medium text-foreground text-sm">
+    <div className="bg-muted/40 rounded-lg p-5 border border-border">
+      <h4 className="font-semibold text-foreground text-base mb-4">
         Riepilogo del tuo impianto
       </h4>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-        <div>
-          <div className="text-muted-foreground text-xs mb-1">Superficie necessaria</div>
-          <div className="font-semibold text-primary">{superficieMin}-{superficieMax} mq</div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-background rounded-md p-3 border border-primary/30">
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Superficie necessaria</div>
+          <div className="font-bold text-primary text-lg">{superficieMin}-{superficieMax} mq</div>
         </div>
         
-        <div>
-          <div className="text-muted-foreground text-xs mb-1">Consumo annuale</div>
-          <div className="font-medium text-foreground">{consumoAnnuale.toLocaleString()} kWh</div>
+        <div className="bg-background rounded-md p-3">
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Consumo annuale</div>
+          <div className="font-semibold text-foreground">{consumoAnnuale.toLocaleString()}</div>
+          <div className="text-muted-foreground text-xs">kWh</div>
         </div>
         
-        <div>
-          <div className="text-muted-foreground text-xs mb-1">Con batteria</div>
-          <div className="font-medium text-foreground">{hasBatteria ? 'Sì' : 'No'}</div>
+        <div className="bg-background rounded-md p-3">
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Con batteria</div>
+          <div className="font-semibold text-foreground">{hasBatteria ? 'Sì' : 'No'}</div>
         </div>
         
-        <div>
-          <div className="text-muted-foreground text-xs mb-1">Produzione stimata</div>
-          <div className="font-medium text-foreground">{produzionStimata.toLocaleString()} kWh</div>
+        <div className="bg-background rounded-md p-3">
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Produzione stimata</div>
+          <div className="font-semibold text-foreground">{produzionStimata.toLocaleString()}</div>
+          <div className="text-muted-foreground text-xs">kWh/anno</div>
         </div>
       </div>
     </div>
