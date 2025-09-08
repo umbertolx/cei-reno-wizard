@@ -17,6 +17,11 @@ const NuoveVociConsumo = ({ formData, updateFormData, onNext, onBack }: Props) =
 
   const consumoFeatures = [
     {
+      id: 'piano_induzione',
+      title: 'Piano a induzione',
+      description: 'Consumi elevati durante la cottura, ma molto più efficienti del gas.'
+    },
+    {
       id: 'climatizzatori',
       title: 'Climatizzatori',
       description: 'Stima basata su un impianto moderno che raffresca tutta la casa. Consideriamo quante persone abitano l\'immobile e se è prima o seconda casa.'

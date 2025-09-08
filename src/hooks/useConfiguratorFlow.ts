@@ -87,6 +87,11 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
     },
     { 
+      id: 'definizione-consumi-standard', 
+      component: 'DefinizioneConsumiStandard',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.conosceConsumi !== 'no'
+    },
+    { 
       id: 'nuove-voci-consumo', 
       component: 'NuoveVociConsumo',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.conosceConsumi !== 'si'

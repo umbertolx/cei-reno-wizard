@@ -15,6 +15,7 @@ import { CaratteristicheTetto } from "./steps/CaratteristicheTetto";
 import { ObiettiviConsumi } from "./steps/ObiettiviConsumi";
 import { ConsumiAnnui } from "./steps/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/NuoveVociConsumo";
+import { DefinizioneConsumiStandard } from "./steps/DefinizioneConsumiStandard";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
@@ -88,6 +89,7 @@ export type FormData = {
     conosceConsumi?: string; // "si" | "no"
     consumiKWh?: number; // kWh annui da bolletta
     spesaMensile?: number; // spesa media mensile in €
+    definizioneConsumiStandard?: Record<string, any>; // configurazioni per consumi standard quando non conosce i consumi
     nuoveVociConsumo?: Record<string, any>; // configurazioni delle nuove voci di consumo pianificate
     estimate?: EstimateResponse;
   };
@@ -391,6 +393,9 @@ export const Configuratore = () => {
       
       case 'ConsumiAnnui':
         return <ConsumiAnnui {...commonProps} />;
+      
+      case 'DefinizioneConsumiStandard':
+        return <DefinizioneConsumiStandard {...commonProps} />;
       
       case 'NuoveVociConsumo':
         return <NuoveVociConsumo {...commonProps} />;
