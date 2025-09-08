@@ -106,6 +106,11 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       component: 'DisponibilitaSuperficieTetto',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
     },
+    { 
+      id: 'superficie-effettiva-tetto', 
+      component: 'SuperficieEffettivaTetto',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.superficieDisponibile !== 'no'
+    },
     { id: 'dati-contatto', component: 'DatiContatto' },
     { id: 'stima-finale', component: 'StimaFinale', requiresEstimate: true },
     { id: 'richiesta-inviata', component: 'RichiestaInviata' }
