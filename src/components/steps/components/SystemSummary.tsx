@@ -73,47 +73,32 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
   const hasBatteria = formData.moduloFotovoltaico?.batteriaAccumulo === 'si';
 
   return (
-    <Card className="bg-background border-border">
-      <CardContent className="p-6">
-        <h3 className="font-semibold text-lg text-foreground mb-6">
-          Riepilogo del tuo impianto
-        </h3>
-        
-        <div className="space-y-4">
-          {/* Superficie necessaria - enfatizzata */}
-          <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-sm text-muted-foreground mb-1">Superficie necessaria</div>
-                <div className="text-2xl font-bold text-primary">{superficieMin}-{superficieMax} mq</div>
-              </div>
-              <Home className="h-8 w-8 text-primary/60" />
-            </div>
-          </div>
-
-          {/* Altre informazioni in griglia */}
-          <div className="grid grid-cols-3 gap-4 pt-2">
-            <div className="text-center">
-              <div className="text-xs text-muted-foreground mb-1">Consumo annuale</div>
-              <div className="font-semibold text-foreground">{consumoAnnuale.toLocaleString()}</div>
-              <div className="text-xs text-muted-foreground">kWh</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="text-xs text-muted-foreground mb-1">Sistema accumulo</div>
-              <div className="font-semibold text-foreground">
-                {hasBatteria ? 'Con batteria' : 'Senza batteria'}
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <div className="text-xs text-muted-foreground mb-1">Produzione stimata</div>
-              <div className="font-semibold text-foreground">{produzionStimata.toLocaleString()}</div>
-              <div className="text-xs text-muted-foreground">kWh/anno</div>
-            </div>
-          </div>
+    <div className="space-y-3">
+      <h4 className="font-medium text-foreground text-sm">
+        Riepilogo del tuo impianto
+      </h4>
+      
+      <div className="grid grid-cols-4 gap-4 text-sm">
+        <div>
+          <div className="text-muted-foreground text-xs mb-1">Superficie necessaria</div>
+          <div className="font-semibold text-primary">{superficieMin}-{superficieMax} mq</div>
         </div>
-      </CardContent>
-    </Card>
+        
+        <div>
+          <div className="text-muted-foreground text-xs mb-1">Consumo annuale</div>
+          <div className="font-medium text-foreground">{consumoAnnuale.toLocaleString()} kWh</div>
+        </div>
+        
+        <div>
+          <div className="text-muted-foreground text-xs mb-1">Con batteria</div>
+          <div className="font-medium text-foreground">{hasBatteria ? 'Sì' : 'No'}</div>
+        </div>
+        
+        <div>
+          <div className="text-muted-foreground text-xs mb-1">Produzione stimata</div>
+          <div className="font-medium text-foreground">{produzionStimata.toLocaleString()} kWh</div>
+        </div>
+      </div>
+    </div>
   );
 };
