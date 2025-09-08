@@ -118,6 +118,7 @@ export type Database = {
           modulo_fotovoltaico: Json | null
           nome: string
           note: string | null
+          numero_persone: number | null
           orario_sopralluogo: string | null
           piano: string
           regione: string
@@ -151,6 +152,7 @@ export type Database = {
           modulo_fotovoltaico?: Json | null
           nome: string
           note?: string | null
+          numero_persone?: number | null
           orario_sopralluogo?: string | null
           piano: string
           regione: string
@@ -184,6 +186,7 @@ export type Database = {
           modulo_fotovoltaico?: Json | null
           nome?: string
           note?: string | null
+          numero_persone?: number | null
           orario_sopralluogo?: string | null
           piano?: string
           regione?: string

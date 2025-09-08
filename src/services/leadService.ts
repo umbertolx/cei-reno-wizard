@@ -244,6 +244,7 @@ export const fetchLeads = async (): Promise<DatabaseLead[]> => {
         data_richiesta_sopralluogo,
         orario_sopralluogo,
         note,
+        numero_persone,
         tipo_proprieta,
         stato,
         data_creazione,
