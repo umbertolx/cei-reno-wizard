@@ -1,7 +1,4 @@
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Minus, Plus } from "lucide-react";
+import { Check, Users } from "lucide-react";
 
 type NumeroPersoneSelectorProps = {
   value: number;
@@ -9,67 +6,65 @@ type NumeroPersoneSelectorProps = {
 };
 
 export const NumeroPersoneSelector = ({ value, onChange }: NumeroPersoneSelectorProps) => {
-  const handleIncrement = () => {
-    if (value < 10) {
-      onChange(value + 1);
-    }
-  };
-
-  const handleDecrement = () => {
-    if (value > 1) {
-      onChange(value - 1);
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(e.target.value) || 1;
-    if (newValue >= 1 && newValue <= 10) {
-      onChange(newValue);
-    }
-  };
+  const opzioniPersone = [
+    { id: 1, label: '1 persona', description: 'Una sola persona' },
+    { id: 2, label: '2 persone', description: 'Coppia o coinquilini' },
+    { id: 3, label: '3 persone', description: 'Piccola famiglia' },
+    { id: 4, label: '4 persone', description: 'Famiglia media' },
+    { id: 5, label: '5+ persone', description: 'Famiglia numerosa' }
+  ];
 
   return (
-    <div className="space-y-4">
-      <Label className="text-xl font-bold text-[#1c1c1c]">
-        Quante persone vivono nell'unità abitativa?
-      </Label>
-      
-      <div className="flex items-center justify-center space-x-4">
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          className="h-12 w-12 rounded-full border-2 border-[#d8010c] text-[#d8010c] hover:bg-[#d8010c] hover:text-white"
-          onClick={handleDecrement}
-          disabled={value <= 1}
-        >
-          <Minus className="h-4 w-4" />
-        </Button>
-        
-        <Input
-          type="number"
-          min="1"
-          max="10"
-          value={value}
-          onChange={handleInputChange}
-          className="w-20 text-center text-xl font-bold border-2 border-[#d8010c] focus:ring-[#d8010c]"
-        />
-        
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          className="h-12 w-12 rounded-full border-2 border-[#d8010c] text-[#d8010c] hover:bg-[#d8010c] hover:text-white"
-          onClick={handleIncrement}
-          disabled={value >= 10}
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex items-center gap-4 px-3 md:px-0">
+        <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-center bg-[#f4f4f4] rounded-2xl">
+            <Users className="w-8 h-8 md:w-12 md:h-12 text-[#d8010c]" />
+          </div>
+        </div>
+        <div>
+          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Numero di persone</h2>
+          <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Quante persone vivono nell'unità abitativa?</p>
+        </div>
       </div>
       
-      <p className="text-sm text-gray-600 text-center">
-        Numero di persone che vivono contemporaneamente nell'abitazione
-      </p>
+      <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
+        {opzioniPersone.map((opzione) => {
+          const isSelected = value === opzione.id;
+          
+          return (
+            <div
+              key={opzione.id}
+              onClick={() => onChange(opzione.id)}
+              className={`
+                p-4 rounded-xl transition-all duration-300 border cursor-pointer
+                ${isSelected 
+                  ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                  : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                }
+              `}
+            >
+              <div className="flex items-center justify-between">
+                <div className="text-left flex-1 min-w-0">
+                  <div className="font-semibold text-base text-[#1c1c1c]">
+                    {opzione.label}
+                  </div>
+                  <div className="text-sm text-[#1c1c1c] opacity-70 mt-1">
+                    {opzione.description}
+                  </div>
+                </div>
+                {isSelected && (
+                  <div className="ml-3 flex-shrink-0">
+                    <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
+                      <Check className="h-3 w-3 text-white" />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
