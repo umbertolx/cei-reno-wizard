@@ -7,6 +7,8 @@ import { TipoAbitazione } from "./informazioni-generali/TipoAbitazione";
 import { SuperficieSlider } from "./informazioni-generali/SuperficieSlider";
 import { IndirizzoField } from "./informazioni-generali/IndirizzoField";
 import { SuddivisioneSpazi } from "./informazioni-generali/SuddivisioneSpazi";
+import { TipoProprietaSelector } from "./stimafinale/TipoProprietaSelector";
+import { NumeroPersoneSelector } from "./informazioni-generali/NumeroPersoneSelector";
 import { CircleDot, ArrowRight, Home, Settings, Calculator } from "lucide-react";
 
 type Props = {
@@ -28,6 +30,8 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           cap: "20100",
           regione: "Lombardia",
           piano: "2",
+          tipoProprieta: "prima casa",
+          numeroPersone: 2,
           composizione: {
             cucina: 1,
             cameraDoppia: 1,
@@ -49,6 +53,8 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     cap: "",
     regione: "",
     piano: "",
+    tipoProprieta: "prima casa",
+    numeroPersone: 2,
     composizione: {
       cucina: 0,
       cameraDoppia: 0,
@@ -84,6 +90,24 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       toast({
         title: "Attenzione",
         description: "Inserisci l'indirizzo completo",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (!info.tipoProprieta) {
+      toast({
+        title: "Attenzione",
+        description: "Seleziona il tipo di proprietà",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (!info.numeroPersone || info.numeroPersone < 1) {
+      toast({
+        title: "Attenzione",
+        description: "Inserisci il numero di persone che vivono nell'abitazione",
         variant: "destructive",
       });
       return false;
@@ -176,6 +200,20 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
             informazioniGenerali: { ...info, indirizzo: value } 
           })}
           onSelectLocation={selectLocation}
+        />
+
+        <TipoProprietaSelector
+          value={info.tipoProprieta}
+          onChange={(value) => updateFormData({ 
+            informazioniGenerali: { ...info, tipoProprieta: value } 
+          })}
+        />
+
+        <NumeroPersoneSelector
+          value={info.numeroPersone}
+          onChange={(value) => updateFormData({ 
+            informazioniGenerali: { ...info, numeroPersone: value } 
+          })}
         />
 
         <SuddivisioneSpazi

@@ -19,8 +19,27 @@ type Props = {
 };
 
 export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSubmit }: Props) => {
+  // Helper per creare l'oggetto contatti con defaults
+  const getContatti = () => ({
+    nome: "",
+    cognome: "",
+    email: "",
+    telefono: "",
+    accettoTermini: false,
+    tipoProprietà: "prima casa",
+    ...formData.contatti
+  });
+
+  const updateContatti = (updates: Partial<typeof formData.contatti>) => {
+    updateFormData({
+      contatti: {
+        ...getContatti(),
+        ...updates
+      }
+    });
+  };
   const validateForm = () => {
-    if (!formData.nome.trim()) {
+    if (!formData.contatti?.nome?.trim()) {
       toast({
         title: "Campo mancante",
         description: "Inserisci il tuo nome",
@@ -29,7 +48,7 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
       return false;
     }
     
-    if (!formData.cognome.trim()) {
+    if (!formData.contatti?.cognome?.trim()) {
       toast({
         title: "Campo mancante",
         description: "Inserisci il tuo cognome",
@@ -38,7 +57,7 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
       return false;
     }
     
-    if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
+    if (!formData.contatti?.email?.trim() || !/^\S+@\S+\.\S+$/.test(formData.contatti.email)) {
       toast({
         title: "Email non valida",
         description: "Inserisci un indirizzo email valido",
@@ -47,7 +66,7 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
       return false;
     }
     
-    if (!formData.telefono.trim() || formData.telefono.length < 8) {
+    if (!formData.contatti?.telefono?.trim() || formData.contatti.telefono.length < 8) {
       toast({
         title: "Telefono non valido",
         description: "Inserisci un numero di telefono valido",
@@ -56,7 +75,7 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
       return false;
     }
     
-    if (!formData.accettoTermini) {
+    if (!formData.contatti?.accettoTermini) {
       toast({
         title: "Termini e condizioni",
         description: "Devi accettare i termini e le condizioni per continuare",
@@ -80,7 +99,7 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
   };
 
   // Conta il totale delle stanze
-  const totalRooms = Object.values(formData.composizione).reduce((acc, curr) => acc + curr, 0);
+  const totalRooms = Object.values(formData.informazioniGenerali?.composizione || {}).reduce((acc, curr) => acc + curr, 0);
 
   return (
     <div className="space-y-8">
@@ -96,29 +115,39 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <p className="text-sm text-[#1c1c1c] opacity-70">Tipologia</p>
-            <p className="text-lg font-medium capitalize">{formData.tipologiaAbitazione}</p>
+            <p className="text-lg font-medium capitalize">{formData.informazioniGenerali?.tipologiaAbitazione}</p>
           </div>
           
           <div>
             <p className="text-sm text-[#1c1c1c] opacity-70">Superficie</p>
-            <p className="text-lg font-medium">{formData.superficie} mq</p>
+            <p className="text-lg font-medium">{formData.informazioniGenerali?.superficie} mq</p>
           </div>
           
           <div>
             <p className="text-sm text-[#1c1c1c] opacity-70">Indirizzo</p>
-            <p className="text-lg font-medium">{formData.indirizzo}</p>
-            <p className="text-md">{formData.citta}, {formData.cap}, {formData.regione}</p>
+            <p className="text-lg font-medium">{formData.informazioniGenerali?.indirizzo}</p>
+            <p className="text-md">{formData.informazioniGenerali?.citta}, {formData.informazioniGenerali?.cap}, {formData.informazioniGenerali?.regione}</p>
           </div>
           
           <div>
             <p className="text-sm text-[#1c1c1c] opacity-70">Piano</p>
-            <p className="text-lg font-medium capitalize">{formData.piano}</p>
+            <p className="text-lg font-medium capitalize">{formData.informazioniGenerali?.piano}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-[#1c1c1c] opacity-70">Tipo proprietà</p>
+            <p className="text-lg font-medium capitalize">{formData.informazioniGenerali?.tipoProprieta}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-[#1c1c1c] opacity-70">Persone nell'abitazione</p>
+            <p className="text-lg font-medium">{formData.informazioniGenerali?.numeroPersone}</p>
           </div>
           
           <div className="md:col-span-2">
             <p className="text-sm text-[#1c1c1c] opacity-70">Composizione ({totalRooms} stanze totali)</p>
             <div className="flex flex-wrap gap-4 mt-2">
-              {Object.entries(formData.composizione).map(([key, value]) => 
+              {Object.entries(formData.informazioniGenerali?.composizione || {}).map(([key, value]) => 
                 value > 0 && (
                   <div key={key} className="bg-white px-4 py-2 rounded-lg">
                     <span className="capitalize">{key}: </span>
@@ -161,8 +190,8 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
             </div>
             <Input 
               id="nome"
-              value={formData.nome}
-              onChange={(e) => updateFormData({ nome: e.target.value })}
+              value={formData.contatti?.nome || ''}
+              onChange={(e) => updateContatti({ nome: e.target.value })}
               className="text-lg p-6 rounded-lg"
               placeholder="Il tuo nome"
             />
@@ -175,8 +204,8 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
             </div>
             <Input 
               id="cognome"
-              value={formData.cognome}
-              onChange={(e) => updateFormData({ cognome: e.target.value })}
+              value={formData.contatti?.cognome || ''}
+              onChange={(e) => updateContatti({ cognome: e.target.value })}
               className="text-lg p-6 rounded-lg"
               placeholder="Il tuo cognome"
             />
@@ -190,8 +219,8 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
             <Input 
               id="email"
               type="email"
-              value={formData.email}
-              onChange={(e) => updateFormData({ email: e.target.value })}
+              value={formData.contatti?.email || ''}
+              onChange={(e) => updateContatti({ email: e.target.value })}
               className="text-lg p-6 rounded-lg"
               placeholder="La tua email"
             />
@@ -205,8 +234,8 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
             <Input 
               id="telefono"
               type="tel"
-              value={formData.telefono}
-              onChange={(e) => updateFormData({ telefono: e.target.value })}
+              value={formData.contatti?.telefono || ''}
+              onChange={(e) => updateContatti({ telefono: e.target.value })}
               className="text-lg p-6 rounded-lg"
               placeholder="Il tuo numero di telefono"
             />
@@ -216,8 +245,8 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
         <div className="flex items-start space-x-3 py-4">
           <Checkbox 
             id="termini" 
-            checked={formData.accettoTermini}
-            onCheckedChange={(checked) => updateFormData({ accettoTermini: checked === true })}
+            checked={formData.contatti?.accettoTermini || false}
+            onCheckedChange={(checked) => updateContatti({ accettoTermini: checked === true })}
             className="mt-1"
           />
           <Label htmlFor="termini" className="text-md">

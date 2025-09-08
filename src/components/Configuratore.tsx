@@ -39,6 +39,8 @@ export type FormData = {
     cap: string;
     regione: string;
     piano: string;
+    tipoProprieta: string;
+    numeroPersone: number;
     composizione: {
       cucina: number;
       cameraDoppia: number;
@@ -157,6 +159,8 @@ export const Configuratore = () => {
       cap: "",
       regione: "",
       piano: "",
+      tipoProprieta: "prima casa",
+      numeroPersone: 2,
       composizione: {
         cucina: 0,
         cameraDoppia: 0,
@@ -257,6 +261,8 @@ export const Configuratore = () => {
         cap: "",
         regione: "",
         piano: "",
+        tipoProprieta: "prima casa",
+        numeroPersone: 2,
         composizione: {
           cucina: 0,
           cameraDoppia: 0,
