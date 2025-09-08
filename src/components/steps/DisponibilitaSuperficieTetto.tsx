@@ -95,7 +95,8 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
 
   const options = [
     { id: 'si', label: 'Sì, ho questa superficie disponibile' },
-    { id: 'no', label: 'No, non ho abbastanza spazio' }
+    { id: 'no', label: 'No, non ho abbastanza spazio' },
+    { id: 'non-lo-so', label: 'Non lo so' }
   ];
 
   const infoBox = {
