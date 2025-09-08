@@ -1,4 +1,4 @@
-import { Check, Users } from "lucide-react";
+import { Check } from "lucide-react";
 
 type NumeroPersoneSelectorProps = {
   value: number;
@@ -7,20 +7,22 @@ type NumeroPersoneSelectorProps = {
 
 export const NumeroPersoneSelector = ({ value, onChange }: NumeroPersoneSelectorProps) => {
   const opzioniPersone = [
-    { id: 1, label: '1 persona', description: 'Una sola persona' },
-    { id: 2, label: '2 persone', description: 'Coppia o coinquilini' },
-    { id: 3, label: '3 persone', description: 'Piccola famiglia' },
-    { id: 4, label: '4 persone', description: 'Famiglia media' },
-    { id: 5, label: '5+ persone', description: 'Famiglia numerosa' }
+    { id: 1, label: '1 persona' },
+    { id: 2, label: '2 persone' },
+    { id: 3, label: '3 persone' },
+    { id: 4, label: '4 persone' },
+    { id: 5, label: '5+ persone' }
   ];
 
   return (
     <div className="space-y-4 md:space-y-6">
       <div className="flex items-center gap-4 px-3 md:px-0">
         <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-          <div className="w-full h-full flex items-center justify-center bg-[#f4f4f4] rounded-2xl">
-            <Users className="w-8 h-8 md:w-12 md:h-12 text-[#d8010c]" />
-          </div>
+          <img 
+            src="/lovable-uploads/85e3fe85-3d4a-498d-9bba-3b25c28bae0c.png" 
+            alt="People icon" 
+            className="w-full h-full object-contain"
+          />
         </div>
         <div>
           <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Numero di persone</h2>
@@ -48,9 +50,6 @@ export const NumeroPersoneSelector = ({ value, onChange }: NumeroPersoneSelector
                 <div className="text-left flex-1 min-w-0">
                   <div className="font-semibold text-base text-[#1c1c1c]">
                     {opzione.label}
-                  </div>
-                  <div className="text-sm text-[#1c1c1c] opacity-70 mt-1">
-                    {opzione.description}
                   </div>
                 </div>
                 {isSelected && (
