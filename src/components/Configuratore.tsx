@@ -94,7 +94,8 @@ export type FormData = {
     definizioneConsumiStandard?: Record<string, any>; // configurazioni per consumi standard quando non conosce i consumi
     nuoveVociConsumo?: Record<string, any>; // configurazioni delle nuove voci di consumo pianificate
     batteriaAccumulo?: string; // "si" | "no"
-    superficieDisponibile?: string; // "si" | "no"
+    superficieDisponibile?: string; // "si" | "no" | "non-lo-so"
+    superficieEffettiva?: string; // superficie in mq inserita dall'utente se ha selezionato "no"
     estimate?: EstimateResponse;
   };
   
