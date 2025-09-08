@@ -295,33 +295,70 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
           `}
           onClick={() => handleAdvancedFeatureClick(feature.id)}
         >
+          {/* Selection Indicator - Mobile: top right */}
+          <div className="md:hidden absolute top-4 right-4 z-10">
+            <div className={`
+              w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
+              ${(isActivated || isCompleted)
+                ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                : 'border-gray-300 bg-white hover:border-gray-400'
+              }
+            `}>
+              {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
+            </div>
+          </div>
+
           <div className="space-y-0">
             {/* Feature Title and Description */}
             <div 
               className={`
-                p-6
+                p-6 md:p-0
                 ${isActivated && !isCompleted
                   ? 'bg-white rounded-t-2xl' 
                   : 'rounded-2xl'
                 }
               `}
             >
-              <div className="flex gap-6">
-                {/* Feature Icon */}
-                <div className={`
-                  p-3 rounded-lg flex-shrink-0
-                  ${(isActivated || isCompleted) ? 'bg-[#d8010c] text-white' : 'bg-gray-100 text-gray-600'}
-                `}>
-                  {feature.icon}
+              {/* Mobile Layout - Image full width on top */}
+              <div className="md:hidden space-y-4">
+                {/* Feature Image - Full width */}
+                <div className="w-full">
+                  <div className="w-full h-32 bg-gray-100 rounded-xl flex items-center justify-center">
+                    <div className="p-4 text-gray-600">
+                      {feature.icon}
+                    </div>
+                  </div>
                 </div>
                 
-                {/* Content Container */}
+                {/* Content below image */}
+                <div className="space-y-2">
+                  <h2 className="text-base font-semibold text-[#1c1c1c]">
+                    {feature.name}
+                  </h2>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Desktop Layout - Side by side with perfectly centered image */}
+              <div className="hidden md:flex gap-6 p-6">
+                {/* Feature Image Container - Fixed height matching content */}
+                <div className="flex-shrink-0 flex items-center justify-center h-32">
+                  <div className="w-32 h-32 bg-gray-100 rounded-xl flex items-center justify-center">
+                    <div className="p-4 text-gray-600">
+                      {feature.icon}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Content Container - Matching height */}
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
                   <div className="flex items-start justify-between mb-3">
                     <h2 className="text-xl font-semibold text-[#1c1c1c]">
                       {feature.name}
                     </h2>
-                    {/* Selection Indicator */}
+                    {/* Selection Indicator - Desktop only */}
                     <div className={`
                       w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2 flex-shrink-0 ml-4
                       ${(isActivated || isCompleted)
@@ -346,6 +383,9 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
                   <h3 className="text-base md:text-lg font-semibold text-[#1c1c1c]">
                     Personalizza le impostazioni
                   </h3>
+                  <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
+                    Configura i parametri per una stima più precisa
+                  </p>
                 </div>
 
                 {/* Input per Auto elettrica */}
@@ -382,9 +422,6 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
                 {/* Opzioni per Piscina */}
                 {feature.id === 'piscina' && feature.advancedOptions.type === 'select' && (
                   <div className="space-y-3">
-                    <Label className="text-sm font-medium text-[#1c1c1c]">
-                      {feature.advancedOptions.label}
-                    </Label>
                     {feature.advancedOptions.options?.map((option) => {
                       const isSelected = featureState.tipo === option.value;
                       
@@ -408,11 +445,11 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex-1 min-w-0">
-                              <div className="font-semibold text-sm text-[#1c1c1c]">
+                              <div className="font-semibold text-xs md:text-sm text-[#1c1c1c] mb-1">
                                 {option.label}
                               </div>
                             </div>
-                            {/* Selection Indicator */}
+                            {/* Selection Indicator - Always visible */}
                             <div className={`
                               w-6 h-6 rounded-full flex items-center justify-center ml-3 transition-all duration-200 border-2
                               ${isSelected 
@@ -436,7 +473,7 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
                       e.stopPropagation();
                       handleAdvancedFeatureContinue(feature.id);
                     }}
-                    className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-3 text-sm md:text-base rounded-xl"
+                    className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-3 text-sm md:text-base rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span>Continua</span>
                     <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
