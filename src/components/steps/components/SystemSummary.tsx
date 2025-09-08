@@ -73,53 +73,56 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
   const hasBatteria = formData.moduloFotovoltaico?.batteriaAccumulo === 'si';
 
   return (
-    <Card className="bg-gradient-to-br from-blue-50 to-green-50 border-blue-200">
+    <Card className="bg-background border-red-500 border-2">
       <CardContent className="p-4">
-        <h3 className="font-semibold text-lg text-gray-800 mb-4 flex items-center gap-2">
-          <Home className="h-5 w-5 text-blue-600" />
+        <h3 className="font-semibold text-lg text-foreground mb-4">
           Riepilogo del tuo impianto
         </h3>
         
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-              <Zap className="h-5 w-5 text-orange-600" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Consumo annuale</div>
-              <div className="font-semibold text-gray-900">{consumoAnnuale.toLocaleString()} kWh</div>
+        <div className="flex gap-6">
+          {/* Superficie necessaria - enfatizzata */}
+          <div className="flex-1">
+            <div className="text-center p-4 bg-red-50 rounded-lg border border-red-200">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Home className="h-6 w-6 text-red-600" />
+              </div>
+              <div className="text-sm text-red-700 mb-1">Superficie necessaria</div>
+              <div className="text-2xl font-bold text-red-800">{superficieMin}-{superficieMax} mq</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-              <Battery className="h-5 w-5 text-green-600" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Sistema accumulo</div>
-              <div className="font-semibold text-gray-900">
-                {hasBatteria ? 'Con batteria' : 'Senza batteria'}
+          {/* Altre variabili */}
+          <div className="flex-1 space-y-3">
+            <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
+              <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                <Zap className="h-4 w-4 text-orange-600" />
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground">Consumo annuale</div>
+                <div className="font-semibold text-foreground text-sm">{consumoAnnuale.toLocaleString()} kWh</div>
               </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-              <Home className="h-5 w-5 text-blue-600" />
+            <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
+              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                <Battery className="h-4 w-4 text-green-600" />
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground">Sistema accumulo</div>
+                <div className="font-semibold text-foreground text-sm">
+                  {hasBatteria ? 'Con batteria' : 'Senza batteria'}
+                </div>
+              </div>
             </div>
-            <div>
-              <div className="text-sm text-gray-600">Superficie necessaria</div>
-              <div className="font-semibold text-gray-900">{superficieMin}-{superficieMax} mq</div>
-            </div>
-          </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-              <Sun className="h-5 w-5 text-yellow-600" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Produzione stimata</div>
-              <div className="font-semibold text-gray-900">{produzionStimata.toLocaleString()} kWh/anno</div>
+            <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
+              <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                <Sun className="h-4 w-4 text-yellow-600" />
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground">Produzione stimata</div>
+                <div className="font-semibold text-foreground text-sm">{produzionStimata.toLocaleString()} kWh/anno</div>
+              </div>
             </div>
           </div>
         </div>
