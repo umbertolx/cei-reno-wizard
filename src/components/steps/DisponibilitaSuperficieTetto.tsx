@@ -146,7 +146,7 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
         <CardContent className="pt-4">
           <div className="space-y-3">
             <Label htmlFor="superficie-effettiva" className="text-base font-medium text-[#1c1c1c]">
-              Inserisci il numero di mq:
+              Inserisci il numero di mq disponibili:
             </Label>
             <div className="flex items-center gap-3">
               <Input
