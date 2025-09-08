@@ -25,6 +25,7 @@ export interface DatabaseLead {
   data_richiesta_sopralluogo: string | null;
   orario_sopralluogo: string | null;
   note: string | null;
+  numero_persone?: number;
   tipo_proprieta: string;
   stato: string;
   data_creazione: string;
@@ -140,6 +141,7 @@ export const saveLeadToDatabase = async (
     data_richiesta_sopralluogo: contatti.dataRichiestaSopralluogo || null,
     orario_sopralluogo: contatti.orarioSopralluogo || null,
     note: contatti.note || null,
+    numero_persone: (info as any).numeroPersone || 2,
     tipo_proprieta: contatti.tipoProprietà,
     accetto_termini: contatti.accettoTermini,
     stato: "nuovo"
