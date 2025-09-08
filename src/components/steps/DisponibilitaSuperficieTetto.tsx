@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Sun, Home, Target, Battery, MapPin } from "lucide-react";
 import { QuestionWithOptions } from "@/components/shared/QuestionWithOptions";
 import { FormData } from "@/components/Configuratore";
+import { SystemSummary } from "./components/SystemSummary";
 import { useState } from "react";
 
 type Props = {
@@ -102,7 +103,7 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
   const options = [
     { id: 'si', label: 'Sì, ho questa superficie disponibile' },
     { id: 'no', label: 'No, non ho abbastanza spazio' },
-    { id: 'non-lo-so', label: 'Non lo so' }
+    { id: 'non-lo-so', label: 'Non lo so, voglio un sopralluogo' }
   ];
 
   const infoBox = {
@@ -172,9 +173,16 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
       badge="Impianto fotovoltaico"
       icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
       iconAlt="Casa"
-      title={`Hai ${superficieMin}-${superficieMax} mq di superficie disponibile sul tetto?`}
+      title="Hai la superficie necessaria a disposizione?"
       description="In base alle tue esigenze energetiche e alle caratteristiche del tetto, abbiamo calcolato la superficie necessaria per il tuo impianto fotovoltaico personalizzato."
       infoBox={infoBox}
+      summaryContent={
+        <SystemSummary 
+          formData={formData}
+          superficieMin={superficieMin}
+          superficieMax={superficieMax}
+        />
+      }
       options={options}
       selectedValue={currentValue}
       onSelectionChange={handleSelectionChange}

@@ -21,6 +21,7 @@ export type QuestionWithOptionsProps = {
   title: string;
   description?: string;
   infoBox?: InfoBox;
+  summaryContent?: React.ReactNode;
   options: QuestionOption[];
   selectedValue: string;
   onSelectionChange: (value: string) => void;
@@ -38,6 +39,7 @@ export const QuestionWithOptions = ({
   title,
   description,
   infoBox,
+  summaryContent,
   options,
   selectedValue,
   onSelectionChange,
@@ -131,6 +133,9 @@ export const QuestionWithOptions = ({
               </div>
             </div>
           )}
+
+          {/* Contenuto di riepilogo */}
+          {summaryContent}
           
           {/* Opzioni */}
           <div className="space-y-3 md:space-y-4">
