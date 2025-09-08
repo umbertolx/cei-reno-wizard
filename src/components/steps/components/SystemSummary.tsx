@@ -73,56 +73,43 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
   const hasBatteria = formData.moduloFotovoltaico?.batteriaAccumulo === 'si';
 
   return (
-    <Card className="bg-background border-red-500 border-2">
-      <CardContent className="p-4">
-        <h3 className="font-semibold text-lg text-foreground mb-4">
+    <Card className="bg-background border-border">
+      <CardContent className="p-6">
+        <h3 className="font-semibold text-lg text-foreground mb-6">
           Riepilogo del tuo impianto
         </h3>
         
-        <div className="flex gap-6">
+        <div className="space-y-4">
           {/* Superficie necessaria - enfatizzata */}
-          <div className="flex-1">
-            <div className="text-center p-4 bg-red-50 rounded-lg border border-red-200">
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <Home className="h-6 w-6 text-red-600" />
+          <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm text-muted-foreground mb-1">Superficie necessaria</div>
+                <div className="text-2xl font-bold text-primary">{superficieMin}-{superficieMax} mq</div>
               </div>
-              <div className="text-sm text-red-700 mb-1">Superficie necessaria</div>
-              <div className="text-2xl font-bold text-red-800">{superficieMin}-{superficieMax} mq</div>
+              <Home className="h-8 w-8 text-primary/60" />
             </div>
           </div>
 
-          {/* Altre variabili */}
-          <div className="flex-1 space-y-3">
-            <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
-              <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                <Zap className="h-4 w-4 text-orange-600" />
-              </div>
-              <div>
-                <div className="text-xs text-muted-foreground">Consumo annuale</div>
-                <div className="font-semibold text-foreground text-sm">{consumoAnnuale.toLocaleString()} kWh</div>
+          {/* Altre informazioni in griglia */}
+          <div className="grid grid-cols-3 gap-4 pt-2">
+            <div className="text-center">
+              <div className="text-xs text-muted-foreground mb-1">Consumo annuale</div>
+              <div className="font-semibold text-foreground">{consumoAnnuale.toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">kWh</div>
+            </div>
+            
+            <div className="text-center">
+              <div className="text-xs text-muted-foreground mb-1">Sistema accumulo</div>
+              <div className="font-semibold text-foreground">
+                {hasBatteria ? 'Con batteria' : 'Senza batteria'}
               </div>
             </div>
-
-            <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                <Battery className="h-4 w-4 text-green-600" />
-              </div>
-              <div>
-                <div className="text-xs text-muted-foreground">Sistema accumulo</div>
-                <div className="font-semibold text-foreground text-sm">
-                  {hasBatteria ? 'Con batteria' : 'Senza batteria'}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
-              <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                <Sun className="h-4 w-4 text-yellow-600" />
-              </div>
-              <div>
-                <div className="text-xs text-muted-foreground">Produzione stimata</div>
-                <div className="font-semibold text-foreground text-sm">{produzionStimata.toLocaleString()} kWh/anno</div>
-              </div>
+            
+            <div className="text-center">
+              <div className="text-xs text-muted-foreground mb-1">Produzione stimata</div>
+              <div className="font-semibold text-foreground">{produzionStimata.toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">kWh/anno</div>
             </div>
           </div>
         </div>
