@@ -79,9 +79,10 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
     const superficieCalcolata = superficieBase * fattoreConsumi * fattoreObiettivo * fattoreOrientamento * 
       fattoreOmbre * fattoreBatteria * fattoreRegionale;
 
-    // Creare un range di ±8 mq attorno al valore calcolato
-    const superficieMin = Math.max(25, Math.ceil(superficieCalcolata - 8));
-    const superficieMax = Math.ceil(superficieCalcolata + 8);
+    // Arrotondare ai range di decine
+    const superficieArrotondata = Math.round(superficieCalcolata / 10) * 10;
+    const superficieMin = Math.max(30, superficieArrotondata - 10);
+    const superficieMax = superficieArrotondata;
 
     return {
       superficieMin,
