@@ -17,7 +17,6 @@ import { ConsumiAnnui } from "./steps/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/NuoveVociConsumo";
 import { DefinizioneConsumiStandard } from "./steps/DefinizioneConsumiStandard";
 import { DisponibilitaSuperficieTetto } from "./steps/DisponibilitaSuperficieTetto";
-import { SuperficieEffettivaTetto } from "./steps/SuperficieEffettivaTetto";
 import { BatteriaAccumulo } from "./steps/BatteriaAccumulo";
 import { RichiestaInviata } from "./steps/RichiestaInviata";
 import { DatiContatto } from "./steps/DatiContatto";
@@ -411,9 +410,6 @@ export const Configuratore = () => {
       
       case 'DisponibilitaSuperficieTetto':
         return <DisponibilitaSuperficieTetto {...commonProps} />;
-      
-      case 'SuperficieEffettivaTetto':
-        return <SuperficieEffettivaTetto {...commonProps} />;
       
       case 'DatiContatto':
         return (
