@@ -48,12 +48,13 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
   const currentConfig = formData.moduloFotovoltaico?.definizioneConsumiStandard || {};
   
   const [standardAppliances, setStandardAppliances] = useState<StandardAppliance[]>([
-    { id: 'frigorifero', name: 'Frigorifero', icon: <Utensils className="h-5 w-5" />, selected: false },
-    { id: 'lavastoviglie', name: 'Lavastoviglie', icon: <ForkKnife className="h-5 w-5" />, selected: false },
-    { id: 'forno', name: 'Forno', icon: <Coffee className="h-5 w-5" />, selected: false },
-    { id: 'microonde', name: 'Forno a microonde', icon: <Coffee className="h-5 w-5" />, selected: false },
-    { id: 'asciugatrice', name: 'Asciugatrice', icon: <Fan className="h-5 w-5" />, selected: false },
-    { id: 'router', name: 'Router / Modem', icon: <Wifi className="h-5 w-5" />, selected: false },
+    { id: 'frigorifero', name: 'Frigorifero', icon: <Utensils className="h-5 w-5" />, selected: true },
+    { id: 'lavastoviglie', name: 'Lavastoviglie', icon: <ForkKnife className="h-5 w-5" />, selected: true },
+    { id: 'lavatrice', name: 'Lavatrice', icon: <Droplets className="h-5 w-5" />, selected: true },
+    { id: 'forno', name: 'Forno', icon: <Coffee className="h-5 w-5" />, selected: true },
+    { id: 'microonde', name: 'Forno a microonde', icon: <Coffee className="h-5 w-5" />, selected: true },
+    { id: 'asciugatrice', name: 'Asciugatrice', icon: <Fan className="h-5 w-5" />, selected: true },
+    { id: 'router', name: 'Router / Modem', icon: <Wifi className="h-5 w-5" />, selected: true },
   ]);
 
   const [advancedFeatures, setAdvancedFeatures] = useState<{ [key: string]: AdvancedFeatureState }>({
