@@ -1,10 +1,11 @@
 import { FormData } from "../Configuratore";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
-import { Check, Zap, Car, Droplets, Fan, ThermometerSun, FlameKindling, Utensils, Coffee, Wifi, ForkKnife } from "lucide-react";
+import { Check, Zap, Car, Droplets, Fan, ThermometerSun, FlameKindling, Utensils, Coffee, Wifi, ForkKnife, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Label } from "@/components/ui/label";
 
 type Props = {
   formData: FormData;
@@ -18,6 +19,13 @@ type StandardAppliance = {
   name: string;
   icon: React.ReactNode;
   selected: boolean;
+};
+
+type AdvancedFeatureState = {
+  isActivated: boolean;
+  isCompleted: boolean;
+  kmAnnui?: number;
+  tipo?: string;
 };
 
 type AdvancedFeature = {
@@ -47,13 +55,33 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
     { id: 'router', name: 'Router / Modem', icon: <Wifi className="h-5 w-5" />, selected: true },
   ]);
 
-  const [advancedFeatures, setAdvancedFeatures] = useState<{ [key: string]: any }>({
-    'piano-induzione': currentConfig['piano-induzione'] || { selected: false },
-    'climatizzatori': currentConfig['climatizzatori'] || { selected: false },
-    'pompa-calore': currentConfig['pompa-calore'] || { selected: false },
-    'boiler-elettrico': currentConfig['boiler-elettrico'] || { selected: false },
-    'auto-elettrica': currentConfig['auto-elettrica'] || { selected: false, kmAnnui: 15000 },
-    'piscina': currentConfig['piscina'] || { selected: false, tipo: 'solo-pompe' },
+  const [advancedFeatures, setAdvancedFeatures] = useState<{ [key: string]: AdvancedFeatureState }>({
+    'piano-induzione': { 
+      isActivated: false, 
+      isCompleted: currentConfig['piano-induzione']?.selected || false
+    },
+    'climatizzatori': { 
+      isActivated: false, 
+      isCompleted: currentConfig['climatizzatori']?.selected || false
+    },
+    'pompa-calore': { 
+      isActivated: false, 
+      isCompleted: currentConfig['pompa-calore']?.selected || false
+    },
+    'boiler-elettrico': { 
+      isActivated: false, 
+      isCompleted: currentConfig['boiler-elettrico']?.selected || false
+    },
+    'auto-elettrica': { 
+      isActivated: false, 
+      isCompleted: currentConfig['auto-elettrica']?.selected || false,
+      kmAnnui: currentConfig['auto-elettrica']?.kmAnnui || 15000
+    },
+    'piscina': { 
+      isActivated: false, 
+      isCompleted: currentConfig['piscina']?.selected || false,
+      tipo: currentConfig['piscina']?.tipo || 'solo-pompe'
+    }
   });
 
   const features: AdvancedFeature[] = [
@@ -123,12 +151,57 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
     );
   };
 
-  const toggleAdvancedFeature = (featureId: string) => {
+  const handleAdvancedFeatureClick = (featureId: string) => {
+    const feature = features.find(f => f.id === featureId);
+    const currentState = advancedFeatures[featureId];
+    
+    if (currentState.isCompleted) {
+      // Se è completata, deseleziona
+      setAdvancedFeatures(prev => ({
+        ...prev,
+        [featureId]: {
+          ...prev[featureId],
+          isActivated: false,
+          isCompleted: false
+        }
+      }));
+    } else if (!feature?.hasAdvancedOptions) {
+      // Se non ha opzioni avanzate, seleziona direttamente
+      setAdvancedFeatures(prev => ({
+        ...prev,
+        [featureId]: {
+          ...prev[featureId],
+          isCompleted: true
+        }
+      }));
+    } else if (!currentState.isActivated) {
+      // Attiva per mostrare le opzioni avanzate
+      setAdvancedFeatures(prev => ({
+        ...prev,
+        [featureId]: {
+          ...prev[featureId],
+          isActivated: true
+        }
+      }));
+    } else {
+      // Disattiva
+      setAdvancedFeatures(prev => ({
+        ...prev,
+        [featureId]: {
+          ...prev[featureId],
+          isActivated: false
+        }
+      }));
+    }
+  };
+
+  const handleAdvancedFeatureContinue = (featureId: string) => {
     setAdvancedFeatures(prev => ({
       ...prev,
       [featureId]: {
         ...prev[featureId],
-        selected: !prev[featureId]?.selected
+        isActivated: false,
+        isCompleted: true
       }
     }));
   };
@@ -150,9 +223,18 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
       return acc;
     }, {} as { [key: string]: any });
 
+    const advancedData = Object.entries(advancedFeatures).reduce((acc, [key, value]) => {
+      acc[key] = { 
+        selected: value.isCompleted,
+        ...(key === 'auto-elettrica' && { kmAnnui: value.kmAnnui }),
+        ...(key === 'piscina' && { tipo: value.tipo })
+      };
+      return acc;
+    }, {} as { [key: string]: any });
+
     const combinedConfig = {
       ...standardData,
-      ...advancedFeatures
+      ...advancedData
     };
 
     updateFormData({
@@ -166,111 +248,204 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
   };
 
   const renderStandardAppliance = (appliance: StandardAppliance) => (
-    <Button
+    <div
       key={appliance.id}
       onClick={() => toggleStandardAppliance(appliance.id)}
-      variant={appliance.selected ? "default" : "outline"}
       className={`
-        h-auto p-4 justify-start text-left
+        rounded-xl transition-all duration-300 border cursor-pointer p-4
         ${appliance.selected 
-          ? 'bg-[#d8010c] hover:bg-[#b8000a] text-white border-[#d8010c]' 
-          : 'bg-white border-gray-200 text-gray-700 hover:border-[#d8010c] hover:text-[#d8010c]'
+          ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+          : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
         }
       `}
     >
-      <div className="flex items-center gap-3 w-full">
-        {appliance.icon}
-        <span className="font-medium">{appliance.name}</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          {appliance.icon}
+          <div className="font-semibold text-base text-[#1c1c1c]">
+            {appliance.name}
+          </div>
+        </div>
         {appliance.selected && (
-          <Check className="h-4 w-4 ml-auto" />
+          <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
+            <Check className="h-3 w-3 text-white" />
+          </div>
         )}
       </div>
-    </Button>
+    </div>
   );
 
   const renderAdvancedFeature = (feature: AdvancedFeature) => {
-    const isSelected = advancedFeatures[feature.id]?.selected || false;
+    const featureState = advancedFeatures[feature.id];
+    const isActivated = featureState?.isActivated || false;
+    const isCompleted = featureState?.isCompleted || false;
     
     return (
-      <div key={feature.id} className="space-y-3">
-        <div
-          onClick={() => toggleAdvancedFeature(feature.id)}
+      <div key={feature.id} className="space-y-6">
+        {/* Feature Card */}
+        <div 
           className={`
-            rounded-xl transition-all duration-300 border cursor-pointer p-6
-            ${isSelected 
-              ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
-              : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+            rounded-2xl shadow-sm transition-all duration-300 cursor-pointer overflow-hidden relative
+            ${isCompleted
+              ? 'border border-[#d8010c] bg-[#d8010c]/5' 
+              : isActivated
+              ? 'border border-[#d8010c] bg-[#d8010c]/5'
+              : 'bg-white border border-gray-200 hover:border-[#d8010c] hover:shadow-md'
             }
           `}
+          onClick={() => handleAdvancedFeatureClick(feature.id)}
         >
-          <div className="flex items-start justify-between">
-            <div className="flex items-start gap-4 flex-1 min-w-0">
-              <div className={`
-                p-3 rounded-lg flex-shrink-0
-                ${isSelected ? 'bg-[#d8010c] text-white' : 'bg-gray-100 text-gray-600'}
-              `}>
-                {feature.icon}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-lg text-[#1c1c1c] mb-2">
-                  {feature.name}
+          <div className="space-y-0">
+            {/* Feature Title and Description */}
+            <div 
+              className={`
+                p-6
+                ${isActivated && !isCompleted
+                  ? 'bg-white rounded-t-2xl' 
+                  : 'rounded-2xl'
+                }
+              `}
+            >
+              <div className="flex gap-6">
+                {/* Feature Icon */}
+                <div className={`
+                  p-3 rounded-lg flex-shrink-0
+                  ${(isActivated || isCompleted) ? 'bg-[#d8010c] text-white' : 'bg-gray-100 text-gray-600'}
+                `}>
+                  {feature.icon}
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {feature.description}
-                </p>
+                
+                {/* Content Container */}
+                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                  <div className="flex items-start justify-between mb-3">
+                    <h2 className="text-xl font-semibold text-[#1c1c1c]">
+                      {feature.name}
+                    </h2>
+                    {/* Selection Indicator */}
+                    <div className={`
+                      w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2 flex-shrink-0 ml-4
+                      ${(isActivated || isCompleted)
+                        ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                        : 'border-gray-300 bg-white hover:border-gray-400'
+                      }
+                    `}>
+                      {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
+                    </div>
+                  </div>
+                  <p className="text-base text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
               </div>
             </div>
-            {isSelected && (
-              <div className="w-6 h-6 bg-[#d8010c] rounded-full flex items-center justify-center ml-4 flex-shrink-0">
-                <Check className="h-4 w-4 text-white" />
+
+            {/* Advanced Options */}
+            {isActivated && !isCompleted && feature.hasAdvancedOptions && feature.advancedOptions && (
+              <div className="border-t border-gray-200 space-y-4 bg-white px-6 pb-6 rounded-b-2xl">
+                <div className="pt-4 space-y-3">
+                  <h3 className="text-base md:text-lg font-semibold text-[#1c1c1c]">
+                    Personalizza le impostazioni
+                  </h3>
+                </div>
+
+                {/* Input per Auto elettrica */}
+                {feature.id === 'auto-elettrica' && feature.advancedOptions.type === 'input' && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm font-medium text-[#1c1c1c]">
+                        {feature.advancedOptions.label}
+                      </Label>
+                      <span className="text-sm font-bold text-[#d8010c]">
+                        {featureState.kmAnnui || feature.advancedOptions.default}
+                      </span>
+                    </div>
+                    
+                    <Input
+                      type="number"
+                      min={feature.advancedOptions.min}
+                      max={feature.advancedOptions.max}
+                      value={featureState.kmAnnui || feature.advancedOptions.default}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value) || feature.advancedOptions!.default;
+                        setAdvancedFeatures(prev => ({
+                          ...prev,
+                          [feature.id]: { ...prev[feature.id], kmAnnui: value }
+                        }));
+                      }}
+                      className="text-sm h-10"
+                      placeholder={`${feature.advancedOptions.min}–${feature.advancedOptions.max}`}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
+                )}
+
+                {/* Opzioni per Piscina */}
+                {feature.id === 'piscina' && feature.advancedOptions.type === 'select' && (
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-[#1c1c1c]">
+                      {feature.advancedOptions.label}
+                    </Label>
+                    {feature.advancedOptions.options?.map((option) => {
+                      const isSelected = featureState.tipo === option.value;
+                      
+                      return (
+                        <div
+                          key={option.value}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setAdvancedFeatures(prev => ({
+                              ...prev,
+                              [feature.id]: { ...prev[feature.id], tipo: option.value }
+                            }));
+                          }}
+                          className={`
+                            rounded-xl transition-all duration-300 border cursor-pointer p-3
+                            ${isSelected 
+                              ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
+                              : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                            }
+                          `}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1 min-w-0">
+                              <div className="font-semibold text-sm text-[#1c1c1c]">
+                                {option.label}
+                              </div>
+                            </div>
+                            {/* Selection Indicator */}
+                            <div className={`
+                              w-6 h-6 rounded-full flex items-center justify-center ml-3 transition-all duration-200 border-2
+                              ${isSelected 
+                                ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
+                                : 'border-gray-300 bg-white hover:border-gray-400'
+                              }
+                            `}>
+                              {isSelected && <Check className="h-4 w-4 text-white" />}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Continue Button */}
+                <div className="pt-3">
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAdvancedFeatureContinue(feature.id);
+                    }}
+                    className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white py-3 text-sm md:text-base rounded-xl"
+                  >
+                    <span>Continua</span>
+                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
+                  </Button>
+                </div>
               </div>
             )}
           </div>
         </div>
-
-        {/* Opzioni avanzate */}
-        {isSelected && feature.hasAdvancedOptions && feature.advancedOptions && (
-          <div className="ml-4 pl-6 border-l-2 border-[#d8010c]/20 space-y-3">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-[#1c1c1c]">
-                {feature.advancedOptions.label}
-              </label>
-              
-              {feature.advancedOptions.type === 'input' && (
-                <Input
-                  type="number"
-                  min={feature.advancedOptions.min}
-                  max={feature.advancedOptions.max}
-                  value={advancedFeatures[feature.id]?.kmAnnui || feature.advancedOptions.default}
-                  onChange={(e) => updateAdvancedFeatureOption(feature.id, parseInt(e.target.value) || feature.advancedOptions!.default)}
-                  className="max-w-xs"
-                  placeholder={`${feature.advancedOptions.min}–${feature.advancedOptions.max}`}
-                />
-              )}
-              
-              {feature.advancedOptions.type === 'select' && (
-                <div className="space-y-2">
-                  {feature.advancedOptions.options?.map((option) => (
-                    <Button
-                      key={option.value}
-                      onClick={() => updateAdvancedFeatureOption(feature.id, option.value)}
-                      variant={advancedFeatures[feature.id]?.tipo === option.value ? "default" : "outline"}
-                      className={`
-                        w-full justify-start h-auto p-3
-                        ${advancedFeatures[feature.id]?.tipo === option.value
-                          ? 'bg-[#d8010c] hover:bg-[#b8000a] text-white border-[#d8010c]' 
-                          : 'bg-white border-gray-200 text-gray-700 hover:border-[#d8010c]'
-                        }
-                      `}
-                    >
-                      {option.label}
-                    </Button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     );
   };
