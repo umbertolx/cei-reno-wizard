@@ -150,6 +150,14 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
               <span className="text-gray-600">Piano:</span>
               <span className="font-medium text-[#1c1c1c] capitalize">{formData.piano}</span>
             </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">Persone:</span>
+              <span className="font-medium text-[#1c1c1c]">{formData.informazioniGenerali?.numeroPersone || 2}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">Proprietà:</span>
+              <span className="font-medium text-[#1c1c1c] capitalize">{formData.contatti?.tipoProprietà || formData.tipoProprietà || 'prima casa'}</span>
+            </div>
           </div>
 
           {/* Indirizzo */}
