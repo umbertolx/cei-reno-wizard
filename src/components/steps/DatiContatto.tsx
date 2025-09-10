@@ -156,7 +156,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Proprietà:</span>
-              <span className="font-medium text-[#1c1c1c] capitalize">{formData.contatti?.tipoProprietà || formData.tipoProprietà || 'prima casa'}</span>
+              <span className="font-medium text-[#1c1c1c] capitalize">{formData.informazioniGenerali?.tipoProprieta || 'prima casa'}</span>
             </div>
           </div>
 
