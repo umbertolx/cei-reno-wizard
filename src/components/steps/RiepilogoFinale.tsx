@@ -136,7 +136,7 @@ export const RiepilogoFinale = ({ formData, updateFormData, stima, onBack, onSub
 
           <div>
             <p className="text-sm text-[#1c1c1c] opacity-70">Tipo proprietà</p>
-            <p className="text-lg font-medium capitalize">{formData.informazioniGenerali?.tipoProprieta}</p>
+            <p className="text-lg font-medium capitalize">{formData.informazioniGenerali?.utilizzoAbitazione}</p>
           </div>
 
           <div>

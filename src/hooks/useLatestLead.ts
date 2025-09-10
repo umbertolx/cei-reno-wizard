@@ -41,7 +41,12 @@ export const useLatestLead = (email?: string): UseLatestLeadReturn => {
 
       if (data) {
         console.log("✅ Latest lead found:", data);
-        setLead(data);
+        // Map tipo_proprieta to utilizzoabitazione for TypeScript compatibility
+        const mappedLead = {
+          ...data,
+          utilizzoabitazione: data.tipo_proprieta
+        };
+        setLead(mappedLead);
       } else {
         console.log("📭 No lead found for this email");
         setLead(null);

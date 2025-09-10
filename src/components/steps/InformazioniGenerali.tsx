@@ -7,7 +7,7 @@ import { TipoAbitazione } from "./informazioni-generali/TipoAbitazione";
 import { SuperficieSlider } from "./informazioni-generali/SuperficieSlider";
 import { IndirizzoField } from "./informazioni-generali/IndirizzoField";
 import { SuddivisioneSpazi } from "./informazioni-generali/SuddivisioneSpazi";
-import { TipoProprietaSelector } from "./stimafinale/TipoProprietaSelector";
+import { UtilizzoAbitazioneSelector } from "./stimafinale/UtilizzoAbitazioneSelector";
 import { NumeroPersoneSelector } from "./informazioni-generali/NumeroPersoneSelector";
 import { CircleDot, ArrowRight, Home, Settings, Calculator } from "lucide-react";
 
@@ -30,7 +30,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           cap: "20100",
           regione: "Lombardia",
           piano: "2",
-          tipoProprieta: "prima casa",
+          utilizzoAbitazione: "prima casa",
           numeroPersone: 2,
           composizione: {
             cucina: 1,
@@ -53,7 +53,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     cap: "",
     regione: "",
     piano: "",
-    tipoProprieta: "prima casa",
+    utilizzoAbitazione: "prima casa",
     numeroPersone: 2,
     composizione: {
       cucina: 0,
@@ -95,7 +95,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       return false;
     }
 
-    if (!info.tipoProprieta) {
+    if (!info.utilizzoAbitazione) {
       toast({
         title: "Attenzione",
         description: "Seleziona il tipo di proprietà",
@@ -202,10 +202,10 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           onSelectLocation={selectLocation}
         />
 
-        <TipoProprietaSelector
-          value={info.tipoProprieta}
+        <UtilizzoAbitazioneSelector
+          value={info.utilizzoAbitazione}
           onChange={(value) => updateFormData({ 
-            informazioniGenerali: { ...info, tipoProprieta: value } 
+            informazioniGenerali: { ...info, utilizzoAbitazione: value } 
           })}
         />
 

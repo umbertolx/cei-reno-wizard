@@ -87,7 +87,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
       indirizzo: formData.indirizzo || formData.informazioniGenerali?.indirizzo,
       citta: formData.citta || formData.informazioniGenerali?.citta,
       numero_persone: formData.informazioniGenerali?.numeroPersone,
-      tipo_proprieta: formData.informazioniGenerali?.tipoProprieta,
+      utilizzoabitazione: formData.informazioniGenerali?.utilizzoAbitazione,
       composizione: formData.composizione || formData.informazioniGenerali?.composizione,
       moduli_selezionati: formData.moduliSelezionati,
       modulo_elettrico: formData.moduloElettrico,
@@ -171,7 +171,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Proprietà:</span>
               <span className="font-medium text-[#1c1c1c] capitalize">
-                {(dataSource.tipo_proprieta || formData.informazioniGenerali?.tipoProprieta || 'prima casa') === 'prima casa' ? 'Prima' : 'Seconda'}
+                {(dataSource.utilizzoabitazione || formData.informazioniGenerali?.utilizzoAbitazione || 'prima casa') === 'prima casa' ? 'Prima' : 'Seconda'}
               </span>
             </div>
             <div className="flex items-center gap-2">

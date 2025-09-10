@@ -26,7 +26,7 @@ export interface DatabaseLead {
   orario_sopralluogo: string | null;
   note: string | null;
   numero_persone?: number;
-  tipo_proprieta: string;
+  utilizzoabitazione: string;
   stato: string;
   data_creazione: string;
   data_ultimo_contatto: string | null;
@@ -50,7 +50,7 @@ export const savePartialLead = async (formData: FormData): Promise<string> => {
   };
   const info = formData.informazioniGenerali || {
     tipologiaAbitazione: '', superficie: 0, indirizzo: '', citta: '', 
-    cap: '', regione: '', piano: '', numeroPersone: 2, tipoProprieta: 'prima casa',
+    cap: '', regione: '', piano: '', numeroPersone: 2, utilizzoAbitazione: 'prima casa',
     composizione: {}
   };
 
@@ -89,7 +89,7 @@ export const savePartialLead = async (formData: FormData): Promise<string> => {
       tipoDomotica: formData.tipoDomotica || formData.moduloElettrico?.tipoDomotica,
     },
     numero_persone: info.numeroPersone || 2,
-    tipo_proprieta: info.tipoProprieta || 'prima casa',
+    utilizzoabitazione: info.utilizzoAbitazione || 'prima casa',
     accetto_termini: false,
     stato: "configurazione_in_corso"
   };
@@ -411,7 +411,13 @@ export const fetchLeads = async (): Promise<DatabaseLead[]> => {
     console.log(`✅ Fetched ${data?.length || 0} leads from database`);
     console.log("📊 Leads data:", data);
     
-    return data || [];
+    // Map tipo_proprieta to utilizzoabitazione for TypeScript compatibility
+    const mappedData = data?.map(lead => ({
+      ...lead,
+      utilizzoabitazione: lead.tipo_proprieta
+    })) || [];
+    
+    return mappedData;
   } catch (error) {
     console.error("💥 Critical error in fetchLeads:", error);
     throw error;

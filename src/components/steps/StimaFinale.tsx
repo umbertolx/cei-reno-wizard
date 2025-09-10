@@ -98,7 +98,7 @@ export const StimaFinale = ({
               </div>
               
               {/* Tax deductions */}
-              {formData.informazioniGenerali?.tipoProprieta === 'seconda casa' ? (
+              {formData.informazioniGenerali?.utilizzoAbitazione === 'seconda casa' ? (
                 <div className="text-sm md:text-base text-green-700 font-semibold mb-3 p-1">
                   Fino a €{Math.round(estimate.max * 0.36).toLocaleString()} Detrazione (36%)
                 </div>
@@ -179,7 +179,7 @@ export const StimaFinale = ({
                       <Check className="h-2.5 w-2.5 text-green-600" />
                     </div>
                     <span className="text-sm text-gray-700 capitalize">
-                      {(formData.informazioniGenerali?.tipoProprieta || 'prima casa') === 'prima casa' ? 'Prima casa' : 'Seconda casa'}
+                      {(formData.informazioniGenerali?.utilizzoAbitazione || 'prima casa') === 'prima casa' ? 'Prima casa' : 'Seconda casa'}
                     </span>
                   </div>
                 </div>

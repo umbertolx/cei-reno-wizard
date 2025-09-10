@@ -1,12 +1,12 @@
 
 import { Check, Home } from "lucide-react";
 
-type TipoProprietaSelectorProps = {
+type UtilizzoAbitazioneSelectorProps = {
   value: string;
   onChange: (value: string) => void;
 };
 
-export const TipoProprietaSelector = ({ value, onChange }: TipoProprietaSelectorProps) => {
+export const UtilizzoAbitazioneSelector = ({ value, onChange }: UtilizzoAbitazioneSelectorProps) => {
   const opzioniProprieta = [
     { 
       id: 'prima casa', 
@@ -31,7 +31,7 @@ export const TipoProprietaSelector = ({ value, onChange }: TipoProprietaSelector
           />
         </div>
         <div>
-          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Tipo di proprietà</h2>
+          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Utilizzo</h2>
           <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Seleziona se si tratta della tua abitazione principale</p>
         </div>
       </div>
