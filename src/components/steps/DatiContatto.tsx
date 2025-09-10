@@ -173,7 +173,9 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Proprietà:</span>
-              <span className="font-medium text-[#1c1c1c] capitalize">{dataSource.tipo_proprieta || formData.informazioniGenerali?.tipoProprieta || 'prima casa'}</span>
+              <span className="font-medium text-[#1c1c1c] capitalize">
+                {(dataSource.tipo_proprieta || formData.informazioniGenerali?.tipoProprieta || 'prima casa') === 'prima casa' ? 'Prima' : 'Seconda'}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Stanze totali:</span>
