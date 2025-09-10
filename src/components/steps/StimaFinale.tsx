@@ -79,119 +79,110 @@ export const StimaFinale = ({
         </h1>
       </div>
 
-      {/* Box stima principale in stile CEI */}
-      <div className="bg-[#f4f4f4] border border-gray-200 rounded-xl p-6">
-        <div className="space-y-6">
-          {/* Stima principale */}
-          <div className="text-center space-y-4">
-            <div className="text-sm text-gray-600 mb-1 font-medium">
-              Budget stimato per questo progetto
-            </div>
-            
-            <div className="text-3xl md:text-4xl font-bold text-[#1c1c1c]">
-              €{estimate.min.toLocaleString()} - €{estimate.max.toLocaleString()}
-            </div>
-            
-            {/* IVA esclusa */}
-            <div className="text-base text-gray-600">
-              IVA €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()} esclusa
-            </div>
-            
-            {/* Detrazione fiscale dinamica */}
-            {formData.informazioniGenerali?.tipoProprieta === 'seconda casa' ? (
-              <div className="text-lg text-[#d8010c] font-semibold">
-                Fino a €{Math.round(estimate.max * 0.36).toLocaleString()} Detrazione (36%)
+      {/* Budget estimation box - same style as welcome page */}
+      <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6 md:mb-12 px-3 md:px-0">
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
+          <div className="p-4 md:p-6">
+            {/* Header section */}
+            <div className="text-center mb-4">
+              <div className="text-xs text-gray-500 mb-1 font-medium p-1">
+                Budget stimato per questo progetto
               </div>
-            ) : (
-              <div className="text-lg text-[#d8010c] font-semibold">
-                Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa (50%)
+              <div className="text-2xl md:text-5xl font-bold text-gray-900 mb-2 p-1">
+                €{estimate.min.toLocaleString()} - €{estimate.max.toLocaleString()}
               </div>
-            )}
-          </div>
-
-          <hr className="border-gray-200" />
-
-          {/* Informazioni configurazione */}
-          <div className="space-y-4">
-            <div className="text-sm font-medium text-gray-600 mb-3">Configurazione completata:</div>
-            
-            {/* Informazioni principali in formato semplice */}
-            <div className="flex flex-wrap gap-6">
-              <div className="flex items-center gap-2">
-                <span className="text-gray-600">Tipologia:</span>
-                <span className="font-medium text-[#1c1c1c] capitalize">{tipologiaAbitazione}</span>
+              
+              {/* IVA esclusa */}
+              <div className="text-sm md:text-base text-gray-600 mb-2 p-1">
+                IVA €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()} esclusa
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-600">Superficie:</span>
-                <span className="font-medium text-[#d8010c]">{superficie} mq</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-600">Persone:</span>
-                <span className="font-medium text-[#1c1c1c]">{formData.informazioniGenerali?.numeroPersone || 2}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-600">Proprietà:</span>
-                <span className="font-medium text-[#1c1c1c] capitalize">
-                  {(formData.informazioniGenerali?.tipoProprieta || 'prima casa') === 'prima casa' ? 'Prima' : 'Seconda'}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-600">Stanze totali:</span>
-                <span className="font-medium text-[#1c1c1c]">{totalRooms}</span>
-              </div>
+              
+              {/* Tax deductions */}
+              {formData.informazioniGenerali?.tipoProprieta === 'seconda casa' ? (
+                <div className="text-sm md:text-base text-green-700 font-semibold mb-3 p-1">
+                  Fino a €{Math.round(estimate.max * 0.36).toLocaleString()} Detrazione (36%)
+                </div>
+              ) : (
+                <div className="text-sm md:text-base text-green-700 font-semibold mb-3 p-1">
+                  Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa (50%)
+                </div>
+              )}
             </div>
 
-            {/* Indirizzo */}
-            <div className="space-y-1">
-              <div>
-                <p className="text-[#1c1c1c] font-medium">
-                  {formData.informazioniGenerali?.indirizzo || 'Non specificato'}
-                </p>
-                <p className="text-gray-600 text-sm">
-                  {citta}
-                </p>
-              </div>
-            </div>
-
-            {/* Composizione stanze */}
-            <div>
-              <p className="text-gray-600 mb-2">Composizione ({totalRooms} stanze totali):</p>
-              <div className="flex flex-wrap gap-3">
-                {composizione && Object.entries(composizione).map(([key, value]) => {
-                  const numValue = typeof value === 'number' ? value : parseInt(value as string) || 0;
-                  return numValue > 0 ? (
-                    <span key={key} className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
-                      {numValue} {key === 'cameraDoppia' ? 'cam. doppia' : 
-                             key === 'cameraSingola' ? 'cam. singola' : key}
+            {/* Project details in a clean grid */}
+            <div className="border-t border-gray-200 pt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {/* Left column */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="h-2.5 w-2.5 text-green-600" />
+                    </div>
+                    <span className="text-sm text-gray-700 capitalize">{tipologiaAbitazione}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="h-2.5 w-2.5 text-green-600" />
+                    </div>
+                    <span className="text-sm text-gray-700">{superficie} mq</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="h-2.5 w-2.5 text-green-600" />
+                    </div>
+                    <span className="text-sm text-gray-700">{citta}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="h-2.5 w-2.5 text-green-600" />
+                    </div>
+                    <span className="text-sm text-gray-700">{totalRooms} locali - {formData.informazioniGenerali?.numeroPersone || 2} persone</span>
+                  </div>
+                </div>
+                
+                {/* Right column */}
+                <div className="space-y-2">
+                  {formData.moduliSelezionati?.includes('elettrico') && (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Check className="h-2.5 w-2.5 text-green-600" />
+                      </div>
+                      <span className="text-sm text-gray-700">Impianto elettrico</span>
+                    </div>
+                  )}
+                  {formData.moduloElettrico?.tipoDomotica && formData.moduloElettrico.tipoDomotica !== 'nessuna' && (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Check className="h-2.5 w-2.5 text-green-600" />
+                      </div>
+                      <span className="text-sm text-gray-700">Domotica {formData.moduloElettrico.tipoDomotica.toUpperCase()}</span>
+                    </div>
+                  )}
+                  {formData.moduliSelezionati?.includes('fotovoltaico') && (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Check className="h-2.5 w-2.5 text-green-600" />
+                      </div>
+                      <span className="text-sm text-gray-700">Impianto fotovoltaico</span>
+                    </div>
+                  )}
+                  {formData.moduloFotovoltaico?.batteriaAccumulo === 'si' && (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Check className="h-2.5 w-2.5 text-green-600" />
+                      </div>
+                      <span className="text-sm text-gray-700">Batteria di accumulo</span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="h-2.5 w-2.5 text-green-600" />
+                    </div>
+                    <span className="text-sm text-gray-700 capitalize">
+                      {(formData.informazioniGenerali?.tipoProprieta || 'prima casa') === 'prima casa' ? 'Prima casa' : 'Seconda casa'}
                     </span>
-                  ) : null;
-                })}
-              </div>
-            </div>
-
-            {/* Moduli configurati */}
-            <div className="border-t border-gray-200 pt-4">
-              <p className="text-gray-600 font-medium mb-3">Interventi configurati:</p>
-              <div className="flex flex-wrap gap-3">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  formData.moduliSelezionati?.includes('elettrico')
-                    ? 'bg-[#fbe12e] text-[#1c1c1c]' 
-                    : 'bg-gray-100 text-gray-400'
-                }`}>
-                  Impianto elettrico
-                  {formData.moduloElettrico?.tipoImpianto && ` - ${formData.moduloElettrico.tipoImpianto}`}
-                  {formData.moduloElettrico?.tipoDomotica && formData.moduloElettrico.tipoDomotica !== 'nessuna' && 
-                    ` - ${formData.moduloElettrico.tipoDomotica.toUpperCase()}`}
-                </span>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  formData.moduliSelezionati?.includes('fotovoltaico')
-                    ? 'bg-[#fbe12e] text-[#1c1c1c]' 
-                    : 'bg-gray-100 text-gray-400'
-                }`}>
-                  Impianto fotovoltaico
-                  {formData.moduloFotovoltaico?.tipoInterventoFotovoltaico && ` - ${formData.moduloFotovoltaico.tipoInterventoFotovoltaico}`}
-                  {formData.moduloFotovoltaico?.batteriaAccumulo === 'si' && ` con accumulo`}
-                </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
