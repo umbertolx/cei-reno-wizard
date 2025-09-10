@@ -281,9 +281,55 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
                       </span>
                     )}
                     
-                    {(dataSource.modulo_elettrico?.elettrificareTapparelle || formData.moduloElettrico?.elettrificareTapparelle) === 'si' && (
+                    {(dataSource.modulo_elettrico?.elettrificareTapparelle || formData.moduloElettrico?.elettrificareTapparelle || formData.elettrificareTapparelle) === 'si' && (
                       <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
-                        {dataSource.modulo_elettrico?.numeroTapparelle || formData.moduloElettrico?.numeroTapparelle || 0} tapparelle elettriche
+                        {dataSource.modulo_elettrico?.numeroTapparelle || formData.moduloElettrico?.numeroTapparelle || formData.numeroTapparelle || 0} tapparelle elettriche
+                      </span>
+                    )}
+                    
+                    {/* Configurazioni KNX specifiche */}
+                    {formData.knxConfig?.luci?.active && (
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                        KNX Luci {formData.knxConfig.luci.option === 'avanzato' ? 'avanzate' : 'base'}
+                      </span>
+                    )}
+                    
+                    {formData.knxConfig?.clima?.active && (
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                        KNX Clima {formData.knxConfig.clima.option === 'clima_vmc' ? 'con VMC' : 
+                                  formData.knxConfig.clima.option === 'clima_semplice' ? 'semplice' : 
+                                  formData.knxConfig.clima.option}
+                      </span>
+                    )}
+                    
+                    {formData.knxConfig?.tapparelle?.active && (
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                        KNX Tapparelle {formData.knxConfig.tapparelle.option}
+                      </span>
+                    )}
+                    
+                    {formData.knxConfig?.sicurezza?.active && (
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                        KNX Sicurezza {formData.knxConfig.sicurezza.option}
+                      </span>
+                    )}
+                    
+                    {formData.knxConfig?.irrigazione?.active && (
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                        KNX Irrigazione {formData.knxConfig.irrigazione.option}
+                      </span>
+                    )}
+                    
+                    {formData.knxConfig?.audio?.active && (
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                        KNX Audio {formData.knxConfig.audio.option}
+                      </span>
+                    )}
+                    
+                    {/* Configurazioni BTicino specifiche */}
+                    {formData.bTicinoConfig && Object.values(formData.bTicinoConfig).some((config: any) => config?.active) && (
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                        BTicino: {Object.entries(formData.bTicinoConfig).filter(([_, config]: [string, any]) => config?.active).map(([key, _]) => key).join(', ')}
                       </span>
                     )}
                   </div>
