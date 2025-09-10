@@ -140,15 +140,11 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
           <div className="flex flex-wrap gap-6">
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Tipologia:</span>
-              <span className="font-medium text-[#1c1c1c] capitalize">{formData.tipologiaAbitazione}</span>
+              <span className="font-medium text-[#1c1c1c] capitalize">{formData.tipologiaAbitazione || 'Non specificato'}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Superficie:</span>
-              <span className="font-medium text-[#d8010c]">{formData.superficie} mq</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600">Piano:</span>
-              <span className="font-medium text-[#1c1c1c] capitalize">{formData.piano}</span>
+              <span className="font-medium text-[#d8010c]">{formData.superficie || 0} mq</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Persone:</span>
@@ -157,6 +153,10 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Proprietà:</span>
               <span className="font-medium text-[#1c1c1c] capitalize">{formData.informazioniGenerali?.tipoProprieta || 'prima casa'}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">Stanze totali:</span>
+              <span className="font-medium text-[#1c1c1c]">{totalRooms}</span>
             </div>
           </div>
 
