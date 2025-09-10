@@ -245,6 +245,171 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
         </div>
       </div>
 
+      {/* Dettagli configurazione */}
+      <div className="bg-[#f4f4f4] border border-gray-200 rounded-xl p-6">
+        <h3 className="text-xl font-semibold text-[#1c1c1c] mb-6">Dettagli configurazione</h3>
+        
+        <div className="space-y-6">
+          {/* Modulo Impianto Elettrico */}
+          {(dataSource.moduli_selezionati?.includes('impianto-elettrico') || dataSource.modulo_elettrico || formData.moduliSelezionati?.includes('impianto-elettrico')) && (
+            <div className="space-y-3">
+              <h4 className="text-lg font-medium text-[#d8010c] border-b border-gray-300 pb-2">Impianto Elettrico</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(dataSource.modulo_elettrico?.tipoRistrutturazione || formData.moduloElettrico?.tipoRistrutturazione) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">Tipo ristrutturazione:</span>
+                    <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium">
+                      {(dataSource.modulo_elettrico?.tipoRistrutturazione || formData.moduloElettrico?.tipoRistrutturazione) === 'completa' ? 'Completa' : 'Parziale'}
+                    </span>
+                  </div>
+                )}
+                
+                {(dataSource.modulo_elettrico?.impiantoVecchio || formData.moduloElettrico?.impiantoVecchio) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">Impianto esistente:</span>
+                    <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium">
+                      {(dataSource.modulo_elettrico?.impiantoVecchio || formData.moduloElettrico?.impiantoVecchio) === 'si' ? 'Da aggiornare' : 'Certificato'}
+                    </span>
+                  </div>
+                )}
+                
+                {(dataSource.modulo_elettrico?.tipoImpianto || formData.moduloElettrico?.tipoImpianto) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">Livello impianto:</span>
+                    <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium">
+                      {(() => {
+                        const tipo = dataSource.modulo_elettrico?.tipoImpianto || formData.moduloElettrico?.tipoImpianto;
+                        return tipo === 'livello1' ? 'Standard Minimo' : 
+                               tipo === 'livello2' ? 'Avanzato' : 
+                               tipo === 'livello3' ? 'Domotico' : tipo;
+                      })()}
+                    </span>
+                  </div>
+                )}
+                
+                {(dataSource.modulo_elettrico?.tipoDomotica || formData.moduloElettrico?.tipoDomotica) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">Sistema domotico:</span>
+                    <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium">
+                      {(dataSource.modulo_elettrico?.tipoDomotica || formData.moduloElettrico?.tipoDomotica) === 'knx' ? 'KNX' : 'BTicino Wireless'}
+                    </span>
+                  </div>
+                )}
+              </div>
+              
+              {(dataSource.modulo_elettrico?.ambientiSelezionati || formData.moduloElettrico?.ambientiSelezionati) && (
+                <div>
+                  <span className="text-gray-600 block mb-2">Ambienti per interventi elettrici:</span>
+                  <div className="flex flex-wrap gap-2">
+                    {(dataSource.modulo_elettrico?.ambientiSelezionati || formData.moduloElettrico?.ambientiSelezionati)?.map((ambiente: string) => (
+                      <span key={ambiente} className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm">
+                        {ambiente}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {(dataSource.modulo_elettrico?.elettrificareTapparelle || formData.moduloElettrico?.elettrificareTapparelle) === 'si' && (
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-600">Tapparelle elettriche:</span>
+                  <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium">
+                    {dataSource.modulo_elettrico?.numeroTapparelle || formData.moduloElettrico?.numeroTapparelle || 0} tapparelle
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Modulo Fotovoltaico */}
+          {(dataSource.moduli_selezionati?.includes('fotovoltaico') || dataSource.modulo_fotovoltaico || formData.moduliSelezionati?.includes('fotovoltaico')) && (
+            <div className="space-y-3">
+              <h4 className="text-lg font-medium text-[#d8010c] border-b border-gray-300 pb-2">Impianto Fotovoltaico</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(dataSource.modulo_fotovoltaico?.tipoInterventoFotovoltaico || formData.moduloFotovoltaico?.tipoInterventoFotovoltaico) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">Tipo intervento:</span>
+                    <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium">
+                      {(dataSource.modulo_fotovoltaico?.tipoInterventoFotovoltaico || formData.moduloFotovoltaico?.tipoInterventoFotovoltaico) === 'nuovo' ? 'Nuovo impianto' : 'Ampliamento'}
+                    </span>
+                  </div>
+                )}
+                
+                {(dataSource.modulo_fotovoltaico?.tipoFalda || formData.moduloFotovoltaico?.tipoFalda) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">Tipo tetto:</span>
+                    <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium capitalize">
+                      {dataSource.modulo_fotovoltaico?.tipoFalda || formData.moduloFotovoltaico?.tipoFalda}
+                    </span>
+                  </div>
+                )}
+                
+                {(dataSource.modulo_fotovoltaico?.orientamentoTetto || formData.moduloFotovoltaico?.orientamentoTetto) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">Orientamento:</span>
+                    <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium capitalize">
+                      {dataSource.modulo_fotovoltaico?.orientamentoTetto || formData.moduloFotovoltaico?.orientamentoTetto}
+                    </span>
+                  </div>
+                )}
+                
+                {(dataSource.modulo_fotovoltaico?.batteriaAccumulo || formData.moduloFotovoltaico?.batteriaAccumulo) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">Batteria accumulo:</span>
+                    <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium">
+                      {(dataSource.modulo_fotovoltaico?.batteriaAccumulo || formData.moduloFotovoltaico?.batteriaAccumulo) === 'si' ? 'Inclusa' : 'Non inclusa'}
+                    </span>
+                  </div>
+                )}
+                
+                {(dataSource.modulo_fotovoltaico?.obiettivoPrincipale || formData.moduloFotovoltaico?.obiettivoPrincipale) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">Obiettivo:</span>
+                    <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium">
+                      {(() => {
+                        const obiettivo = dataSource.modulo_fotovoltaico?.obiettivoPrincipale || formData.moduloFotovoltaico?.obiettivoPrincipale;
+                        return obiettivo === 'autoconsumo' ? 'Autoconsumo' : 
+                               obiettivo === 'risparmio' ? 'Risparmio economico' : 
+                               obiettivo === 'sostenibilita' ? 'Sostenibilità' : obiettivo;
+                      })()}
+                    </span>
+                  </div>
+                )}
+              </div>
+              
+              {(dataSource.modulo_fotovoltaico?.superficieDisponibile || formData.moduloFotovoltaico?.superficieDisponibile) && (
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-600">Superficie disponibile tetto:</span>
+                  <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-sm font-medium">
+                    {dataSource.modulo_fotovoltaico?.superficieDisponibile || formData.moduloFotovoltaico?.superficieDisponibile} mq
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Modulo Sicurezza */}
+          {(dataSource.moduli_selezionati?.includes('sicurezza') || formData.moduliSelezionati?.includes('sicurezza')) && (
+            <div className="space-y-3">
+              <h4 className="text-lg font-medium text-[#d8010c] border-b border-gray-300 pb-2">Impianto di Sicurezza</h4>
+              <div className="text-gray-600">
+                Modulo selezionato - Configurazione in fase di completamento
+              </div>
+            </div>
+          )}
+
+          {/* Modulo Termotecnico */}
+          {(dataSource.moduli_selezionati?.includes('termotecnico') || formData.moduliSelezionati?.includes('termotecnico')) && (
+            <div className="space-y-3">
+              <h4 className="text-lg font-medium text-[#d8010c] border-b border-gray-300 pb-2">Impianto Termotecnico</h4>
+              <div className="text-gray-600">
+                Modulo selezionato - Configurazione in fase di completamento
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Form di contatto */}
       <div className="space-y-6">
         <h2 className="text-2xl font-medium text-[#1c1c1c]">Inserisci i tuoi dati per continuare</h2>
