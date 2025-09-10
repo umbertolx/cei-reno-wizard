@@ -210,41 +210,31 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
           </div>
 
           {/* Moduli completati */}
-          {configurazioni.length > 0 && (
-            <div className="border-t border-gray-200 pt-4">
-              <p className="text-gray-600 font-medium mb-3">Moduli completati:</p>
-              <div className="space-y-2">
-                {dataSource.moduli_selezionati?.includes('impianto-elettrico') && (
-                  <div className="bg-white border border-gray-200 rounded-lg p-3">
-                    <p className="font-medium text-[#1c1c1c] mb-1">🔌 Impianto Elettrico</p>
-                    <p className="text-sm text-gray-600">Configurazione elettrica completata</p>
-                  </div>
-                )}
-                {dataSource.moduli_selezionati?.includes('fotovoltaico') && (
-                  <div className="bg-white border border-gray-200 rounded-lg p-3">
-                    <p className="font-medium text-[#1c1c1c] mb-1">☀️ Fotovoltaico</p>
-                    <p className="text-sm text-gray-600">Sistema fotovoltaico configurato</p>
-                  </div>
-                )}
-                {!dataSource.moduli_selezionati?.length && formData.moduliSelezionati?.length > 0 && (
-                  <div className="space-y-2">
-                    {formData.moduliSelezionati.includes('impianto-elettrico') && (
-                      <div className="bg-white border border-gray-200 rounded-lg p-3">
-                        <p className="font-medium text-[#1c1c1c] mb-1">🔌 Impianto Elettrico</p>
-                        <p className="text-sm text-gray-600">Configurazione elettrica completata</p>
-                      </div>
-                    )}
-                    {formData.moduliSelezionati.includes('fotovoltaico') && (
-                      <div className="bg-white border border-gray-200 rounded-lg p-3">
-                        <p className="font-medium text-[#1c1c1c] mb-1">☀️ Fotovoltaico</p>
-                        <p className="text-sm text-gray-600">Sistema fotovoltaico configurato</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+          <div className="border-t border-gray-200 pt-4">
+            <p className="text-gray-600 font-medium mb-3">Moduli configurati:</p>
+            <div className="flex flex-wrap gap-3">
+              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                (dataSource.moduli_selezionati?.includes('impianto-elettrico') || formData.moduliSelezionati?.includes('impianto-elettrico'))
+                  ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                  : 'bg-gray-100 text-gray-400'
+              }`}>
+                Impianto Elettrico
+              </span>
+              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                (dataSource.moduli_selezionati?.includes('fotovoltaico') || formData.moduliSelezionati?.includes('fotovoltaico'))
+                  ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                  : 'bg-gray-100 text-gray-400'
+              }`}>
+                Fotovoltaico
+              </span>
+              <span className="bg-gray-100 text-gray-400 px-3 py-1 rounded-full text-sm font-medium">
+                Domotica Avanzata
+              </span>
+              <span className="bg-gray-100 text-gray-400 px-3 py-1 rounded-full text-sm font-medium">
+                Climatizzazione
+              </span>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
