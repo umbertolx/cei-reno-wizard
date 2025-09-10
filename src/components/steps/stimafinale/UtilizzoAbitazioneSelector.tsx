@@ -16,7 +16,7 @@ export const UtilizzoAbitazioneSelector = ({ value, onChange }: UtilizzoAbitazio
     { 
       id: 'seconda casa', 
       label: 'Seconda Casa',
-      description: 'Abitata solo parzialmente (20%)'
+      description: 'Abitata solo parzialmente (max 20%)'
     }
   ];
 
