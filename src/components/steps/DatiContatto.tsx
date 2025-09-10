@@ -146,11 +146,8 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
     <div className="space-y-8">
       <div className="space-y-2 md:space-y-3">
         <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
-          Dati di contatto
+          Riepilogo e dati di contatto
         </h1>
-        <p className="text-sm md:text-base text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
-          Inserisci i tuoi dati di contatto per procedere
-        </p>
       </div>
 
 
