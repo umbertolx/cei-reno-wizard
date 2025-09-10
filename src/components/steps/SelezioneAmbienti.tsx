@@ -187,16 +187,6 @@ export const SelezioneAmbienti = ({ formData, updateFormData, onNext, onBack }: 
                 })}
               </div>
             </div>
-
-            {ambientiSelezionati.length > 0 && (
-              <div className="px-3 md:px-0">
-                <div className="bg-[#d8010c]/5 border border-[#d8010c]/20 rounded-lg p-4">
-                  <p className="text-sm text-[#d8010c] font-medium">
-                    Hai selezionato {ambientiSelezionati.length} {ambientiSelezionati.length === 1 ? 'ambiente' : 'ambienti'}: {ambientiSelezionati.join(', ')}
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
