@@ -190,7 +190,7 @@ export const StimaFinale = ({
                 <p className="text-gray-600 font-medium mb-2 text-xs">Interventi configurati:</p>
                 <div className="flex flex-wrap gap-2">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    formData.moduliSelezionati?.includes('elettrico')
+                    formData.moduliSelezionati?.includes('impianto-elettrico')
                       ? 'bg-[#fbe12e] text-[#1c1c1c]' 
                       : 'bg-gray-100 text-gray-400'
                   }`}>
