@@ -73,112 +73,149 @@ export const StimaFinale = ({
 
   return (
     <div className="space-y-8">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-5xl font-bold text-[#1c1c1c] leading-tight">La tua stima personalizzata</h1>
+      <div className="space-y-2 md:space-y-3 mt-4">
+        <h1 className="text-[24px] md:text-[36px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
+          La tua stima personalizzata
+        </h1>
       </div>
 
-      {/* Stima principale */}
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
-        <div className="p-4 md:p-6">
+      {/* Box stima principale in stile CEI */}
+      <div className="bg-[#f4f4f4] border border-gray-200 rounded-xl p-6">
+        <div className="space-y-6">
+          {/* Stima principale */}
           <div className="text-center space-y-4">
-            <div className="text-sm text-gray-500 mb-1 font-medium">
+            <div className="text-sm text-gray-600 mb-1 font-medium">
               Budget stimato per questo progetto
             </div>
             
-            <div className="text-4xl md:text-5xl font-bold text-gray-900">
+            <div className="text-3xl md:text-4xl font-bold text-[#1c1c1c]">
               €{estimate.min.toLocaleString()} - €{estimate.max.toLocaleString()}
             </div>
             
             {/* IVA esclusa */}
-            <div className="text-base md:text-lg text-gray-600">
+            <div className="text-base text-gray-600">
               IVA €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()} esclusa
             </div>
             
-            {/* Detrazione fiscale dinamica basata sul tipo proprietà dalle info generali */}
+            {/* Detrazione fiscale dinamica */}
             {formData.informazioniGenerali?.tipoProprieta === 'seconda casa' ? (
-              <div className="text-lg md:text-xl text-green-600 font-semibold">
+              <div className="text-lg text-[#d8010c] font-semibold">
                 Fino a €{Math.round(estimate.max * 0.36).toLocaleString()} Detrazione (36%)
               </div>
             ) : (
-              <div className="text-lg md:text-xl text-green-600 font-semibold">
+              <div className="text-lg text-[#d8010c] font-semibold">
                 Fino a €{Math.round(estimate.max * 0.50).toLocaleString()} Bonus Casa (50%)
               </div>
             )}
           </div>
 
-          <hr className="my-6 border-gray-200" />
+          <hr className="border-gray-200" />
 
-          {/* Moduli completati dinamici */}
+          {/* Informazioni configurazione */}
           <div className="space-y-4">
             <div className="text-sm font-medium text-gray-600 mb-3">Configurazione completata:</div>
             
-            {/* Informazioni generali */}
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <Check className="h-3 w-3 text-white" />
+            {/* Informazioni principali in formato semplice */}
+            <div className="flex flex-wrap gap-6">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-600">Tipologia:</span>
+                <span className="font-medium text-[#1c1c1c] capitalize">{tipologiaAbitazione}</span>
               </div>
-              <span className="text-gray-700 capitalize">{tipologiaAbitazione} - {superficie} mq</span>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <Check className="h-3 w-3 text-white" />
+              <div className="flex items-center gap-2">
+                <span className="text-gray-600">Superficie:</span>
+                <span className="font-medium text-[#d8010c]">{superficie} mq</span>
               </div>
-              <span className="text-gray-700">{citta} - {totalRooms} locali - {formData.informazioniGenerali?.numeroPersone || 2} persone</span>
-            </div>
-
-            {/* Moduli selezionati */}
-            {formData.moduliSelezionati?.includes('elettrico') && (
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Zap className="h-3 w-3 text-white" />
-                </div>
-                <span className="text-gray-700">
-                  Impianto Elettrico
-                  {formData.moduloElettrico?.tipoImpianto && ` - ${formData.moduloElettrico.tipoImpianto}`}
-                  {formData.moduloElettrico?.tipoDomotica && formData.moduloElettrico.tipoDomotica !== 'nessuna' && 
-                    ` - Domotica ${formData.moduloElettrico.tipoDomotica.toUpperCase()}`}
+              <div className="flex items-center gap-2">
+                <span className="text-gray-600">Persone:</span>
+                <span className="font-medium text-[#1c1c1c]">{formData.informazioniGenerali?.numeroPersone || 2}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-gray-600">Proprietà:</span>
+                <span className="font-medium text-[#1c1c1c] capitalize">
+                  {(formData.informazioniGenerali?.tipoProprieta || 'prima casa') === 'prima casa' ? 'Prima' : 'Seconda'}
                 </span>
               </div>
-            )}
+              <div className="flex items-center gap-2">
+                <span className="text-gray-600">Stanze totali:</span>
+                <span className="font-medium text-[#1c1c1c]">{totalRooms}</span>
+              </div>
+            </div>
 
-            {formData.moduliSelezionati?.includes('fotovoltaico') && (
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Battery className="h-3 w-3 text-white" />
-                </div>
-                <span className="text-gray-700">
-                  Impianto Fotovoltaico
+            {/* Indirizzo */}
+            <div className="space-y-1">
+              <div>
+                <p className="text-[#1c1c1c] font-medium">
+                  {formData.informazioniGenerali?.indirizzo || 'Non specificato'}
+                </p>
+                <p className="text-gray-600 text-sm">
+                  {citta}
+                </p>
+              </div>
+            </div>
+
+            {/* Composizione stanze */}
+            <div>
+              <p className="text-gray-600 mb-2">Composizione ({totalRooms} stanze totali):</p>
+              <div className="flex flex-wrap gap-3">
+                {composizione && Object.entries(composizione).map(([key, value]) => {
+                  const numValue = typeof value === 'number' ? value : parseInt(value as string) || 0;
+                  return numValue > 0 ? (
+                    <span key={key} className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                      {numValue} {key === 'cameraDoppia' ? 'cam. doppia' : 
+                             key === 'cameraSingola' ? 'cam. singola' : key}
+                    </span>
+                  ) : null;
+                })}
+              </div>
+            </div>
+
+            {/* Moduli configurati */}
+            <div className="border-t border-gray-200 pt-4">
+              <p className="text-gray-600 font-medium mb-3">Interventi configurati:</p>
+              <div className="flex flex-wrap gap-3">
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  formData.moduliSelezionati?.includes('elettrico')
+                    ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                    : 'bg-gray-100 text-gray-400'
+                }`}>
+                  Impianto elettrico
+                  {formData.moduloElettrico?.tipoImpianto && ` - ${formData.moduloElettrico.tipoImpianto}`}
+                  {formData.moduloElettrico?.tipoDomotica && formData.moduloElettrico.tipoDomotica !== 'nessuna' && 
+                    ` - ${formData.moduloElettrico.tipoDomotica.toUpperCase()}`}
+                </span>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  formData.moduliSelezionati?.includes('fotovoltaico')
+                    ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                    : 'bg-gray-100 text-gray-400'
+                }`}>
+                  Impianto fotovoltaico
                   {formData.moduloFotovoltaico?.tipoInterventoFotovoltaico && ` - ${formData.moduloFotovoltaico.tipoInterventoFotovoltaico}`}
                   {formData.moduloFotovoltaico?.batteriaAccumulo === 'si' && ` con accumulo`}
                 </span>
               </div>
-            )}
-            
-            {/* Tipo proprietà */}
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <Home className="h-3 w-3 text-white" />
-              </div>
-              <span className="text-gray-700 capitalize">
-                {formData.informazioniGenerali?.tipoProprieta || 'prima casa'}
-              </span>
             </div>
           </div>
         </div>
       </div>
 
 
+      {/* Box messaggio sopralluogo in stile CEI */}
+      <div className="bg-white border-2 border-[#fbe12e] p-4 rounded-xl text-center shadow-sm">
+        <p className="text-md text-[#1c1c1c] font-medium">
+          Richiedendo il sopralluogo, un nostro tecnico ti contatterà entro 24-48h per confermare l'appuntamento
+        </p>
+      </div>
+
       {/* Note aggiuntive per il sopralluogo */}
-      <div className="space-y-2">
-        <Label htmlFor="note" className="text-lg">Note per il sopralluogo (opzionale)</Label>
+      <div className="space-y-4">
+        <h2 className="text-xl font-medium text-[#1c1c1c]">Note per il sopralluogo (opzionale)</h2>
         <Textarea
           id="note"
           placeholder="Aggiungi eventuali note o richieste specifiche per il sopralluogo..."
           value={formData.note || ""}
           onChange={(e) => updateFormData({ note: e.target.value })}
           rows={4}
-          className="text-base"
+          className="text-base p-4 rounded-lg"
         />
       </div>
 
@@ -210,14 +247,6 @@ export const StimaFinale = ({
             </>
           )}
         </Button>
-      </div>
-
-      <div className="text-sm text-gray-600 text-center">
-        {isSubmitting ? (
-          "Invio della richiesta di sopralluogo in corso..."
-        ) : (
-          "Richiedendo il sopralluogo, un nostro tecnico ti contatterà entro 24-48h per confermare l'appuntamento"
-        )}
       </div>
     </div>
   );
