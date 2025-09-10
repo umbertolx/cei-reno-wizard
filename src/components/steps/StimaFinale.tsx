@@ -52,7 +52,24 @@ export const StimaFinale = ({
     );
   }
 
-  const totalRooms = Object.values(formData.composizione).reduce((acc, curr) => acc + curr, 0);
+  const composizione = formData.informazioniGenerali?.composizione || formData.composizione || {
+    cucina: 1,
+    cameraDoppia: 1,
+    cameraSingola: 1,
+    soggiorno: 1,
+    bagno: 2,
+    altro: 0
+  };
+  
+  const totalRooms = Object.values(composizione).reduce((acc: number, curr) => {
+    const numericValue = typeof curr === 'number' ? curr : parseInt(curr as string) || 0;
+    return acc + numericValue;
+  }, 0);
+
+  // Get values from the correct nested structure
+  const tipologiaAbitazione = formData.informazioniGenerali?.tipologiaAbitazione || formData.tipologiaAbitazione || 'appartamento';
+  const superficie = formData.informazioniGenerali?.superficie || formData.superficie || 85;
+  const citta = formData.informazioniGenerali?.citta || formData.citta || 'Milano';
 
   return (
     <div className="space-y-8">
@@ -100,14 +117,14 @@ export const StimaFinale = ({
               <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
                 <Check className="h-3 w-3 text-white" />
               </div>
-              <span className="text-gray-700 capitalize">{formData.tipologiaAbitazione} - {formData.superficie} mq</span>
+              <span className="text-gray-700 capitalize">{tipologiaAbitazione} - {superficie} mq</span>
             </div>
             
             <div className="flex items-center gap-3">
               <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
                 <Check className="h-3 w-3 text-white" />
               </div>
-              <span className="text-gray-700">{formData.citta} - {totalRooms} locali - {formData.informazioniGenerali?.numeroPersone || 2} persone</span>
+              <span className="text-gray-700">{citta} - {totalRooms} locali - {formData.informazioniGenerali?.numeroPersone || 2} persone</span>
             </div>
 
             {/* Moduli selezionati */}
