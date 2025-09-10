@@ -39,6 +39,156 @@ export interface DatabaseLead {
   stima_finale?: any;
 }
 
+export const savePartialLead = async (formData: FormData): Promise<string> => {
+  console.log("🔄 Starting savePartialLead function");
+  console.log("📋 Input formData:", JSON.stringify(formData, null, 2));
+
+  // Get data from new modular structure with fallback to old structure
+  const contatti = formData.contatti || {
+    nome: '', cognome: '', email: '', telefono: '', 
+    accettoTermini: false, tipoProprietà: 'prima casa'
+  };
+  const info = formData.informazioniGenerali || {
+    tipologiaAbitazione: '', superficie: 0, indirizzo: '', citta: '', 
+    cap: '', regione: '', piano: '', numeroPersone: 2, tipoProprieta: 'prima casa',
+    composizione: {}
+  };
+
+  // For partial save, we only need basic info to be complete
+  if (!info.tipologiaAbitazione || !info.superficie) {
+    const error = "Informazioni di base incomplete per il salvataggio parziale";
+    console.error("❌ Validation error:", error);
+    throw new Error(error);
+  }
+
+  const leadData = {
+    nome: contatti.nome || 'Lead parziale',
+    cognome: contatti.cognome || '',
+    email: contatti.email || `partial_${Date.now()}@temp.email`,
+    telefono: contatti.telefono || '',
+    tipologia_abitazione: info.tipologiaAbitazione,
+    superficie: info.superficie,
+    indirizzo: info.indirizzo || '',
+    citta: info.citta || '',
+    cap: info.cap || '',
+    regione: info.regione || '',
+    piano: info.piano || '',
+    composizione: info.composizione || {},
+    moduli_selezionati: formData.moduliSelezionati || [],
+    informazioni_generali: info,
+    modulo_elettrico: formData.moduloElettrico ? {
+      ...formData.moduloElettrico,
+      estimate: undefined
+    } : null,
+    modulo_fotovoltaico: formData.moduloFotovoltaico ? {
+      ...formData.moduloFotovoltaico,
+      estimate: undefined
+    } : null,
+    configurazione_tecnica: {
+      tipoRistrutturazione: formData.tipoRistrutturazione || formData.moduloElettrico?.tipoRistrutturazione,
+      tipoDomotica: formData.tipoDomotica || formData.moduloElettrico?.tipoDomotica,
+    },
+    numero_persone: info.numeroPersone || 2,
+    tipo_proprieta: info.tipoProprieta || 'prima casa',
+    accetto_termini: false,
+    stato: "configurazione_in_corso"
+  };
+
+  console.log("📦 Prepared partial lead data:", JSON.stringify(leadData, null, 2));
+
+  try {
+    const { data, error } = await supabase
+      .from('leads')
+      .insert(leadData)
+      .select('id')
+      .single();
+
+    if (error) {
+      console.error("❌ Supabase error during partial lead insertion:", error);
+      throw new Error(`Errore nel salvare il lead parziale: ${error.message}`);
+    }
+
+    if (!data || !data.id) {
+      throw new Error("Nessun ID restituito dal database dopo l'inserimento");
+    }
+
+    console.log("✅ Partial lead saved successfully with ID:", data.id);
+    return data.id;
+
+  } catch (error) {
+    console.error("💥 Critical error in savePartialLead:", error);
+    throw error;
+  }
+};
+
+export const updateLeadWithEstimate = async (
+  leadId: string,
+  formData: FormData,
+  estimate: EstimateResponse
+): Promise<void> => {
+  console.log("🔄 Updating lead with estimate:", leadId);
+  
+  const contatti = formData.contatti || {
+    nome: '', cognome: '', email: '', telefono: '', 
+    accettoTermini: false, tipoProprietà: 'prima casa'
+  };
+
+  const updateData = {
+    nome: contatti.nome,
+    cognome: contatti.cognome,
+    email: contatti.email,
+    telefono: contatti.telefono,
+    stima_min: estimate.min,
+    stima_max: estimate.max,
+    stima_media: estimate.average,
+    stima_dettagli: {
+      breakdown: estimate.breakdown,
+      deductions: estimate.deductions,
+      calculatedAt: estimate.calculatedAt
+    },
+    accetto_termini: contatti.accettoTermini,
+    tipo_proprieta: contatti.tipoProprietà || 'prima casa',
+    stato: "nuovo",
+    data_ultimo_contatto: new Date().toISOString()
+  };
+
+  try {
+    const { error } = await supabase
+      .from('leads')
+      .update(updateData)
+      .eq('id', leadId);
+
+    if (error) {
+      console.error("❌ Error updating lead with estimate:", error);
+      throw new Error(`Errore nell'aggiornare il lead: ${error.message}`);
+    }
+
+    // Save estimate data
+    const estimateData = {
+      lead_id: leadId,
+      parent_lead_id: leadId,
+      min_price: estimate.min,
+      max_price: estimate.max,
+      average_price: estimate.average,
+      breakdown: estimate.breakdown,
+      deductions: estimate.deductions,
+    };
+
+    const { error: estimateError } = await supabase
+      .from('estimates')
+      .insert(estimateData);
+
+    if (estimateError) {
+      console.error("⚠️ Error saving estimate:", estimateError);
+    }
+
+    console.log("✅ Lead updated with estimate successfully");
+  } catch (error) {
+    console.error("💥 Critical error in updateLeadWithEstimate:", error);
+    throw error;
+  }
+};
+
 export const saveLeadToDatabase = async (
   formData: FormData,
   estimate: EstimateResponse

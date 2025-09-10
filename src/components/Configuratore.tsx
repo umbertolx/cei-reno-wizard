@@ -23,7 +23,7 @@ import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { saveLeadToDatabase } from "@/services/leadService";
+import { saveLeadToDatabase, savePartialLead, updateLeadWithEstimate } from "@/services/leadService";
 import { supabase } from "@/integrations/supabase/client";
 import { EstimateResponse } from "@/types/estimate";
 import { useConfiguratorFlow } from "@/hooks/useConfiguratorFlow";
@@ -148,6 +148,7 @@ export type FormData = {
 export const Configuratore = () => {
   const [isSavingLead, setIsSavingLead] = useState(false);
   const [savedLeadId, setSavedLeadId] = useState<string | null>(null);
+  const [partialLeadId, setPartialLeadId] = useState<string | null>(null);
   
   const [formData, setFormData] = useState<FormData>({
     moduliSelezionati: [],
@@ -196,21 +197,48 @@ export const Configuratore = () => {
     const currentStepConfig = flow.getCurrentStepConfig();
     console.log("🔄 Handle next called for step:", currentStepConfig?.id);
 
-    // Se stiamo per andare alla stima finale, calcola la stima E salva il lead
+    // Save partial data before going to DatiContatto
+    if (currentStepConfig && flow.isLastTechnicalStep(currentStepConfig.id)) {
+      console.log("💾 Saving partial lead data before DatiContatto...");
+      
+      try {
+        const leadId = await savePartialLead(formData);
+        setPartialLeadId(leadId);
+        console.log("✅ Partial lead saved with ID:", leadId);
+        
+        toast({
+          title: "Configurazione salvata",
+          description: "I tuoi dati tecnici sono stati salvati.",
+          duration: 2000,
+        });
+      } catch (error) {
+        console.error("❌ Error saving partial lead:", error);
+        // Don't block navigation if partial save fails
+      }
+    }
+
+    // Se stiamo per andare alla stima finale, calcola la stima E aggiorna il lead
     if (currentStepConfig?.id === 'dati-contatto') {
       console.log("🔢 About to move to estimate, calculating...");
       
       const calculatedEstimate = await calculateWithRetry(formData);
       if (calculatedEstimate) {
         updateFormData({ estimate: calculatedEstimate });
-        console.log("✅ Estimate calculated, now saving lead...");
+        console.log("✅ Estimate calculated, now updating lead...");
         
-        // Salva il lead con la stima
         setIsSavingLead(true);
         try {
-          const leadId = await saveLeadToDatabase(formData, calculatedEstimate);
-          setSavedLeadId(leadId);
-          console.log("✅ Lead saved successfully with ID:", leadId);
+          if (partialLeadId) {
+            // Update existing partial lead
+            await updateLeadWithEstimate(partialLeadId, formData, calculatedEstimate);
+            setSavedLeadId(partialLeadId);
+            console.log("✅ Lead updated successfully with ID:", partialLeadId);
+          } else {
+            // Fallback: create new lead (shouldn't happen normally)
+            const leadId = await saveLeadToDatabase(formData, calculatedEstimate);
+            setSavedLeadId(leadId);
+            console.log("✅ New lead saved successfully with ID:", leadId);
+          }
           
           toast({
             title: "Dati salvati con successo!",
@@ -220,7 +248,7 @@ export const Configuratore = () => {
           
           flow.goToNext();
         } catch (error) {
-          console.error("❌ Error saving lead:", error);
+          console.error("❌ Error saving/updating lead:", error);
           toast({
             title: "Errore nel salvare i dati",
             description: "Si è verificato un errore. Riprova.",
@@ -286,7 +314,8 @@ export const Configuratore = () => {
   const handleRequestSurvey = async () => {
     console.log("🏠 Handling survey request for lead:", savedLeadId);
     
-    if (!savedLeadId) {
+    const leadIdToUpdate = savedLeadId || partialLeadId;
+    if (!leadIdToUpdate) {
       console.error("❌ No saved lead ID available");
       toast({
         title: "Errore",
@@ -308,7 +337,7 @@ export const Configuratore = () => {
           note: formData.note || null,
           data_ultimo_contatto: new Date().toISOString()
         })
-        .eq('id', savedLeadId);
+        .eq('id', leadIdToUpdate);
 
       if (error) {
         throw new Error(`Errore nell'aggiornare la richiesta: ${error.message}`);

@@ -8,6 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import { User, Phone, Mail, CircleDot, ChevronDown, Loader2, Home, MapPin, Settings } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { useLatestLead } from "@/hooks/useLatestLead";
 
 type Props = {
   formData: FormData;
@@ -18,8 +19,13 @@ type Props = {
 };
 
 export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalculatingEstimate = false }: Props) => {
+  const { lead, isLoading: isLoadingLead } = useLatestLead(formData.contatti?.email);
+  
+  console.log("🔍 DatiContatto - Current lead from DB:", lead);
+  console.log("📋 DatiContatto - Current formData:", formData);
+
   const validateForm = () => {
-    if (!formData.nome.trim()) {
+    if (!formData.contatti?.nome?.trim()) {
       toast({
         title: "Campo mancante",
         description: "Inserisci il tuo nome",
@@ -28,7 +34,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
       return false;
     }
     
-    if (!formData.cognome.trim()) {
+    if (!formData.contatti?.cognome?.trim()) {
       toast({
         title: "Campo mancante",
         description: "Inserisci il tuo cognome",
@@ -37,7 +43,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
       return false;
     }
     
-    if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
+    if (!formData.contatti?.email?.trim() || !/^\S+@\S+\.\S+$/.test(formData.contatti.email)) {
       toast({
         title: "Email non valida",
         description: "Inserisci un indirizzo email valido",
@@ -46,7 +52,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
       return false;
     }
     
-    if (!formData.telefono.trim() || formData.telefono.length < 8) {
+    if (!formData.contatti?.telefono?.trim() || formData.contatti.telefono.length < 8) {
       toast({
         title: "Telefono non valido",
         description: "Inserisci un numero di telefono valido",
@@ -55,7 +61,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
       return false;
     }
     
-    if (!formData.accettoTermini) {
+    if (!formData.contatti?.accettoTermini) {
       toast({
         title: "Termini e condizioni",
         description: "Devi accettare i termini e le condizioni per continuare",
@@ -73,52 +79,65 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
     }
   };
 
-  const totalRooms = formData.composizione ? Object.values(formData.composizione).reduce((acc, curr) => acc + curr, 0) : 0;
-
-  // Funzione per generare il riassunto della configurazione
   const getConfigurationSummary = () => {
-    const config = [];
-    
-    if (formData.moduloElettrico?.tipoRistrutturazione) {
-      config.push(`Ristrutturazione ${formData.moduloElettrico.tipoRistrutturazione}`);
+    // Use database data if available, fallback to form data
+    const dataSource = lead || {
+      tipologia_abitazione: formData.tipologiaAbitazione || formData.informazioniGenerali?.tipologiaAbitazione,
+      superficie: formData.superficie || formData.informazioniGenerali?.superficie,
+      indirizzo: formData.indirizzo || formData.informazioniGenerali?.indirizzo,
+      citta: formData.citta || formData.informazioniGenerali?.citta,
+      numero_persone: formData.informazioniGenerali?.numeroPersone,
+      tipo_proprieta: formData.informazioniGenerali?.tipoProprieta,
+      composizione: formData.composizione || formData.informazioniGenerali?.composizione,
+      moduli_selezionati: formData.moduliSelezionati,
+      modulo_elettrico: formData.moduloElettrico,
+      modulo_fotovoltaico: formData.moduloFotovoltaico
+    };
+
+    console.log("📊 Using data source for summary:", dataSource);
+
+    const configurazioni = [];
+
+    // Check electrical module
+    if (dataSource.moduli_selezionati?.includes('impianto-elettrico') || dataSource.modulo_elettrico) {
+      const elettrico = dataSource.modulo_elettrico;
+      if (elettrico?.tipoRistrutturazione) {
+        configurazioni.push(`Ristrutturazione ${elettrico.tipoRistrutturazione}`);
+        
+        if (elettrico.tipoImpianto) {
+          const tipoImpianto = elettrico.tipoImpianto === 'livello1' ? 'Base' : 
+                              elettrico.tipoImpianto === 'livello2' ? 'Avanzato' : 
+                              elettrico.tipoImpianto === 'livello3' ? 'Domotico' : elettrico.tipoImpianto;
+          configurazioni.push(`Impianto ${tipoImpianto}`);
+        }
+        
+        if (elettrico.tipoDomotica) {
+          const domotica = elettrico.tipoDomotica === 'knx' ? 'KNX' : 
+                          elettrico.tipoDomotica === 'wireless' ? 'BTicino Wireless' : elettrico.tipoDomotica;
+          configurazioni.push(`Domotica ${domotica}`);
+        }
+      }
     }
-    
-    if (formData.moduloElettrico?.tipoImpianto) {
-      const tipoImpianto = formData.moduloElettrico.tipoImpianto === 'livello1' ? 'Base' : 
-                          formData.moduloElettrico.tipoImpianto === 'livello2' ? 'Avanzato' : 
-                          formData.moduloElettrico.tipoImpianto === 'livello3' ? 'Domotico' : formData.moduloElettrico.tipoImpianto;
-      config.push(`Impianto ${tipoImpianto}`);
+
+    // Check photovoltaic module
+    if (dataSource.moduli_selezionati?.includes('fotovoltaico') || dataSource.modulo_fotovoltaico) {
+      const fotovoltaico = dataSource.modulo_fotovoltaico;
+      if (fotovoltaico?.tipoInterventoFotovoltaico) {
+        configurazioni.push(`Fotovoltaico ${fotovoltaico.tipoInterventoFotovoltaico}`);
+        if (fotovoltaico.batteriaAccumulo === 'si') {
+          configurazioni.push('Con batteria di accumulo');
+        }
+      }
     }
-    
-    if (formData.moduloElettrico?.tipoDomotica) {
-      const domotica = formData.moduloElettrico.tipoDomotica === 'knx' ? 'KNX' : 
-                      formData.moduloElettrico.tipoDomotica === 'wireless' ? 'BTicino Wireless' : formData.moduloElettrico.tipoDomotica;
-      config.push(`Domotica ${domotica}`);
-    }
-    
-    if (formData.elettrificareTapparelle === 'si' && formData.numeroTapparelle) {
-      config.push(`${formData.numeroTapparelle} tapparelle elettrificate`);
-    }
-    
-    // Aggiungi features KNX se presenti
-    if (formData.knxConfig && Object.keys(formData.knxConfig).length > 0) {
-      const knxFeatures = Object.keys(formData.knxConfig);
-      if (knxFeatures.includes('luci')) config.push('Controllo luci intelligente');
-      if (knxFeatures.includes('clima')) config.push('Controllo clima');
-      if (knxFeatures.includes('sicurezza')) config.push('Predisposizione sicurezza');
-    }
-    
-    // Aggiungi features BTicino se presenti
-    if (formData.bTicinoConfig && Object.keys(formData.bTicinoConfig).length > 0) {
-      const bTicinoFeatures = Object.keys(formData.bTicinoConfig);
-      if (bTicinoFeatures.includes('luci')) config.push('Controllo luci wireless');
-      if (bTicinoFeatures.includes('clima')) config.push('Controllo clima wireless');
-    }
-    
-    return config;
+
+    return { configurazioni, dataSource };
   };
 
-  const configSummary = getConfigurationSummary();
+  const { configurazioni, dataSource } = getConfigurationSummary();
+  
+  // Calculate total rooms from database or form data
+  const composizione = dataSource.composizione || {};
+  const totalRooms = Object.values(composizione).reduce((sum: number, count: any) => sum + (Number(count) || 0), 0);
 
   return (
     <div className="space-y-8">
@@ -140,19 +159,19 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
           <div className="flex flex-wrap gap-6">
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Tipologia:</span>
-              <span className="font-medium text-[#1c1c1c] capitalize">{formData.tipologiaAbitazione || 'Non specificato'}</span>
+              <span className="font-medium text-[#1c1c1c] capitalize">{dataSource.tipologia_abitazione || 'Non specificato'}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Superficie:</span>
-              <span className="font-medium text-[#d8010c]">{formData.superficie || 0} mq</span>
+              <span className="font-medium text-[#d8010c]">{dataSource.superficie || 0} mq</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Persone:</span>
-              <span className="font-medium text-[#1c1c1c]">{formData.informazioniGenerali?.numeroPersone || 2}</span>
+              <span className="font-medium text-[#1c1c1c]">{dataSource.numero_persone || formData.informazioniGenerali?.numeroPersone || 2}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Proprietà:</span>
-              <span className="font-medium text-[#1c1c1c] capitalize">{formData.informazioniGenerali?.tipoProprieta || 'prima casa'}</span>
+              <span className="font-medium text-[#1c1c1c] capitalize">{dataSource.tipo_proprieta || formData.informazioniGenerali?.tipoProprieta || 'prima casa'}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Stanze totali:</span>
@@ -164,8 +183,12 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
           <div className="flex items-start gap-2">
             <MapPin className="h-4 w-4 text-[#d8010c] mt-0.5 flex-shrink-0" />
             <div>
-              <p className="text-[#1c1c1c] font-medium">{formData.indirizzo}</p>
-              <p className="text-gray-600 text-sm">{formData.citta} {formData.cap}, {formData.regione}</p>
+              <p className="text-[#1c1c1c] font-medium">
+                {dataSource.indirizzo || formData.informazioniGenerali?.indirizzo || 'Non specificato'}
+              </p>
+              <p className="text-gray-600 text-sm">
+                {dataSource.citta || formData.informazioniGenerali?.citta} {formData.informazioniGenerali?.cap}, {formData.informazioniGenerali?.regione}
+              </p>
             </div>
           </div>
 
@@ -173,30 +196,31 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
           <div>
             <p className="text-gray-600 mb-2">Composizione ({totalRooms} stanze totali):</p>
             <div className="flex flex-wrap gap-3">
-              {formData.composizione && Object.entries(formData.composizione).map(([key, value]) => 
-                value > 0 && (
+              {composizione && Object.entries(composizione).map(([key, value]) => {
+                const numValue = Number(value);
+                return numValue > 0 ? (
                   <span key={key} className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
-                    {value} {key === 'cameraDoppia' ? 'cam. doppia' : 
+                    {numValue} {key === 'cameraDoppia' ? 'cam. doppia' : 
                            key === 'cameraSingola' ? 'cam. singola' : key}
                   </span>
-                )
-              )}
+                ) : null;
+              })}
             </div>
           </div>
 
           {/* Riassunto configurazione */}
-          {configSummary.length > 0 && (
+          {configurazioni.length > 0 && (
             <div className="border-t border-gray-200 pt-4">
               <div className="flex items-center gap-2 mb-2">
                 <Settings className="h-4 w-4 text-[#d8010c]" />
                 <p className="text-gray-600 font-medium">Configurazione scelta:</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                {configSummary.map((item, index) => (
-                  <span key={index} className="bg-white border border-gray-200 text-[#1c1c1c] px-3 py-1 rounded-full text-sm">
-                    {item}
-                  </span>
-                ))}
+              {configurazioni.map((item: string, index: number) => (
+                <span key={index} className="bg-white border border-gray-200 text-[#1c1c1c] px-3 py-1 rounded-full text-sm">
+                  {item}
+                </span>
+              ))}
               </div>
             </div>
           )}
@@ -222,8 +246,10 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             </div>
             <Input 
               id="nome"
-              value={formData.nome}
-              onChange={(e) => updateFormData({ nome: e.target.value })}
+              value={formData.contatti?.nome || ''}
+              onChange={(e) => updateFormData({ 
+                contatti: { ...formData.contatti, nome: e.target.value } 
+              })}
               className="text-lg p-6 rounded-lg"
               placeholder="Il tuo nome"
             />
@@ -236,8 +262,10 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             </div>
             <Input 
               id="cognome"
-              value={formData.cognome}
-              onChange={(e) => updateFormData({ cognome: e.target.value })}
+              value={formData.contatti?.cognome || ''}
+              onChange={(e) => updateFormData({ 
+                contatti: { ...formData.contatti, cognome: e.target.value } 
+              })}
               className="text-lg p-6 rounded-lg"
               placeholder="Il tuo cognome"
             />
@@ -251,8 +279,10 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             <Input 
               id="email"
               type="email"
-              value={formData.email}
-              onChange={(e) => updateFormData({ email: e.target.value })}
+              value={formData.contatti?.email || ''}
+              onChange={(e) => updateFormData({ 
+                contatti: { ...formData.contatti, email: e.target.value } 
+              })}
               className="text-lg p-6 rounded-lg"
               placeholder="La tua email"
             />
@@ -266,8 +296,10 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             <Input 
               id="telefono"
               type="tel"
-              value={formData.telefono}
-              onChange={(e) => updateFormData({ telefono: e.target.value })}
+              value={formData.contatti?.telefono || ''}
+              onChange={(e) => updateFormData({ 
+                contatti: { ...formData.contatti, telefono: e.target.value } 
+              })}
               className="text-lg p-6 rounded-lg"
               placeholder="Il tuo numero di telefono"
             />
@@ -277,8 +309,10 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
         <div className="flex items-start space-x-3 py-4">
           <Checkbox 
             id="termini" 
-            checked={formData.accettoTermini}
-            onCheckedChange={(checked) => updateFormData({ accettoTermini: checked === true })}
+            checked={formData.contatti?.accettoTermini || false}
+            onCheckedChange={(checked) => updateFormData({ 
+              contatti: { ...formData.contatti, accettoTermini: checked === true } 
+            })}
             className="mt-1"
           />
           <Label htmlFor="termini" className="text-md">

@@ -162,6 +162,15 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     onStepChange?.();
   }, [onStepChange]);
 
+  const isLastTechnicalStep = useCallback((stepId: string) => {
+    const activeSteps = getActiveSteps();
+    const currentStepIndex = activeSteps.findIndex(step => step.id === stepId);
+    const nextStep = activeSteps[currentStepIndex + 1];
+    
+    // Return true if the next step is dati-contatto
+    return nextStep?.id === 'dati-contatto';
+  }, [getActiveSteps]);
+
   return {
     currentStep,
     getCurrentStepConfig,
@@ -169,6 +178,7 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     goToNext,
     goToBack,
     reset,
-    totalSteps: getActiveSteps().length
+    totalSteps: getActiveSteps().length,
+    isLastTechnicalStep
   };
 };
