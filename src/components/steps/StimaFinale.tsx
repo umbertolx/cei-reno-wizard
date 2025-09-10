@@ -85,7 +85,7 @@ export const StimaFinale = ({
           <div className="p-4 md:p-6">
             {/* Header section */}
             <div className="text-center mb-4">
-              <div className="text-xs text-gray-500 mb-1 font-medium p-1">
+              <div className="text-sm text-gray-500 mb-1 font-medium p-1">
                 Budget stimato per questo progetto
               </div>
               <div className="text-2xl md:text-5xl font-bold text-gray-900 mb-2 p-1">
