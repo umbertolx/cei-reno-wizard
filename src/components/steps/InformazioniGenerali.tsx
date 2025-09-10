@@ -174,7 +174,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         </h1>
         
         <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Inizia la configurazione inserendo le caratteristiche dell'immobile e seleziona gli impianti sui quali vorresti intervenire. Inizia la configurazione!
+          Inizia la configurazione inserendo le caratteristiche dell'immobile
         </p>
       </div>
 
