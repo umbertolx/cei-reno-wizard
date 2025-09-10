@@ -250,7 +250,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
         <h2 className="text-2xl font-medium text-[#1c1c1c]">Inserisci i tuoi dati per continuare</h2>
         
         {/* Aggiunto messaggio che indica la stima immediata */}
-        <div className="bg-white border-2 border-[#d8010c] p-4 rounded-xl text-center shadow-sm">
+        <div className="bg-white border-2 border-[#fbe12e] p-4 rounded-xl text-center shadow-sm">
           <p className="text-md text-[#1c1c1c] font-medium">
             Completando questo form riceverai immediatamente una stima del costo della ristrutturazione
           </p>
