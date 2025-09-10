@@ -11,12 +11,12 @@ export const UtilizzoAbitazioneSelector = ({ value, onChange }: UtilizzoAbitazio
     { 
       id: 'prima casa', 
       label: 'Prima Casa',
-      description: 'Abitazione principale, residenza'
+      description: 'Abitata tutto l\'anno'
     },
     { 
       id: 'seconda casa', 
       label: 'Seconda Casa',
-      description: 'Altri immobili, case vacanza'
+      description: 'Abitata solo parzialmente (20%)'
     }
   ];
 
