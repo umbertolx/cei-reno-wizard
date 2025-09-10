@@ -211,7 +211,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
 
           {/* Moduli configurati */}
           <div className="border-t border-gray-200 pt-4">
-            <p className="text-gray-600 font-medium mb-3">Moduli configurati:</p>
+            <p className="text-gray-600 font-medium mb-3">Interventi configurati:</p>
             <div className="flex flex-wrap gap-3">
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('impianto-elettrico') || formData.moduliSelezionati?.includes('impianto-elettrico'))
