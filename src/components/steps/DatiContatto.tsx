@@ -153,10 +153,6 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
 
       {/* Box di riepilogo abitazione in stile CEI */}
       <div className="bg-[#f4f4f4] border border-gray-200 rounded-xl p-6">
-        <div className="mb-4">
-          <h2 className="text-xl font-medium text-[#1c1c1c]">Riepilogo della tua abitazione</h2>
-        </div>
-        
         <div className="space-y-4">
           {/* Informazioni principali in formato semplice */}
           <div className="flex flex-wrap gap-6">
