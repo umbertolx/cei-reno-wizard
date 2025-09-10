@@ -184,6 +184,41 @@ export const StimaFinale = ({
                   </div>
                 </div>
               </div>
+              
+              {/* Moduli configurati - stile dati contatto */}
+              <div className="border-t border-gray-200 pt-3 mt-3">
+                <p className="text-gray-600 font-medium mb-2 text-xs">Interventi configurati:</p>
+                <div className="flex flex-wrap gap-2">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    formData.moduliSelezionati?.includes('elettrico')
+                      ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                      : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    Impianto elettrico
+                  </span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    formData.moduliSelezionati?.includes('fotovoltaico')
+                      ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                      : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    Impianto fotovoltaico
+                  </span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    formData.moduliSelezionati?.includes('sicurezza')
+                      ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                      : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    Impianto di sicurezza
+                  </span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    formData.moduliSelezionati?.includes('termotecnico')
+                      ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                      : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    Impianto termotecnico
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
