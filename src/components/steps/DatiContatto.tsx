@@ -137,7 +137,10 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
   
   // Calculate total rooms from database or form data
   const composizione = dataSource.composizione || {};
-  const totalRooms = Object.values(composizione).reduce((sum: number, count: any) => sum + (Number(count) || 0), 0);
+  const totalRooms = Object.values(composizione).reduce((sum: number, count) => {
+    const numericCount = Number(count) || 0;
+    return sum + numericCount;
+  }, 0 as number);
 
   return (
     <div className="space-y-8">
@@ -175,7 +178,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Stanze totali:</span>
-              <span className="font-medium text-[#1c1c1c]">{totalRooms}</span>
+              <span className="font-medium text-[#1c1c1c]">{String(totalRooms)}</span>
             </div>
           </div>
 
@@ -194,7 +197,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
 
           {/* Composizione stanze */}
           <div>
-            <p className="text-gray-600 mb-2">Composizione ({totalRooms} stanze totali):</p>
+            <p className="text-gray-600 mb-2">Composizione ({String(totalRooms)} stanze totali):</p>
             <div className="flex flex-wrap gap-3">
               {composizione && Object.entries(composizione).map(([key, value]) => {
                 const numValue = Number(value);
