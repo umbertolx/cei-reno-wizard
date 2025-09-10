@@ -174,7 +174,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
         </h1>
         
         <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Per offrirti una stima realistica, servono solo pochi dati di base. <br className="hidden md:block" />Il resto lo calcoliamo noi, in pochi minuti.
+          Inizia la configurazione inserendo le caratteristiche dell'immobile e seleziona gli impianti sui quali vorresti intervenire. Inizia la configurazione!
         </p>
       </div>
 
