@@ -26,7 +26,7 @@ export const NumeroPersoneSelector = ({ value, onChange }: NumeroPersoneSelector
         </div>
         <div>
           <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Numero di persone</h2>
-          <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Quante persone vivono nell'unità abitativa?</p>
+          <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Quante persone abitano l'immobile</p>
         </div>
       </div>
       
