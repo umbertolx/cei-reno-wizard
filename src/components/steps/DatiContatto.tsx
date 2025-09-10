@@ -250,7 +250,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
               {/* Modulo Impianto Elettrico */}
               {(dataSource.moduli_selezionati?.includes('impianto-elettrico') || dataSource.modulo_elettrico || formData.moduliSelezionati?.includes('impianto-elettrico')) && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-[#d8010c]">Impianto Elettrico</h4>
+                  <h4 className="text-base font-medium text-[#d8010c]">Impianto Elettrico</h4>
                   <div className="flex flex-wrap gap-2">
                     {(dataSource.modulo_elettrico?.tipoRistrutturazione || formData.moduloElettrico?.tipoRistrutturazione) && (
                       <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
@@ -302,7 +302,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
               {/* Modulo Fotovoltaico */}
               {(dataSource.moduli_selezionati?.includes('fotovoltaico') || dataSource.modulo_fotovoltaico || formData.moduliSelezionati?.includes('fotovoltaico')) && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-[#d8010c]">Impianto Fotovoltaico</h4>
+                  <h4 className="text-base font-medium text-[#d8010c]">Impianto Fotovoltaico</h4>
                   <div className="flex flex-wrap gap-2">
                     {(dataSource.modulo_fotovoltaico?.tipoInterventoFotovoltaico || formData.moduloFotovoltaico?.tipoInterventoFotovoltaico) && (
                       <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
@@ -351,14 +351,14 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
               {/* Altri moduli selezionati ma non ancora configurati */}
               {(dataSource.moduli_selezionati?.includes('sicurezza') || formData.moduliSelezionati?.includes('sicurezza')) && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-[#d8010c]">Impianto di Sicurezza</h4>
+                  <h4 className="text-base font-medium text-[#d8010c]">Impianto di Sicurezza</h4>
                   <span className="text-xs text-gray-600">Modulo selezionato - Configurazione in corso</span>
                 </div>
               )}
 
               {(dataSource.moduli_selezionati?.includes('termotecnico') || formData.moduliSelezionati?.includes('termotecnico')) && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-[#d8010c]">Impianto Termotecnico</h4>
+                  <h4 className="text-base font-medium text-[#d8010c]">Impianto Termotecnico</h4>
                   <span className="text-xs text-gray-600">Modulo selezionato - Configurazione in corso</span>
                 </div>
               )}
