@@ -209,7 +209,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             </div>
           </div>
 
-          {/* Moduli completati */}
+          {/* Moduli configurati */}
           <div className="border-t border-gray-200 pt-4">
             <p className="text-gray-600 font-medium mb-3">Moduli configurati:</p>
             <div className="flex flex-wrap gap-3">
@@ -218,20 +218,28 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
                   ? 'bg-[#fbe12e] text-[#1c1c1c]' 
                   : 'bg-gray-100 text-gray-400'
               }`}>
-                Impianto Elettrico
+                Impianto elettrico
               </span>
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('fotovoltaico') || formData.moduliSelezionati?.includes('fotovoltaico'))
                   ? 'bg-[#fbe12e] text-[#1c1c1c]' 
                   : 'bg-gray-100 text-gray-400'
               }`}>
-                Fotovoltaico
+                Impianto fotovoltaico
               </span>
-              <span className="bg-gray-100 text-gray-400 px-3 py-1 rounded-full text-sm font-medium">
-                Domotica Avanzata
+              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                (dataSource.moduli_selezionati?.includes('sicurezza') || formData.moduliSelezionati?.includes('sicurezza'))
+                  ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                  : 'bg-gray-100 text-gray-400'
+              }`}>
+                Impianto di sicurezza
               </span>
-              <span className="bg-gray-100 text-gray-400 px-3 py-1 rounded-full text-sm font-medium">
-                Climatizzazione
+              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                (dataSource.moduli_selezionati?.includes('termotecnico') || formData.moduliSelezionati?.includes('termotecnico'))
+                  ? 'bg-[#fbe12e] text-[#1c1c1c]' 
+                  : 'bg-gray-100 text-gray-400'
+              }`}>
+                Impianto termotecnico
               </span>
             </div>
           </div>
