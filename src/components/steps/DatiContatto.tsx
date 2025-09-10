@@ -253,19 +253,19 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
                   <h4 className="text-sm font-medium text-[#d8010c]">Impianto Elettrico</h4>
                   <div className="flex flex-wrap gap-2">
                     {(dataSource.modulo_elettrico?.tipoRistrutturazione || formData.moduloElettrico?.tipoRistrutturazione) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         Ristrutturazione {(dataSource.modulo_elettrico?.tipoRistrutturazione || formData.moduloElettrico?.tipoRistrutturazione) === 'completa' ? 'completa' : 'parziale'}
                       </span>
                     )}
                     
                     {(dataSource.modulo_elettrico?.impiantoVecchio || formData.moduloElettrico?.impiantoVecchio) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         {(dataSource.modulo_elettrico?.impiantoVecchio || formData.moduloElettrico?.impiantoVecchio) === 'si' ? 'Impianto da aggiornare' : 'Impianto certificato'}
                       </span>
                     )}
                     
                     {(dataSource.modulo_elettrico?.tipoImpianto || formData.moduloElettrico?.tipoImpianto) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         {(() => {
                           const tipo = dataSource.modulo_elettrico?.tipoImpianto || formData.moduloElettrico?.tipoImpianto;
                           return tipo === 'livello1' ? 'Livello 1 - Standard' : 
@@ -276,13 +276,13 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
                     )}
                     
                     {(dataSource.modulo_elettrico?.tipoDomotica || formData.moduloElettrico?.tipoDomotica) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         Sistema {(dataSource.modulo_elettrico?.tipoDomotica || formData.moduloElettrico?.tipoDomotica) === 'knx' ? 'KNX' : 'BTicino Wireless'}
                       </span>
                     )}
                     
                     {(dataSource.modulo_elettrico?.elettrificareTapparelle || formData.moduloElettrico?.elettrificareTapparelle) === 'si' && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         {dataSource.modulo_elettrico?.numeroTapparelle || formData.moduloElettrico?.numeroTapparelle || 0} tapparelle elettriche
                       </span>
                     )}
@@ -305,37 +305,37 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
                   <h4 className="text-sm font-medium text-[#d8010c]">Impianto Fotovoltaico</h4>
                   <div className="flex flex-wrap gap-2">
                     {(dataSource.modulo_fotovoltaico?.tipoInterventoFotovoltaico || formData.moduloFotovoltaico?.tipoInterventoFotovoltaico) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         {(dataSource.modulo_fotovoltaico?.tipoInterventoFotovoltaico || formData.moduloFotovoltaico?.tipoInterventoFotovoltaico) === 'nuovo' ? 'Nuovo impianto' : 'Ampliamento'}
                       </span>
                     )}
                     
                     {(dataSource.modulo_fotovoltaico?.tipoFalda || formData.moduloFotovoltaico?.tipoFalda) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium capitalize">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium capitalize">
                         Tetto {dataSource.modulo_fotovoltaico?.tipoFalda || formData.moduloFotovoltaico?.tipoFalda}
                       </span>
                     )}
                     
                     {(dataSource.modulo_fotovoltaico?.orientamentoTetto || formData.moduloFotovoltaico?.orientamentoTetto) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium capitalize">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium capitalize">
                         Orientamento {dataSource.modulo_fotovoltaico?.orientamentoTetto || formData.moduloFotovoltaico?.orientamentoTetto}
                       </span>
                     )}
                     
                     {(dataSource.modulo_fotovoltaico?.batteriaAccumulo || formData.moduloFotovoltaico?.batteriaAccumulo) === 'si' && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         Con batteria di accumulo
                       </span>
                     )}
                     
                     {(dataSource.modulo_fotovoltaico?.superficieDisponibile || formData.moduloFotovoltaico?.superficieDisponibile) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         {dataSource.modulo_fotovoltaico?.superficieDisponibile || formData.moduloFotovoltaico?.superficieDisponibile} mq disponibili
                       </span>
                     )}
                     
                     {(dataSource.modulo_fotovoltaico?.obiettivoPrincipale || formData.moduloFotovoltaico?.obiettivoPrincipale) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-2 py-1 rounded text-xs font-medium">
+                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         {(() => {
                           const obiettivo = dataSource.modulo_fotovoltaico?.obiettivoPrincipale || formData.moduloFotovoltaico?.obiettivoPrincipale;
                           return obiettivo === 'autoconsumo' ? 'Focus autoconsumo' : 
