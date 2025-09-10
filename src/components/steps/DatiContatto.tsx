@@ -281,6 +281,21 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
                       </span>
                     )}
                     
+                    {/* Interventi elettrici specifici */}
+                    {(dataSource.modulo_elettrico?.interventiElettrici || formData.moduloElettrico?.interventiElettrici || formData.interventiElettrici) && 
+                     Object.entries(dataSource.modulo_elettrico?.interventiElettrici || formData.moduloElettrico?.interventiElettrici || formData.interventiElettrici || {})
+                       .filter(([_, config]: [string, any]) => config?.selected)
+                       .map(([key, config]: [string, any]) => (
+                         <span key={key} className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                           {key === 'sostituzionePuntiLuce' ? 'Sostituzione punti luce' :
+                            key === 'aggiuntaPrese' ? 'Aggiunta prese' :
+                            key === 'impianti230V' ? 'Impianti 230V' :
+                            key === 'impiantiSpeciali' ? 'Impianti speciali' :
+                            key} {config.quantity ? `(${config.quantity})` : ''}
+                         </span>
+                       ))}
+                    
+                    {/* Tapparelle elettriche */}
                     {(dataSource.modulo_elettrico?.elettrificareTapparelle || formData.moduloElettrico?.elettrificareTapparelle || formData.elettrificareTapparelle) === 'si' && (
                       <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
                         {dataSource.modulo_elettrico?.numeroTapparelle || formData.moduloElettrico?.numeroTapparelle || formData.numeroTapparelle || 0} tapparelle elettriche
@@ -327,11 +342,11 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
                     )}
                     
                     {/* Configurazioni BTicino specifiche */}
-                    {formData.bTicinoConfig && Object.values(formData.bTicinoConfig).some((config: any) => config?.active) && (
-                      <span className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
-                        BTicino: {Object.entries(formData.bTicinoConfig).filter(([_, config]: [string, any]) => config?.active).map(([key, _]) => key).join(', ')}
+                    {formData.bTicinoConfig && Object.entries(formData.bTicinoConfig).filter(([_, config]: [string, any]) => config?.active).map(([key, config]: [string, any]) => (
+                      <span key={key} className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                        BTicino {key.charAt(0).toUpperCase() + key.slice(1)} {config.option || ''}
                       </span>
-                    )}
+                    ))}
                   </div>
                   
                   {(dataSource.modulo_elettrico?.ambientiSelezionati || formData.moduloElettrico?.ambientiSelezionati) && (
