@@ -144,8 +144,8 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
 
   return (
     <div className="space-y-8">
-      <div className="space-y-2 md:space-y-3">
-        <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
+      <div className="space-y-2 md:space-y-3 mt-4">
+        <h1 className="text-[24px] md:text-[36px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
           Riepilogo e dati di contatto
         </h1>
       </div>
