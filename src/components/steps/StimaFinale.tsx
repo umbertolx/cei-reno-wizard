@@ -2,8 +2,7 @@ import { FormData } from "../Configuratore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EstimateResponse } from "@/types/estimate";
-import { TipoProprietaSelector } from "./stimafinale/TipoProprietaSelector";
-import { CircleDot, ChevronDown, Euro, Calculator, Loader2, Receipt, TrendingDown, Sparkles, Check } from "lucide-react";
+import { CircleDot, ChevronDown, Euro, Calculator, Loader2, Receipt, TrendingDown, Sparkles, Check, Zap, Home, Battery } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
@@ -78,8 +77,8 @@ export const StimaFinale = ({
               IVA €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()} esclusa
             </div>
             
-            {/* Detrazione fiscale dinamica */}
-            {formData.tipoProprietà === 'seconda casa' ? (
+            {/* Detrazione fiscale dinamica basata sul tipo proprietà dalle info generali */}
+            {formData.informazioniGenerali?.tipoProprieta === 'seconda casa' ? (
               <div className="text-lg md:text-xl text-green-600 font-semibold">
                 Fino a €{Math.round(estimate.max * 0.36).toLocaleString()} Detrazione (36%)
               </div>
@@ -92,60 +91,66 @@ export const StimaFinale = ({
 
           <hr className="my-6 border-gray-200" />
 
-          {/* Checklist */}
-          <div className="space-y-3">
+          {/* Moduli completati dinamici */}
+          <div className="space-y-4">
+            <div className="text-sm font-medium text-gray-600 mb-3">Configurazione completata:</div>
+            
+            {/* Informazioni generali */}
             <div className="flex items-center gap-3">
               <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
                 <Check className="h-3 w-3 text-white" />
               </div>
-              <span className="text-gray-700 capitalize">{formData.tipologiaAbitazione}</span>
+              <span className="text-gray-700 capitalize">{formData.tipologiaAbitazione} - {formData.superficie} mq</span>
             </div>
             
             <div className="flex items-center gap-3">
               <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
                 <Check className="h-3 w-3 text-white" />
               </div>
-              <span className="text-gray-700">{formData.superficie} mq</span>
+              <span className="text-gray-700">{formData.citta} - {totalRooms} locali - {formData.informazioniGenerali?.numeroPersone || 2} persone</span>
             </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <Check className="h-3 w-3 text-white" />
-              </div>
-              <span className="text-gray-700">{formData.citta}</span>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <Check className="h-3 w-3 text-white" />
-              </div>
-              <span className="text-gray-700">{totalRooms} locali</span>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <Check className="h-3 w-3 text-white" />
-              </div>
-              <span className="text-gray-700">Impianto elettrico</span>
-            </div>
-            
-            {formData.tipoDomotica && formData.tipoDomotica !== 'nessuna' && (
+
+            {/* Moduli selezionati */}
+            {formData.moduliSelezionati?.includes('elettrico') && (
               <div className="flex items-center gap-3">
                 <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Check className="h-3 w-3 text-white" />
+                  <Zap className="h-3 w-3 text-white" />
                 </div>
-                <span className="text-gray-700">Domotica {formData.tipoDomotica.toUpperCase()}</span>
+                <span className="text-gray-700">
+                  Impianto Elettrico
+                  {formData.moduloElettrico?.tipoImpianto && ` - ${formData.moduloElettrico.tipoImpianto}`}
+                  {formData.moduloElettrico?.tipoDomotica && formData.moduloElettrico.tipoDomotica !== 'nessuna' && 
+                    ` - Domotica ${formData.moduloElettrico.tipoDomotica.toUpperCase()}`}
+                </span>
               </div>
             )}
+
+            {formData.moduliSelezionati?.includes('fotovoltaico') && (
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Battery className="h-3 w-3 text-white" />
+                </div>
+                <span className="text-gray-700">
+                  Impianto Fotovoltaico
+                  {formData.moduloFotovoltaico?.tipoInterventoFotovoltaico && ` - ${formData.moduloFotovoltaico.tipoInterventoFotovoltaico}`}
+                  {formData.moduloFotovoltaico?.batteriaAccumulo === 'si' && ` con accumulo`}
+                </span>
+              </div>
+            )}
+            
+            {/* Tipo proprietà */}
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <Home className="h-3 w-3 text-white" />
+              </div>
+              <span className="text-gray-700 capitalize">
+                {formData.informazioniGenerali?.tipoProprieta || 'prima casa'}
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Tipo Proprietà */}
-      <TipoProprietaSelector
-        value={formData.tipoProprietà}
-        onChange={(value) => updateFormData({ tipoProprietà: value })}
-      />
 
       {/* Note aggiuntive per il sopralluogo */}
       <div className="space-y-2">
