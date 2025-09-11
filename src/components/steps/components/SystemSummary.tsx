@@ -38,8 +38,14 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
       fattoreOrientamento = 1;
     } else if (orientamento === 'sud-est' || orientamento === 'sud-ovest') {
       fattoreOrientamento = 0.95;
-    } else if (orientamento === 'est' || orientamento === 'ovest' || orientamento === 'est-ovest') {
+    } else if (orientamento === 'est' || orientamento === 'ovest') {
       fattoreOrientamento = 0.85;
+    } else if (orientamento === 'nord-est' || orientamento === 'nord-ovest') {
+      fattoreOrientamento = 0.70;
+    } else if (orientamento === 'nord') {
+      fattoreOrientamento = 0.60;
+    } else if (orientamento === 'non-lo-so') {
+      fattoreOrientamento = 0.85; // Fattore prudenziale
     }
 
     // Fattore ombre

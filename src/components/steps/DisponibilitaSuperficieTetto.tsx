@@ -56,8 +56,14 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
       fattoreOrientamento = 1;
     } else if (orientamento === 'sud-est' || orientamento === 'sud-ovest') {
       fattoreOrientamento = 1.1;
-    } else if (orientamento === 'est' || orientamento === 'ovest' || orientamento === 'est-ovest') {
+    } else if (orientamento === 'est' || orientamento === 'ovest') {
       fattoreOrientamento = 1.2;
+    } else if (orientamento === 'nord-est' || orientamento === 'nord-ovest') {
+      fattoreOrientamento = 1.4;
+    } else if (orientamento === 'nord') {
+      fattoreOrientamento = 1.6;
+    } else if (orientamento === 'non-lo-so') {
+      fattoreOrientamento = 1.2; // Fattore prudenziale
     }
 
     // Fattore ombre
