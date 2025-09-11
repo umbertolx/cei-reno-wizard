@@ -67,14 +67,14 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     },
     // Step fotovoltaico
     { 
-      id: 'tipo-intervento-fotovoltaico', 
-      component: 'TipoInterventoFotovoltaico',
+      id: 'caratteristiche-tetto', 
+      component: 'CaratteristicheTetto',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
     },
     { 
-      id: 'caratteristiche-tetto', 
-      component: 'CaratteristicheTetto',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico !== 'nuovo'
+      id: 'tipo-intervento-fotovoltaico', 
+      component: 'TipoInterventoFotovoltaico',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
     },
     { 
       id: 'obiettivi-consumi', 
