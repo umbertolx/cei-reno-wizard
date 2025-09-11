@@ -94,7 +94,7 @@ export const StimaFinale = ({
               
               {/* IVA esclusa */}
               <div className="text-sm md:text-base text-gray-600 mb-2 p-1">
-                IVA €{Math.round(estimate.min * 0.22).toLocaleString()} - €{Math.round(estimate.max * 0.22).toLocaleString()} esclusa
+                IVA esclusa
               </div>
               
               {/* Tax deductions */}
