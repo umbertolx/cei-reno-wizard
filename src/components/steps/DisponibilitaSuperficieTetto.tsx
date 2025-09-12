@@ -1,10 +1,10 @@
+import { FormData } from "../Configuratore";
+import { QuestionStepLayout } from "../templates";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sun, Home, Target, Battery, MapPin } from "lucide-react";
-import { QuestionWithOptions } from "@/components/shared/QuestionWithOptions";
-import { FormData } from "@/components/Configuratore";
 import { SystemSummary } from "./components/SystemSummary";
 import { useState } from "react";
 
@@ -174,21 +174,24 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
     </div>
   ) : null;
 
+  // Contenuto di riepilogo per SystemSummary
+  const summaryContent = (
+    <SystemSummary 
+      formData={formData}
+      superficieMin={superficieMin}
+      superficieMax={superficieMax}
+    />
+  );
+
   return (
-    <QuestionWithOptions
+    <QuestionStepLayout
       badge="Impianto fotovoltaico"
       icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
       iconAlt="Casa"
       title="Hai la superficie necessaria a disposizione?"
       description="In base alle tue esigenze energetiche e alle caratteristiche del tetto, abbiamo calcolato la superficie necessaria per il tuo impianto fotovoltaico personalizzato."
       infoBox={infoBox}
-      summaryContent={
-        <SystemSummary 
-          formData={formData}
-          superficieMin={superficieMin}
-          superficieMax={superficieMax}
-        />
-      }
+      summaryContent={summaryContent}
       options={options}
       selectedValue={currentValue}
       onSelectionChange={handleSelectionChange}

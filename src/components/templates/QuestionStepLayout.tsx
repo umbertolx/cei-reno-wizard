@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { StepLayout, StepLayoutProps } from './StepLayout';
-import { InfoBox } from '@/components/shared/QuestionWithOptions';
+import { InfoBoxType } from '@/components/shared/InfoBox';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export type QuestionOption = {
@@ -15,8 +15,9 @@ export type QuestionStepLayoutProps = Omit<StepLayoutProps, 'children' | 'isNext
   selectedValue: string | string[];
   onSelectionChange: (value: string | string[]) => void;
   multiSelect?: boolean;
-  infoBox?: InfoBox;
+  infoBox?: InfoBoxType;
   conditionalContent?: ReactNode;
+  summaryContent?: ReactNode;
 };
 
 export const QuestionStepLayout = ({
@@ -26,6 +27,7 @@ export const QuestionStepLayout = ({
   multiSelect = false,
   infoBox,
   conditionalContent,
+  summaryContent,
   onNext,
   ...stepProps
 }: QuestionStepLayoutProps) => {
@@ -67,6 +69,13 @@ export const QuestionStepLayout = ({
       onNext={handleSubmit}
       isNextDisabled={!isFormValid()}
     >
+      {/* Summary Content */}
+      {summaryContent && (
+        <div className="mb-6">
+          {summaryContent}
+        </div>
+      )}
+
       {/* Info Box */}
       {infoBox && (
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">

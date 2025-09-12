@@ -1,50 +1,38 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
-export type InfoBoxProps = {
+export type InfoBoxType = {
   title: string;
   content: string;
-  isOpen?: boolean;
-  onToggle?: (isOpen: boolean) => void;
 };
 
-export const InfoBox = ({ title, content, isOpen: externalIsOpen, onToggle }: InfoBoxProps) => {
-  const [internalIsOpen, setInternalIsOpen] = useState(false);
-  
-  // Use external state if provided, otherwise use internal state
-  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
-  const handleToggle = (newIsOpen: boolean) => {
-    if (onToggle) {
-      onToggle(newIsOpen);
-    } else {
-      setInternalIsOpen(newIsOpen);
-    }
-  };
+type InfoBoxProps = InfoBoxType & {
+  isOpen: boolean;
+  onToggle: (isOpen: boolean) => void;
+};
 
+export const InfoBox = ({ title, content, isOpen, onToggle }: InfoBoxProps) => {
   return (
-    <div>
-      <Collapsible open={isOpen} onOpenChange={handleToggle}>
-        <CollapsibleTrigger className="w-full">
-          <div className="bg-transparent border-dashed border border-[#d8010c] rounded-xl p-4 transition-all duration-300 cursor-pointer">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                <span className="text-sm font-medium text-black text-left uppercase">
-                  {title}
-                </span>
-              </div>
-            </div>
-            {isOpen && (
-              <div className="mt-3 pt-3 border-t border-gray-200">
-                <p className="text-sm text-black text-left">
-                  {content}
-                </p>
-              </div>
-            )}
+    <div className="border border-gray-200 rounded-xl overflow-hidden">
+      <button
+        onClick={() => onToggle(!isOpen)}
+        className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+      >
+        <span className="font-medium text-[#1c1c1c]">{title}</span>
+        {isOpen ? (
+          <ChevronUp className="h-5 w-5 text-gray-500 flex-shrink-0" />
+        ) : (
+          <ChevronDown className="h-5 w-5 text-gray-500 flex-shrink-0" />
+        )}
+      </button>
+      
+      {isOpen && (
+        <div className="px-4 pb-4 pt-0">
+          <div className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-3 rounded-lg">
+            {content}
           </div>
-        </CollapsibleTrigger>
-      </Collapsible>
+        </div>
+      )}
     </div>
   );
 };

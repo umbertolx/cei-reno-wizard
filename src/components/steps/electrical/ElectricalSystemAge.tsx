@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { FormData } from "../../Configuratore";
-import { QuestionWithOptions, QuestionOption, InfoBox } from "../../shared/QuestionWithOptions";
+import { QuestionStepLayout } from "../../templates";
 
 type Props = {
   formData: FormData;
@@ -13,6 +13,12 @@ type Props = {
 export const ElectricalSystemAge = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const [impiantoVecchio, setImpiantoVecchio] = useState<string>(formData.moduloElettrico?.impiantoVecchio || "");
 
+  const handleSelectionChange = (value: string | string[]) => {
+    if (typeof value === 'string') {
+      setImpiantoVecchio(value);
+    }
+  };
+
   const handleSubmit = () => {
     updateFormData({ 
       moduloElettrico: {
@@ -23,7 +29,7 @@ export const ElectricalSystemAge = ({ formData, updateFormData, onNext, onBack }
     onNext();
   };
 
-  const options: QuestionOption[] = [
+  const options = [
     {
       id: 'si',
       label: 'Sì, ha bisogno di essere aggiornato'
@@ -34,13 +40,13 @@ export const ElectricalSystemAge = ({ formData, updateFormData, onNext, onBack }
     }
   ];
 
-  const infoBox: InfoBox = {
+  const infoBox = {
     title: 'Informazioni utili',
     content: "Se l'impianto elettrico ha più di 20 anni, è consigliabile un rifacimento completo per garantire sicurezza ed efficienza. In questo caso, vengono tirati nuovi cavi sfruttando le tracce esistenti. Se invece l'impianto è recente e a norma, si può optare per un aggiornamento parziale, aggiungendo nuove prese, interruttori o soluzioni smart senza interventi invasivi."
   };
 
   return (
-    <QuestionWithOptions
+    <QuestionStepLayout
       badge="Impianto elettrico"
       icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
       iconAlt="Electrical work icon"
@@ -48,7 +54,7 @@ export const ElectricalSystemAge = ({ formData, updateFormData, onNext, onBack }
       infoBox={infoBox}
       options={options}
       selectedValue={impiantoVecchio}
-      onSelectionChange={setImpiantoVecchio}
+      onSelectionChange={handleSelectionChange}
       onNext={handleSubmit}
       onBack={onBack}
     />
