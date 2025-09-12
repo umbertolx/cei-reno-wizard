@@ -99,7 +99,7 @@ export const QuestionWithOptions = ({
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                        <span className="text-sm font-medium text-yellow-800 text-left">
+                        <span className="text-sm font-medium text-black text-left uppercase">
                           {infoBox.title}
                         </span>
                       </div>
