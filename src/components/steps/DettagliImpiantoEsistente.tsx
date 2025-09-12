@@ -145,7 +145,7 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
             {/* Info box specifico per potenza */}
             <Collapsible open={infoBoxOpen1} onOpenChange={setInfoBoxOpen1}>
               <CollapsibleTrigger className="w-full mx-3 md:mx-0">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
+                <div className="bg-transparent border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
@@ -182,7 +182,7 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
             {/* Info box specifico per anno */}
             <Collapsible open={infoBoxOpen2} onOpenChange={setInfoBoxOpen2}>
               <CollapsibleTrigger className="w-full mx-3 md:mx-0">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
+                <div className="bg-transparent border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
@@ -219,7 +219,7 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
             {/* Info box specifico per batteria */}
             <Collapsible open={infoBoxOpen3} onOpenChange={setInfoBoxOpen3}>
               <CollapsibleTrigger className="w-full mx-3 md:mx-0">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
+                <div className="bg-transparent border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />

@@ -111,7 +111,7 @@ export const ObiettiviAmpliamento = ({ formData, updateFormData, onNext, onBack 
           <div>
             <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
               <CollapsibleTrigger className="w-full">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
+                <div className="bg-transparent border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />

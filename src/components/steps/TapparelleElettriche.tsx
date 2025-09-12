@@ -66,7 +66,7 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
           {/* Box informativo collassabile su mobile */}
           <Collapsible open={isInfoOpen} onOpenChange={setIsInfoOpen}>
             <CollapsibleTrigger className="w-full md:hidden">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 hover:bg-yellow-100 transition-colors">
+              <div className="bg-transparent border border-yellow-200 rounded-lg p-4 hover:bg-yellow-100 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
@@ -80,7 +80,7 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
             </CollapsibleTrigger>
 
             <CollapsibleContent className="md:block">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 md:mt-0 mt-0">
+              <div className="bg-transparent border border-yellow-200 rounded-lg p-4 md:mt-0 mt-0">
                 <div className="flex items-start gap-3">
                   <Plus className="h-5 w-5 text-black flex-shrink-0 fill-black mt-0.5 hidden md:block" />
                   <div className="text-sm text-yellow-800">
