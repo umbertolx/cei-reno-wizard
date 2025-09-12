@@ -1,8 +1,6 @@
 import { FormData } from "../Configuratore";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
-import { Check, Info, ChevronDown } from "lucide-react";
-import { useState } from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Check, Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 type Props = {
@@ -13,8 +11,6 @@ type Props = {
 };
 
 export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const [infoBoxOpen, setInfoBoxOpen] = useState(false);
-  
   const potenzaImpianto = formData.moduloFotovoltaico?.potenzaImpianto || "";
   const annoInstallazione = formData.moduloFotovoltaico?.annoInstallazione || "";
   const hasBatteria = formData.moduloFotovoltaico?.hasBatteria || "";
@@ -93,11 +89,6 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
     </div>
   );
 
-  const infoBox = {
-    title: "Dettagli dell'impianto esistente",
-    content: "Queste informazioni ci permettono di valutare la compatibilità e ottimizzare l'integrazione del nuovo ampliamento con il tuo impianto attuale."
-  };
-
   return (
     <div className="space-y-6">
       {/* Badge */}
@@ -124,48 +115,6 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
             </div>
           </div>
 
-          {/* Box informativo - collassabile su mobile, sempre aperto su desktop */}
-          <div>
-            {/* Versione mobile - collassabile */}
-            <div className="block md:hidden">
-              <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
-                <CollapsibleTrigger className="w-full">
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
-                        <span className="text-sm font-medium text-yellow-800 text-left">
-                          {infoBox.title}
-                        </span>
-                      </div>
-                      <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen ? 'rotate-180' : ''}`} />
-                    </div>
-                    {infoBoxOpen && (
-                      <div className="mt-3 pt-3 border-t border-yellow-200">
-                        <p className="text-sm text-yellow-800 text-left">
-                          {infoBox.content}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </CollapsibleTrigger>
-              </Collapsible>
-            </div>
-
-            {/* Versione desktop - sempre aperto */}
-            <div className="hidden md:block">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-yellow-800">
-                    <p className="font-medium mb-1">{infoBox.title}</p>
-                    <p>{infoBox.content}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
           {/* Potenza impianto */}
           <div className="space-y-3 md:space-y-4">
             <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
@@ -187,6 +136,16 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
                 />
               </div>
             </div>
+            {/* Info box specifico per potenza */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mx-3 md:mx-0">
+              <div className="flex items-start gap-2">
+                <Info className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-blue-800">
+                  <p className="font-medium">Perché è importante?</p>
+                  <p>Conoscere la potenza attuale ci permette di calcolare l'ampliamento ottimale e verificare la compatibilità con l'inverter esistente.</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Anno installazione */}
@@ -201,6 +160,16 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
                 () => handleAnnoChange(option.id)
               )
             )}
+            {/* Info box specifico per anno */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 mx-3 md:mx-0">
+              <div className="flex items-start gap-2">
+                <Info className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-green-800">
+                  <p className="font-medium">Perché è importante?</p>
+                  <p>L'età dell'impianto influenza la tecnologia disponibile e gli incentivi applicabili per l'ampliamento.</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Batteria accumulo */}
@@ -215,6 +184,16 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
                 () => handleBatteriaChange(option.id)
               )
             )}
+            {/* Info box specifico per batteria */}
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mx-3 md:mx-0">
+              <div className="flex items-start gap-2">
+                <Info className="h-4 w-4 text-purple-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-purple-800">
+                  <p className="font-medium">Perché è importante?</p>
+                  <p>Se hai già una batteria, possiamo ottimizzare l'ampliamento per massimizzare l'autoconsumo. Senza batteria, potremmo consigliarti di aggiungerne una.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
