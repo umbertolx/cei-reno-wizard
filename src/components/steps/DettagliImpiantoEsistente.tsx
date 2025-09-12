@@ -148,7 +148,7 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Plus className="h-4 w-4 text-black flex-shrink-0 fill-black" />
+                      <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
                       <span className="text-sm font-medium text-yellow-800 text-left">
                         Perché è importante?
                       </span>
@@ -185,7 +185,7 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Plus className="h-4 w-4 text-black flex-shrink-0 fill-black" />
+                      <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
                       <span className="text-sm font-medium text-yellow-800 text-left">
                         Perché è importante?
                       </span>
@@ -222,7 +222,7 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Plus className="h-4 w-4 text-black flex-shrink-0 fill-black" />
+                      <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
                       <span className="text-sm font-medium text-yellow-800 text-left">
                         Perché è importante?
                       </span>

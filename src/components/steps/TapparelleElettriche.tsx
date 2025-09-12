@@ -69,7 +69,7 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 hover:bg-yellow-100 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <Plus className="h-5 w-5 text-black flex-shrink-0 fill-black" />
+                    <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
                     <span className="text-sm font-medium text-yellow-800">
                       Come funziona l'elettrificazione delle tapparelle
                     </span>
