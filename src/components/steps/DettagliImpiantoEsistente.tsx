@@ -146,15 +146,14 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
             <Collapsible open={infoBoxOpen1} onOpenChange={setInfoBoxOpen1}>
               <CollapsibleTrigger className="w-full mx-3 md:mx-0">
                 <div className="bg-transparent border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                      <span className="text-sm font-medium text-yellow-800 text-left">
-                        Perché è importante?
-                      </span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
+                        <span className="text-sm font-medium text-black text-left uppercase">
+                          Perché è importante?
+                        </span>
+                      </div>
                     </div>
-                    <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen1 ? 'rotate-180' : ''}`} />
-                  </div>
                   {infoBoxOpen1 && (
                     <div className="mt-2 pt-2 border-t border-yellow-200">
                       <p className="text-sm text-yellow-800 text-left">
@@ -183,15 +182,14 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
             <Collapsible open={infoBoxOpen2} onOpenChange={setInfoBoxOpen2}>
               <CollapsibleTrigger className="w-full mx-3 md:mx-0">
                 <div className="bg-transparent border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                      <span className="text-sm font-medium text-yellow-800 text-left">
-                        Perché è importante?
-                      </span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
+                        <span className="text-sm font-medium text-black text-left uppercase">
+                          Perché è importante?
+                        </span>
+                      </div>
                     </div>
-                    <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen2 ? 'rotate-180' : ''}`} />
-                  </div>
                   {infoBoxOpen2 && (
                     <div className="mt-2 pt-2 border-t border-yellow-200">
                       <p className="text-sm text-yellow-800 text-left">
@@ -220,15 +218,14 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
             <Collapsible open={infoBoxOpen3} onOpenChange={setInfoBoxOpen3}>
               <CollapsibleTrigger className="w-full mx-3 md:mx-0">
                 <div className="bg-transparent border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                      <span className="text-sm font-medium text-yellow-800 text-left">
-                        Perché è importante?
-                      </span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
+                        <span className="text-sm font-medium text-black text-left uppercase">
+                          Perché è importante?
+                        </span>
+                      </div>
                     </div>
-                    <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen3 ? 'rotate-180' : ''}`} />
-                  </div>
                   {infoBoxOpen3 && (
                     <div className="mt-2 pt-2 border-t border-yellow-200">
                       <p className="text-sm text-yellow-800 text-left">

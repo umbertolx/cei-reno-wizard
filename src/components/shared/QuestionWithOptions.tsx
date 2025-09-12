@@ -96,15 +96,14 @@ export const QuestionWithOptions = ({
               <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
                 <CollapsibleTrigger className="w-full">
                   <div className="bg-transparent border-dashed border border-[#d8010c] rounded-xl p-4 transition-all duration-300 cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                        <span className="text-sm font-medium text-black text-left uppercase">
-                          {infoBox.title}
-                        </span>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
+                          <span className="text-sm font-medium text-black text-left uppercase">
+                            {infoBox.title}
+                          </span>
+                        </div>
                       </div>
-                      <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen ? 'rotate-180' : ''}`} />
-                    </div>
                     {infoBoxOpen && (
                       <div className="mt-3 pt-3 border-t border-yellow-200">
                         <p className="text-sm text-yellow-800 text-left">

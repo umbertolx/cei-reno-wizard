@@ -67,15 +67,14 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
           <Collapsible open={isInfoOpen} onOpenChange={setIsInfoOpen}>
             <CollapsibleTrigger className="w-full md:hidden">
               <div className="bg-transparent border border-yellow-200 rounded-lg p-4 hover:bg-yellow-100 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                    <span className="text-sm font-medium text-yellow-800">
-                      Come funziona l'elettrificazione delle tapparelle
-                    </span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
+                      <span className="text-sm font-medium text-black text-left uppercase">
+                        Come funziona l'elettrificazione delle tapparelle
+                      </span>
+                    </div>
                   </div>
-                  <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform ${isInfoOpen ? 'rotate-180' : ''}`} />
-                </div>
               </div>
             </CollapsibleTrigger>
 
