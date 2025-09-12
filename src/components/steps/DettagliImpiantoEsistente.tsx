@@ -137,10 +137,10 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               </div>
             </div>
             {/* Info box specifico per potenza */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mx-3 md:mx-0">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mx-3 md:mx-0">
               <div className="flex items-start gap-2">
-                <Info className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-blue-800">
+                <Info className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-yellow-800">
                   <p className="font-medium">Perché è importante?</p>
                   <p>Conoscere la potenza attuale ci permette di calcolare l'ampliamento ottimale e verificare la compatibilità con l'inverter esistente.</p>
                 </div>
@@ -161,10 +161,10 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               )
             )}
             {/* Info box specifico per anno */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3 mx-3 md:mx-0">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mx-3 md:mx-0">
               <div className="flex items-start gap-2">
-                <Info className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-green-800">
+                <Info className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-yellow-800">
                   <p className="font-medium">Perché è importante?</p>
                   <p>L'età dell'impianto influenza la tecnologia disponibile e gli incentivi applicabili per l'ampliamento.</p>
                 </div>
@@ -185,10 +185,10 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               )
             )}
             {/* Info box specifico per batteria */}
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mx-3 md:mx-0">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mx-3 md:mx-0">
               <div className="flex items-start gap-2">
-                <Info className="h-4 w-4 text-purple-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-purple-800">
+                <Info className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-yellow-800">
                   <p className="font-medium">Perché è importante?</p>
                   <p>Se hai già una batteria, possiamo ottimizzare l'ampliamento per massimizzare l'autoconsumo. Senza batteria, potremmo consigliarti di aggiungerne una.</p>
                 </div>
