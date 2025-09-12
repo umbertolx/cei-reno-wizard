@@ -1,26 +1,26 @@
 import { useState } from "react";
 import { WelcomePage } from "./steps/WelcomePage";
-import { InformazioniGenerali } from "./steps/InformazioniGenerali";
-import { ConfiguratoreElettrico } from "./steps/ConfiguratoreElettrico";
-import { EtaImpiantoElettrico } from "./steps/EtaImpiantoElettrico";
-import { InterventiElettrici } from "./steps/InterventiElettrici";
-import { SelezioneAmbienti } from "./steps/SelezioneAmbienti";
-import { TipoImpiantoElettrico } from "./steps/TipoImpiantoElettrico";
+import { GeneralInformation } from "./steps/general-info/GeneralInformation";
+import { ElectricalConfiguration } from "./steps/electrical/ElectricalConfiguration";
+import { ElectricalSystemAge } from "./steps/electrical/ElectricalSystemAge";
+import { ElectricalInterventions } from "./steps/electrical/ElectricalInterventions";
+import { RoomSelection } from "./steps/electrical/RoomSelection";
+import { ElectricalSystemType } from "./steps/electrical/ElectricalSystemType";
 import { TipoDomotica } from "./steps/TipoDomotica";
 import { ConfigurazioneKNX } from "./steps/ConfigurazioneKNX";
 import { ConfigurazioneBTicino } from "./steps/ConfigurazioneBTicino";
-import { TapparelleElettriche } from "./steps/TapparelleElettriche";
-import { TipoInterventoFotovoltaico } from "./steps/TipoInterventoFotovoltaico";
-import { CaratteristicheTetto } from "./steps/CaratteristicheTetto";
-import { ObiettiviConsumi } from "./steps/ObiettiviConsumi";
-import { ObiettiviAmpliamento } from "./steps/ObiettiviAmpliamento";
+import { ElectricShutters } from "./steps/electrical/ElectricShutters";
+import { PhotovoltaicInterventionType } from "./steps/photovoltaic/PhotovoltaicInterventionType";
+import { RoofCharacteristics } from "./steps/photovoltaic/RoofCharacteristics";
+import { ConsumptionGoals } from "./steps/photovoltaic/ConsumptionGoals";
+import { ExpansionGoals } from "./steps/photovoltaic/ExpansionGoals";
 import { DettagliImpiantoEsistente } from "./steps/DettagliImpiantoEsistente";
 import { ConsumiAnnui } from "./steps/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/NuoveVociConsumo";
 import { DefinizioneConsumiStandard } from "./steps/DefinizioneConsumiStandard";
 import { DisponibilitaSuperficieTetto } from "./steps/DisponibilitaSuperficieTetto";
 import { BatteriaAccumulo } from "./steps/BatteriaAccumulo";
-import { RichiestaInviata } from "./steps/RichiestaInviata";
+import { RequestSent } from "./steps/final-steps/RequestSent";
 import { DatiContatto } from "./steps/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
 import { Card, CardContent } from "@/components/ui/card";
@@ -400,23 +400,23 @@ export const Configuratore = () => {
       case 'WelcomePage':
         return <WelcomePage onStart={handleWelcomeStart} />;
       
-      case 'InformazioniGenerali':
-        return <InformazioniGenerali {...commonProps} />;
+      case 'GeneralInformation':
+        return <GeneralInformation {...commonProps} />;
       
-      case 'ConfiguratoreElettrico':
-        return <ConfiguratoreElettrico {...commonProps} />;
+      case 'ElectricalConfiguration':
+        return <ElectricalConfiguration {...commonProps} />;
       
-      case 'EtaImpiantoElettrico':
-        return <EtaImpiantoElettrico {...commonProps} />;
+      case 'ElectricalSystemAge':
+        return <ElectricalSystemAge {...commonProps} />;
       
-      case 'InterventiElettrici':
-        return <InterventiElettrici {...commonProps} />;
+      case 'ElectricalInterventions':
+        return <ElectricalInterventions {...commonProps} />;
       
-      case 'SelezioneAmbienti':
-        return <SelezioneAmbienti {...commonProps} />;
+      case 'RoomSelection':
+        return <RoomSelection {...commonProps} />;
       
-      case 'TipoImpiantoElettrico':
-        return <TipoImpiantoElettrico {...commonProps} />;
+      case 'ElectricalSystemType':
+        return <ElectricalSystemType {...commonProps} />;
       
       case 'TipoDomotica':
         return <TipoDomotica {...commonProps} />;
@@ -427,20 +427,20 @@ export const Configuratore = () => {
       case 'ConfigurazioneBTicino':
         return <ConfigurazioneBTicino {...commonProps} />;
       
-      case 'TapparelleElettriche':
-        return <TapparelleElettriche {...commonProps} />;
+      case 'ElectricShutters':
+        return <ElectricShutters {...commonProps} />;
       
-      case 'TipoInterventoFotovoltaico':
-        return <TipoInterventoFotovoltaico {...commonProps} />;
+      case 'PhotovoltaicInterventionType':
+        return <PhotovoltaicInterventionType {...commonProps} />;
       
-      case 'CaratteristicheTetto':
-        return <CaratteristicheTetto {...commonProps} />;
+      case 'RoofCharacteristics':
+        return <RoofCharacteristics {...commonProps} />;
       
-      case 'ObiettiviConsumi':
-        return <ObiettiviConsumi {...commonProps} />;
+      case 'ConsumptionGoals':
+        return <ConsumptionGoals {...commonProps} />;
       
-      case 'ObiettiviAmpliamento':
-        return <ObiettiviAmpliamento {...commonProps} />;
+      case 'ExpansionGoals':
+        return <ExpansionGoals {...commonProps} />;
       
       case 'DettagliImpiantoEsistente':
         return <DettagliImpiantoEsistente {...commonProps} />;
@@ -483,8 +483,8 @@ export const Configuratore = () => {
           />
         );
       
-      case 'RichiestaInviata':
-        return <RichiestaInviata onReset={handleReset} />;
+      case 'RequestSent':
+        return <RequestSent onReset={handleReset} />;
       
       default:
         return <div>Componente non trovato: {currentStepConfig.component}</div>;
