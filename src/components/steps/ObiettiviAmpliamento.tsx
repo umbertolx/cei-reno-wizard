@@ -1,6 +1,6 @@
 import { FormData } from "../Configuratore";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
-import { Check, Info, ChevronDown } from "lucide-react";
+import { Check, HelpCircle, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Slider } from "@/components/ui/slider";
@@ -114,7 +114,7 @@ export const ObiettiviAmpliamento = ({ formData, updateFormData, onNext, onBack 
                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
+                      <HelpCircle className="h-5 w-5 text-black flex-shrink-0 fill-black" />
                       <span className="text-sm font-medium text-yellow-800 text-left">
                         {infoBox.title}
                       </span>
