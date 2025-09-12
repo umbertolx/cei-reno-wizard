@@ -1,10 +1,9 @@
 import { FormData } from "../Configuratore";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
-import { Check, Info, ChevronDown, Zap, Calendar, Battery } from "lucide-react";
+import { Check, Info, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 type Props = {
   formData: FormData;
@@ -21,14 +20,14 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
   const hasBatteria = formData.moduloFotovoltaico?.hasBatteria || "";
 
   const annoOptions = [
-    { id: "prima-2015", label: "Prima del 2015", icon: Calendar },
-    { id: "2015-2020", label: "Tra il 2015 e il 2020", icon: Calendar },
-    { id: "dopo-2020", label: "Dopo il 2020", icon: Calendar }
+    { id: "prima-2015", label: "Prima del 2015" },
+    { id: "2015-2020", label: "Tra il 2015 e il 2020" },
+    { id: "dopo-2020", label: "Dopo il 2020" }
   ];
 
   const batteriaOptions = [
-    { id: "si", label: "Sì", icon: Battery },
-    { id: "no", label: "No", icon: Battery }
+    { id: "si", label: "Sì" },
+    { id: "no", label: "No" }
   ];
 
   const handlePotenzaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +66,7 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
     }
   };
 
-  const renderOptionButton = (option: any, isSelected: boolean, onClick: () => void, IconComponent: any) => (
+  const renderOptionButton = (option: any, isSelected: boolean, onClick: () => void) => (
     <div
       key={option.id}
       onClick={onClick}
@@ -80,8 +79,7 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
       `}
     >
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 flex-1 min-w-0">
-          <IconComponent className={`h-5 w-5 ${isSelected ? 'text-[#d8010c]' : 'text-gray-400'}`} />
+        <div className="flex-1 min-w-0">
           <div className="font-semibold text-base text-[#1c1c1c]">
             {option.label}
           </div>
@@ -105,7 +103,7 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
       {/* Badge */}
       <div className="flex justify-center">
         <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
-          Impianto esistente
+          Ampliamento fotovoltaico
         </div>
       </div>
 
@@ -170,68 +168,51 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
           
           {/* Potenza impianto */}
           <div className="space-y-3 md:space-y-4">
-            <div className="flex items-center gap-3 px-3 md:px-0">
-              <Zap className="h-6 w-6 text-[#d8010c]" />
-              <h3 className="text-lg font-semibold text-[#1c1c1c]">
-                Qual è la potenza dell'impianto?
-              </h3>
-            </div>
+            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
+              Qual è la potenza dell'impianto?
+            </h3>
             <div className="px-3 md:px-0">
               <div className="space-y-2">
-                <Label htmlFor="potenza" className="text-sm text-gray-600">
+                <label className="text-sm font-medium text-[#1c1c1c]">
                   Inserisci la potenza in kWp (per esempio 3 kWp...)
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="potenza"
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    placeholder="3.0"
-                    value={potenzaImpianto}
-                    onChange={handlePotenzaChange}
-                    className="pr-12 text-lg font-medium border-2 focus:border-[#d8010c] rounded-xl"
-                  />
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
-                    kWp
-                  </div>
-                </div>
+                </label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  placeholder="3.0"
+                  value={potenzaImpianto}
+                  onChange={handlePotenzaChange}
+                  className="text-lg font-medium"
+                />
               </div>
             </div>
           </div>
 
           {/* Anno installazione */}
           <div className="space-y-3 md:space-y-4">
-            <div className="flex items-center gap-3 px-3 md:px-0">
-              <Calendar className="h-6 w-6 text-[#d8010c]" />
-              <h3 className="text-lg font-semibold text-[#1c1c1c]">
-                Quando è stato installato l'impianto?
-              </h3>
-            </div>
+            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
+              Quando è stato installato l'impianto?
+            </h3>
             {annoOptions.map((option) =>
               renderOptionButton(
                 option,
                 annoInstallazione === option.id,
-                () => handleAnnoChange(option.id),
-                option.icon
+                () => handleAnnoChange(option.id)
               )
             )}
           </div>
 
           {/* Batteria accumulo */}
           <div className="space-y-3 md:space-y-4">
-            <div className="flex items-center gap-3 px-3 md:px-0">
-              <Battery className="h-6 w-6 text-[#d8010c]" />
-              <h3 className="text-lg font-semibold text-[#1c1c1c]">
-                L'impianto ha una batteria ad accumulo?
-              </h3>
-            </div>
+            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
+              L'impianto ha una batteria ad accumulo?
+            </h3>
             {batteriaOptions.map((option) =>
               renderOptionButton(
                 option,
                 hasBatteria === option.id,
-                () => handleBatteriaChange(option.id),
-                option.icon
+                () => handleBatteriaChange(option.id)
               )
             )}
           </div>
