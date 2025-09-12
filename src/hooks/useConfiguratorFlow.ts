@@ -77,9 +77,14 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
     },
     { 
+      id: 'obiettivi-ampliamento', 
+      component: 'ObiettiviAmpliamento',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico !== 'ampliamento'
+    },
+    { 
       id: 'obiettivi-consumi', 
       component: 'ObiettiviConsumi',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico !== 'nuovo'
     },
     { 
       id: 'consumi-annui', 

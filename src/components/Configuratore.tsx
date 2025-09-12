@@ -13,6 +13,7 @@ import { TapparelleElettriche } from "./steps/TapparelleElettriche";
 import { TipoInterventoFotovoltaico } from "./steps/TipoInterventoFotovoltaico";
 import { CaratteristicheTetto } from "./steps/CaratteristicheTetto";
 import { ObiettiviConsumi } from "./steps/ObiettiviConsumi";
+import { ObiettiviAmpliamento } from "./steps/ObiettiviAmpliamento";
 import { ConsumiAnnui } from "./steps/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/NuoveVociConsumo";
 import { DefinizioneConsumiStandard } from "./steps/DefinizioneConsumiStandard";
@@ -90,6 +91,9 @@ export type FormData = {
     zoneOmbra?: string; // "nessuna" | "leggera" | "importante"
     obiettivoPrincipale?: string; // "risparmio-bolletta" | "indipendenza-energetica"
     consumoEnergetico?: number[]; // percentuale consumo giorno/sera [0-100]
+    // Campi per ampliamento
+    obiettivoAmpliamento?: string; // "risparmio-bolletta" | "indipendenza-energetica"
+    percentualeCopertura?: number[]; // percentuale attuale di copertura dell'impianto esistente
     conosceConsumi?: string; // "si" | "no"
     consumiKWh?: number; // kWh annui da bolletta
     spesaMensile?: number; // spesa media mensile in €
@@ -430,6 +434,9 @@ export const Configuratore = () => {
       
       case 'ObiettiviConsumi':
         return <ObiettiviConsumi {...commonProps} />;
+      
+      case 'ObiettiviAmpliamento':
+        return <ObiettiviAmpliamento {...commonProps} />;
       
       case 'ConsumiAnnui':
         return <ConsumiAnnui {...commonProps} />;
