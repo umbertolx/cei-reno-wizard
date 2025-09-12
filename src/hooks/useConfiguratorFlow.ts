@@ -15,32 +15,32 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
   // Definizione step con flusso logico corretto
   const steps: StepConfig[] = [
     { id: 'welcome', component: 'WelcomePage' },
-    { id: 'info-generali', component: 'InformazioniGenerali' },
+    { id: 'info-generali', component: 'GeneralInformation' },
     { 
       id: 'configuratore-elettrico', 
-      component: 'ConfiguratoreElettrico',
+      component: 'ElectricalConfiguration',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico')
     },
     // Se intervento parziale: età impianto → interventi → ambienti
     { 
       id: 'eta-impianto', 
-      component: 'EtaImpiantoElettrico',
+      component: 'ElectricalSystemAge',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione !== 'parziale'
     },
     { 
       id: 'interventi-elettrici', 
-      component: 'InterventiElettrici',
+      component: 'ElectricalInterventions',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione !== 'parziale'
     },
     { 
       id: 'selezione-ambienti', 
-      component: 'SelezioneAmbienti',
+      component: 'RoomSelection',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione !== 'parziale'
     },
     // Se completa/nuova: tipo impianto
     { 
       id: 'tipo-impianto', 
-      component: 'TipoImpiantoElettrico',
+      component: 'ElectricalSystemType',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione === 'parziale'
     },
     // Se livello 3: domotica → KNX/BTicino
@@ -62,23 +62,23 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     // Se livello 1/2: tapparelle
     { 
       id: 'tapparelle-elettriche', 
-      component: 'TapparelleElettriche',
+      component: 'ElectricShutters',
       skipConditions: (data) => !data.moduliSelezionati?.includes('impianto-elettrico') || data.moduloElettrico?.tipoRistrutturazione === 'parziale' || data.moduloElettrico?.tipoImpianto === 'livello3'
     },
     // Step fotovoltaico
     { 
       id: 'caratteristiche-tetto', 
-      component: 'CaratteristicheTetto',
+      component: 'RoofCharacteristics',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
     },
     { 
       id: 'tipo-intervento-fotovoltaico', 
-      component: 'TipoInterventoFotovoltaico',
+      component: 'PhotovoltaicInterventionType',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
     },
     { 
       id: 'obiettivi-ampliamento', 
-      component: 'ObiettiviAmpliamento',
+      component: 'ExpansionGoals',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico !== 'ampliamento'
     },
     { 
@@ -88,7 +88,7 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     },
     { 
       id: 'obiettivi-consumi', 
-      component: 'ObiettiviConsumi',
+      component: 'ConsumptionGoals',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico !== 'nuovo'
     },
     { 
@@ -118,7 +118,7 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     },
     { id: 'dati-contatto', component: 'DatiContatto' },
     { id: 'stima-finale', component: 'StimaFinale', requiresEstimate: true },
-    { id: 'richiesta-inviata', component: 'RichiestaInviata' }
+    { id: 'richiesta-inviata', component: 'RequestSent' }
   ];
 
   const getActiveSteps = useCallback(() => {
