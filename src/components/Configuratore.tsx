@@ -14,6 +14,7 @@ import { TipoInterventoFotovoltaico } from "./steps/TipoInterventoFotovoltaico";
 import { CaratteristicheTetto } from "./steps/CaratteristicheTetto";
 import { ObiettiviConsumi } from "./steps/ObiettiviConsumi";
 import { ObiettiviAmpliamento } from "./steps/ObiettiviAmpliamento";
+import { DettagliImpiantoEsistente } from "./steps/DettagliImpiantoEsistente";
 import { ConsumiAnnui } from "./steps/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/NuoveVociConsumo";
 import { DefinizioneConsumiStandard } from "./steps/DefinizioneConsumiStandard";
@@ -94,6 +95,9 @@ export type FormData = {
     // Campi per ampliamento
     obiettivoAmpliamento?: string; // "risparmio-bolletta" | "indipendenza-energetica"
     percentualeCopertura?: number[]; // percentuale attuale di copertura dell'impianto esistente
+    potenzaImpianto?: string; // potenza in kWp dell'impianto esistente
+    annoInstallazione?: string; // "prima-2015" | "2015-2020" | "dopo-2020"
+    hasBatteria?: string; // "si" | "no"
     conosceConsumi?: string; // "si" | "no"
     consumiKWh?: number; // kWh annui da bolletta
     spesaMensile?: number; // spesa media mensile in €
@@ -437,6 +441,9 @@ export const Configuratore = () => {
       
       case 'ObiettiviAmpliamento':
         return <ObiettiviAmpliamento {...commonProps} />;
+      
+      case 'DettagliImpiantoEsistente':
+        return <DettagliImpiantoEsistente {...commonProps} />;
       
       case 'ConsumiAnnui':
         return <ConsumiAnnui {...commonProps} />;
