@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Info, ChevronDown, Check } from "lucide-react";
+import { ArrowRight, ArrowLeft, Plus, ChevronDown, Check } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { StickyNavigationBar } from "./StickyNavigationBar";
 
@@ -100,7 +100,7 @@ export const QuestionWithOptions = ({
                     <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
+                          <Plus className="h-5 w-5 text-black flex-shrink-0 fill-black" />
                           <span className="text-sm font-medium text-yellow-800 text-left">
                             {infoBox.title}
                           </span>
@@ -123,7 +123,7 @@ export const QuestionWithOptions = ({
               <div className="hidden md:block">
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                   <div className="flex items-start gap-3">
-                    <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                    <Plus className="h-5 w-5 text-black flex-shrink-0 fill-black mt-0.5" />
                     <div className="text-sm text-yellow-800">
                       <p className="font-medium mb-1">{infoBox.title}</p>
                       <p>{infoBox.content}</p>

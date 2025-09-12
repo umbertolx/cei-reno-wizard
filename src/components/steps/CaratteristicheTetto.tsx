@@ -1,6 +1,6 @@
 import { FormData } from "../Configuratore";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
-import { CheckCircle, HelpCircle, ChevronDown, Check } from "lucide-react";
+import { CheckCircle, Plus, ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
@@ -192,7 +192,7 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <HelpCircle className="h-5 w-5 text-black flex-shrink-0 fill-black" />
+                      <Plus className="h-5 w-5 text-black flex-shrink-0 fill-black" />
                       <span className="text-sm font-medium text-yellow-800 text-left">
                         {infoBox.title}
                       </span>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ArrowRight, ArrowLeft, Info, Check, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowLeft, Plus, Check, ChevronDown } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -69,7 +69,7 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 hover:bg-yellow-100 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
+                    <Plus className="h-5 w-5 text-black flex-shrink-0 fill-black" />
                     <span className="text-sm font-medium text-yellow-800">
                       Come funziona l'elettrificazione delle tapparelle
                     </span>
@@ -82,7 +82,7 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
             <CollapsibleContent className="md:block">
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 md:mt-0 mt-0">
                 <div className="flex items-start gap-3">
-                  <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5 hidden md:block" />
+                  <Plus className="h-5 w-5 text-black flex-shrink-0 fill-black mt-0.5 hidden md:block" />
                   <div className="text-sm text-yellow-800">
                     <p className="font-medium mb-1 hidden md:block">Come funziona l'elettrificazione delle tapparelle</p>
                     <p>
