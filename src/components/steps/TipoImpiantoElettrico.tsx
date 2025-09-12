@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { FormData } from "../Configuratore";
-import { QuestionWithOptions, QuestionOption } from "../shared/QuestionWithOptions";
+import { QuestionStepLayout } from "../templates";
 
 type Props = {
   formData: FormData;
@@ -10,19 +9,18 @@ type Props = {
 };
 
 export const TipoImpiantoElettrico = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const [tipoImpianto, setTipoImpianto] = useState<string>(formData.moduloElettrico?.tipoImpianto || "");
+  const currentValue = formData.moduloElettrico?.tipoImpianto || "";
 
-  const handleSubmit = () => {
+  const handleSelectionChange = (value: string) => {
     updateFormData({ 
       moduloElettrico: {
         ...formData.moduloElettrico,
-        tipoImpianto
+        tipoImpianto: value
       }
     });
-    onNext();
   };
 
-  const options: QuestionOption[] = [
+  const options = [
     {
       id: 'livello1',
       label: 'Livello 1: Standard Minimo'
@@ -43,16 +41,16 @@ export const TipoImpiantoElettrico = ({ formData, updateFormData, onNext, onBack
   };
 
   return (
-    <QuestionWithOptions
+    <QuestionStepLayout
       badge="Impianto elettrico"
       icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
       iconAlt="Electrical work icon"
       title="Che tipo di impianto elettrico vuoi installare?"
       infoBox={infoBox}
       options={options}
-      selectedValue={tipoImpianto}
-      onSelectionChange={setTipoImpianto}
-      onNext={handleSubmit}
+      selectedValue={currentValue}
+      onSelectionChange={handleSelectionChange}
+      onNext={onNext}
       onBack={onBack}
     />
   );

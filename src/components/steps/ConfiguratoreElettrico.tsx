@@ -1,7 +1,6 @@
 
-import { useState } from "react";
 import { FormData } from "../Configuratore";
-import { QuestionWithOptions, QuestionOption, InfoBox } from "../shared/QuestionWithOptions";
+import { QuestionStepLayout } from "../templates";
 
 type Props = {
   formData: FormData;
@@ -22,7 +21,7 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
     });
   };
 
-  const options: QuestionOption[] = [
+  const options = [
     {
       id: 'completa',
       label: 'Ristrutturazione completa'
@@ -37,13 +36,13 @@ export const ConfiguratoreElettrico = ({ formData, updateFormData, onNext, onBac
     }
   ];
 
-  const infoBox: InfoBox = {
+  const infoBox = {
     title: 'Cosa comporta una ristrutturazione completa?',
     content: 'Una ristrutturazione completa prevede lavori sui pavimenti con demolizione del massetto o l\'aggiunta di controsoffitti per il passaggio degli impianti.'
   };
 
   return (
-    <QuestionWithOptions
+    <QuestionStepLayout
       badge="Impianto elettrico"
       icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
       iconAlt="Electrical work icon"

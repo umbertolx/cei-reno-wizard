@@ -21,6 +21,7 @@ export type SelectableModule = {
 };
 
 export type WelcomeStepLayoutProps = {
+  badge?: string;
   title: string;
   subtitle?: string;
   animatedWords?: string[];
@@ -36,6 +37,7 @@ export type WelcomeStepLayoutProps = {
 };
 
 export const WelcomeStepLayout = ({
+  badge,
   title,
   subtitle,
   animatedWords = [],
@@ -96,6 +98,15 @@ export const WelcomeStepLayout = ({
 
   return (
     <div className={`space-y-4 ${className}`}>
+      {/* Badge */}
+      {badge && (
+        <div className="flex justify-start md:justify-center px-3 md:px-0">
+          <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
+            {badge}
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="space-y-2 md:space-y-3">
         <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
