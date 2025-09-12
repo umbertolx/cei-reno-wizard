@@ -185,46 +185,30 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
             </div>
           </div>
 
-          {/* Box informativo - collassabile su mobile, sempre aperto su desktop */}
+          {/* Box informativo - collassabile su mobile e desktop */}
           <div>
-            {/* Versione mobile - collassabile */}
-            <div className="block md:hidden">
-              <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
-                <CollapsibleTrigger className="w-full">
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
-                        <span className="text-sm font-medium text-yellow-800 text-left">
-                          {infoBox.title}
-                        </span>
-                      </div>
-                      <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen ? 'rotate-180' : ''}`} />
+            <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
+              <CollapsibleTrigger className="w-full">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 transition-all duration-300 cursor-pointer">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Info className="h-5 w-5 text-yellow-600 flex-shrink-0" />
+                      <span className="text-sm font-medium text-yellow-800 text-left">
+                        {infoBox.title}
+                      </span>
                     </div>
-                    {infoBoxOpen && (
-                      <div className="mt-3 pt-3 border-t border-yellow-200">
-                        <p className="text-sm text-yellow-800 text-left">
-                          {infoBox.content}
-                        </p>
-                      </div>
-                    )}
+                    <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen ? 'rotate-180' : ''}`} />
                   </div>
-                </CollapsibleTrigger>
-              </Collapsible>
-            </div>
-
-            {/* Versione desktop - sempre aperto */}
-            <div className="hidden md:block">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-yellow-800">
-                    <p className="font-medium mb-1">{infoBox.title}</p>
-                    <p>{infoBox.content}</p>
-                  </div>
+                  {infoBoxOpen && (
+                    <div className="mt-3 pt-3 border-t border-yellow-200">
+                      <p className="text-sm text-yellow-800 text-left">
+                        {infoBox.content}
+                      </p>
+                    </div>
+                  )}
                 </div>
-              </div>
-            </div>
+              </CollapsibleTrigger>
+            </Collapsible>
           </div>
           
           {/* Tipo di falda */}

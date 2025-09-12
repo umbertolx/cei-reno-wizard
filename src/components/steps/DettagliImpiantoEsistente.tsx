@@ -1,6 +1,8 @@
 import { FormData } from "../Configuratore";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
-import { Check, Info } from "lucide-react";
+import { Check, Info, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
 
 type Props = {
@@ -11,6 +13,10 @@ type Props = {
 };
 
 export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, onBack }: Props) => {
+  const [infoBoxOpen1, setInfoBoxOpen1] = useState(false);
+  const [infoBoxOpen2, setInfoBoxOpen2] = useState(false);
+  const [infoBoxOpen3, setInfoBoxOpen3] = useState(false);
+  
   const potenzaImpianto = formData.moduloFotovoltaico?.potenzaImpianto || "";
   const annoInstallazione = formData.moduloFotovoltaico?.annoInstallazione || "";
   const hasBatteria = formData.moduloFotovoltaico?.hasBatteria || "";
@@ -137,15 +143,28 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               </div>
             </div>
             {/* Info box specifico per potenza */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mx-3 md:mx-0">
-              <div className="flex items-start gap-2">
-                <Info className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-yellow-800">
-                  <p className="font-medium">Perché è importante?</p>
-                  <p>Conoscere la potenza attuale ci permette di calcolare l'ampliamento ottimale e verificare la compatibilità con l'inverter esistente.</p>
+            <Collapsible open={infoBoxOpen1} onOpenChange={setInfoBoxOpen1}>
+              <CollapsibleTrigger className="w-full mx-3 md:mx-0">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Info className="h-4 w-4 text-yellow-600 flex-shrink-0" />
+                      <span className="text-sm font-medium text-yellow-800 text-left">
+                        Perché è importante?
+                      </span>
+                    </div>
+                    <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen1 ? 'rotate-180' : ''}`} />
+                  </div>
+                  {infoBoxOpen1 && (
+                    <div className="mt-2 pt-2 border-t border-yellow-200">
+                      <p className="text-sm text-yellow-800 text-left">
+                        Conoscere la potenza attuale ci permette di calcolare l'ampliamento ottimale e verificare la compatibilità con l'inverter esistente.
+                      </p>
+                    </div>
+                  )}
                 </div>
-              </div>
-            </div>
+              </CollapsibleTrigger>
+            </Collapsible>
           </div>
 
           {/* Anno installazione */}
@@ -161,15 +180,28 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               )
             )}
             {/* Info box specifico per anno */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mx-3 md:mx-0">
-              <div className="flex items-start gap-2">
-                <Info className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-yellow-800">
-                  <p className="font-medium">Perché è importante?</p>
-                  <p>L'età dell'impianto influenza la tecnologia disponibile e gli incentivi applicabili per l'ampliamento.</p>
+            <Collapsible open={infoBoxOpen2} onOpenChange={setInfoBoxOpen2}>
+              <CollapsibleTrigger className="w-full mx-3 md:mx-0">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Info className="h-4 w-4 text-yellow-600 flex-shrink-0" />
+                      <span className="text-sm font-medium text-yellow-800 text-left">
+                        Perché è importante?
+                      </span>
+                    </div>
+                    <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen2 ? 'rotate-180' : ''}`} />
+                  </div>
+                  {infoBoxOpen2 && (
+                    <div className="mt-2 pt-2 border-t border-yellow-200">
+                      <p className="text-sm text-yellow-800 text-left">
+                        L'età dell'impianto influenza la tecnologia disponibile e gli incentivi applicabili per l'ampliamento.
+                      </p>
+                    </div>
+                  )}
                 </div>
-              </div>
-            </div>
+              </CollapsibleTrigger>
+            </Collapsible>
           </div>
 
           {/* Batteria accumulo */}
@@ -185,15 +217,28 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               )
             )}
             {/* Info box specifico per batteria */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mx-3 md:mx-0">
-              <div className="flex items-start gap-2">
-                <Info className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-yellow-800">
-                  <p className="font-medium">Perché è importante?</p>
-                  <p>Se hai già una batteria, possiamo ottimizzare l'ampliamento per massimizzare l'autoconsumo. Senza batteria, potremmo consigliarti di aggiungerne una.</p>
+            <Collapsible open={infoBoxOpen3} onOpenChange={setInfoBoxOpen3}>
+              <CollapsibleTrigger className="w-full mx-3 md:mx-0">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 transition-all duration-300 cursor-pointer">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Info className="h-4 w-4 text-yellow-600 flex-shrink-0" />
+                      <span className="text-sm font-medium text-yellow-800 text-left">
+                        Perché è importante?
+                      </span>
+                    </div>
+                    <ChevronDown className={`h-4 w-4 text-yellow-600 transition-transform duration-200 ${infoBoxOpen3 ? 'rotate-180' : ''}`} />
+                  </div>
+                  {infoBoxOpen3 && (
+                    <div className="mt-2 pt-2 border-t border-yellow-200">
+                      <p className="text-sm text-yellow-800 text-left">
+                        Se hai già una batteria, possiamo ottimizzare l'ampliamento per massimizzare l'autoconsumo. Senza batteria, potremmo consigliarti di aggiungerne una.
+                      </p>
+                    </div>
+                  )}
                 </div>
-              </div>
-            </div>
+              </CollapsibleTrigger>
+            </Collapsible>
           </div>
         </div>
       </div>
