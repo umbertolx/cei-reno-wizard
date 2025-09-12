@@ -226,8 +226,8 @@ export const StimaFinale = ({
 
 
       {/* Box messaggio sopralluogo in stile CEI */}
-      <div className="bg-white border-2 border-green-700 p-4 rounded-xl text-center shadow-sm">
-        <p className="text-md text-[#1c1c1c] font-medium">
+      <div className="bg-white border-dashed border-2 border-[#d8010c] p-4 rounded-xl text-center shadow-sm">
+        <p className="text-md text-[#1c1c1c] font-medium uppercase">
           Richiedendo il sopralluogo, un nostro tecnico ti contatterà entro 24-48h per confermare l'appuntamento
         </p>
       </div>
