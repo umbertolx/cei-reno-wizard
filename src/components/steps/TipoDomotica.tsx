@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { FormData } from "../Configuratore";
-import { ScenarioComparison } from "../shared/ScenarioComparison";
+import { ScenarioComparisonLayout } from "../templates";
 import { CheckCircle, Settings, Clock, DollarSign, Wifi, Shield, Zap, Signal } from "lucide-react";
 
 type Props = {
@@ -53,7 +53,7 @@ export const TipoDomotica = ({ formData, updateFormData, onNext, onBack }: Props
   ];
 
   return (
-    <ScenarioComparison
+    <ScenarioComparisonLayout
       badge="Impianto elettrico"
       icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
       iconAlt="Electrical work icon"

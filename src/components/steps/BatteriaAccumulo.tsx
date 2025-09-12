@@ -1,5 +1,5 @@
 import { FormData } from "../Configuratore";
-import { QuestionWithOptions } from "../shared/QuestionWithOptions";
+import { QuestionStepLayout } from "../templates";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -38,34 +38,33 @@ export const BatteriaAccumulo = ({ formData, updateFormData, onNext, onBack }: P
   const obiettivoPrincipale = formData.moduloFotovoltaico?.obiettivoPrincipale;
   const showBatteryRecommendation = eveningConsumption > 50 && obiettivoPrincipale === "indipendenza";
 
-  return (
-    <div className="space-y-6">
-      <QuestionWithOptions
-        badge="Impianto fotovoltaico"
-        icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
-        iconAlt="House icon"
-        title="Vuoi aggiungere una batteria di accumulo?"
-        description="Immagazzina l'energia prodotta durante il giorno e usala la sera"
-        infoBox={infoBox}
-        options={options}
-        selectedValue={currentValue}
-        onSelectionChange={handleSelectionChange}
-        onNext={onNext}
-        onBack={onBack}
-        nextButtonText="Avanti"
-        backButtonText="Indietro"
-      />
-      
-      {showBatteryRecommendation && (
-        <div className="fixed bottom-20 left-4 right-4 z-50 md:relative md:bottom-auto md:left-auto md:right-auto md:mt-6">
-          <Alert className="bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800">
-            <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            <AlertDescription className="text-blue-800 dark:text-blue-200">
-              <strong>Consiglio:</strong> Considerando che i tuoi consumi sono per più del 50% serali e il tuo obiettivo è raggiungere l'indipendenza energetica, ti consigliamo di installare una batteria di accumulo per massimizzare l'autoconsumo.
-            </AlertDescription>
-          </Alert>
-        </div>
-      )}
+  const conditionalContent = showBatteryRecommendation ? (
+    <div className="fixed bottom-20 left-4 right-4 z-50 md:relative md:bottom-auto md:left-auto md:right-auto md:mt-6">
+      <Alert className="bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800">
+        <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        <AlertDescription className="text-blue-800 dark:text-blue-200">
+          <strong>Consiglio:</strong> Considerando che i tuoi consumi sono per più del 50% serali e il tuo obiettivo è raggiungere l'indipendenza energetica, ti consigliamo di installare una batteria di accumulo per massimizzare l'autoconsumo.
+        </AlertDescription>
+      </Alert>
     </div>
+  ) : undefined;
+
+  return (
+    <QuestionStepLayout
+      badge="Impianto fotovoltaico"
+      icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
+      iconAlt="House icon"
+      title="Vuoi aggiungere una batteria di accumulo?"
+      description="Immagazzina l'energia prodotta durante il giorno e usala la sera"
+      infoBox={infoBox}
+      options={options}
+      selectedValue={currentValue}
+      onSelectionChange={handleSelectionChange}
+      onNext={onNext}
+      onBack={onBack}
+      nextButtonText="Avanti"
+      backButtonText="Indietro"
+      conditionalContent={conditionalContent}
+    />
   );
 };

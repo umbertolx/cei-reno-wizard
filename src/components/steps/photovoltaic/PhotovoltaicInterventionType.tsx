@@ -1,5 +1,5 @@
 import { FormData } from "../../Configuratore";
-import { QuestionWithOptions } from "../../shared/QuestionWithOptions";
+import { QuestionStepLayout } from "../../templates";
 
 type Props = {
   formData: FormData;
@@ -31,7 +31,7 @@ export const PhotovoltaicInterventionType = ({ formData, updateFormData, onNext,
   };
 
   return (
-    <QuestionWithOptions
+    <QuestionStepLayout
       badge="Impianto fotovoltaico"
       icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
       iconAlt="House icon"
