@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Plus, ChevronDown, Check } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { StickyNavigationBar } from "./StickyNavigationBar";
+import { InfoBox } from "./InfoBox";
 
 export type QuestionOption = {
   id: string;
@@ -92,29 +93,12 @@ export const QuestionWithOptions = ({
 
           {/* Box informativo - collassabile su tutte le dimensioni */}
           {infoBox && (
-            <div>
-              <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
-                <CollapsibleTrigger className="w-full">
-                  <div className="bg-transparent border-dashed border border-[#d8010c] rounded-xl p-4 transition-all duration-300 cursor-pointer">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                          <span className="text-sm font-medium text-black text-left uppercase">
-                            {infoBox.title}
-                          </span>
-                        </div>
-                      </div>
-                    {infoBoxOpen && (
-                      <div className="mt-3 pt-3 border-t border-yellow-200">
-                        <p className="text-sm text-yellow-800 text-left">
-                          {infoBox.content}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </CollapsibleTrigger>
-              </Collapsible>
-            </div>
+            <InfoBox
+              title={infoBox.title}
+              content={infoBox.content}
+              isOpen={infoBoxOpen}
+              onToggle={setInfoBoxOpen}
+            />
           )}
 
           {/* Contenuto di riepilogo */}

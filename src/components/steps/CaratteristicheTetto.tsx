@@ -3,6 +3,7 @@ import { StickyNavigationBar } from "../shared/StickyNavigationBar";
 import { CheckCircle, Plus, ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { InfoBox } from "../shared/InfoBox";
 
 type Props = {
   formData: FormData;
@@ -186,29 +187,12 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
           </div>
 
           {/* Box informativo - collassabile su mobile e desktop */}
-          <div>
-            <Collapsible open={infoBoxOpen} onOpenChange={setInfoBoxOpen}>
-              <CollapsibleTrigger className="w-full">
-                <div className="bg-transparent border-dashed border border-[#d8010c] rounded-xl p-4 transition-all duration-300 cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                        <span className="text-sm font-medium text-black text-left uppercase">
-                          {infoBox.title}
-                        </span>
-                      </div>
-                    </div>
-                  {infoBoxOpen && (
-                    <div className="mt-3 pt-3 border-t border-yellow-200">
-                      <p className="text-sm text-yellow-800 text-left">
-                        {infoBox.content}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </CollapsibleTrigger>
-            </Collapsible>
-          </div>
+          <InfoBox
+            title={infoBox.title}
+            content={infoBox.content}
+            isOpen={infoBoxOpen}
+            onToggle={setInfoBoxOpen}
+          />
           
           {/* Tipo di falda */}
           <div className="space-y-3 md:space-y-4">

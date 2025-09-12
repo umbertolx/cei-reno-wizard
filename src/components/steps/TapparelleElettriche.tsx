@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ArrowRight, ArrowLeft, Plus, Check, ChevronDown } from "lucide-react";
+import { InfoBox } from "../shared/InfoBox";
 
 type Props = {
   formData: FormData;
@@ -63,37 +64,13 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
             </div>
           </div>
 
-          {/* Box informativo collassabile su mobile */}
-          <Collapsible open={isInfoOpen} onOpenChange={setIsInfoOpen}>
-            <CollapsibleTrigger className="w-full md:hidden">
-              <div className="bg-transparent border-dashed border border-[#d8010c] rounded-lg p-4 hover:bg-yellow-100 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Plus className="h-5 w-5 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                      <span className="text-sm font-medium text-black text-left uppercase">
-                        Come funziona l'elettrificazione delle tapparelle
-                      </span>
-                    </div>
-                  </div>
-              </div>
-            </CollapsibleTrigger>
-
-            <CollapsibleContent className="md:block">
-              <div className="bg-transparent border-dashed border border-[#d8010c] rounded-lg p-4 md:mt-0 mt-0">
-                <div className="flex items-start gap-3">
-                  <Plus className="h-5 w-5 text-black flex-shrink-0 fill-black mt-0.5 hidden md:block" />
-                  <div className="text-sm text-yellow-800">
-                    <p className="font-medium mb-1 hidden md:block">Come funziona l'elettrificazione delle tapparelle</p>
-                    <p>
-                      Per elettrificare le tapparelle è necessario creare delle tracce murarie per far passare i cavi elettrici fino ai motori. 
-                      In base al numero di finestre che hai indicato, stimeremo un percorso ottimale per minimizzare i lavori e i costi, 
-                      considerando la disposizione degli ambienti e la posizione del quadro elettrico.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
+          {/* Box informativo */}
+          <InfoBox
+            title="Come funziona l'elettrificazione delle tapparelle"
+            content="Per elettrificare le tapparelle è necessario creare delle tracce murarie per far passare i cavi elettrici fino ai motori. In base al numero di finestre che hai indicato, stimeremo un percorso ottimale per minimizzare i lavori e i costi, considerando la disposizione degli ambienti e la posizione del quadro elettrico."
+            isOpen={isInfoOpen}
+            onToggle={setIsInfoOpen}
+          />
 
           {/* Opzioni Sì/No */}
           <div className="space-y-3 md:space-y-4">

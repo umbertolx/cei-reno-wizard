@@ -4,6 +4,7 @@ import { Check, Plus, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
+import { InfoBox } from "../shared/InfoBox";
 
 type Props = {
   formData: FormData;
@@ -143,27 +144,12 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               </div>
             </div>
             {/* Info box specifico per potenza */}
-            <Collapsible open={infoBoxOpen1} onOpenChange={setInfoBoxOpen1}>
-              <CollapsibleTrigger className="w-full mx-3 md:mx-0">
-                <div className="bg-transparent border-dashed border border-[#d8010c] rounded-lg p-3 transition-all duration-300 cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                        <span className="text-sm font-medium text-black text-left uppercase">
-                          Perché è importante?
-                        </span>
-                      </div>
-                    </div>
-                  {infoBoxOpen1 && (
-                    <div className="mt-2 pt-2 border-t border-yellow-200">
-                      <p className="text-sm text-yellow-800 text-left">
-                        Conoscere la potenza attuale ci permette di calcolare l'ampliamento ottimale e verificare la compatibilità con l'inverter esistente.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </CollapsibleTrigger>
-            </Collapsible>
+            <InfoBox
+              title="Perché è importante?"
+              content="Conoscere la potenza attuale ci permette di calcolare l'ampliamento ottimale e verificare la compatibilità con l'inverter esistente."
+              isOpen={infoBoxOpen1}
+              onToggle={setInfoBoxOpen1}
+            />
           </div>
 
           {/* Anno installazione */}
@@ -179,27 +165,12 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               )
             )}
             {/* Info box specifico per anno */}
-            <Collapsible open={infoBoxOpen2} onOpenChange={setInfoBoxOpen2}>
-              <CollapsibleTrigger className="w-full mx-3 md:mx-0">
-                <div className="bg-transparent border-dashed border border-[#d8010c] rounded-lg p-3 transition-all duration-300 cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                        <span className="text-sm font-medium text-black text-left uppercase">
-                          Perché è importante?
-                        </span>
-                      </div>
-                    </div>
-                  {infoBoxOpen2 && (
-                    <div className="mt-2 pt-2 border-t border-yellow-200">
-                      <p className="text-sm text-yellow-800 text-left">
-                        L'età dell'impianto influenza la tecnologia disponibile e gli incentivi applicabili per l'ampliamento.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </CollapsibleTrigger>
-            </Collapsible>
+            <InfoBox
+              title="Perché è importante?"
+              content="L'età dell'impianto influenza la tecnologia disponibile e gli incentivi applicabili per l'ampliamento."
+              isOpen={infoBoxOpen2}
+              onToggle={setInfoBoxOpen2}
+            />
           </div>
 
           {/* Batteria accumulo */}
@@ -215,27 +186,12 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               )
             )}
             {/* Info box specifico per batteria */}
-            <Collapsible open={infoBoxOpen3} onOpenChange={setInfoBoxOpen3}>
-              <CollapsibleTrigger className="w-full mx-3 md:mx-0">
-                <div className="bg-transparent border-dashed border border-[#d8010c] rounded-lg p-3 transition-all duration-300 cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Plus className="h-4 w-4 flex-shrink-0" color="#d8010c" strokeWidth={3} />
-                        <span className="text-sm font-medium text-black text-left uppercase">
-                          Perché è importante?
-                        </span>
-                      </div>
-                    </div>
-                  {infoBoxOpen3 && (
-                    <div className="mt-2 pt-2 border-t border-yellow-200">
-                      <p className="text-sm text-yellow-800 text-left">
-                        Se hai già una batteria, possiamo ottimizzare l'ampliamento per massimizzare l'autoconsumo. Senza batteria, potremmo consigliarti di aggiungerne una.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </CollapsibleTrigger>
-            </Collapsible>
+            <InfoBox
+              title="Perché è importante?"
+              content="Se hai già una batteria, possiamo ottimizzare l'ampliamento per massimizzare l'autoconsumo. Senza batteria, potremmo consigliarti di aggiungerne una."
+              isOpen={infoBoxOpen3}
+              onToggle={setInfoBoxOpen3}
+            />
           </div>
         </div>
       </div>
