@@ -40,7 +40,6 @@ export const StepLayout = ({
           <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
             {title}
           </h1>
-          <div className="w-full h-px bg-gray-200"></div>
           {description && (
             <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
               {description}
