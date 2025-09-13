@@ -181,95 +181,65 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext, onBack 
       onBack={onBack}
       isNextDisabled={!isFormValid()}
     >
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Tipo Abitazione */}
         <div>
-          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
-            Tipo di abitazione
-          </h2>
-          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
-            <TipoAbitazione
-              value={info.tipologiaAbitazione}
-              onChange={(type) => updateFormData({
-                informazioniGenerali: { ...info, tipologiaAbitazione: type }
-              })}
-            />
-          </div>
+          <TipoAbitazione
+            value={info.tipologiaAbitazione}
+            onChange={(type) => updateFormData({
+              informazioniGenerali: { ...info, tipologiaAbitazione: type }
+            })}
+          />
         </div>
 
         {/* Superficie */}
         <div>
-          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
-            Superficie abitazione (mq)
-          </h2>
-          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
-            <SuperficieSlider
-              value={info.superficie}
-              onChange={(value) => updateFormData({
-                informazioniGenerali: { ...info, superficie: value }
-              })}
-            />
-          </div>
+          <SuperficieSlider
+            value={info.superficie}
+            onChange={(value) => updateFormData({
+              informazioniGenerali: { ...info, superficie: value }
+            })}
+          />
         </div>
 
         {/* Indirizzo */}
         <div>
-          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
-            Indirizzo immobile
-          </h2>
-          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
-            <IndirizzoField
-              value={info.indirizzo}
-              onChange={(value) => updateFormData({
-                informazioniGenerali: { ...info, indirizzo: value }
-              })}
-              onSelectLocation={selectLocation}
-            />
-          </div>
+          <IndirizzoField
+            value={info.indirizzo}
+            onChange={(value) => updateFormData({
+              informazioniGenerali: { ...info, indirizzo: value }
+            })}
+            onSelectLocation={selectLocation}
+          />
         </div>
 
         {/* Utilizzo Abitazione */}
         <div>
-          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
-            Utilizzo abitazione
-          </h2>
-          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
-            <UtilizzoAbitazioneSelector
-              value={info.utilizzoAbitazione}
-              onChange={(value) => updateFormData({
-                informazioniGenerali: { ...info, utilizzoAbitazione: value }
-              })}
-            />
-          </div>
+          <UtilizzoAbitazioneSelector
+            value={info.utilizzoAbitazione}
+            onChange={(value) => updateFormData({
+              informazioniGenerali: { ...info, utilizzoAbitazione: value }
+            })}
+          />
         </div>
 
         {/* Numero Persone */}
         <div>
-          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
-            Numero di persone
-          </h2>
-          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
-            <NumeroPersoneSelector
-              value={info.numeroPersone}
-              onChange={(value) => updateFormData({
-                informazioniGenerali: { ...info, numeroPersone: value }
-              })}
-            />
-          </div>
+          <NumeroPersoneSelector
+            value={info.numeroPersone}
+            onChange={(value) => updateFormData({
+              informazioniGenerali: { ...info, numeroPersone: value }
+            })}
+          />
         </div>
 
         {/* Suddivisione Spazi */}
         <div>
-          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
-            Suddivisione spazi ({totalRooms} {totalRooms === 1 ? 'stanza' : 'stanze'})
-          </h2>
-          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
-            <SuddivisioneSpazi
-              composizione={info.composizione}
-              onChangeStanza={handleChangeComposizione}
-              totalRooms={totalRooms}
-            />
-          </div>
+          <SuddivisioneSpazi
+            composizione={info.composizione}
+            onChangeStanza={handleChangeComposizione}
+            totalRooms={totalRooms}
+          />
         </div>
       </div>
     </StepLayout>
