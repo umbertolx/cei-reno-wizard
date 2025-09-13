@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FormData } from "../../Configuratore";
 import { FeatureConfigurationLayout } from "../../templates/FeatureConfigurationLayout";
-import { StickyNavigationBar } from "../../shared/StickyNavigationBar";
+import { StepLayout } from "../../templates";
 
 type Props = {
   formData: FormData;
@@ -94,58 +94,27 @@ const NuoveVociConsumo = ({ formData, updateFormData, onNext, onBack }: Props) =
   const canProceed = true; // Questo step è opzionale, può procedere anche senza selezioni
 
   return (
-    <>
-      <div className="space-y-6">
-        {/* Badge */}
-        <div className="flex justify-center">
-          <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
-            Impianto fotovoltaico
-          </div>
-        </div>
-
-        {/* Contenuto principale */}
-        <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
-          <div className="space-y-4 md:space-y-6">
-            {/* Header - Layout responsive */}
-            <div className="flex items-center gap-4 px-3 md:px-0">
-              <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-                <img 
-                  src="/lovable-uploads/693eea79-0bc5-4475-8f7b-5b1a2f4b248a.png" 
-                  alt="Energy consumption icon" 
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div>
-                <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">
-                  Hai in programma di aggiungere nuove voci di consumo impattanti?
-                </h2>
-                <p className="text-base text-[#1c1c1c] opacity-80">
-                  Seleziona gli elettrodomestici o sistemi che hai intenzione di installare o acquistare
-                </p>
-              </div>
-            </div>
-
-            {/* Features */}
-            <div className="space-y-4">
-              {consumoFeatures.map((feature) => (
-                <FeatureConfigurationLayout
-                  key={feature.id}
-                  feature={feature}
-                  onComplete={handleFeatureComplete}
-                />
-              ))}
-            </div>
-
-          </div>
-        </div>
+    <StepLayout
+      badge="Impianto fotovoltaico"
+      title="Hai in programma di aggiungere nuove voci di consumo impattanti?"
+      description="Seleziona gli elettrodomestici o sistemi che hai intenzione di installare o acquistare"
+      icon="/lovable-uploads/693eea79-0bc5-4475-8f7b-5b1a2f4b248a.png"
+      iconAlt="Energy consumption icon"
+      onNext={onNext}
+      onBack={onBack}
+      isNextDisabled={!canProceed}
+    >
+      {/* Features */}
+      <div className="space-y-4">
+        {consumoFeatures.map((feature) => (
+          <FeatureConfigurationLayout
+            key={feature.id}
+            feature={feature}
+            onComplete={handleFeatureComplete}
+          />
+        ))}
       </div>
-
-      <StickyNavigationBar
-        onBack={onBack}
-        onNext={onNext}
-        isNextDisabled={!canProceed}
-      />
-    </>
+    </StepLayout>
   );
 };
 

@@ -1,9 +1,7 @@
 import { FormData } from "../../Configuratore";
-import { StickyNavigationBar } from "../../shared/StickyNavigationBar";
+import { StepLayout } from "../../templates";
 import { CheckCircle, Plus, ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { InfoBox } from "../../shared/InfoBox";
 
 type Props = {
   formData: FormData;
@@ -13,8 +11,6 @@ type Props = {
 };
 
 export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const [infoBoxOpen, setInfoBoxOpen] = useState(false);
-  
   const tipoFalda = formData.moduloFotovoltaico?.tipoFalda || "";
   const orientamentoTetto = formData.moduloFotovoltaico?.orientamentoTetto || "";
   const zoneOmbra = formData.moduloFotovoltaico?.zoneOmbra || "";
@@ -114,18 +110,12 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
     (tipoFalda === 'multiple' && Array.isArray(orientamentoTetto) && orientamentoTetto.length >= 1) // Per falde multiple serve almeno un orientamento
   );
 
-  const handleNext = () => {
-    if (canProceed) {
-      onNext();
-    }
-  };
-
   const renderOptionButton = (option: any, isSelected: boolean, onClick: () => void, isMultiple = false) => (
     <div
       key={option.id}
       onClick={onClick}
       className={`
-        rounded-xl transition-all duration-300 border cursor-pointer p-4 mx-3 md:mx-0
+        rounded-xl transition-all duration-300 border cursor-pointer p-4
         ${isSelected 
           ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
           : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
@@ -161,113 +151,90 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
   };
 
   return (
-    <div className="space-y-6">
-      {/* Badge */}
-      <div className="flex justify-center">
-        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
-          Impianto fotovoltaico
+    <StepLayout
+      badge="Impianto fotovoltaico"
+      title="Caratteristiche del tuo tetto"
+      icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
+      iconAlt="House icon"
+      onNext={canProceed ? onNext : undefined}
+      onBack={onBack}
+      isNextDisabled={!canProceed}
+    >
+      {/* Box informativo */}
+      <div className="mb-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h4 className="font-medium text-blue-900 mb-2">{infoBox.title}</h4>
+          <p className="text-sm text-blue-700">{infoBox.content}</p>
         </div>
       </div>
 
-      {/* Contenuto principale */}
-      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
-        <div className="space-y-4 md:space-y-6">
-          {/* Header - Layout responsive */}
-          <div className="flex items-center gap-4 px-3 md:px-0">
-            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-              <img 
-                src="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
-                alt="House icon"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div>
-              <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Caratteristiche del tuo tetto</h2>
-            </div>
-          </div>
-
-          {/* Box informativo - collassabile su mobile e desktop */}
-          <InfoBox
-            title={infoBox.title}
-            content={infoBox.content}
-            isOpen={infoBoxOpen}
-            onToggle={setInfoBoxOpen}
-          />
-          
-          {/* Tipo di falda */}
-          <div className="space-y-3 md:space-y-4">
-            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
-              Che tipo di tetto hai?
-            </h3>
-            {tipoFaldaOptions.map((option) =>
-              renderOptionButton(
-                option,
-                tipoFalda === option.id,
-                () => handleTipoFaldaChange(option.id)
-              )
-            )}
-          </div>
-
-          {/* Orientamento del tetto - Solo se non è tetto piano */}
-          {tipoFalda !== 'piano' && (
-            <div className="space-y-3 md:space-y-4">
-              <div>
-                <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
-                  Qual è l'orientamento del tetto?
-                </h3>
-                {tipoFalda === 'multiple' && (
-                  <p className="text-xs text-gray-500 mt-1 px-3 md:px-0 italic">
-                    Puoi selezionare fino a 2 orientamenti per le diverse falde
-                  </p>
-                )}
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {orientamentoOptions.map((option) => {
-                  const currentOrientamenti = Array.isArray(orientamentoTetto) ? orientamentoTetto : (orientamentoTetto ? [orientamentoTetto] : []);
-                  const isSelected = tipoFalda === 'multiple' 
-                    ? currentOrientamenti.includes(option.id)
-                    : orientamentoTetto === option.id;
-                  
-                  return renderOptionButton(
-                    option,
-                    isSelected,
-                    () => handleOrientamentoChange(option.id),
-                    tipoFalda === 'multiple'
-                  );
-                })}
-              </div>
-            </div>
+      {/* Tipo di falda */}
+      <div className="space-y-3 md:space-y-4 mb-8">
+        <h3 className="text-lg font-semibold text-[#1c1c1c]">
+          Che tipo di tetto hai?
+        </h3>
+        <div className="space-y-3">
+          {tipoFaldaOptions.map((option) =>
+            renderOptionButton(
+              option,
+              tipoFalda === option.id,
+              () => handleTipoFaldaChange(option.id)
+            )
           )}
-
-          {/* Zone in ombra */}
-          <div className="space-y-3 md:space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
-                Il tetto ha zone in ombra durante il giorno?
-              </h3>
-              <p className="text-xs text-gray-500 mt-1 px-3 md:px-0 italic">
-                Considera alberi, palazzi, camini o altre strutture
-              </p>
-            </div>
-            {zoneOmbraOptions.map((option) =>
-              renderOptionButton(
-                option,
-                zoneOmbra === option.id,
-                () => handleZoneOmbraChange(option.id)
-              )
-            )}
-          </div>
         </div>
       </div>
 
-      {/* Pulsanti di navigazione */}
-      <StickyNavigationBar
-        onBack={onBack}
-        onNext={handleNext}
-        isNextDisabled={!canProceed}
-        nextButtonText="Avanti"
-        backButtonText="Indietro"
-      />
-    </div>
+      {/* Orientamento del tetto - Solo se non è tetto piano */}
+      {tipoFalda !== 'piano' && (
+        <div className="space-y-3 md:space-y-4 mb-8">
+          <div>
+            <h3 className="text-lg font-semibold text-[#1c1c1c]">
+              Qual è l'orientamento del tetto?
+            </h3>
+            {tipoFalda === 'multiple' && (
+              <p className="text-xs text-gray-500 mt-1 italic">
+                Puoi selezionare fino a 2 orientamenti per le diverse falde
+              </p>
+            )}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {orientamentoOptions.map((option) => {
+              const currentOrientamenti = Array.isArray(orientamentoTetto) ? orientamentoTetto : (orientamentoTetto ? [orientamentoTetto] : []);
+              const isSelected = tipoFalda === 'multiple' 
+                ? currentOrientamenti.includes(option.id)
+                : orientamentoTetto === option.id;
+              
+              return renderOptionButton(
+                option,
+                isSelected,
+                () => handleOrientamentoChange(option.id),
+                tipoFalda === 'multiple'
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Zone in ombra */}
+      <div className="space-y-3 md:space-y-4">
+        <div>
+          <h3 className="text-lg font-semibold text-[#1c1c1c]">
+            Il tetto ha zone in ombra durante il giorno?
+          </h3>
+          <p className="text-xs text-gray-500 mt-1 italic">
+            Considera alberi, palazzi, camini o altre strutture
+          </p>
+        </div>
+        <div className="space-y-3">
+          {zoneOmbraOptions.map((option) =>
+            renderOptionButton(
+              option,
+              zoneOmbra === option.id,
+              () => handleZoneOmbraChange(option.id)
+            )
+          )}
+        </div>
+      </div>
+    </StepLayout>
   );
 };
