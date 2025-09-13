@@ -50,24 +50,25 @@ export const ScenarioComparisonLayout = ({
       onNext={handleSubmit}
       isNextDisabled={!isFormValid()}
     >
-      {/* Scenario Options - Clean Horizontal Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Scenario Options - Clean Horizontal Layout with Equal Heights */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {options.map((option) => {
           const isSelected = selectedValue === option.id;
           const isInfoBoxOpen = openInfoBoxes[option.id] || false;
           
           return (
-            <div key={option.id} className="space-y-3">
+            <div key={option.id} className="space-y-3 h-full">
               {/* Card */}
               <div
                 onClick={() => onSelectionChange(option.id)}
                 className={`
-                  relative rounded-xl border transition-all duration-200 cursor-pointer overflow-hidden
+                  relative rounded-xl border transition-all duration-200 cursor-pointer overflow-hidden h-full flex flex-col
                   ${isSelected 
                     ? 'bg-[#d8010c]/5 border-[#d8010c]' 
                     : 'bg-white border-gray-200 hover:border-[#d8010c] hover:bg-[#d8010c]/5'
                   }
                 `}
+                style={{ minHeight: '300px' }}
               >
                 {/* Selection Indicator */}
                 <div className="absolute top-4 right-4 z-10">
@@ -79,7 +80,7 @@ export const ScenarioComparisonLayout = ({
                 </div>
 
                 {/* Content */}
-                <div className="p-8 pr-16 space-y-6">
+                <div className="p-8 pr-16 space-y-6 flex-1 flex flex-col">
                   {/* Header */}
                   <div className="space-y-2">
                     <h3 className="text-2xl font-semibold text-[#1c1c1c] leading-tight">
@@ -88,8 +89,8 @@ export const ScenarioComparisonLayout = ({
                     <div className="w-8 h-0.5 bg-[#d8010c] rounded-full"></div>
                   </div>
 
-                  {/* Features with Bullet Points */}
-                  <div className="space-y-4 mt-6">
+                  {/* Features with Bullet Points - Takes remaining space */}
+                  <div className="space-y-4 flex-1">
                     {option.features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-4">
                         <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#d8010c] mt-2.5"></div>
