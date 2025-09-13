@@ -2,6 +2,7 @@ import { FormData } from "../../Configuratore";
 import { QuestionStepLayout } from "../../templates";
 import { Sun, Moon } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
+import { InfoBox } from "../../shared/InfoBox";
 
 type Props = {
   formData: FormData;
@@ -50,7 +51,53 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
 
   const conditionalContent = obiettivoPrincipale ? (
     <div className="space-y-4 md:space-y-6 px-3 md:px-0">
-      {/* Contenuto rimosso come richiesto dall'utente */}
+      {/* Header con stile del titolo principale */}
+      <div className="space-y-3">
+        <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+          Quando consumi di più l'energia elettrica?
+        </h1>
+        <div className="w-full h-px bg-gray-200"></div>
+        <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
+          Sposta il cursore per indicare se i tuoi consumi sono più concentrati durante il giorno o la sera
+        </p>
+      </div>
+
+      {/* InfoBox */}
+      <InfoBox
+        title="Perché è importante?"
+        content="Conoscere i tuoi orari di consumo ci aiuta a dimensionare correttamente l'impianto fotovoltaico e valutare se hai bisogno di un sistema di accumulo per massimizzare l'autoconsumo."
+        isOpen={false}
+        onToggle={() => {}}
+      />
+      
+      {/* Contenuto senza bordo */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 px-3 py-2 bg-yellow-50 rounded-full border border-yellow-200/60">
+            <Sun className="h-5 w-5 text-yellow-600" />
+            <span className="text-sm font-semibold text-yellow-800">Giorno</span>
+          </div>
+          <div className="flex items-center gap-3 px-3 py-2 bg-slate-50 rounded-full border border-slate-200/60">
+            <span className="text-sm font-semibold text-slate-800">Sera</span>
+            <Moon className="h-5 w-5 text-slate-600" />
+          </div>
+        </div>
+        
+        <Slider
+          value={consumoEnergetico}
+          onValueChange={handleConsumoChange}
+          max={100}
+          min={0}
+          step={10}
+          className="w-full"
+        />
+        
+        <div className="text-center text-sm text-gray-600">
+          <span className="font-medium">
+            {consumoEnergetico[0]}% giorno - {100 - consumoEnergetico[0]}% sera
+          </span>
+        </div>
+      </div>
     </div>
   ) : null;
 
