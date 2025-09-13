@@ -6,7 +6,7 @@ import { TipoAbitazione } from "./sub-components/TipoAbitazione";
 import { SuperficieSlider } from "./sub-components/SuperficieSlider";
 import { IndirizzoField } from "./sub-components/IndirizzoField";
 import { SuddivisioneSpazi } from "./sub-components/SuddivisioneSpazi";
-import { UtilizzoAbitazioneSelector } from "../final/sub-components/UtilizzoAbitazioneSelector";
+import { UtilizzoAbitazioneSelector } from "../5-final/sub-components/UtilizzoAbitazioneSelector";
 import { NumeroPersoneSelector } from "./sub-components/NumeroPersoneSelector";
 import { CircleDot, ArrowRight, Home, Settings, Calculator } from "lucide-react";
 
