@@ -78,28 +78,31 @@ export const ScenarioComparisonLayout = ({
               </div>
 
               {/* Content */}
-              <div className="p-6 pr-12 space-y-4">
+              <div className="p-8 pr-16 space-y-6">
                 {/* Header */}
-                <div>
-                  <h3 className="text-xl font-medium text-[#1c1c1c] mb-1">
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-semibold text-[#1c1c1c] leading-tight">
                     {option.title}
                   </h3>
+                  <div className="w-8 h-0.5 bg-[#d8010c] rounded-full"></div>
                 </div>
 
                 {/* InfoBox for Description */}
-                <InfoBox
-                  title="Maggiori informazioni"
-                  content={option.description}
-                  isOpen={isInfoBoxOpen}
-                  onToggle={(isOpen) => toggleInfoBox(option.id, isOpen)}
-                />
+                <div className="mt-6">
+                  <InfoBox
+                    title="Maggiori informazioni"
+                    content={option.description}
+                    isOpen={isInfoBoxOpen}
+                    onToggle={(isOpen) => toggleInfoBox(option.id, isOpen)}
+                  />
+                </div>
 
                 {/* Features with Bullet Points */}
-                <div className="space-y-3">
+                <div className="space-y-4 mt-6">
                   {option.features.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#d8010c] mt-2"></div>
-                      <span className="text-sm text-[#1c1c1c] opacity-80">
+                    <div key={index} className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#d8010c] mt-2.5"></div>
+                      <span className="text-base text-[#1c1c1c] opacity-85 font-medium leading-relaxed">
                         {feature.text}
                       </span>
                     </div>
