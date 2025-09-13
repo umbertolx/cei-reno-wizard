@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FormData } from "../Configuratore";
-import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
+import { FeatureConfigurationLayout } from "../templates/FeatureConfigurationLayout";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
 
 type Props = {
@@ -204,11 +204,11 @@ export const ConfigurazioneBTicino = ({ formData, updateFormData, onNext, onBack
                   {/* Features in this category */}
                   <div className="space-y-4">
                     {category.features.map((feature) => (
-                      <KNXFeatureSelector
-                        key={feature.id}
-                        feature={feature}
-                        onComplete={handleFeatureComplete}
-                      />
+                <FeatureConfigurationLayout
+                  key={feature.id}
+                  feature={feature}
+                  onComplete={handleFeatureComplete}
+                />
                     ))}
                   </div>
                 </div>

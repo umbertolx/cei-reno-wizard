@@ -5,7 +5,7 @@ export { SummaryStepLayout } from './SummaryStepLayout';
 export { WelcomeStepLayout } from './WelcomeStepLayout';
 export { ScenarioComparisonLayout } from './ScenarioComparisonLayout';
 export { MultipleSelectionLayout } from './MultipleSelectionLayout';
-export { ConfigurationLayout } from './ConfigurationLayout';
+export { FeatureConfigurationLayout } from './FeatureConfigurationLayout';
 export { InputFormLayout } from './InputFormLayout';
 
 export type { StepLayoutProps } from './StepLayout';
@@ -15,5 +15,5 @@ export type { SummaryStepLayoutProps, SummaryCard, EstimateData } from './Summar
 export type { WelcomeStepLayoutProps, ExampleProject, SelectableModule } from './WelcomeStepLayout';
 export type { ScenarioComparisonLayoutProps, ScenarioOption } from './ScenarioComparisonLayout';
 export type { MultipleSelectionLayoutProps, SelectableItem } from './MultipleSelectionLayout';
-export type { ConfigurationLayoutProps, ConfigurableItem, AdvancedOption } from './ConfigurationLayout';
-export type { InputFormLayoutProps, InputField, InputSection } from './InputFormLayout';
+export type { FeatureConfigurationLayoutProps, ConfigurableFeature, ConfigurationOption, InputField } from './FeatureConfigurationLayout';
+export type { InputFormLayoutProps, InputField as InputFormField, InputSection } from './InputFormLayout';

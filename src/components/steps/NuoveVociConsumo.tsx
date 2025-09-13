@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FormData } from "../Configuratore";
-import { KNXFeatureSelector } from "../shared/KNXFeatureSelector";
+import { FeatureConfigurationLayout } from "../templates/FeatureConfigurationLayout";
 import { StickyNavigationBar } from "../shared/StickyNavigationBar";
 
 type Props = {
@@ -128,7 +128,7 @@ const NuoveVociConsumo = ({ formData, updateFormData, onNext, onBack }: Props) =
             {/* Features */}
             <div className="space-y-4">
               {consumoFeatures.map((feature) => (
-                <KNXFeatureSelector
+                <FeatureConfigurationLayout
                   key={feature.id}
                   feature={feature}
                   onComplete={handleFeatureComplete}

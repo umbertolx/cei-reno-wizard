@@ -1,18 +1,17 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { ArrowRight, Check, Lightbulb, Blinds, Thermometer } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
-type FeatureOption = {
+export type ConfigurationOption = {
   id: string;
   label: string;
   description?: string;
 };
 
-type InputField = {
+export type InputField = {
   id: string;
   label: string;
   inputType: string;
@@ -22,15 +21,15 @@ type InputField = {
   useSlider?: boolean;
 };
 
-type Feature = {
+export type ConfigurableFeature = {
   id: string;
   title: string;
   description: string;
-  image?: string; // Add optional image property
+  image?: string;
   advancedOption?: {
     title: string;
     description: string;
-    options?: FeatureOption[];
+    options?: ConfigurationOption[];
     requiresInput?: boolean;
     requiresMultipleInputs?: boolean;
     inputs?: InputField[];
@@ -43,12 +42,12 @@ type Feature = {
   };
 };
 
-type Props = {
-  feature: Feature;
+export type FeatureConfigurationLayoutProps = {
+  feature: ConfigurableFeature;
   onComplete: (featureId: string, config: any) => void;
 };
 
-export const KNXFeatureSelector = ({ feature, onComplete }: Props) => {
+export const FeatureConfigurationLayout = ({ feature, onComplete }: FeatureConfigurationLayoutProps) => {
   const [isActivated, setIsActivated] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('standard');

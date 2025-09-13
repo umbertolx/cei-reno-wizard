@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FormData } from "../../Configuratore";
-import { KNXFeatureSelector } from "../../shared/KNXFeatureSelector";
+import { FeatureConfigurationLayout } from "../../templates/FeatureConfigurationLayout";
 import { StickyNavigationBar } from "../../shared/StickyNavigationBar";
 
 type Props = {
@@ -115,7 +115,7 @@ export const ElectricalInterventions = ({ formData, updateFormData, onNext, onBa
             {/* Features */}
             <div className="space-y-4">
               {interventoFeatures.map((feature) => (
-                <KNXFeatureSelector
+                <FeatureConfigurationLayout
                   key={feature.id}
                   feature={feature}
                   onComplete={handleFeatureComplete}
