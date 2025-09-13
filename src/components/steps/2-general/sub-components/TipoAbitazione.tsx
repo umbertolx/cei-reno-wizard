@@ -1,7 +1,7 @@
 
 import { FormData } from "../../../Configuratore";
 import { Label } from "@/components/ui/label";
-import { Check } from "lucide-react";
+import { Check, Home } from "lucide-react";
 
 type TipoAbitazioneProps = {
   value: string;
@@ -25,7 +25,8 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
       {/* Header con nuovo stile */}
       <div className="px-3 md:px-0">
         <div className="space-y-3">
-          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight flex items-center gap-3">
+            <Home className="h-6 w-6 text-[#d8010c]" />
             Tipologia abitazione
           </h1>
           <div className="w-full h-px bg-gray-200"></div>

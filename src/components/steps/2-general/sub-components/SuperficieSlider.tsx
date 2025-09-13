@@ -1,6 +1,8 @@
 
+import { FormData } from "../../../Configuratore";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
+import { Maximize } from "lucide-react";
 
 type SuperficieSliderProps = {
   value: number;
@@ -13,7 +15,8 @@ export const SuperficieSlider = ({ value, onChange }: SuperficieSliderProps) => 
       {/* Header con nuovo stile */}
       <div className="px-3 md:px-0">
         <div className="space-y-3">
-          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight flex items-center gap-3">
+            <Maximize className="h-6 w-6 text-[#d8010c]" />
             Superficie in mq
           </h1>
           <div className="w-full h-px bg-gray-200"></div>

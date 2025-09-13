@@ -1,7 +1,7 @@
 
 import { FormData } from "../../../Configuratore";
 import { Button } from "@/components/ui/button";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, Layout } from "lucide-react";
 
 type SuddivisioneProps = {
   composizione: FormData['composizione'];
@@ -107,7 +107,8 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
       {/* Header con nuovo stile */}
       <div className="px-3 md:px-0">
         <div className="space-y-3">
-          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight flex items-center gap-3">
+            <Layout className="h-6 w-6 text-[#d8010c]" />
             Suddivisione spazi
           </h1>
           <div className="w-full h-px bg-gray-200"></div>
