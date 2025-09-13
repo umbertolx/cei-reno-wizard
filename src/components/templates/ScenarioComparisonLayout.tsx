@@ -1,14 +1,13 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { StepLayout, StepLayoutProps } from './StepLayout';
 import { CheckmarkIcon } from '@/components/ui/checkmark-icon';
+import { InfoBox } from '@/components/shared/InfoBox';
 
 export type ScenarioOption = {
   id: string;
   title: string;
-  subtitle?: string;
   description: string;
   features: Array<{
-    icon: React.ComponentType<any>;
     text: string;
   }>;
 };
@@ -28,6 +27,7 @@ export const ScenarioComparisonLayout = ({
   onNext,
   ...stepProps
 }: ScenarioComparisonLayoutProps) => {
+  const [openInfoBoxes, setOpenInfoBoxes] = useState<{ [key: string]: boolean }>({});
   
   const handleSubmit = () => {
     if (selectedValue && onNext) {
@@ -37,16 +37,24 @@ export const ScenarioComparisonLayout = ({
 
   const isFormValid = () => selectedValue !== "";
 
+  const toggleInfoBox = (optionId: string, isOpen: boolean) => {
+    setOpenInfoBoxes(prev => ({
+      ...prev,
+      [optionId]: isOpen
+    }));
+  };
+
   return (
     <StepLayout
       {...stepProps}
       onNext={handleSubmit}
       isNextDisabled={!isFormValid()}
     >
-      {/* Scenario Options */}
-      <div className="space-y-6">
+      {/* Scenario Options - Horizontal Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {options.map((option) => {
           const isSelected = selectedValue === option.id;
+          const isInfoBoxOpen = openInfoBoxes[option.id] || false;
           
           return (
             <div
@@ -70,31 +78,27 @@ export const ScenarioComparisonLayout = ({
               </div>
 
               {/* Content */}
-              <div className="p-6 pr-12">
+              <div className="p-6 pr-12 space-y-4">
                 {/* Header */}
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-[#1c1c1c] mb-1">
+                <div>
+                  <h3 className="text-xl font-bold text-[#1c1c1c]">
                     {option.title}
                   </h3>
-                  {option.subtitle && (
-                    <p className="text-sm font-medium text-[#d8010c]">
-                      {option.subtitle}
-                    </p>
-                  )}
                 </div>
 
-                {/* Description */}
-                <p className="text-sm text-gray-600 leading-relaxed mb-6">
-                  {option.description}
-                </p>
+                {/* InfoBox for Description */}
+                <InfoBox
+                  title="Maggiori informazioni"
+                  content={option.description}
+                  isOpen={isInfoBoxOpen}
+                  onToggle={(isOpen) => toggleInfoBox(option.id, isOpen)}
+                />
 
-                {/* Features */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Features with Bullet Points */}
+                <div className="space-y-2">
                   {option.features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="flex-shrink-0 w-5 h-5 text-[#d8010c]">
-                        <feature.icon />
-                      </div>
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#d8010c] mt-2"></div>
                       <span className="text-sm text-gray-700 font-medium">
                         {feature.text}
                       </span>

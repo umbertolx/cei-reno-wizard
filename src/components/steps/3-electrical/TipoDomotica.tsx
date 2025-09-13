@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { FormData } from "../../Configuratore";
 import { ScenarioComparisonLayout } from "../../templates";
-import { CheckCircle, Settings, Clock, DollarSign, Wifi, Shield, Zap, Signal } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -28,26 +27,24 @@ export const TipoDomotica = ({ formData, updateFormData, onNext, onBack }: Props
     {
       id: 'knx',
       title: 'Sistema filare (KNX)',
-      subtitle: 'Soluzione professionale e duratura',
       description: 'KNX è il protocollo internazionale per la domotica più affidabile al mondo. Essendo cablato fisicamente durante la costruzione, garantisce connessioni stabili e tempi di risposta istantanei. Non dipende dal WiFi, quindi funziona sempre anche in caso di problemi di rete. È espandibile nel tempo senza limiti e rappresenta un vero investimento che aumenta il valore dell\'immobile. Ogni componente comunica attraverso il bus dedicato, rendendo il sistema immune a interferenze e hackeraggi.',
       features: [
-        { icon: Shield, text: 'Massima sicurezza e affidabilità' },
-        { icon: Zap, text: 'Tempi di risposta istantanei' },
-        { icon: Settings, text: 'Già cablato nella costruzione' },
-        { icon: Clock, text: 'Espandibile senza limiti nel tempo' },
-        { icon: DollarSign, text: 'Aumenta il valore dell\'immobile' }
+        { text: 'Massima sicurezza e affidabilità' },
+        { text: 'Tempi di risposta istantanei' },
+        { text: 'Già cablato nella costruzione' },
+        { text: 'Espandibile senza limiti nel tempo' },
+        { text: 'Aumenta il valore dell\'immobile' }
       ]
     },
     {
       id: 'wireless',
       title: 'Sistema wireless (BTicino)',
-      subtitle: 'Soluzione semplificata e veloce',
       description: 'Il sistema wireless BTicino è una soluzione moderna e conveniente per chi vuole la domotica senza opere murarie. Funziona tramite protocolli radio affidabili e può essere installato rapidamente in case esistenti. Pur essendo più economico, offre comunque buone prestazioni per le funzioni base della domotica come luci, tapparelle e controllo clima. È la scelta ideale per ristrutturazioni o per chi vuole iniziare con un budget contenuto.',
       features: [
-        { icon: Wifi, text: 'Installazione senza opere murarie' },
-        { icon: CheckCircle, text: 'Veloce da installare e configurare' },
-        { icon: Signal, text: 'Tecnologia radio affidabile BTicino' },
-        { icon: DollarSign, text: 'Investimento iniziale contenuto' }
+        { text: 'Installazione senza opere murarie' },
+        { text: 'Veloce da installare e configurare' },
+        { text: 'Tecnologia radio affidabile BTicino' },
+        { text: 'Investimento iniziale contenuto' }
       ]
     }
   ];
