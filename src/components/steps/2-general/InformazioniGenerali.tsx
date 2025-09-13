@@ -14,9 +14,10 @@ type Props = {
   formData: FormData;
   updateFormData: (data: Partial<FormData>) => void;
   onNext: () => void;
+  onBack: () => void;
 };
 
-export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props) => {
+export const InformazioniGenerali = ({ formData, updateFormData, onNext, onBack }: Props) => {
   // Pre-compila i dati se non sono già presenti nella nuova struttura
   useEffect(() => {
     if (!formData.informazioniGenerali?.tipologiaAbitazione) {
@@ -66,7 +67,22 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
 
   const totalRooms = Object.values(info.composizione).reduce((sum, count) => sum + count, 0);
   
-  const validateForm = () => {
+  // Silent validation for button state (no toasts)
+  const isFormValid = () => {
+    if (!info.tipologiaAbitazione) return false;
+    if (!info.superficie || info.superficie <= 0) return false;
+    if (!info.indirizzo) return false;
+    if (!info.utilizzoAbitazione) return false;
+    if (!info.numeroPersone || info.numeroPersone < 1) return false;
+    
+    const { cucina, cameraDoppia, cameraSingola, soggiorno, bagno } = info.composizione;
+    if (cucina + cameraDoppia + cameraSingola + soggiorno + bagno === 0) return false;
+    
+    return true;
+  };
+
+  // Validation with toast messages for submit
+  const validateFormWithToasts = () => {
     if (!info.tipologiaAbitazione) {
       toast({
         title: "Attenzione",
@@ -139,7 +155,7 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
   };
   
   const handleSubmit = () => {
-    if (validateForm()) {
+    if (validateFormWithToasts()) {
       onNext();
     }
   };
@@ -237,8 +253,9 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
       title="Informazioni generali"
       description="Inizia la configurazione inserendo le caratteristiche dell'immobile"
       sections={sections}
-      validationFn={validateForm}
+      validationFn={isFormValid}
       onNext={handleSubmit}
+      onBack={onBack}
     />
   );
 };
