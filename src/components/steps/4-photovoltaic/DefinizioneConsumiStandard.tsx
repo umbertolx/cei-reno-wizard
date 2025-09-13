@@ -501,17 +501,13 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
       {/* Contenuto principale */}
       <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
         <div className="space-y-6 md:space-y-8">
-          {/* Header */}
-          <div className="flex items-center gap-4 px-3 md:px-0">
-            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-              <img 
-                src="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
-                alt="House icon"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div>
-              <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Definizione consumi</h2>
+          {/* Header con nuovo stile */}
+          <div className="px-3 md:px-0">
+            <div className="space-y-3">
+              <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+                Definizione consumi
+              </h1>
+              <div className="w-full h-px bg-gray-200"></div>
             </div>
           </div>
           

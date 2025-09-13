@@ -22,17 +22,16 @@ export const TipoAbitazione = ({ value, onChange }: TipoAbitazioneProps) => {
 
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="flex items-center gap-4 px-3 md:px-0">
-        <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-          <img 
-            src="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png" 
-            alt="Building type icon" 
-            className="w-full h-full object-contain"
-          />
-        </div>
-        <div>
-          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Tipologia abitazione</h2>
-          <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Seleziona il tipo che meglio descrive il tuo progetto</p>
+      {/* Header con nuovo stile */}
+      <div className="px-3 md:px-0">
+        <div className="space-y-3">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+            Tipologia abitazione
+          </h1>
+          <div className="w-full h-px bg-gray-200"></div>
+          <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
+            Seleziona il tipo che meglio descrive il tuo progetto
+          </p>
         </div>
       </div>
       

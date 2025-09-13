@@ -8,17 +8,16 @@ type IndirizzoFieldProps = {
 export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoFieldProps) => {
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="flex items-center gap-4 px-3 md:px-0">
-        <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-          <img 
-            src="/lovable-uploads/14822282-293b-4be9-93a5-cbc34e07f6c6.png" 
-            alt="Location map icon" 
-            className="w-full h-full object-contain"
-          />
-        </div>
-        <div>
-          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Indirizzo immobile</h2>
-          <p className="text-sm md:text-base text-[#1c1c1c] opacity-70 hidden md:block">Inserisci il tuo indirizzo completo</p>
+      {/* Header con nuovo stile */}
+      <div className="px-3 md:px-0">
+        <div className="space-y-3">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+            Indirizzo immobile
+          </h1>
+          <div className="w-full h-px bg-gray-200"></div>
+          <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
+            Inserisci il tuo indirizzo completo
+          </p>
         </div>
       </div>
       

@@ -16,17 +16,16 @@ export const NumeroPersoneSelector = ({ value, onChange }: NumeroPersoneSelector
 
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="flex items-center gap-4 px-3 md:px-0">
-        <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-          <img 
-            src="/lovable-uploads/417ced15-f2dc-47e1-8b8c-d0faf5b9717e.png" 
-            alt="Floor plan icon" 
-            className="w-full h-full object-contain"
-          />
-        </div>
-        <div>
-          <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Numero di persone</h2>
-          <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Quante persone abitano l'immobile</p>
+      {/* Header con nuovo stile */}
+      <div className="px-3 md:px-0">
+        <div className="space-y-3">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+            Numero di persone
+          </h1>
+          <div className="w-full h-px bg-gray-200"></div>
+          <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
+            Quante persone abitano l'immobile
+          </p>
         </div>
       </div>
       
