@@ -1,5 +1,5 @@
 
-import { FormData } from "../../Configuratore";
+import { FormData } from "../../../Configuratore";
 import { StanzaCounter } from "./StanzaCounter";
 
 type SuddivisioneProps = {

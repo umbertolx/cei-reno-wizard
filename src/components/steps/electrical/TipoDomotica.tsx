@@ -1,7 +1,7 @@
 
 import { useState } from "react";
-import { FormData } from "../Configuratore";
-import { ScenarioComparisonLayout } from "../templates";
+import { FormData } from "../../Configuratore";
+import { ScenarioComparisonLayout } from "../../templates";
 import { CheckCircle, Settings, Clock, DollarSign, Wifi, Shield, Zap, Signal } from "lucide-react";
 
 type Props = {

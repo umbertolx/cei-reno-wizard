@@ -1,5 +1,5 @@
-import { FormData } from "../Configuratore";
-import { StickyNavigationBar } from "../shared/StickyNavigationBar";
+import { FormData } from "../../Configuratore";
+import { StickyNavigationBar } from "../../shared/StickyNavigationBar";
 import { Check, Zap, Car, Droplets, Fan, ThermometerSun, FlameKindling, Utensils, Coffee, Wifi, ForkKnife, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";

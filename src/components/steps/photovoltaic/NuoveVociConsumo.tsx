@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { FormData } from "../Configuratore";
-import { FeatureConfigurationLayout } from "../templates/FeatureConfigurationLayout";
-import { StickyNavigationBar } from "../shared/StickyNavigationBar";
+import { FormData } from "../../Configuratore";
+import { FeatureConfigurationLayout } from "../../templates/FeatureConfigurationLayout";
+import { StickyNavigationBar } from "../../shared/StickyNavigationBar";
 
 type Props = {
   formData: FormData;

@@ -1,11 +1,11 @@
-import { FormData } from "../Configuratore";
-import { QuestionStepLayout } from "../templates";
+import { FormData } from "../../Configuratore";
+import { QuestionStepLayout } from "../../templates";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sun, Home, Target, Battery, MapPin } from "lucide-react";
-import { SystemSummary } from "./components/SystemSummary";
+import { SystemSummary } from "../components/SystemSummary";
 import { useState } from "react";
 
 type Props = {

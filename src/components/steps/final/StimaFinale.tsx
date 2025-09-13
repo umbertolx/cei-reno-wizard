@@ -1,5 +1,5 @@
-import { FormData } from "../Configuratore";
-import { SummaryStepLayout } from "../templates";
+import { FormData } from "../../Configuratore";
+import { SummaryStepLayout } from "../../templates";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EstimateResponse } from "@/types/estimate";

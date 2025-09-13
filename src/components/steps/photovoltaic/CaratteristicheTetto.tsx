@@ -1,9 +1,9 @@
-import { FormData } from "../Configuratore";
-import { StickyNavigationBar } from "../shared/StickyNavigationBar";
+import { FormData } from "../../Configuratore";
+import { StickyNavigationBar } from "../../shared/StickyNavigationBar";
 import { CheckCircle, Plus, ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { InfoBox } from "../shared/InfoBox";
+import { InfoBox } from "../../shared/InfoBox";
 
 type Props = {
   formData: FormData;

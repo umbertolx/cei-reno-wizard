@@ -1,5 +1,5 @@
 
-import { FormData } from "../../Configuratore";
+import { FormData } from "../../../Configuratore";
 import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 

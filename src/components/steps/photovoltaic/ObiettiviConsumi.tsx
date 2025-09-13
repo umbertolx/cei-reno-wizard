@@ -1,10 +1,10 @@
-import { FormData } from "../Configuratore";
-import { StickyNavigationBar } from "../shared/StickyNavigationBar";
-import { Check, Plus, ChevronDown } from "lucide-react";
+import { FormData } from "../../Configuratore";
+import { StickyNavigationBar } from "../../shared/StickyNavigationBar";
+import { Check, Plus, ChevronDown, Sun, Moon } from "lucide-react";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Slider } from "@/components/ui/slider";
-import { InfoBox } from "../shared/InfoBox";
+import { InfoBox } from "../../shared/InfoBox";
 
 type Props = {
   formData: FormData;
@@ -13,14 +13,14 @@ type Props = {
   onBack: () => void;
 };
 
-export const ObiettiviAmpliamento = ({ formData, updateFormData, onNext, onBack }: Props) => {
+export const ObiettiviConsumi = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const [infoBoxOpen, setInfoBoxOpen] = useState(false);
   
-  const obiettivoAmpliamento = formData.moduloFotovoltaico?.obiettivoAmpliamento || "";
-  const percentualeCopertura = formData.moduloFotovoltaico?.percentualeCopertura || [50];
+  const obiettivoPrincipale = formData.moduloFotovoltaico?.obiettivoPrincipale || "";
+  const consumoEnergetico = formData.moduloFotovoltaico?.consumoEnergetico || [50];
 
   const obiettivoOptions = [
-    { id: "risparmio-bolletta", label: "Risparmiare di più in bolletta" },
+    { id: "risparmio-bolletta", label: "Risparmio in bolletta" },
     { id: "indipendenza-energetica", label: "Indipendenza energetica" }
   ];
 
@@ -28,21 +28,21 @@ export const ObiettiviAmpliamento = ({ formData, updateFormData, onNext, onBack 
     updateFormData({ 
       moduloFotovoltaico: { 
         ...formData.moduloFotovoltaico, 
-        obiettivoAmpliamento: value 
+        obiettivoPrincipale: value 
       } 
     });
   };
 
-  const handleCoperturaChange = (value: number[]) => {
+  const handleConsumoChange = (value: number[]) => {
     updateFormData({ 
       moduloFotovoltaico: { 
         ...formData.moduloFotovoltaico, 
-        percentualeCopertura: value 
+        consumoEnergetico: value 
       } 
     });
   };
 
-  const canProceed = obiettivoAmpliamento;
+  const canProceed = obiettivoPrincipale;
 
   const handleNext = () => {
     if (canProceed) {
@@ -78,8 +78,8 @@ export const ObiettiviAmpliamento = ({ formData, updateFormData, onNext, onBack 
   );
 
   const infoBox = {
-    title: "Informazioni sull'ampliamento",
-    content: "Queste informazioni ci aiutano a dimensionare correttamente l'ampliamento del tuo impianto fotovoltaico in base alle tue esigenze attuali e agli obiettivi di miglioramento."
+    title: "Informazioni su obiettivi e consumi",
+    content: "Queste informazioni ci aiutano a dimensionare correttamente il tuo impianto fotovoltaico in base alle tue esigenze specifiche e ai tuoi pattern di consumo energetico."
   };
 
   return (
@@ -87,7 +87,7 @@ export const ObiettiviAmpliamento = ({ formData, updateFormData, onNext, onBack 
       {/* Badge */}
       <div className="flex justify-center">
         <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
-          Ampliamento fotovoltaico
+          Impianto fotovoltaico
         </div>
       </div>
 
@@ -104,7 +104,7 @@ export const ObiettiviAmpliamento = ({ formData, updateFormData, onNext, onBack 
               />
             </div>
             <div>
-              <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Obiettivi ampliamento</h2>
+              <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Obiettivi e consumi</h2>
             </div>
           </div>
 
@@ -116,48 +116,56 @@ export const ObiettiviAmpliamento = ({ formData, updateFormData, onNext, onBack 
             onToggle={setInfoBoxOpen}
           />
           
-          {/* Obiettivo ampliamento */}
+          {/* Obiettivo principale */}
           <div className="space-y-3 md:space-y-4">
             <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
-              Qual è il tuo obiettivo con l'ampliamento?
+              Qual è il tuo obiettivo principale con il fotovoltaico?
             </h3>
             {obiettivoOptions.map((option) =>
               renderOptionButton(
                 option,
-                obiettivoAmpliamento === option.id,
+                obiettivoPrincipale === option.id,
                 () => handleObiettivoChange(option.id)
               )
             )}
           </div>
 
-          {/* Percentuale copertura attuale */}
+          {/* Consumo energetico */}
           <div className="space-y-3 md:space-y-4">
             <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
-              Con l'impianto attuale, che percentuale dei tuoi consumi riesci a coprire?
+              Quando consumi più energia in casa?
             </h3>
-            <p className="text-sm text-gray-600 px-3 md:px-0">
-              Inserisci % consumi coperta da impianto fotovoltaico
-            </p>
             
             <div className="px-3 md:px-0">
               <div className="space-y-8">
                 {/* Slider */}
                 <div className="px-4 py-2">
                   <Slider
-                    value={percentualeCopertura}
-                    onValueChange={handleCoperturaChange}
+                    value={consumoEnergetico}
+                    onValueChange={handleConsumoChange}
                     max={100}
                     min={0}
-                    step={5}
+                    step={10}
                     className="w-full"
                   />
                 </div>
                 
-                {/* Percentuale visualizzata */}
-                <div className="flex justify-center">
-                  <div className="text-center">
-                    <div className="text-sm font-medium text-[#1c1c1c]">Copertura attuale</div>
-                    <div className="text-2xl font-bold text-[#d8010c]">{percentualeCopertura[0]}%</div>
+                {/* Labels e percentuali */}
+                <div className="flex items-center justify-between px-2">
+                  <div className="flex items-center gap-2">
+                    <Sun className="h-5 w-5 text-yellow-500" />
+                    <div className="text-center">
+                      <div className="text-sm font-medium text-[#1c1c1c]">Giorno</div>
+                      <div className="text-lg font-bold text-[#d8010c]">{consumoEnergetico[0]}%</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <div className="text-center">
+                      <div className="text-sm font-medium text-[#1c1c1c]">Sera</div>
+                      <div className="text-lg font-bold text-[#d8010c]">{100 - consumoEnergetico[0]}%</div>
+                    </div>
+                    <Moon className="h-5 w-5 text-indigo-500" />
                   </div>
                 </div>
               </div>
