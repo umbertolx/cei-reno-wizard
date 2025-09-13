@@ -185,7 +185,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
 
   return (
     <StepLayout
-      badge="Lavori elettrici"
+      badge="Impianto elettrico"
       title="Configurazione KNX"
       description="Seleziona e configura le funzionalità KNX per il tuo sistema domotico"
       icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
