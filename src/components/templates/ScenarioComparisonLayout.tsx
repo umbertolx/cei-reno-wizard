@@ -61,7 +61,7 @@ export const ScenarioComparisonLayout = ({
               key={option.id}
               onClick={() => onSelectionChange(option.id)}
               className={`
-                relative rounded-xl border transition-all duration-200 cursor-pointer overflow-hidden
+                relative rounded-xl border transition-all duration-200 cursor-pointer overflow-hidden flex flex-col
                 ${isSelected 
                   ? 'bg-[#d8010c]/5 border-[#d8010c]' 
                   : 'bg-white border-gray-200 hover:border-[#d8010c] hover:bg-[#d8010c]/5'
@@ -77,8 +77,8 @@ export const ScenarioComparisonLayout = ({
                 )}
               </div>
 
-              {/* Content */}
-              <div className="p-8 pr-16 space-y-6">
+              {/* Main Content */}
+              <div className="flex-1 p-8 pr-16 pb-2">
                 {/* Header */}
                 <div className="space-y-2">
                   <h3 className="text-2xl font-semibold text-[#1c1c1c] leading-tight">
@@ -98,16 +98,16 @@ export const ScenarioComparisonLayout = ({
                     </div>
                   ))}
                 </div>
+              </div>
 
-                {/* InfoBox for Description - Below bullets, full width, subtle */}
-                <div className="mt-8 -mx-8 px-8">
-                  <InfoBox
-                    title="Maggiori informazioni"
-                    content={option.description}
-                    isOpen={isInfoBoxOpen}
-                    onToggle={(isOpen) => toggleInfoBox(option.id, isOpen)}
-                  />
-                </div>
+              {/* InfoBox - Anchored at bottom with 1mm padding from edges */}
+              <div className="px-1 pb-1">
+                <InfoBox
+                  title="Maggiori informazioni"
+                  content={option.description}
+                  isOpen={isInfoBoxOpen}
+                  onToggle={(isOpen) => toggleInfoBox(option.id, isOpen)}
+                />
               </div>
             </div>
           );
