@@ -64,14 +64,14 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
             </div>
           </div>
           
-          <div className="flex items-center bg-[#d8010c] rounded-full px-1 py-0.5">
+          <div className="flex items-center bg-transparent border border-black/20 rounded-full px-1 py-0.5">
             <Button 
               variant="ghost" 
               size="icon"
               className={`w-7 h-7 rounded-xl ${
                 isAtMin 
-                  ? 'opacity-30 cursor-not-allowed text-white/50' 
-                  : 'text-white hover:text-white hover:bg-white/10 hover:scale-105 transition-all duration-200'
+                  ? 'opacity-30 cursor-not-allowed text-black/50' 
+                  : 'text-black hover:text-black hover:bg-black/10 hover:scale-105 transition-all duration-200'
               }`}
               onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], Math.max(0, value - 1))}
               disabled={isAtMin}
@@ -79,7 +79,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
               <Minus className="h-3.5 w-3.5" strokeWidth={2.5} />
             </Button>
             
-            <div className="min-w-[32px] text-center font-bold text-base text-white px-3">
+            <div className="min-w-[32px] text-center font-bold text-base text-black px-3">
               {value || 0}
             </div>
             
@@ -88,8 +88,8 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
               size="icon"
               className={`w-7 h-7 rounded-xl ${
                 isAtMax 
-                  ? 'opacity-30 cursor-not-allowed text-white/50' 
-                  : 'text-white hover:text-white hover:bg-white/10 hover:scale-105 transition-all duration-200'
+                  ? 'opacity-30 cursor-not-allowed text-black/50' 
+                  : 'text-black hover:text-black hover:bg-black/10 hover:scale-105 transition-all duration-200'
               }`}
               onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], value + 1)}
               disabled={isAtMax}
