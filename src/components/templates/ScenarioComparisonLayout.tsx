@@ -50,19 +50,19 @@ export const ScenarioComparisonLayout = ({
       onNext={handleSubmit}
       isNextDisabled={!isFormValid()}
     >
-      {/* Scenario Options - Clean Horizontal Layout with Equal Natural Heights */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-        {options.map((option) => {
-          const isSelected = selectedValue === option.id;
-          const isInfoBoxOpen = openInfoBoxes[option.id] || false;
-          
-          return (
-            <div key={option.id} className="space-y-3 flex flex-col">
-              {/* Card */}
+      {/* Scenario Options - Separated Cards and InfoBoxes to prevent misalignment */}
+      <div className="space-y-6">
+        {/* Cards Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          {options.map((option) => {
+            const isSelected = selectedValue === option.id;
+            
+            return (
               <div
+                key={option.id}
                 onClick={() => onSelectionChange(option.id)}
                 className={`
-                  relative rounded-xl border transition-all duration-200 cursor-pointer overflow-hidden flex-1
+                  relative rounded-xl border transition-all duration-200 cursor-pointer overflow-hidden
                   ${isSelected 
                     ? 'bg-[#d8010c]/5 border-[#d8010c]' 
                     : 'bg-white border-gray-200 hover:border-[#d8010c] hover:bg-[#d8010c]/5'
@@ -101,9 +101,17 @@ export const ScenarioComparisonLayout = ({
                   </div>
                 </div>
               </div>
+            );
+          })}
+        </div>
 
-              {/* InfoBox - Outside card, below with spacing */}
-              <div className="mt-2">
+        {/* InfoBoxes Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {options.map((option) => {
+            const isInfoBoxOpen = openInfoBoxes[option.id] || false;
+            
+            return (
+              <div key={`info-${option.id}`}>
                 <InfoBox
                   title="Maggiori informazioni"
                   content={option.description}
@@ -111,9 +119,9 @@ export const ScenarioComparisonLayout = ({
                   onToggle={(isOpen) => toggleInfoBox(option.id, isOpen)}
                 />
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
       {/* Additional Content */}
