@@ -187,10 +187,6 @@ export const ConfigurazioneBTicino = ({ formData, updateFormData, onNext, onBack
               ))}
             </div>
             
-            {/* Line at the end of subcategory */}
-            {index < featureCategories.length - 1 && (
-              <div className="pt-4 border-b border-gray-200"></div>
-            )}
           </div>
         ))}
       </div>
