@@ -507,7 +507,6 @@ export const DefinizioneConsumiStandard = ({ formData, updateFormData, onNext, o
               <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
                 Definizione consumi
               </h1>
-              <div className="w-full h-px bg-gray-200"></div>
             </div>
           </div>
           
