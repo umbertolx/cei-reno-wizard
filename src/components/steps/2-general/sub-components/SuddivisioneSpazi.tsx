@@ -60,37 +60,37 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
             </div>
           </div>
           
-          <div className="flex items-center space-x-3 flex-shrink-0">
+          <div className="flex items-center bg-gray-50 rounded-full p-1 border border-gray-200">
             <Button 
-              variant="outline" 
+              variant="ghost" 
               size="icon"
-              className={`w-8 h-8 rounded-full border-2 ${
+              className={`w-8 h-8 rounded-full ${
                 isAtMin 
-                  ? 'opacity-40 cursor-not-allowed border-gray-200' 
-                  : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white'
+                  ? 'opacity-40 cursor-not-allowed text-gray-400' 
+                  : 'text-gray-600 hover:text-[#d8010c] hover:bg-white hover:shadow-sm'
               }`}
               onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], Math.max(0, value - 1))}
               disabled={isAtMin}
             >
-              <Minus className="h-3 w-3" />
+              <Minus className="h-4 w-4" />
             </Button>
             
-            <span className="w-8 text-center font-bold text-lg text-[#d8010c]">
+            <div className="min-w-[40px] text-center font-semibold text-lg text-[#d8010c] px-2">
               {value || 0}
-            </span>
+            </div>
             
             <Button 
-              variant="outline" 
+              variant="ghost" 
               size="icon"
-              className={`w-8 h-8 rounded-full border-2 ${
+              className={`w-8 h-8 rounded-full ${
                 isAtMax 
-                  ? 'opacity-40 cursor-not-allowed border-gray-200' 
-                  : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white'
+                  ? 'opacity-40 cursor-not-allowed text-gray-400' 
+                  : 'text-gray-600 hover:text-[#d8010c] hover:bg-white hover:shadow-sm'
               }`}
               onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], value + 1)}
               disabled={isAtMax}
             >
-              <Plus className="h-3 w-3" />
+              <Plus className="h-4 w-4" />
             </Button>
           </div>
         </div>
