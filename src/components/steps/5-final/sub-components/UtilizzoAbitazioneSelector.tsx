@@ -1,5 +1,5 @@
 
-import { Check, Calendar } from "lucide-react";
+import { Check } from "lucide-react";
 
 type UtilizzoAbitazioneSelectorProps = {
   value: string;
@@ -25,8 +25,7 @@ export const UtilizzoAbitazioneSelector = ({ value, onChange }: UtilizzoAbitazio
       {/* Header con nuovo stile */}
       <div className="px-3 md:px-0">
         <div className="space-y-3">
-          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight flex items-center gap-3">
-            <Calendar className="h-6 w-6 text-[#d8010c]" />
+          <h1 className="text-lg md:text-xl font-semibold text-[#1c1c1c] leading-tight">
             Utilizzo
           </h1>
           <div className="w-full h-px bg-gray-200"></div>

@@ -1,4 +1,5 @@
-import { Check, Users } from "lucide-react";
+import { FormData } from "../../../Configuratore";
+import { Check } from "lucide-react";
 
 type NumeroPersoneSelectorProps = {
   value: number;
@@ -19,8 +20,7 @@ export const NumeroPersoneSelector = ({ value, onChange }: NumeroPersoneSelector
       {/* Header con nuovo stile */}
       <div className="px-3 md:px-0">
         <div className="space-y-3">
-          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight flex items-center gap-3">
-            <Users className="h-6 w-6 text-[#d8010c]" />
+          <h1 className="text-lg md:text-xl font-semibold text-[#1c1c1c] leading-tight">
             Numero di persone
           </h1>
           <div className="w-full h-px bg-gray-200"></div>
