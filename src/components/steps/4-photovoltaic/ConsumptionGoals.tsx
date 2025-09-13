@@ -65,7 +65,7 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
       {/* InfoBox */}
       <InfoBox
         title="Perché è importante?"
-        content="Conoscere i tuoi orari di consumo ci aiuta a dimensionare correttamente l'impianto fotovoltaico e valutare se hai bisogno di un sistema di accumulo per massimizzare l'autoconsumo."
+        content="Conoscere i tuoi orari di consumo è fondamentale per stimare se ha senso installare una batteria di accumulo e di che potenza. Se l'energia viene consumata principalmente durante il giorno, quando i pannelli fotovoltaici producono, l'autoconsumo è già ottimizzato. Se invece l'energia viene utilizzata prevalentemente la sera, quando i pannelli hanno produzione quasi zero, diventa essenziale valutare un sistema di accumulo per immagazzinare l'energia prodotta di giorno e utilizzarla quando serve."
         isOpen={false}
         onToggle={() => {}}
       />
