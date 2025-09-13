@@ -182,19 +182,20 @@ export const RoofCharacteristics = ({ formData, updateFormData, onNext, onBack }
             </div>
           </div>
 
-          {/* Box informativo - collassabile su mobile e desktop */}
-          <InfoBox
-            title={infoBox.title}
-            content={infoBox.content}
-            isOpen={infoBoxOpen}
-            onToggle={setInfoBoxOpen}
-          />
-          
           {/* Tipo di falda */}
           <div className="space-y-3 md:space-y-4">
             <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
               Che tipo di tetto hai?
             </h3>
+            
+            {/* InfoBox per tipo di falda */}
+            <InfoBox
+              title="Perché il tipo di falda influisce sulla stima?"
+              content="Il tipo di falda determina la superficie disponibile e l'angolo di inclinazione dei pannelli solari. Tetti a falda singola o multipla permettono un'inclinazione ottimale per massimizzare l'energia solare, mentre i tetti piani richiedono strutture di supporto aggiuntive."
+              isOpen={infoBoxOpen}
+              onToggle={setInfoBoxOpen}
+            />
+            
             {tipoFaldaOptions.map((option) =>
               renderOptionButton(
                 option,
@@ -217,6 +218,15 @@ export const RoofCharacteristics = ({ formData, updateFormData, onNext, onBack }
                   </p>
                 )}
               </div>
+              
+              {/* InfoBox per orientamento */}
+              <InfoBox
+                title="Come l'orientamento influenza l'efficienza?"
+                content="L'orientamento zenith della falda del tetto determina l'efficienza del pannello fotovoltaico. L'orientamento a Sud garantisce la massima efficienza (~100%), mentre orientamenti verso Est o Ovest offrono comunque buone prestazioni (~85%). L'orientamento a Nord riduce significativamente l'efficienza."
+                isOpen={infoBoxOpen}
+                onToggle={setInfoBoxOpen}
+              />
+              
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {orientamentoOptions.map((option) => {
                   const currentOrientamenti = Array.isArray(orientamentoTetto) ? orientamentoTetto : (orientamentoTetto ? [orientamentoTetto] : []);
@@ -237,14 +247,18 @@ export const RoofCharacteristics = ({ formData, updateFormData, onNext, onBack }
 
           {/* Zone in ombra */}
           <div className="space-y-3 md:space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
-                Il tetto ha zone in ombra durante il giorno?
-              </h3>
-              <p className="text-xs text-gray-500 mt-1 px-3 md:px-0 italic">
-                Considera alberi, palazzi, camini o altre strutture
-              </p>
-            </div>
+            <h3 className="text-lg font-semibold text-[#1c1c1c] px-3 md:px-0">
+              Il tetto ha zone in ombra durante il giorno?
+            </h3>
+            
+            {/* InfoBox per zone in ombra */}
+            <InfoBox
+              title="Come le ombre influenzano le prestazioni?"
+              content="Le zone in ombra riducono significativamente le prestazioni dell'impianto fotovoltaico. Anche un'ombra parziale su un singolo pannello può influire sulla produzione di energia dell'intero sistema. È importante considerare tutte le fonti di ombreggiamento per una stima accurata."
+              isOpen={infoBoxOpen}
+              onToggle={setInfoBoxOpen}
+            />
+            
             {zoneOmbraOptions.map((option) =>
               renderOptionButton(
                 option,
