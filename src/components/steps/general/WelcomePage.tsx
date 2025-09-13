@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { WelcomeStepLayout } from "../templates";
+import { WelcomeStepLayout } from "../../templates";
 
 type Props = {
   onStart: (selectedModules: string[]) => void;

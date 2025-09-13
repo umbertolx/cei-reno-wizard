@@ -1,5 +1,5 @@
-import { FormData } from "../Configuratore";
-import { QuestionStepLayout } from "../templates";
+import { FormData } from "../../Configuratore";
+import { QuestionStepLayout } from "../../templates";
 
 type Props = {
   formData: FormData;

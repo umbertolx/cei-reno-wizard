@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { FormData } from "../Configuratore";
-import { StickyNavigationBar } from "../shared/StickyNavigationBar";
+import { FormData } from "../../Configuratore";
+import { StickyNavigationBar } from "../../shared/StickyNavigationBar";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { Check } from "lucide-react";
