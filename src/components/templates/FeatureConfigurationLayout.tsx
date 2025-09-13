@@ -293,7 +293,7 @@ export const FeatureConfigurationLayout = ({
 
             {/* Advanced Options */}
             {isActivated && !isCompleted && feature.advancedOption && (
-              <div className="border-t border-gray-200 space-y-4 bg-white px-6 pb-6 rounded-b-2xl">
+              <div className="space-y-4 bg-white px-6 pb-6 rounded-b-2xl">
                 <div className="pt-4 space-y-3">
                   <h3 className="text-base md:text-lg font-semibold text-[#1c1c1c]">
                     {feature.advancedOption.title}
