@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { StepLayout, StepLayoutProps } from './StepLayout';
 import { InfoBox, InfoBoxType } from '@/components/shared/InfoBox';
+import { CheckmarkIcon } from '@/components/ui/checkmark-icon';
 
 export type QuestionOption = {
   id: string;
@@ -113,8 +114,8 @@ export const QuestionStepLayout = ({
               </div>
               
               {isSelected(option.id) && (
-                <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0 ml-3">
-                  <div className="w-2 h-2 bg-white rounded-full" />
+                <div className="flex-shrink-0 ml-3">
+                  <CheckmarkIcon />
                 </div>
               )}
             </div>
