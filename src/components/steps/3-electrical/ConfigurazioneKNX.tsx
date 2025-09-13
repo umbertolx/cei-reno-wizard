@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FormData } from "../../Configuratore";
 import { FeatureConfigurationLayout } from "../../templates/FeatureConfigurationLayout";
-import { StickyNavigationBar } from "../../shared/StickyNavigationBar";
+import { StepLayout } from "../../templates/StepLayout";
 
 type Props = {
   formData: FormData;
@@ -184,47 +184,42 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
   const canProceed = Object.keys(knxConfig).length > 0;
 
   return (
-    <>
-      <div className="space-y-6">
-        {/* Contenuto principale */}
-        <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
-          <div className="space-y-4 md:space-y-6">
-            {/* Categories */}
-            <div className="space-y-8">
-              {featureCategories.map((category) => (
-                <div key={category.title} className="space-y-4">
-                  {/* Category Header */}
-                  <div className="border-b border-gray-200 pb-3">
-                    <h3 className="text-lg font-semibold text-[#1c1c1c]">
-                      {category.title}
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      {category.description}
-                    </p>
-                  </div>
-                  
-                  {/* Features in this category */}
-                  <div className="space-y-4">
-                    {category.features.map((feature) => (
+    <StepLayout
+      badge="Lavori elettrici"
+      title="Configurazione KNX"
+      description="Seleziona e configura le funzionalità KNX per il tuo sistema domotico"
+      icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
+      iconAlt="KNX Configuration"
+      onBack={onBack}
+      onNext={onNext}
+      isNextDisabled={!canProceed}
+    >
+      <div className="space-y-8">
+        {featureCategories.map((category) => (
+          <div key={category.title} className="space-y-4">
+            {/* Category Header */}
+            <div className="border-b border-gray-200 pb-3">
+              <h3 className="text-lg font-semibold text-[#1c1c1c]">
+                {category.title}
+              </h3>
+              <p className="text-sm text-gray-600">
+                {category.description}
+              </p>
+            </div>
+            
+            {/* Features in this category */}
+            <div className="space-y-4">
+              {category.features.map((feature) => (
                 <FeatureConfigurationLayout
                   key={feature.id}
                   feature={feature}
                   onComplete={handleFeatureComplete}
                 />
-                    ))}
-                  </div>
-                </div>
               ))}
             </div>
           </div>
-        </div>
+        ))}
       </div>
-
-      <StickyNavigationBar
-        onBack={onBack}
-        onNext={onNext}
-        isNextDisabled={!canProceed}
-      />
-    </>
+    </StepLayout>
   );
 };
