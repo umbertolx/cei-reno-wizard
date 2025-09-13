@@ -92,23 +92,6 @@ Per creare una nuova schermata, dì semplicemente: **"Crea una nuova schermata c
 
 ---
 
-### 6. **FormStepLayout**
-*Layout per form strutturati in sezioni*
-
-**Quando usare:** Form complessi con sezioni distinte e progress
-**Esempio:** Form multi-sezione con barra di progresso
-
-```typescript
-// Proprietà principali:
-- sections: FormSection[]
-- validationFn?: () => boolean
-- showProgress?: boolean
-- currentStep?: number
-- totalSteps?: number
-```
-
----
-
 ### 7. **SummaryStepLayout**
 *Layout per riepiloghi e stime*
 

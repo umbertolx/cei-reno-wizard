@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { FormData } from "../../Configuratore";
-import { FormStepLayout } from "../../templates";
+import { StepLayout } from "../../templates";
 import { toast } from "@/hooks/use-toast";
 import { TipoAbitazione } from "./sub-components/TipoAbitazione";
 import { SuperficieSlider } from "./sub-components/SuperficieSlider";
@@ -172,90 +172,106 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext, onBack 
     });
   };
 
-  const sections = [
-    {
-      id: 'tipo-abitazione',
-      title: 'Tipo di abitazione',
-      content: (
-        <TipoAbitazione 
-          value={info.tipologiaAbitazione}
-          onChange={(value) => updateFormData({ 
-            informazioniGenerali: { ...info, tipologiaAbitazione: value } 
-          })}
-        />
-      )
-    },
-    {
-      id: 'superficie',
-      title: 'Superficie',
-      content: (
-        <SuperficieSlider
-          value={info.superficie || 85}
-          onChange={(value) => updateFormData({ 
-            informazioniGenerali: { ...info, superficie: value } 
-          })}
-        />
-      )
-    },
-    {
-      id: 'indirizzo',
-      title: 'Indirizzo',
-      content: (
-        <IndirizzoField
-          value={info.indirizzo}
-          onChange={(value) => updateFormData({ 
-            informazioniGenerali: { ...info, indirizzo: value } 
-          })}
-          onSelectLocation={selectLocation}
-        />
-      )
-    },
-    {
-      id: 'utilizzo',
-      title: 'Utilizzo abitazione',
-      content: (
-        <UtilizzoAbitazioneSelector
-          value={info.utilizzoAbitazione}
-          onChange={(value) => updateFormData({ 
-            informazioniGenerali: { ...info, utilizzoAbitazione: value } 
-          })}
-        />
-      )
-    },
-    {
-      id: 'persone',
-      title: 'Numero di persone',
-      content: (
-        <NumeroPersoneSelector
-          value={info.numeroPersone}
-          onChange={(value) => updateFormData({ 
-            informazioniGenerali: { ...info, numeroPersone: value } 
-          })}
-        />
-      )
-    },
-    {
-      id: 'composizione',
-      title: 'Suddivisione spazi',
-      content: (
-        <SuddivisioneSpazi
-          composizione={info.composizione}
-          onChangeStanza={handleChangeComposizione}
-          totalRooms={totalRooms}
-        />
-      )
-    }
-  ];
-
   return (
-    <FormStepLayout
+    <StepLayout
       badge="Impianti Civili"
       title="Informazioni generali"
       description="Inizia la configurazione inserendo le caratteristiche dell'immobile"
-      sections={sections}
-      validationFn={isFormValid}
       onNext={handleSubmit}
       onBack={onBack}
-    />
+      isNextDisabled={!isFormValid()}
+    >
+      <div className="space-y-6">
+        {/* Tipo Abitazione */}
+        <div>
+          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
+            Tipo di abitazione
+          </h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
+            <TipoAbitazione
+              value={info.tipologiaAbitazione}
+              onChange={(type) => updateFormData({
+                informazioniGenerali: { ...info, tipologiaAbitazione: type }
+              })}
+            />
+          </div>
+        </div>
+
+        {/* Superficie */}
+        <div>
+          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
+            Superficie abitazione (mq)
+          </h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
+            <SuperficieSlider
+              value={info.superficie}
+              onChange={(value) => updateFormData({
+                informazioniGenerali: { ...info, superficie: value }
+              })}
+            />
+          </div>
+        </div>
+
+        {/* Indirizzo */}
+        <div>
+          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
+            Indirizzo immobile
+          </h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
+            <IndirizzoField
+              value={info.indirizzo}
+              onChange={(value) => updateFormData({
+                informazioniGenerali: { ...info, indirizzo: value }
+              })}
+              onSelectLocation={selectLocation}
+            />
+          </div>
+        </div>
+
+        {/* Utilizzo Abitazione */}
+        <div>
+          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
+            Utilizzo abitazione
+          </h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
+            <UtilizzoAbitazioneSelector
+              value={info.utilizzoAbitazione}
+              onChange={(value) => updateFormData({
+                informazioniGenerali: { ...info, utilizzoAbitazione: value }
+              })}
+            />
+          </div>
+        </div>
+
+        {/* Numero Persone */}
+        <div>
+          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
+            Numero di persone
+          </h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
+            <NumeroPersoneSelector
+              value={info.numeroPersone}
+              onChange={(value) => updateFormData({
+                informazioniGenerali: { ...info, numeroPersone: value }
+              })}
+            />
+          </div>
+        </div>
+
+        {/* Suddivisione Spazi */}
+        <div>
+          <h2 className="text-xl font-medium text-[#1c1c1c] mb-4">
+            Suddivisione spazi ({totalRooms} {totalRooms === 1 ? 'stanza' : 'stanze'})
+          </h2>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
+            <SuddivisioneSpazi
+              composizione={info.composizione}
+              onChangeStanza={handleChangeComposizione}
+              totalRooms={totalRooms}
+            />
+          </div>
+        </div>
+      </div>
+    </StepLayout>
   );
 };
