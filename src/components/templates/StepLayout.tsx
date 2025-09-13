@@ -6,8 +6,6 @@ export type StepLayoutProps = {
   badge?: string;
   title: string;
   description?: string;
-  icon?: string;
-  iconAlt?: string;
   children: ReactNode;
   onBack?: () => void;
   onNext?: () => void;
@@ -22,8 +20,6 @@ export const StepLayout = ({
   badge,
   title,
   description,
-  icon,
-  iconAlt,
   children,
   onBack,
   onNext,
@@ -39,39 +35,18 @@ export const StepLayout = ({
       {badge && <ModuleBadge>{badge}</ModuleBadge>}
 
       {/* Header */}
-      <div className="space-y-2 md:space-y-3">
-        {icon && (
-          <div className="flex items-center gap-4 px-3 md:px-0">
-            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-              <img 
-                src={icon} 
-                alt={iconAlt || "Step icon"} 
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div className="flex-1">
-              <h1 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">{title}</h1>
-              {description && (
-                <p className="text-xs md:text-base text-[#1c1c1c] opacity-70 hidden sm:block">
-                  {description}
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-        
-        {!icon && (
-          <div className="text-center px-3 md:px-0">
-            <h1 className="text-[24px] md:text-[36px] font-bold text-[#1c1c1c] leading-[1.05]">
-              {title}
-            </h1>
-            {description && (
-              <p className="text-sm md:text-base text-gray-600 mt-2">
-                {description}
-              </p>
-            )}
-          </div>
-        )}
+      <div className="px-3 md:px-0">
+        <div className="space-y-3">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+            {title}
+          </h1>
+          <div className="w-full h-px bg-gray-200"></div>
+          {description && (
+            <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
+              {description}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Content */}

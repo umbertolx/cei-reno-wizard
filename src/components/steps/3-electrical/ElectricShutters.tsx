@@ -64,8 +64,6 @@ export const ElectricShutters = ({ formData, updateFormData, onNext, onBack }: P
   return (
     <QuestionStepLayout
       badge="Impianto elettrico"
-      icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
-      iconAlt="Electrical work icon"
       title="Vuoi elettrificare le tapparelle?"
       infoBox={infoBox}
       options={options}

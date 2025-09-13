@@ -48,8 +48,6 @@ export const ElectricalSystemAge = ({ formData, updateFormData, onNext, onBack }
   return (
     <QuestionStepLayout
       badge="Impianto elettrico"
-      icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
-      iconAlt="Electrical work icon"
       title="Il tuo impianto elettrico è vecchio o non più a norma?"
       infoBox={infoBox}
       options={options}

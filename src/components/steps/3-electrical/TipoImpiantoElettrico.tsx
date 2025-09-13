@@ -43,8 +43,6 @@ export const TipoImpiantoElettrico = ({ formData, updateFormData, onNext, onBack
   return (
     <QuestionStepLayout
       badge="Impianto elettrico"
-      icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
-      iconAlt="Electrical work icon"
       title="Che tipo di impianto elettrico vuoi installare?"
       infoBox={infoBox}
       options={options}

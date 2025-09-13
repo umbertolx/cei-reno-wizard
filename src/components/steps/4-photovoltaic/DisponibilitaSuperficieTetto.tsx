@@ -186,8 +186,6 @@ export const DisponibilitaSuperficieTetto = ({ formData, updateFormData, onNext,
   return (
     <QuestionStepLayout
       badge="Impianto fotovoltaico"
-      icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
-      iconAlt="Casa"
       title="Hai la superficie necessaria a disposizione?"
       description="In base alle tue esigenze energetiche e alle caratteristiche del tetto, abbiamo calcolato la superficie necessaria per il tuo impianto fotovoltaico personalizzato."
       infoBox={infoBox}

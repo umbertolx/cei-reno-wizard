@@ -77,7 +77,6 @@ export const TapparelleElettriche = ({ formData, updateFormData, onNext, onBack 
     <QuestionStepLayout
       badge="Impianto elettrico"
       title="Vuoi elettrificare le tapparelle?"
-      icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
       options={options}
       selectedValue={elettrificareTapparelle}
       onSelectionChange={handleSelectionChange}

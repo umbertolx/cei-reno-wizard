@@ -50,21 +50,17 @@ export type FeatureConfigurationLayoutProps = {
   badge?: string;
   title?: string;
   description?: string;
-  icon?: string;
-  iconAlt?: string;
   onBack?: () => void;
   onNext?: () => void;
   isNextDisabled?: boolean;
 };
 
-export const FeatureConfigurationLayout = ({ 
+export const FeatureConfigurationLayout = ({
   feature, 
   onComplete, 
   badge, 
   title, 
   description, 
-  icon, 
-  iconAlt, 
   onBack, 
   onNext, 
   isNextDisabled 
@@ -196,8 +192,6 @@ export const FeatureConfigurationLayout = ({
       badge={badge}
       title={title}
       description={description}
-      icon={icon}
-      iconAlt={iconAlt}
       onBack={onBack}
       onNext={onNext}
       isNextDisabled={isNextDisabled || !hasCompletedFeatures}

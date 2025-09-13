@@ -52,8 +52,6 @@ export const TipoDomotica = ({ formData, updateFormData, onNext, onBack }: Props
   return (
     <ScenarioComparisonLayout
       badge="Impianto elettrico"
-      icon="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png"
-      iconAlt="Electrical work icon"
       title="Scegli il tipo di domotica che preferisci per la tua casa"
       description="Due approcci diversi alla domotica: KNX per la massima robustezza e prestazioni, wireless per semplicità e convenienza"
       options={domoticaOptions}

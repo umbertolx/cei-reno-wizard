@@ -98,8 +98,6 @@ const NuoveVociConsumo = ({ formData, updateFormData, onNext, onBack }: Props) =
       badge="Impianto fotovoltaico"
       title="Hai in programma di aggiungere nuove voci di consumo impattanti?"
       description="Seleziona gli elettrodomestici o sistemi che hai intenzione di installare o acquistare"
-      icon="/lovable-uploads/693eea79-0bc5-4475-8f7b-5b1a2f4b248a.png"
-      iconAlt="Energy consumption icon"
       onNext={onNext}
       onBack={onBack}
       isNextDisabled={!canProceed}

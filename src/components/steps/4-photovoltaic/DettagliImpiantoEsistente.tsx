@@ -138,8 +138,6 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
   return (
     <StepLayout
       badge="Ampliamento fotovoltaico"
-      icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
-      iconAlt="House icon"
       title="Dettagli impianto"
       onNext={onNext}
       onBack={onBack}

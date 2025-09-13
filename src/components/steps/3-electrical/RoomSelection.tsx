@@ -97,8 +97,6 @@ export const RoomSelection = ({ formData, updateFormData, onNext, onBack }: Prop
   return (
     <MultipleSelectionLayout
       badge="Impianto elettrico"
-      icon="/lovable-uploads/417ced15-f2dc-47e1-8b8c-d0faf5b9717e.png"
-      iconAlt="Rooms selection icon"
       title="Seleziona gli ambienti"
       description="In quali stanze vuoi intervenire con i lavori elettrici?"
       items={items}

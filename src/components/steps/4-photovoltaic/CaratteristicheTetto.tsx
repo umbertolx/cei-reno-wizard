@@ -154,8 +154,6 @@ export const CaratteristicheTetto = ({ formData, updateFormData, onNext, onBack 
     <StepLayout
       badge="Impianto fotovoltaico"
       title="Caratteristiche del tuo tetto"
-      icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
-      iconAlt="House icon"
       onNext={canProceed ? onNext : undefined}
       onBack={onBack}
       isNextDisabled={!canProceed}

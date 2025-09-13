@@ -33,8 +33,6 @@ export const PhotovoltaicInterventionType = ({ formData, updateFormData, onNext,
   return (
     <QuestionStepLayout
       badge="Impianto fotovoltaico"
-      icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
-      iconAlt="House icon"
       title="Si tratta di un nuovo impianto o di un ampliamento?"
       description="Scegli se installare un nuovo impianto fotovoltaico o ampliare quello esistente"
       infoBox={infoBox}

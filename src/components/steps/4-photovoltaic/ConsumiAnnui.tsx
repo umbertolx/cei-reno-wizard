@@ -110,8 +110,6 @@ export const ConsumiAnnui = ({ formData, updateFormData, onNext, onBack }: Props
   return (
     <QuestionStepLayout
       badge="Impianto fotovoltaico"
-      icon="/lovable-uploads/4d476208-9875-4160-a9cd-6af03be67b0b.png"
-      iconAlt="House icon"
       title="Conosci i tuoi consumi annui di energia elettrica?"
       infoBox={infoBox}
       options={options}
