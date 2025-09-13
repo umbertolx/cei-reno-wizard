@@ -160,33 +160,9 @@ export const ConfigurazioneBTicino = ({ formData, updateFormData, onNext, onBack
   return (
     <>
       <div className="space-y-6">
-        {/* Badge */}
-        <div className="flex justify-center">
-          <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
-            Impianto elettrico
-          </div>
-        </div>
-
         {/* Contenuto principale */}
         <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8 mt-8 md:mt-16">
           <div className="space-y-4 md:space-y-6">
-            {/* Header - Layout responsive */}
-            <div className="flex items-center gap-4 px-3 md:px-0">
-              <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-                <img 
-                  src="/lovable-uploads/c7408342-e29b-40fb-a65e-1c92eca62469.png" 
-                  alt="Electrical work icon" 
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div>
-                <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Configurazione BTicino Wireless</h2>
-                <p className="text-base text-[#1c1c1c] opacity-80">
-                  Personalizza le funzionalità del tuo impianto domotico wireless
-                </p>
-              </div>
-            </div>
-
             {/* Categories */}
             <div className="space-y-8">
               {featureCategories.map((category) => (
