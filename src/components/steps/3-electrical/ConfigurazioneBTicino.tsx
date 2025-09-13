@@ -174,9 +174,6 @@ export const ConfigurazioneBTicino = ({ formData, updateFormData, onNext, onBack
               <h3 className="text-xl font-semibold text-[#1c1c1c] uppercase">
                 {category.title}
               </h3>
-              <p className="text-sm text-gray-600">
-                {category.description}
-              </p>
             </div>
             
             {/* Features in this category */}
