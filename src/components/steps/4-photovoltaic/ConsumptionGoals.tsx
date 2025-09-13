@@ -59,15 +59,15 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
         </p>
       </div>
       
-      <div className="space-y-4 bg-white border border-gray-200 rounded-xl p-6">
-        <div className="flex items-center justify-between text-sm font-medium text-gray-700">
-          <div className="flex items-center gap-2">
-            <Sun className="h-4 w-4 text-yellow-500" />
-            <span>Giorno</span>
+      <div className="space-y-6 bg-gradient-to-br from-white to-gray-50/30 border border-gray-200/60 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 px-3 py-2 bg-yellow-50 rounded-full border border-yellow-200/60">
+            <Sun className="h-5 w-5 text-yellow-600" />
+            <span className="text-sm font-semibold text-yellow-800">Giorno</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span>Sera</span>
-            <Moon className="h-4 w-4 text-gray-400" />
+          <div className="flex items-center gap-3 px-3 py-2 bg-slate-50 rounded-full border border-slate-200/60">
+            <span className="text-sm font-semibold text-slate-800">Sera</span>
+            <Moon className="h-5 w-5 text-slate-600" />
           </div>
         </div>
         
