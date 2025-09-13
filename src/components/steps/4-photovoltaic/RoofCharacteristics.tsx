@@ -178,6 +178,7 @@ export const RoofCharacteristics = ({ formData, updateFormData, onNext, onBack }
               <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
                 Caratteristiche del tuo tetto
               </h1>
+              <div className="w-full h-px bg-gray-200"></div>
             </div>
           </div>
 

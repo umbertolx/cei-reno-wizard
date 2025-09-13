@@ -60,6 +60,7 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
         <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
           Quando consumi di più l'energia elettrica?
         </h1>
+        <div className="w-full h-px bg-gray-200"></div>
         <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
           Sposta il cursore per indicare se i tuoi consumi sono più concentrati durante il giorno o la sera
         </p>

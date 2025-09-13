@@ -101,6 +101,7 @@ export const ElectricalInterventions = ({ formData, updateFormData, onNext, onBa
                 <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
                   Seleziona gli interventi elettrici
                 </h1>
+                <div className="w-full h-px bg-gray-200"></div>
                 <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
                   Scegli quali lavori elettrici includere nel rifacimento
                 </p>

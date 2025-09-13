@@ -196,10 +196,13 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
         {featureCategories.map((category) => (
           <div key={category.title} className="space-y-4">
             {/* Category Header */}
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-[#1c1c1c] uppercase">
+            <div className="border-b border-gray-200 pb-3">
+              <h3 className="text-lg font-semibold text-[#1c1c1c]">
                 {category.title}
               </h3>
+              <p className="text-sm text-gray-600">
+                {category.description}
+              </p>
             </div>
             
             {/* Features in this category */}

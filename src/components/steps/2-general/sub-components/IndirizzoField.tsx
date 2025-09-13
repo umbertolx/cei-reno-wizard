@@ -16,6 +16,7 @@ export const IndirizzoField = ({ value, onChange, onSelectLocation }: IndirizzoF
           <h1 className="text-lg md:text-xl font-semibold text-[#1c1c1c] leading-tight">
             Indirizzo immobile
           </h1>
+          <div className="w-full h-px bg-gray-200"></div>
           <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
             Inserisci il tuo indirizzo completo
           </p>

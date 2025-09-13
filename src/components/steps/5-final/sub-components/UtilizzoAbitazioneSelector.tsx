@@ -28,6 +28,7 @@ export const UtilizzoAbitazioneSelector = ({ value, onChange }: UtilizzoAbitazio
           <h1 className="text-lg md:text-xl font-semibold text-[#1c1c1c] leading-tight">
             Utilizzo
           </h1>
+          <div className="w-full h-px bg-gray-200"></div>
           <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
             Seleziona se si tratta della tua abitazione principale
           </p>
