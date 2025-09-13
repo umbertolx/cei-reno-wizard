@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { CheckmarkIcon } from "@/components/ui/checkmark-icon";
 import { StepLayout } from "./StepLayout";
 
 export type ConfigurationOption = {
@@ -217,15 +218,11 @@ export const FeatureConfigurationLayout = ({
         >
           {/* Selection Indicator - Mobile: top right */}
           <div className="md:hidden absolute top-4 right-4 z-10">
-            <div className={`
-              w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
-              ${(isActivated || isCompleted)
-                ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                : 'border-gray-300 bg-white hover:border-gray-400'
-              }
-            `}>
-              {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
-            </div>
+            {(isActivated || isCompleted) ? (
+              <CheckmarkIcon />
+            ) : (
+              <div className="w-5 h-5 rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 transition-all duration-200" />
+            )}
           </div>
 
           <div className="space-y-0">
@@ -285,15 +282,13 @@ export const FeatureConfigurationLayout = ({
                       {feature.title}
                     </h2>
                     {/* Selection Indicator - Desktop only */}
-                    <div className={`
-                      w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2 flex-shrink-0 ml-4
-                      ${(isActivated || isCompleted)
-                        ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                        : 'border-gray-300 bg-white hover:border-gray-400'
-                      }
-                    `}>
-                      {(isActivated || isCompleted) && <Check className="h-4 w-4 text-white" />}
-                    </div>
+                    {(isActivated || isCompleted) ? (
+                      <div className="flex-shrink-0 ml-4">
+                        <CheckmarkIcon />
+                      </div>
+                    ) : (
+                      <div className="flex-shrink-0 ml-4 w-5 h-5 rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 transition-all duration-200" />
+                    )}
                   </div>
                   <p className="text-base text-gray-600 leading-relaxed">
                     {feature.description}
@@ -427,15 +422,13 @@ export const FeatureConfigurationLayout = ({
                               )}
                             </div>
                             {/* Selection Indicator - Always visible */}
-                            <div className={`
-                              w-6 h-6 rounded-full flex items-center justify-center ml-3 transition-all duration-200 border-2
-                              ${isSelected 
-                                ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                                : 'border-gray-300 bg-white hover:border-gray-400'
-                              }
-                            `}>
-                              {isSelected && <Check className="h-4 w-4 text-white" />}
-                            </div>
+                            {isSelected ? (
+                              <div className="ml-3">
+                                <CheckmarkIcon />
+                              </div>
+                            ) : (
+                              <div className="ml-3 w-5 h-5 rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 transition-all duration-200" />
+                            )}
                           </div>
                         </div>
                       );

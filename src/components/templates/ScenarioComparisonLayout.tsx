@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { StepLayout, StepLayoutProps } from './StepLayout';
-import { Check } from 'lucide-react';
+import { CheckmarkIcon } from '@/components/ui/checkmark-icon';
 
 export type ScenarioOption = {
   id: string;
@@ -62,15 +62,11 @@ export const ScenarioComparisonLayout = ({
             >
               {/* Selection Indicator */}
               <div className="absolute top-4 right-4 z-10">
-                <div className={`
-                  w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 border-2
-                  ${isSelected
-                    ? 'bg-[#d8010c] border-[#d8010c] shadow-lg scale-110' 
-                    : 'border-gray-300 bg-white'
-                  }
-                `}>
-                  {isSelected && <Check className="h-4 w-4 text-white" />}
-                </div>
+                {isSelected ? (
+                  <CheckmarkIcon />
+                ) : (
+                  <div className="w-5 h-5 rounded-full border-2 border-gray-300 bg-white transition-all duration-200" />
+                )}
               </div>
 
               {/* Content */}
