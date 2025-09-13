@@ -92,9 +92,9 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
           className="w-full"
         />
         
-        <div className="text-center text-sm text-gray-600">
-          <span className="font-medium">
-            {consumoEnergetico[0]}% giorno - {100 - consumoEnergetico[0]}% sera
+        <div className="text-center text-sm text-black">
+          <span className="font-medium uppercase">
+            {consumoEnergetico[0]}% GIORNO | {100 - consumoEnergetico[0]}% SERA
           </span>
         </div>
       </div>
