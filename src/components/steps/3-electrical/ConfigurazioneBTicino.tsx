@@ -167,11 +167,11 @@ export const ConfigurazioneBTicino = ({ formData, updateFormData, onNext, onBack
       isNextDisabled={!canProceed}
     >
       <div className="space-y-8">
-        {featureCategories.map((category) => (
+        {featureCategories.map((category, index) => (
           <div key={category.title} className="space-y-4">
             {/* Category Header */}
-            <div className="border-b border-gray-200 pb-3">
-              <h3 className="text-lg font-semibold text-[#1c1c1c]">
+            <div className="pb-3">
+              <h3 className="text-xl font-semibold text-[#1c1c1c] uppercase">
                 {category.title}
               </h3>
               <p className="text-sm text-gray-600">
@@ -189,6 +189,11 @@ export const ConfigurazioneBTicino = ({ formData, updateFormData, onNext, onBack
                 />
               ))}
             </div>
+            
+            {/* Line at the end of subcategory */}
+            {index < featureCategories.length - 1 && (
+              <div className="pt-4 border-b border-gray-200"></div>
+            )}
           </div>
         ))}
       </div>
