@@ -1,14 +1,14 @@
-
 import { useState, useEffect } from "react";
 import { FormData } from "../../Configuratore";
-import { FormStepLayout } from "../../templates";
+import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { TipoAbitazione } from "./sub-components/TipoAbitazione";
 import { SuperficieSlider } from "./sub-components/SuperficieSlider";
 import { IndirizzoField } from "./sub-components/IndirizzoField";
 import { SuddivisioneSpazi } from "./sub-components/SuddivisioneSpazi";
-import { UtilizzoAbitazioneSelector } from "../final/sub-components/UtilizzoAbitazioneSelector";
+import { UtilizzoAbitazioneSelector } from "../15-final/sub-components/UtilizzoAbitazioneSelector";
 import { NumeroPersoneSelector } from "./sub-components/NumeroPersoneSelector";
+import { CircleDot, ArrowRight, Home, Settings, Calculator } from "lucide-react";
 
 type Props = {
   formData: FormData;
@@ -16,7 +16,7 @@ type Props = {
   onNext: () => void;
 };
 
-export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props) => {
+export const GeneralInformation = ({ formData, updateFormData, onNext }: Props) => {
   // Pre-compila i dati se non sono già presenti nella nuova struttura
   useEffect(() => {
     if (!formData.informazioniGenerali?.tipologiaAbitazione) {
@@ -156,35 +156,43 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
     });
   };
 
-  const sections = [
-    {
-      id: 'tipo-abitazione',
-      title: 'Tipo di abitazione',
-      content: (
+  return (
+    <div className="space-y-4">
+      {/* Badge Impianti Civili */}
+      <div className="flex justify-center">
+        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
+          Impianti Civili
+        </div>
+      </div>
+
+      {/* Header principale */}
+      <div className="space-y-2 md:space-y-3 mt-7 mb-12 md:mb-16">
+        <h1 className="text-[28px] md:text-[40px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
+          <span className="block md:inline">Informazioni</span>
+          <span className="text-[#1c1c1c] block md:inline">generali</span>
+        </h1>
+        
+        <p className="text-sm md:text-base text-gray-600 max-w-2xl text-left md:text-center md:mx-auto leading-relaxed p-1">
+          Inizia la configurazione inserendo le caratteristiche dell'immobile
+        </p>
+      </div>
+
+      {/* Contenuto principale */}
+      <div className="max-w-4xl md:mx-auto space-y-6 md:space-y-8">
         <TipoAbitazione 
           value={info.tipologiaAbitazione}
           onChange={(value) => updateFormData({ 
             informazioniGenerali: { ...info, tipologiaAbitazione: value } 
           })}
         />
-      )
-    },
-    {
-      id: 'superficie',
-      title: 'Superficie',
-      content: (
+
         <SuperficieSlider
           value={info.superficie || 85}
           onChange={(value) => updateFormData({ 
             informazioniGenerali: { ...info, superficie: value } 
           })}
         />
-      )
-    },
-    {
-      id: 'indirizzo',
-      title: 'Indirizzo',
-      content: (
+
         <IndirizzoField
           value={info.indirizzo}
           onChange={(value) => updateFormData({ 
@@ -192,53 +200,48 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext }: Props
           })}
           onSelectLocation={selectLocation}
         />
-      )
-    },
-    {
-      id: 'utilizzo',
-      title: 'Utilizzo abitazione',
-      content: (
+
         <UtilizzoAbitazioneSelector
           value={info.utilizzoAbitazione}
           onChange={(value) => updateFormData({ 
             informazioniGenerali: { ...info, utilizzoAbitazione: value } 
           })}
         />
-      )
-    },
-    {
-      id: 'persone',
-      title: 'Numero di persone',
-      content: (
+
         <NumeroPersoneSelector
           value={info.numeroPersone}
           onChange={(value) => updateFormData({ 
             informazioniGenerali: { ...info, numeroPersone: value } 
           })}
         />
-      )
-    },
-    {
-      id: 'composizione',
-      title: 'Suddivisione spazi',
-      content: (
+
         <SuddivisioneSpazi
           composizione={info.composizione}
           onChangeStanza={handleChangeComposizione}
           totalRooms={totalRooms}
         />
-      )
-    }
-  ];
+      </div>
 
-  return (
-    <FormStepLayout
-      badge="Impianti Civili"
-      title="Informazioni generali"
-      description="Inizia la configurazione inserendo le caratteristiche dell'immobile"
-      sections={sections}
-      validationFn={validateForm}
-      onNext={handleSubmit}
-    />
+      {/* Pulsante Avanti */}
+      <div className="max-w-4xl md:mx-auto px-3 md:px-0">
+        <Button 
+          onClick={handleSubmit}
+          className="
+            w-full px-6 py-4 md:py-5
+            text-base md:text-lg 
+            bg-[#d8010c] hover:bg-[#b8000a]
+            text-white 
+            rounded-xl 
+            flex items-center justify-center gap-2
+            transition-all duration-300 
+            shadow-sm hover:shadow-md
+            min-h-[48px]
+          "
+        >
+          <span>Avanti</span>
+          <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+        </Button>
+      </div>
+    </div>
   );
 };
