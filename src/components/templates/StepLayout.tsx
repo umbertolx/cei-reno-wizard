@@ -61,7 +61,7 @@ export const StepLayout = ({
         )}
         
         {!icon && (
-          <div className="text-center md:text-left px-3 md:px-0">
+          <div className="text-center px-3 md:px-0">
             <h1 className="text-[24px] md:text-[36px] font-bold text-[#1c1c1c] leading-[1.05]">
               {title}
             </h1>
