@@ -23,7 +23,7 @@ import { BatteriaAccumulo } from "./steps/4-photovoltaic/BatteriaAccumulo";
 import { RequestSent } from "./steps/5-final/RequestSent";
 import { DatiContatto } from "./steps/5-final/DatiContatto";
 import { StimaFinale } from "./steps/5-final/StimaFinale";
-import { Card, CardContent } from "@/components/ui/card";
+import { PreSelectedFeatureSelector } from "@/components/templates/PreSelectedFeatureSelector";
 import { toast } from "@/hooks/use-toast";
 import { saveLeadToDatabase, savePartialLead, updateLeadWithEstimate } from "@/services/leadService";
 import { supabase } from "@/integrations/supabase/client";
@@ -492,12 +492,8 @@ export const Configuratore = () => {
   };
 
   return (
-    <Card className="w-full max-w-4xl rounded-[20px] shadow-lg overflow-hidden min-h-0">
-      <CardContent className="p-3 sm:p-4 md:p-5">
-        <div className="flex flex-col min-h-0 space-y-2">
-          {renderCurrentStep()}
-        </div>
-      </CardContent>
-    </Card>
+    <PreSelectedFeatureSelector>
+      {renderCurrentStep()}
+    </PreSelectedFeatureSelector>
   );
 };
