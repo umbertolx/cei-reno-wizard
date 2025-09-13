@@ -64,7 +64,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
             </div>
           </div>
           
-          <div className="flex items-center bg-black rounded-full p-1 border border-gray-200">
+          <div className="flex items-center bg-[#d8010c] rounded-full p-1 border border-gray-200">
             <Button 
               variant="ghost" 
               size="icon"
