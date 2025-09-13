@@ -49,7 +49,11 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
     const isAtMin = value <= 0;
 
     return (
-      <div className="p-4 rounded-xl transition-all duration-300 border bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm">
+      <div className={`p-4 rounded-xl transition-all duration-300 border cursor-pointer ${
+        value > 0
+          ? 'bg-[#d8010c]/5 border-[#d8010c] shadow-sm'
+          : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+      }`}>
         <div className="flex items-center justify-between">
           <div className="text-left flex-1 min-w-0 pr-4">
             <div className="font-semibold text-base text-[#1c1c1c] mb-1">
