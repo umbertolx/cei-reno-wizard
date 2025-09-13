@@ -13,7 +13,7 @@ type InfoBoxProps = InfoBoxType & {
 
 export const InfoBox = ({ title, content, isOpen, onToggle }: InfoBoxProps) => {
   return (
-    <div className={`border-2 border-dashed border-[#d8010c] rounded-xl overflow-hidden ${
+    <div className={`border-2 border-dashed border-[#d8010c] rounded-xl overflow-hidden hover:bg-gray-100 transition-colors ${
       isOpen ? 'bg-transparent' : 'bg-transparent'
     }`}>
       <button
