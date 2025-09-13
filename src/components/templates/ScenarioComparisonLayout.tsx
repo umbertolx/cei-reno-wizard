@@ -87,16 +87,6 @@ export const ScenarioComparisonLayout = ({
                   <div className="w-8 h-0.5 bg-[#d8010c] rounded-full"></div>
                 </div>
 
-                {/* InfoBox for Description */}
-                <div className="mt-6">
-                  <InfoBox
-                    title="Maggiori informazioni"
-                    content={option.description}
-                    isOpen={isInfoBoxOpen}
-                    onToggle={(isOpen) => toggleInfoBox(option.id, isOpen)}
-                  />
-                </div>
-
                 {/* Features with Bullet Points */}
                 <div className="space-y-4 mt-6">
                   {option.features.map((feature, index) => (
@@ -107,6 +97,16 @@ export const ScenarioComparisonLayout = ({
                       </span>
                     </div>
                   ))}
+                </div>
+
+                {/* InfoBox for Description - Below bullets, full width, subtle */}
+                <div className="mt-8 -mx-8 px-8">
+                  <InfoBox
+                    title="Maggiori informazioni"
+                    content={option.description}
+                    isOpen={isInfoBoxOpen}
+                    onToggle={(isOpen) => toggleInfoBox(option.id, isOpen)}
+                  />
                 </div>
               </div>
             </div>

@@ -18,7 +18,7 @@ export const InfoBox = ({ title, content, isOpen, onToggle }: InfoBoxProps) => {
     }`}>
       <button
         onClick={() => onToggle(!isOpen)}
-        className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-100 transition-colors"
+        className="w-full flex items-center justify-between p-3 text-left bg-transparent hover:bg-gray-50/50 transition-colors rounded-lg"
       >
         <span className="font-medium text-[#1c1c1c] uppercase">{title}</span>
         <Plus 
