@@ -50,42 +50,7 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
 
   const conditionalContent = obiettivoPrincipale ? (
     <div className="space-y-4 md:space-y-6 px-3 md:px-0">
-      <div>
-        <h3 className="text-lg font-semibold text-[#1c1c1c] mb-2">
-          Quando consumi di più l'energia elettrica?
-        </h3>
-        <p className="text-xs text-gray-500 italic">
-          Sposta il cursore per indicare se i tuoi consumi sono più concentrati durante il giorno o la sera
-        </p>
-      </div>
-      
-      <div className="space-y-6 bg-gradient-to-br from-white to-gray-50/30 border border-gray-200/60 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 px-3 py-2 bg-yellow-50 rounded-full border border-yellow-200/60">
-            <Sun className="h-5 w-5 text-yellow-600" />
-            <span className="text-sm font-semibold text-yellow-800">Giorno</span>
-          </div>
-          <div className="flex items-center gap-3 px-3 py-2 bg-slate-50 rounded-full border border-slate-200/60">
-            <span className="text-sm font-semibold text-slate-800">Sera</span>
-            <Moon className="h-5 w-5 text-slate-600" />
-          </div>
-        </div>
-        
-        <Slider
-          value={consumoEnergetico}
-          onValueChange={handleConsumoChange}
-          max={100}
-          min={0}
-          step={10}
-          className="w-full"
-        />
-        
-        <div className="text-center text-sm text-gray-600">
-          <span className="font-medium">
-            {consumoEnergetico[0]}% giorno - {100 - consumoEnergetico[0]}% sera
-          </span>
-        </div>
-      </div>
+      {/* Contenuto rimosso come richiesto dall'utente */}
     </div>
   ) : null;
 
