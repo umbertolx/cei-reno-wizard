@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { StickyNavigationBar } from '@/components/shared/StickyNavigationBar';
+import { ModuleBadge } from '@/components/shared/ModuleBadge';
 
 export type StepLayoutProps = {
   badge?: string;
@@ -35,13 +36,7 @@ export const StepLayout = ({
   return (
     <div className={`space-y-6 md:space-y-8 ${className}`}>
       {/* Badge */}
-      {badge && (
-        <div className="flex justify-start md:justify-center px-3 md:px-0">
-          <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
-            {badge}
-          </div>
-        </div>
-      )}
+      {badge && <ModuleBadge>{badge}</ModuleBadge>}
 
       {/* Header */}
       <div className="space-y-2 md:space-y-3">
