@@ -170,7 +170,7 @@ export const ConfigurazioneBTicino = ({ formData, updateFormData, onNext, onBack
         {featureCategories.map((category, index) => (
           <div key={category.title} className="space-y-4">
             {/* Category Header */}
-            <div className="pb-3">
+            <div>
               <h3 className="text-xl font-semibold text-[#1c1c1c] uppercase">
                 {category.title}
               </h3>
