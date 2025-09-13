@@ -1,7 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { StepLayout, StepLayoutProps } from './StepLayout';
-import { InfoBoxType } from '@/components/shared/InfoBox';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { InfoBox, InfoBoxType } from '@/components/shared/InfoBox';
 
 export type QuestionOption = {
   id: string;
@@ -78,24 +77,13 @@ export const QuestionStepLayout = ({
 
       {/* Info Box */}
       {infoBox && (
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
-          <button
-            onClick={() => setIsInfoOpen(!isInfoOpen)}
-            className="flex items-center justify-between w-full text-left"
-          >
-            <h3 className="font-medium text-blue-900">{infoBox.title}</h3>
-            {isInfoOpen ? (
-              <ChevronUp className="h-4 w-4 text-blue-700 flex-shrink-0" />
-            ) : (
-              <ChevronDown className="h-4 w-4 text-blue-700 flex-shrink-0" />
-            )}
-          </button>
-          
-          {isInfoOpen && (
-            <div className="mt-3 text-sm text-blue-800 leading-relaxed">
-              {infoBox.content}
-            </div>
-          )}
+        <div className="mb-6">
+          <InfoBox 
+            title={infoBox.title}
+            content={infoBox.content}
+            isOpen={isInfoOpen}
+            onToggle={setIsInfoOpen}
+          />
         </div>
       )}
 
