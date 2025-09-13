@@ -34,61 +34,61 @@ export const StepLayout = ({
   className = ""
 }: StepLayoutProps) => {
   return (
-    <div className={`min-h-screen bg-gray-50 ${className}`}>
-      <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6 md:space-y-8">
-        {/* Badge */}
-        {badge && <ModuleBadge>{badge}</ModuleBadge>}
+    <div className={`space-y-6 md:space-y-8 ${className}`}>
+      {/* Badge */}
+      {badge && <ModuleBadge>{badge}</ModuleBadge>}
 
-        {/* Header con design coerente */}
-        <div className="space-y-4 md:space-y-6">
+      {/* Header */}
+      <div className="space-y-2 md:space-y-3">
+        {icon && (
           <div className="flex items-center gap-4 px-3 md:px-0">
-            {icon && (
-              <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
-                <img 
-                  src={icon} 
-                  alt={iconAlt || "Step icon"} 
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            )}
+            <div className="w-[70px] h-[70px] md:w-[100px] md:h-[100px] flex-shrink-0 flex items-center justify-center">
+              <img 
+                src={icon} 
+                alt={iconAlt || "Step icon"} 
+                className="w-full h-full object-contain"
+              />
+            </div>
             <div className="flex-1">
-              <h1 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">
-                {title}
-              </h1>
+              <h1 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">{title}</h1>
               {description && (
-                <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block mt-1">
+                <p className="text-xs md:text-base text-[#1c1c1c] opacity-70 hidden sm:block">
                   {description}
                 </p>
               )}
             </div>
           </div>
-          
-          {/* Descrizione mobile - solo se non c'è icona */}
-          {!icon && description && (
-            <p className="text-sm text-[#1c1c1c] opacity-80 md:hidden px-3">
-              {description}
-            </p>
-          )}
-        </div>
-
-        {/* Content */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="p-4 md:p-6 space-y-6">
-            {children}
+        )}
+        
+        {!icon && (
+          <div className="text-center px-3 md:px-0">
+            <h1 className="text-[24px] md:text-[36px] font-bold text-[#1c1c1c] leading-[1.05]">
+              {title}
+            </h1>
+            {description && (
+              <p className="text-sm md:text-base text-gray-600 mt-2">
+                {description}
+              </p>
+            )}
           </div>
-        </div>
-
-        {/* Navigation */}
-        {showNavigation && onBack && onNext && (
-          <StickyNavigationBar
-            onBack={onBack}
-            onNext={onNext}
-            nextButtonText={nextButtonText}
-            backButtonText={backButtonText}
-            isNextDisabled={isNextDisabled}
-          />
         )}
       </div>
+
+      {/* Content */}
+      <div className="space-y-6">
+        {children}
+      </div>
+
+      {/* Navigation */}
+      {showNavigation && onBack && onNext && (
+        <StickyNavigationBar
+          onBack={onBack}
+          onNext={onNext}
+          nextButtonText={nextButtonText}
+          backButtonText={backButtonText}
+          isNextDisabled={isNextDisabled}
+        />
+      )}
     </div>
   );
 };
