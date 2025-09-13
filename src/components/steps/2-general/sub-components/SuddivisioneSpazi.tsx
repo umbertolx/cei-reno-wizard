@@ -1,6 +1,7 @@
 
 import { FormData } from "../../../Configuratore";
-import { StanzaCounter } from "./StanzaCounter";
+import { Button } from "@/components/ui/button";
+import { Plus, Minus } from "lucide-react";
 
 type SuddivisioneProps = {
   composizione: FormData['composizione'];
@@ -42,6 +43,61 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
     }
   ];
 
+  const RoomCard = ({ stanza }: { stanza: typeof stanze[0] }) => {
+    const value = composizione[stanza.key as keyof FormData['composizione']];
+    const isAtMax = value >= stanza.maxValue;
+    const isAtMin = value <= 0;
+
+    return (
+      <div className="p-4 rounded-xl transition-all duration-300 border bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="text-left flex-1 min-w-0 pr-4">
+            <div className="font-semibold text-base text-[#1c1c1c] mb-1">
+              {stanza.label}
+            </div>
+            <div className="text-sm text-gray-600">
+              {stanza.desc}
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-3 flex-shrink-0">
+            <Button 
+              variant="outline" 
+              size="icon"
+              className={`w-8 h-8 rounded-full border-2 ${
+                isAtMin 
+                  ? 'opacity-40 cursor-not-allowed border-gray-200' 
+                  : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white'
+              }`}
+              onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], Math.max(0, value - 1))}
+              disabled={isAtMin}
+            >
+              <Minus className="h-3 w-3" />
+            </Button>
+            
+            <span className="w-8 text-center font-bold text-lg text-[#d8010c]">
+              {value || 0}
+            </span>
+            
+            <Button 
+              variant="outline" 
+              size="icon"
+              className={`w-8 h-8 rounded-full border-2 ${
+                isAtMax 
+                  ? 'opacity-40 cursor-not-allowed border-gray-200' 
+                  : 'border-gray-300 hover:border-[#d8010c] hover:bg-[#d8010c] hover:text-white'
+              }`}
+              onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], value + 1)}
+              disabled={isAtMax}
+            >
+              <Plus className="h-3 w-3" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-4 md:space-y-6">
       <div className="flex items-center gap-4 px-3 md:px-0">
@@ -52,28 +108,15 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
             className="w-full h-full object-contain"
           />
         </div>
-        <div className="flex-1">
+        <div>
           <h2 className="text-xl md:text-2xl font-medium text-[#1c1c1c]">Suddivisione spazi</h2>
-          <p className="text-xs md:text-base text-[#1c1c1c] opacity-70 hidden sm:block">Indica il numero di stanze per ogni tipologia</p>
+          <p className="text-base text-[#1c1c1c] opacity-80 hidden md:block">Indica il numero di stanze per ogni tipologia</p>
         </div>
-        {totalRooms > 0 && (
-          <div className="text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1.5 rounded-lg border bg-[#d8010c]/5 text-[#d8010c] border-[#d8010c]/20">
-            {`${totalRooms} ${totalRooms === 1 ? 'stanza' : 'stanze'}`}
-          </div>
-        )}
       </div>
       
-      <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6 space-y-4 md:space-y-6">
+      <div className="space-y-3 md:space-y-4">
         {stanze.map((stanza) => (
-          <StanzaCounter
-            key={stanza.key}
-            type={stanza.key}
-            label={stanza.label}
-            description={stanza.desc}
-            value={composizione[stanza.key as keyof FormData['composizione']]}
-            onChange={(value) => onChangeStanza(stanza.key as keyof FormData['composizione'], value)}
-            maxValue={stanza.maxValue}
-          />
+          <RoomCard key={stanza.key} stanza={stanza} />
         ))}
       </div>
     </div>
