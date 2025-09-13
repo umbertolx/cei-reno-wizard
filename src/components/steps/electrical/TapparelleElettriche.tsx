@@ -1,12 +1,12 @@
 
 import { useState } from "react";
-import { FormData } from "../Configuratore";
+import { FormData } from "../../Configuratore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ArrowRight, ArrowLeft, Plus, Check, ChevronDown } from "lucide-react";
-import { InfoBox } from "../shared/InfoBox";
+import { InfoBox } from "../../shared/InfoBox";
 
 type Props = {
   formData: FormData;

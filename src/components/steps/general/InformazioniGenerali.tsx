@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 import { FormData } from "../../Configuratore";
 import { FormStepLayout } from "../../templates";
 import { toast } from "@/hooks/use-toast";
-import { TipoAbitazione } from "./informazioni-generali/TipoAbitazione";
-import { SuperficieSlider } from "./informazioni-generali/SuperficieSlider";
-import { IndirizzoField } from "./informazioni-generali/IndirizzoField";
-import { SuddivisioneSpazi } from "./informazioni-generali/SuddivisioneSpazi";
+import { TipoAbitazione } from "../informazioni-generali/TipoAbitazione";
+import { SuperficieSlider } from "../informazioni-generali/SuperficieSlider";
+import { IndirizzoField } from "../informazioni-generali/IndirizzoField";
+import { SuddivisioneSpazi } from "../informazioni-generali/SuddivisioneSpazi";
 import { UtilizzoAbitazioneSelector } from "../stimafinale/UtilizzoAbitazioneSelector";
-import { NumeroPersoneSelector } from "./informazioni-generali/NumeroPersoneSelector";
+import { NumeroPersoneSelector } from "../informazioni-generali/NumeroPersoneSelector";
 
 type Props = {
   formData: FormData;

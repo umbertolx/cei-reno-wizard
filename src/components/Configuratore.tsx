@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { WelcomePage } from "./steps/WelcomePage";
+import { WelcomePage } from "./steps/general/WelcomePage";
 import { GeneralInformation } from "./steps/general-info/GeneralInformation";
 import { ElectricalConfiguration } from "./steps/electrical/ElectricalConfiguration";
 import { ElectricalSystemAge } from "./steps/electrical/ElectricalSystemAge";
@@ -14,14 +14,14 @@ import { PhotovoltaicInterventionType } from "./steps/photovoltaic/PhotovoltaicI
 import { RoofCharacteristics } from "./steps/photovoltaic/RoofCharacteristics";
 import { ConsumptionGoals } from "./steps/photovoltaic/ConsumptionGoals";
 import { ExpansionGoals } from "./steps/photovoltaic/ExpansionGoals";
-import { DettagliImpiantoEsistente } from "./steps/DettagliImpiantoEsistente";
-import { ConsumiAnnui } from "./steps/ConsumiAnnui";
+import { DettagliImpiantoEsistente } from "./steps/photovoltaic/DettagliImpiantoEsistente";
+import { ConsumiAnnui } from "./steps/photovoltaic/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/NuoveVociConsumo";
 import { DefinizioneConsumiStandard } from "./steps/DefinizioneConsumiStandard";
 import { DisponibilitaSuperficieTetto } from "./steps/DisponibilitaSuperficieTetto";
 import { BatteriaAccumulo } from "./steps/BatteriaAccumulo";
 import { RequestSent } from "./steps/final-steps/RequestSent";
-import { DatiContatto } from "./steps/DatiContatto";
+import { DatiContatto } from "./steps/final/DatiContatto";
 import { StimaFinale } from "./steps/StimaFinale";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
