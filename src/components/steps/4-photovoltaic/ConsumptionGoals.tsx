@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FormData } from "../../Configuratore";
 import { QuestionStepLayout } from "../../templates";
 import { Sun, Moon } from "lucide-react";
@@ -12,6 +13,8 @@ type Props = {
 };
 
 export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: Props) => {
+  const [infoBoxOpen, setInfoBoxOpen] = useState(false);
+  
   const obiettivoPrincipale = formData.moduloFotovoltaico?.obiettivoPrincipale || "";
   const consumoEnergetico = formData.moduloFotovoltaico?.consumoEnergetico || [50];
 
@@ -49,7 +52,8 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
     content: "Conoscere il tuo obiettivo principale ci permette di dimensionare l'impianto in modo ottimale. Se punti al risparmio, ottimizzeremo per ridurre la bolletta. Se vuoi l'indipendenza energetica, progetteremo un impianto più grande per massimizzare l'autoconsumo."
   };
 
-  const conditionalContent = obiettivoPrincipale ? (
+  // Seconda domanda sempre visibile, non condizionale
+  const additionalContent = (
     <div className="space-y-4 md:space-y-6 px-3 md:px-0">
       {/* Header con stile del titolo principale */}
       <div className="space-y-3">
@@ -62,12 +66,12 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
         </p>
       </div>
 
-      {/* InfoBox */}
+      {/* InfoBox con stato gestito correttamente */}
       <InfoBox
         title="Perché è importante?"
         content="Conoscere i tuoi orari di consumo è fondamentale per stimare se ha senso installare una batteria di accumulo e di che potenza. Se l'energia viene consumata principalmente durante il giorno, quando i pannelli fotovoltaici producono, l'autoconsumo è già ottimizzato. Se invece l'energia viene utilizzata prevalentemente la sera, quando i pannelli hanno produzione quasi zero, diventa essenziale valutare un sistema di accumulo per immagazzinare l'energia prodotta di giorno e utilizzarla quando serve."
-        isOpen={false}
-        onToggle={() => {}}
+        isOpen={infoBoxOpen}
+        onToggle={setInfoBoxOpen}
       />
       
       {/* Contenuto senza bordo */}
@@ -99,7 +103,7 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
         </div>
       </div>
     </div>
-  ) : null;
+  );
 
   return (
     <QuestionStepLayout
@@ -110,7 +114,7 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
       options={obiettivoOptions}
       selectedValue={obiettivoPrincipale}
       onSelectionChange={handleSelectionChange}
-      conditionalContent={conditionalContent}
+      conditionalContent={additionalContent}
       onNext={onNext}
       onBack={onBack}
     />
