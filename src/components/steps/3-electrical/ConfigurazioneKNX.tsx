@@ -53,7 +53,7 @@ export const ConfigurazioneKNX = ({ formData, updateFormData, onNext, onBack }: 
             inputPlaceholder: 'Es. 8',
             inputLabel: 'Numero di tapparelle',
             inputMin: 1,
-            inputMax: 50,
+            inputMax: 20,
             useSlider: true
           }
         },
