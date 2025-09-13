@@ -6,7 +6,6 @@ export { WelcomeStepLayout } from './WelcomeStepLayout';
 export { ScenarioComparisonLayout } from './ScenarioComparisonLayout';
 export { MultipleSelectionLayout } from './MultipleSelectionLayout';
 export { FeatureConfigurationLayout } from './FeatureConfigurationLayout';
-export { InputFormLayout } from './InputFormLayout';
 export { PreSelectedFeatureSelector } from './PreSelectedFeatureSelector';
 
 export type { StepLayoutProps } from './StepLayout';
@@ -17,5 +16,4 @@ export type { WelcomeStepLayoutProps, ExampleProject, SelectableModule } from '.
 export type { ScenarioComparisonLayoutProps, ScenarioOption } from './ScenarioComparisonLayout';
 export type { MultipleSelectionLayoutProps, SelectableItem } from './MultipleSelectionLayout';
 export type { FeatureConfigurationLayoutProps, ConfigurableFeature, ConfigurationOption, InputField } from './FeatureConfigurationLayout';
-export type { InputFormLayoutProps, InputField as InputFormField, InputSection } from './InputFormLayout';
 export type { PreSelectedFeatureSelectorProps } from './PreSelectedFeatureSelector';
