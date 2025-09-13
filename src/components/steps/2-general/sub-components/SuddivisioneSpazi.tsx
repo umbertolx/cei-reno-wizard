@@ -64,37 +64,37 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
             </div>
           </div>
           
-          <div className="flex items-center bg-[#d8010c] rounded-full p-1 border border-gray-200">
+          <div className="flex items-center bg-[#d8010c] rounded-2xl px-2 py-1 shadow-sm">
             <Button 
               variant="ghost" 
               size="icon"
-              className={`w-8 h-8 rounded-full ${
+              className={`w-7 h-7 rounded-xl ${
                 isAtMin 
-                  ? 'opacity-40 cursor-not-allowed text-gray-400' 
-                  : 'text-white hover:text-white hover:bg-gray-800'
+                  ? 'opacity-30 cursor-not-allowed text-white/50' 
+                  : 'text-white hover:text-white hover:bg-white/10 hover:scale-105 transition-all duration-200'
               }`}
               onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], Math.max(0, value - 1))}
               disabled={isAtMin}
             >
-              <Minus className="h-4 w-4" />
+              <Minus className="h-3.5 w-3.5" strokeWidth={2.5} />
             </Button>
             
-            <div className="min-w-[40px] text-center font-bold text-lg text-white px-2">
+            <div className="min-w-[32px] text-center font-bold text-base text-white px-3">
               {value || 0}
             </div>
             
             <Button 
               variant="ghost" 
               size="icon"
-              className={`w-8 h-8 rounded-full ${
+              className={`w-7 h-7 rounded-xl ${
                 isAtMax 
-                  ? 'opacity-40 cursor-not-allowed text-gray-400' 
-                  : 'text-white hover:text-white hover:bg-gray-800'
+                  ? 'opacity-30 cursor-not-allowed text-white/50' 
+                  : 'text-white hover:text-white hover:bg-white/10 hover:scale-105 transition-all duration-200'
               }`}
               onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], value + 1)}
               disabled={isAtMax}
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
             </Button>
           </div>
         </div>
