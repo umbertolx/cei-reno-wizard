@@ -73,13 +73,13 @@ export const ConsumptionGoals = ({ formData, updateFormData, onNext, onBack }: P
       {/* Contenuto senza bordo */}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 px-3 py-2 bg-yellow-50 rounded-full border border-yellow-200/60">
-            <Sun className="h-5 w-5 text-yellow-600" />
-            <span className="text-sm font-semibold text-yellow-800">Giorno</span>
+          <div className="flex items-center gap-3 px-3 py-2 bg-transparent rounded-full border border-black">
+            <Sun className="h-5 w-5 text-black" />
+            <span className="text-sm font-semibold text-black">Giorno</span>
           </div>
-          <div className="flex items-center gap-3 px-3 py-2 bg-slate-50 rounded-full border border-slate-200/60">
-            <span className="text-sm font-semibold text-slate-800">Sera</span>
-            <Moon className="h-5 w-5 text-slate-600" />
+          <div className="flex items-center gap-3 px-3 py-2 bg-transparent rounded-full border border-black">
+            <span className="text-sm font-semibold text-black">Sera</span>
+            <Moon className="h-5 w-5 text-black" />
           </div>
         </div>
         
