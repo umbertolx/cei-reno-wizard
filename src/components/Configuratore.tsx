@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { WelcomePage } from "./steps/1-welcome/WelcomePage";
-import { GeneralInformation } from "./steps/2-general/GeneralInformation";
+import { InformazioniGenerali } from "./steps/2-general/InformazioniGenerali";
 import { ElectricalConfiguration } from "./steps/3-electrical/ElectricalConfiguration";
 import { ElectricalSystemAge } from "./steps/3-electrical/ElectricalSystemAge";
 import { ElectricalInterventions } from "./steps/3-electrical/ElectricalInterventions";
@@ -400,8 +400,8 @@ export const Configuratore = () => {
       case 'WelcomePage':
         return <WelcomePage onStart={handleWelcomeStart} />;
       
-      case 'GeneralInformation':
-        return <GeneralInformation {...commonProps} />;
+      case 'InformazioniGenerali':
+        return <InformazioniGenerali {...commonProps} />;
       
       case 'ElectricalConfiguration':
         return <ElectricalConfiguration {...commonProps} />;
