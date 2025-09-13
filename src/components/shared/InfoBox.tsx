@@ -31,7 +31,7 @@ export const InfoBox = ({ title, content, isOpen, onToggle }: InfoBoxProps) => {
       
       {isOpen && (
         <div className="px-4 pb-4 pt-0">
-          <div className="text-sm text-gray-700 leading-relaxed bg-transparent italic">
+          <div className="text-sm text-gray-700 leading-relaxed bg-transparent">
             {content}
           </div>
         </div>
