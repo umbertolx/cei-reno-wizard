@@ -624,16 +624,16 @@ export const FeatureConfigurationLayout = ({
                         <Slider
                           value={[multipleInputValues[input.id] || 1]}
                           onValueChange={(values) => handleMultipleSliderChange(input.id, values)}
-                          max={20}
-                          min={1}
+                          max={input.inputMax || 20}
+                          min={input.inputMin || 1}
                           step={1}
                           className="py-2"
                           onClick={(e) => e.stopPropagation()}
                         />
                         
                         <div className="flex justify-between text-xs text-gray-500">
-                          <span>1</span>
-                          <span>20</span>
+                          <span>{input.inputMin || 1}</span>
+                          <span>{input.inputMax || 20}</span>
                         </div>
                       </div>
                     </div>
