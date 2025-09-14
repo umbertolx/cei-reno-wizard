@@ -52,22 +52,22 @@ export const SummaryStepLayout = ({
       {/* Estimate Box */}
       {estimate && (
         <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6 md:mb-12 px-3 md:px-0">
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#fbe12e] hover:border-[3px] transition-all duration-300">
+          <div className="bg-card border border-border rounded-2xl shadow-sm overflow-hidden hover:border-accent hover:border-[3px] transition-all duration-300">
             <div className="p-4 md:p-6">
               {/* Header section */}
               <div className="text-center mb-4">
                 {estimate.subtitle && (
-                  <div className="text-sm text-gray-500 mb-1 font-medium p-1">
+                  <div className="text-xs text-muted-foreground mb-1 font-medium p-1">
                     {estimate.subtitle}
                   </div>
                 )}
-                <div className="text-2xl md:text-5xl font-bold text-gray-900 mb-2 p-1">
+                <div className="text-2xl md:text-5xl font-bold text-foreground mb-2 p-1">
                   {formatPrice(estimate.min, estimate.currency)} - {formatPrice(estimate.max, estimate.currency)}
                 </div>
                 
                 {/* Tax deductions */}
                 {estimate.deductions && (
-                  <div className="text-sm md:text-base text-green-700 font-semibold mb-3 p-1">
+                  <div className="text-sm md:text-base text-emerald-700 font-semibold mb-3 p-1">
                     {estimate.deductions.label}: {formatPrice(estimate.deductions.amount, estimate.currency)}
                     {estimate.deductions.percentage && ` (${estimate.deductions.percentage}%)`}
                   </div>
@@ -76,23 +76,23 @@ export const SummaryStepLayout = ({
 
               {/* Features */}
               {estimate.features && estimate.features.length > 0 && (
-                <div className="border-t border-gray-200 pt-3">
+                <div className="border-t border-border pt-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {estimate.features.map((feature, index) => (
                       <div key={index} className="flex items-center gap-2">
                         <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
                           feature.included 
-                            ? 'bg-green-100' 
-                            : 'bg-gray-100'
+                            ? 'bg-emerald-100' 
+                            : 'bg-muted'
                         }`}>
                           {feature.included && (
-                            <Check className="h-2.5 w-2.5 text-green-600" />
+                            <Check className="h-2.5 w-2.5 text-emerald-600" />
                           )}
                         </div>
                         <span className={`text-sm ${
                           feature.included 
-                            ? 'text-gray-700' 
-                            : 'text-gray-400'
+                            ? 'text-foreground' 
+                            : 'text-muted-foreground'
                         }`}>
                           {feature.label}
                         </span>
@@ -113,12 +113,12 @@ export const SummaryStepLayout = ({
             <div
               key={card.id}
               className={`
-                bg-white border border-gray-200 rounded-xl p-4 md:p-6
-                ${card.highlight ? 'border-[#d8010c] bg-[#d8010c]/5' : ''}
+                bg-card border border-border rounded-xl p-4 md:p-6
+                ${card.highlight ? 'border-primary bg-primary/5' : ''}
               `}
             >
               {card.title && (
-                <h3 className="text-lg font-medium text-[#1c1c1c] mb-4">
+                <h3 className="text-lg font-medium text-foreground mb-4">
                   {card.title}
                 </h3>
               )}
@@ -130,14 +130,14 @@ export const SummaryStepLayout = ({
 
       {/* CTA Message */}
       {(ctaText || ctaSubtext) && (
-        <div className="bg-white border-dashed border-2 border-[#d8010c] p-4 rounded-xl text-center shadow-sm">
+        <div className="bg-card border-dashed border-2 border-primary p-4 rounded-xl text-center shadow-sm">
           {ctaText && (
-            <p className="text-md text-[#1c1c1c] font-medium uppercase">
+            <p className="text-md text-foreground font-medium uppercase">
               {ctaText}
             </p>
           )}
           {ctaSubtext && (
-            <p className="text-sm text-[#1c1c1c] opacity-70 mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               {ctaSubtext}
             </p>
           )}
