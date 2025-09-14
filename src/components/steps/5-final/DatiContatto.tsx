@@ -199,7 +199,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
               {composizione && Object.entries(composizione).map(([key, value]) => {
                 const numValue = Number(value);
                 return numValue > 0 ? (
-                  <span key={key} className="bg-[#fbe12e] text-[#1c1c1c] px-3 py-1 rounded-full text-sm font-medium">
+                  <span key={key} className="bg-white text-black border-2 border-black px-4 py-2 rounded-full text-sm font-medium">
                     {numValue} {key === 'cameraDoppia' ? 'cam. doppia' : 
                            key === 'cameraSingola' ? 'cam. singola' : key}
                   </span>
