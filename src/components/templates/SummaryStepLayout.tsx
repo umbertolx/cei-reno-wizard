@@ -118,9 +118,9 @@ export const SummaryStepLayout = ({
               `}
             >
               {card.title && (
-                <h3 className="text-xl font-medium text-foreground">
+                <h2 className="text-xl font-medium text-foreground mb-4">
                   {card.title}
-                </h3>
+                </h2>
               )}
               {card.content}
             </div>
