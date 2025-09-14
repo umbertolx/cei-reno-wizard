@@ -212,31 +212,31 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
           <div className="border-t border-gray-200 pt-4">
             <p className="text-gray-600 font-medium mb-3">Interventi configurati:</p>
             <div className="flex flex-wrap gap-3">
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+              <span className={`rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('impianto-elettrico') || formData.moduliSelezionati?.includes('impianto-elettrico'))
-                  ? 'bg-[#fbe12e] text-[#1c1c1c]' 
-                  : 'bg-gray-100 text-gray-400'
+                  ? 'bg-white text-black border-2 border-black px-4 py-2' 
+                  : 'bg-black text-white px-4 py-2'
               }`}>
                 Impianto elettrico
               </span>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+              <span className={`rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('fotovoltaico') || formData.moduliSelezionati?.includes('fotovoltaico'))
-                  ? 'bg-[#fbe12e] text-[#1c1c1c]' 
-                  : 'bg-gray-100 text-gray-400'
+                  ? 'bg-white text-black border-2 border-black px-4 py-2' 
+                  : 'bg-black text-white px-4 py-2'
               }`}>
                 Impianto fotovoltaico
               </span>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+              <span className={`rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('sicurezza') || formData.moduliSelezionati?.includes('sicurezza'))
-                  ? 'bg-[#fbe12e] text-[#1c1c1c]' 
-                  : 'bg-gray-100 text-gray-400'
+                  ? 'bg-white text-black border-2 border-black px-4 py-2' 
+                  : 'bg-black text-white px-4 py-2'
               }`}>
                 Impianto di sicurezza
               </span>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+              <span className={`rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('termotecnico') || formData.moduliSelezionati?.includes('termotecnico'))
-                  ? 'bg-[#fbe12e] text-[#1c1c1c]' 
-                  : 'bg-gray-100 text-gray-400'
+                  ? 'bg-white text-black border-2 border-black px-4 py-2' 
+                  : 'bg-black text-white px-4 py-2'
               }`}>
                 Impianto termotecnico
               </span>
