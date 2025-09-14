@@ -135,7 +135,7 @@ export const WelcomeStepLayout = ({
         <div className="relative max-w-full md:max-w-3xl md:mx-auto mb-6 md:mb-12 px-3 md:px-0">
           {/* Example badge */}
           <div className="flex justify-start md:justify-center mb-2">
-            <div className="inline-flex items-center gap-1.5 bg-[#fcec3c] text-[#1c1c1c] px-2.5 py-1 rounded-full text-xs font-medium border border-yellow-300">
+            <div className="inline-flex items-center gap-1.5 bg-white text-[#1c1c1c] px-3 py-1.5 rounded-full text-sm font-medium border-2 border-black">
               <Sparkles className="h-3 w-3" />
               {exampleProject.title}
             </div>
