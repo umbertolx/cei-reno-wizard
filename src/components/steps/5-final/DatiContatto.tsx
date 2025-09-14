@@ -155,7 +155,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
       <div className="bg-white border-2 border-dashed border-red-500 rounded-xl p-6">
         <div className="space-y-4">
           {/* Informazioni principali in formato semplice */}
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-6 text-base">
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Tipologia:</span>
               <span className="font-medium text-[#1c1c1c] capitalize">{dataSource.tipologia_abitazione || 'Non specificato'}</span>
