@@ -1,0 +1,1 @@
+export { ConfigurazioneBTicino } from './ConfigurazioneBTicino';

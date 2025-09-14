@@ -1,0 +1,1 @@
+export { ConfigurazioneKNX } from './ConfigurazioneKNX';
