@@ -113,8 +113,8 @@ export const SummaryStepLayout = ({
             <div
               key={card.id}
               className={`
-                bg-card border border-border rounded-xl p-4 md:p-6
-                ${card.highlight ? 'border-primary bg-primary/5' : ''}
+                p-4 md:p-6
+                ${card.highlight ? 'bg-primary/5' : ''}
               `}
             >
               {card.title && (
