@@ -44,19 +44,18 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
       
       <div className="bg-white/80 backdrop-blur-sm p-5 rounded-lg border border-green-100">
         <div className="text-sm font-bold text-green-700 uppercase tracking-wide mb-4">Composizione Ambienti</div>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+        <div className="flex flex-wrap gap-3">
           {Object.entries(lead.composizione).map(([stanza, numero]) => (
             numero > 0 && (
-              <div key={stanza} className="text-center bg-green-50 p-3 rounded-lg border border-green-200">
-                <div className="text-2xl font-bold text-green-700 mb-1">{numero}</div>
-                <div className="text-xs font-medium text-green-600">
-                  {stanza === 'cameraDoppia' ? 'Cam. Doppie' : 
+              <div key={stanza} className="bg-white px-4 py-2 rounded-full border-2 border-black">
+                <span className="text-sm font-medium text-black">
+                  {numero} {stanza === 'cameraDoppia' ? 'Cam. Doppie' : 
                    stanza === 'cameraSingola' ? 'Cam. Singole' : 
                    stanza === 'bagno' ? 'Bagni' :
                    stanza === 'soggiorno' ? 'Soggiorni' :
                    stanza === 'cucina' ? 'Cucine' :
                    stanza === 'altro' ? 'Altri' : stanza}
-                </div>
+                </span>
               </div>
             )
           ))}
