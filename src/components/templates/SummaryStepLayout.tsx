@@ -112,7 +112,7 @@ export const SummaryStepLayout = ({
           {summaryCards.map((card) => (
             <div key={card.id}>
               {card.title && (
-                <h2 className="text-xl font-medium text-foreground mb-4">
+                <h2 className="text-xl font-medium text-foreground mb-2">
                   {card.title}
                 </h2>
               )}
