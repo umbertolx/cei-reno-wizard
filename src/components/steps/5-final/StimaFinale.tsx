@@ -111,7 +111,6 @@ export const StimaFinale = ({
         <div className="space-y-4">
           {/* Moduli configurati */}
           <div>
-            <p className="text-gray-600 font-medium mb-2 text-xs">Interventi configurati:</p>
             <div className="flex flex-wrap gap-2">
               <InterventoBadge selected={formData.moduliSelezionati?.includes('impianto-elettrico')}>
                 Impianto elettrico
