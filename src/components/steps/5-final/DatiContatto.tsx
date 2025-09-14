@@ -214,29 +214,29 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
             <div className="flex flex-wrap gap-3">
               <span className={`rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('impianto-elettrico') || formData.moduliSelezionati?.includes('impianto-elettrico'))
-                  ? 'bg-white text-black border-2 border-black px-4 py-2' 
-                  : 'bg-black text-white px-4 py-2'
+                  ? 'bg-black text-white px-4 py-2' 
+                  : 'bg-white text-black border-2 border-black px-4 py-2'
               }`}>
                 Impianto elettrico
               </span>
               <span className={`rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('fotovoltaico') || formData.moduliSelezionati?.includes('fotovoltaico'))
-                  ? 'bg-white text-black border-2 border-black px-4 py-2' 
-                  : 'bg-black text-white px-4 py-2'
+                  ? 'bg-black text-white px-4 py-2' 
+                  : 'bg-white text-black border-2 border-black px-4 py-2'
               }`}>
                 Impianto fotovoltaico
               </span>
               <span className={`rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('sicurezza') || formData.moduliSelezionati?.includes('sicurezza'))
-                  ? 'bg-white text-black border-2 border-black px-4 py-2' 
-                  : 'bg-black text-white px-4 py-2'
+                  ? 'bg-black text-white px-4 py-2' 
+                  : 'bg-white text-black border-2 border-black px-4 py-2'
               }`}>
                 Impianto di sicurezza
               </span>
               <span className={`rounded-full text-sm font-medium ${
                 (dataSource.moduli_selezionati?.includes('termotecnico') || formData.moduliSelezionati?.includes('termotecnico'))
-                  ? 'bg-white text-black border-2 border-black px-4 py-2' 
-                  : 'bg-black text-white px-4 py-2'
+                  ? 'bg-black text-white px-4 py-2' 
+                  : 'bg-white text-black border-2 border-black px-4 py-2'
               }`}>
                 Impianto termotecnico
               </span>
