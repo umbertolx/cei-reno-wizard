@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { FormData } from "../../Configuratore";
 import { QuestionStepLayout } from "../../templates";
 import { Slider } from "@/components/ui/slider";
+import { InfoBox } from "../../shared/InfoBox";
 
 type Props = {
   formData: FormData;
@@ -10,6 +12,8 @@ type Props = {
 };
 
 export const ExpansionGoals = ({ formData, updateFormData, onNext, onBack }: Props) => {
+  const [infoBoxOpen, setInfoBoxOpen] = useState(false);
+  
   const obiettivoAmpliamento = formData.moduloFotovoltaico?.obiettivoAmpliamento || "";
   const percentualeCopertura = formData.moduloFotovoltaico?.percentualeCopertura || [50];
 
@@ -36,8 +40,6 @@ export const ExpansionGoals = ({ formData, updateFormData, onNext, onBack }: Pro
     });
   };
 
-  const canProceed = obiettivoAmpliamento;
-
   const handleSelectionChange = (value: string) => {
     handleObiettivoChange(value);
   };
@@ -47,19 +49,31 @@ export const ExpansionGoals = ({ formData, updateFormData, onNext, onBack }: Pro
     content: "Conoscere il tuo obiettivo di ampliamento ci permette di calcolare la potenza aggiuntiva necessaria. Se il tuo impianto attuale copre già una buona parte dei consumi, potremo ottimizzare l'ampliamento per i tuoi obiettivi specifici."
   };
 
-  const conditionalContent = obiettivoAmpliamento ? (
+  // Seconda domanda sempre visibile, non condizionale
+  const additionalContent = (
     <div className="space-y-4 md:space-y-6 px-3 md:px-0">
-      <div>
-        <h3 className="text-lg font-semibold text-[#1c1c1c] mb-2">
+      {/* Header con stile del titolo principale */}
+      <div className="space-y-3">
+        <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
           Che percentuale dei tuoi consumi copre attualmente l'impianto?
-        </h3>
-        <p className="text-xs text-gray-500 italic">
+        </h1>
+        <div className="w-full h-px bg-gray-200"></div>
+        <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
           Indica approssimativamente quanto del tuo fabbisogno energetico è coperto dall'impianto attuale
         </p>
       </div>
+
+      {/* InfoBox con stato gestito correttamente */}
+      <InfoBox
+        title="Perché è importante?"
+        content="Conoscere la percentuale di copertura attuale ci permette di dimensionare correttamente l'ampliamento dell'impianto fotovoltaico. Se l'impianto esistente copre già una buona parte dei consumi, l'ampliamento sarà calibrato per raggiungere i tuoi obiettivi specifici senza sovradimensionare il sistema."
+        isOpen={infoBoxOpen}
+        onToggle={setInfoBoxOpen}
+      />
       
-      <div className="space-y-4 bg-white border border-gray-200 rounded-xl p-6">
-        <div className="flex items-center justify-between text-sm font-medium text-gray-700">
+      {/* Contenuto senza bordo */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between text-sm font-medium text-black">
           <span>0%</span>
           <span>100%</span>
         </div>
@@ -73,15 +87,14 @@ export const ExpansionGoals = ({ formData, updateFormData, onNext, onBack }: Pro
           className="w-full"
         />
         
-        <div className="text-center text-sm text-gray-600">
-          <span className="font-medium text-lg text-[#d8010c]">
-            {percentualeCopertura[0]}%
+        <div className="text-center text-sm text-black">
+          <span className="font-medium uppercase">
+            {percentualeCopertura[0]}% DEI CONSUMI ATTUALMENTE COPERTI
           </span>
-          <span className="ml-2">dei consumi attualmente coperti</span>
         </div>
       </div>
     </div>
-  ) : null;
+  );
 
   return (
     <QuestionStepLayout
@@ -92,7 +105,7 @@ export const ExpansionGoals = ({ formData, updateFormData, onNext, onBack }: Pro
       options={obiettivoOptions}
       selectedValue={obiettivoAmpliamento}
       onSelectionChange={handleSelectionChange}
-      conditionalContent={conditionalContent}
+      conditionalContent={additionalContent}
       onNext={onNext}
       onBack={onBack}
     />
