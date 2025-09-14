@@ -26,23 +26,6 @@ export const SuperficieSlider = ({ value, onChange }: SuperficieSliderProps) => 
       
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center bg-white border border-[#d8010c] rounded-full px-1 py-0.5">
-            <button 
-              onClick={() => onChange(Math.max(20, value - 1))}
-              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
-            >
-              <span className="text-lg font-medium text-[#1c1c1c]">-</span>
-            </button>
-            <span className="px-3 text-lg font-medium text-[#1c1c1c] min-w-[60px] text-center">
-              {value}
-            </span>
-            <button 
-              onClick={() => onChange(Math.min(500, value + 1))}
-              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
-            >
-              <span className="text-lg font-medium text-[#1c1c1c]">+</span>
-            </button>
-          </div>
           <span className="text-lg md:text-xl font-bold text-[#d8010c]">{value} mq</span>
         </div>
         
