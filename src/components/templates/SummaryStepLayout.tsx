@@ -110,19 +110,20 @@ export const SummaryStepLayout = ({
       {summaryCards.length > 0 && (
         <div className="space-y-4">
           {summaryCards.map((card) => (
-            <div
-              key={card.id}
-              className={`
-                p-4 md:p-6
-                ${card.highlight ? 'bg-primary/5' : ''}
-              `}
-            >
+            <div key={card.id}>
               {card.title && (
                 <h2 className="text-xl font-medium text-foreground mb-4">
                   {card.title}
                 </h2>
               )}
-              {card.content}
+              <div
+                className={`
+                  p-4 md:p-6
+                  ${card.highlight ? 'bg-primary/5' : ''}
+                `}
+              >
+                {card.content}
+              </div>
             </div>
           ))}
         </div>
