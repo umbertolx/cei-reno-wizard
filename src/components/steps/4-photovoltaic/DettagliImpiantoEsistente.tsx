@@ -1,6 +1,7 @@
 import { FormData } from "../../Configuratore";
 import { StepLayout } from "../../templates";
 import { InfoBox, InfoBoxType } from "../../shared/InfoBox";
+import { Separator } from "../../ui/separator";
 import { useState } from "react";
 
 type Props = {
@@ -99,6 +100,8 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
           />
         </div>
 
+        <Separator className="my-8" />
+
         {/* Anno di installazione */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-foreground">
@@ -131,6 +134,8 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
             onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'anno' : null)}
           />
         </div>
+
+        <Separator className="my-8" />
 
         {/* Batteria di accumulo */}
         <div className="space-y-4">
