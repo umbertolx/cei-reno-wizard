@@ -1,1 +1,0 @@
-export { ElectricalSystemAge } from './ElectricalSystemAge';

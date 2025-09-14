@@ -1,1 +1,0 @@
-export { ElectricalInterventions } from './ElectricalInterventions';

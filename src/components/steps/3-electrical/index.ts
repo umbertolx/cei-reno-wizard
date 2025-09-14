@@ -1,26 +1,14 @@
-// 01 - Electrical Configuration
-export { ElectricalConfiguration } from './01-ElectricalConfiguration/ElectricalConfiguration';
+// 01 - Intervention Type
+export * from './01-intervention-type';
 
-// 02 - Electrical System Type  
-export { ElectricalSystemType } from './02-ElectricalSystemType/ElectricalSystemType';
+// 02 - System Planning
+export * from './02-system-planning';
 
-// 03 - Electric Shutters
-export { ElectricShutters } from './03-ElectricShutters/ElectricShutters';
+// 03 - System Type
+export * from './03-system-type';
 
-// 04 - Tipo Domotica
-export { TipoDomotica } from './04-TipoDomotica/TipoDomotica';
+// 04 - Automation
+export * from './04-automation';
 
-// 05 - Configurazione KNX
-export { ConfigurazioneKNX } from './05-ConfigurazioneKNX/ConfigurazioneKNX';
-
-// 06 - Configurazione BTicino
-export { ConfigurazioneBTicino } from './06-ConfigurazioneBTicino/ConfigurazioneBTicino';
-
-// 07 - Electrical System Age
-export { ElectricalSystemAge } from './07-ElectricalSystemAge/ElectricalSystemAge';
-
-// 08 - Electrical Interventions
-export { ElectricalInterventions } from './08-ElectricalInterventions/ElectricalInterventions';
-
-// 09 - Room Selection
-export { RoomSelection } from './09-RoomSelection/RoomSelection';
+// 05 - Accessories
+export * from './05-accessories';
