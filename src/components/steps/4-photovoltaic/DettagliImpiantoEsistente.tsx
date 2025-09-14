@@ -73,16 +73,9 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
       <div className="space-y-8">
         {/* Potenza impianto */}
         <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-foreground">
-              Potenza impianto
-            </h2>
-            <InfoBox
-              {...infoBoxes.potenza}
-              isOpen={openInfoBox === 'potenza'}
-              onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'potenza' : null)}
-            />
-          </div>
+          <h2 className="text-xl font-semibold text-foreground">
+            Potenza impianto
+          </h2>
           
           <div className="space-y-3">
             <label className="text-sm font-medium text-muted-foreground">
@@ -98,20 +91,19 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               className="w-full px-4 py-3 text-lg font-medium bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
             />
           </div>
+          
+          <InfoBox
+            {...infoBoxes.potenza}
+            isOpen={openInfoBox === 'potenza'}
+            onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'potenza' : null)}
+          />
         </div>
 
         {/* Anno di installazione */}
         <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-foreground">
-              Anno di installazione
-            </h2>
-            <InfoBox
-              {...infoBoxes.anno}
-              isOpen={openInfoBox === 'anno'}
-              onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'anno' : null)}
-            />
-          </div>
+          <h2 className="text-xl font-semibold text-foreground">
+            Anno di installazione
+          </h2>
           
           <div className="grid gap-3">
             {[
@@ -132,20 +124,19 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               </button>
             ))}
           </div>
+          
+          <InfoBox
+            {...infoBoxes.anno}
+            isOpen={openInfoBox === 'anno'}
+            onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'anno' : null)}
+          />
         </div>
 
         {/* Batteria di accumulo */}
         <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-foreground">
-              Batteria di accumulo esistente
-            </h2>
-            <InfoBox
-              {...infoBoxes.batteria}
-              isOpen={openInfoBox === 'batteria'}
-              onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'batteria' : null)}
-            />
-          </div>
+          <h2 className="text-xl font-semibold text-foreground">
+            Batteria di accumulo esistente
+          </h2>
           
           <div className="grid gap-3">
             {[
@@ -165,6 +156,12 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               </button>
             ))}
           </div>
+          
+          <InfoBox
+            {...infoBoxes.batteria}
+            isOpen={openInfoBox === 'batteria'}
+            onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'batteria' : null)}
+          />
         </div>
       </div>
     </StepLayout>
