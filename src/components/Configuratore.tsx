@@ -491,9 +491,5 @@ export const Configuratore = () => {
     }
   };
 
-  return (
-    <PreSelectedFeatureSelector>
-      {renderCurrentStep()}
-    </PreSelectedFeatureSelector>
-  );
+  return renderCurrentStep();
 };
