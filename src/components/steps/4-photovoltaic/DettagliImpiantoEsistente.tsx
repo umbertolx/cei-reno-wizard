@@ -2,6 +2,8 @@ import { FormData } from "../../Configuratore";
 import { StepLayout } from "../../templates";
 import { InfoBox, InfoBoxType } from "../../shared/InfoBox";
 import { Separator } from "../../ui/separator";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
 import { useState } from "react";
 
 type Props = {
@@ -78,26 +80,28 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
             Potenza impianto
           </h2>
           
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-muted-foreground">
-              Inserisci la potenza in kWp (per esempio: 3.0)
-            </label>
-            <input
-              type="number"
-              step="0.1"
-              min="0"
-              placeholder="3.0"
-              value={potenzaImpianto}
-              onChange={(e) => handleFieldChange('potenzaImpianto', e.target.value)}
-              className="w-full px-4 py-3 text-lg font-medium bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
-            />
-          </div>
-          
           <InfoBox
             {...infoBoxes.potenza}
             isOpen={openInfoBox === 'potenza'}
             onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'potenza' : null)}
           />
+          
+          <div className="space-y-3">
+            <Label htmlFor="potenzaImpianto" className="text-base font-medium text-muted-foreground">
+              Inserisci la potenza in kWp (per esempio: 3.0)
+            </Label>
+            <Input
+              id="potenzaImpianto"
+              type="number"
+              step="0.1"
+              min="0"
+              max="50"
+              value={potenzaImpianto || ""}
+              onChange={(e) => handleFieldChange('potenzaImpianto', e.target.value)}
+              placeholder="Es. 3.0"
+              className="text-base h-12"
+            />
+          </div>
         </div>
 
         <Separator className="my-8" />
@@ -107,6 +111,12 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
           <h2 className="text-xl font-semibold text-foreground">
             Anno di installazione
           </h2>
+          
+          <InfoBox
+            {...infoBoxes.anno}
+            isOpen={openInfoBox === 'anno'}
+            onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'anno' : null)}
+          />
           
           <div className="grid gap-3">
             {[
@@ -127,12 +137,6 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               </button>
             ))}
           </div>
-          
-          <InfoBox
-            {...infoBoxes.anno}
-            isOpen={openInfoBox === 'anno'}
-            onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'anno' : null)}
-          />
         </div>
 
         <Separator className="my-8" />
@@ -142,6 +146,12 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
           <h2 className="text-xl font-semibold text-foreground">
             Batteria di accumulo esistente
           </h2>
+          
+          <InfoBox
+            {...infoBoxes.batteria}
+            isOpen={openInfoBox === 'batteria'}
+            onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'batteria' : null)}
+          />
           
           <div className="grid gap-3">
             {[
@@ -161,12 +171,6 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
               </button>
             ))}
           </div>
-          
-          <InfoBox
-            {...infoBoxes.batteria}
-            isOpen={openInfoBox === 'batteria'}
-            onToggle={(isOpen) => setOpenInfoBox(isOpen ? 'batteria' : null)}
-          />
         </div>
       </div>
     </StepLayout>
