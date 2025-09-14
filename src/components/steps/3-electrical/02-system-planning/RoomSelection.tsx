@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { FormData } from "../../Configuratore";
-import { MultipleSelectionLayout } from "../../templates/MultipleSelectionLayout";
+import { FormData } from "../../../Configuratore";
+import { MultipleSelectionLayout } from "../../../templates";
 import { toast } from "@/hooks/use-toast";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
   onBack: () => void;
 };
 
-export const SelezioneAmbienti = ({ formData, updateFormData, onNext, onBack }: Props) => {
+export const RoomSelection = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const [ambientiSelezionati, setAmbientiSelezionati] = useState<string[]>(
     formData.ambientiSelezionati || []
   );
@@ -65,14 +65,6 @@ export const SelezioneAmbienti = ({ formData, updateFormData, onNext, onBack }: 
   };
 
   const ambientiDisponibili = generaAmbienti();
-  
-  // Converti gli ambienti in SelectableItem format
-  const selectableItems = ambientiDisponibili.map(ambiente => ({
-    id: ambiente,
-    label: ambiente,
-    description: `Includi ${ambiente.toLowerCase()} nei lavori elettrici`,
-    disabled: false
-  }));
 
   const handleSelectionChange = (selectedItems: string[]) => {
     setAmbientiSelezionati(selectedItems);
@@ -97,18 +89,22 @@ export const SelezioneAmbienti = ({ formData, updateFormData, onNext, onBack }: 
     updateFormData({ ambientiSelezionati });
   }, [ambientiSelezionati, updateFormData]);
 
+  const items = ambientiDisponibili.map(ambiente => ({
+    id: ambiente,
+    label: ambiente
+  }));
+
   return (
     <MultipleSelectionLayout
       badge="Impianto elettrico"
       title="Seleziona gli ambienti"
       description="In quali stanze vuoi intervenire con i lavori elettrici?"
-      items={selectableItems}
+      items={items}
       selectedItems={ambientiSelezionati}
       onSelectionChange={handleSelectionChange}
       onNext={handleNext}
       onBack={onBack}
       minSelections={1}
-      maxSelections={selectableItems.length}
       showSelectAllButton={true}
     />
   );

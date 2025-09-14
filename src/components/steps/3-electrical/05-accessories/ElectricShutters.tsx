@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { FormData } from "../../Configuratore";
-import { Input } from "@/components/ui/input";
+import { FormData } from "../../../Configuratore";
+import { QuestionStepLayout } from "../../../templates";
 import { Label } from "@/components/ui/label";
-import { QuestionStepLayout } from "../../templates";
+import { Input } from "@/components/ui/input";
 
 type Props = {
   formData: FormData;

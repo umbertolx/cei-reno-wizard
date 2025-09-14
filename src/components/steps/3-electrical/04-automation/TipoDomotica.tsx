@@ -1,7 +1,6 @@
-
 import { useState } from "react";
-import { FormData } from "../../Configuratore";
-import { ScenarioComparisonLayout } from "../../templates";
+import { FormData } from "../../../Configuratore";
+import { ScenarioComparisonLayout } from "../../../templates";
 
 type Props = {
   formData: FormData;

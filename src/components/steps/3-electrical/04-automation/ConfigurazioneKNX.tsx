@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { FormData } from "../../Configuratore";
-import { FeatureConfigurationLayout } from "../../templates/FeatureConfigurationLayout";
-import { StepLayout } from "../../templates/StepLayout";
+import { FormData } from "../../../Configuratore";
+import { FeatureConfigurationLayout } from "../../../templates/FeatureConfigurationLayout";
+import { StepLayout } from "../../../templates/StepLayout";
 
 type Props = {
   formData: FormData;
