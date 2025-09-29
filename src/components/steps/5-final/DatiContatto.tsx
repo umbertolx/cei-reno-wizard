@@ -207,7 +207,7 @@ export const DatiContatto = ({
         </h1>
         <div className="w-full h-px bg-gray-200"></div>
         <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
-          Verifica i dettagli della tua configurazione prima di procedere
+          I nostri algoritmi avanzati analizzano ogni dettaglio della tua configurazione per generare una stima precisa e personalizzata in tempo reale
         </p>
       </div>
 
