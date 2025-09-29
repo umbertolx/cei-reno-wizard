@@ -21,7 +21,7 @@ export const QualitaForniture = ({ formData, updateFormData, onNext, onBack }: P
       title: 'Standard',
       description: (
         <div className="space-y-4">
-          <img src={standardImage} alt="Sistema fotovoltaico standard" className="w-full h-32 object-cover" />
+          <img src={standardImage} alt="Sistema fotovoltaico standard" className="w-full h-32 object-cover rounded-lg" />
           
           <div className="space-y-4">
             <div>
@@ -94,7 +94,7 @@ export const QualitaForniture = ({ formData, updateFormData, onNext, onBack }: P
       title: 'Premium',
       description: (
         <div className="space-y-4">
-          <img src={premiumImage} alt="Sistema fotovoltaico premium" className="w-full h-32 object-cover" />
+          <img src={premiumImage} alt="Sistema fotovoltaico premium" className="w-full h-32 object-cover rounded-lg" />
           
           <div className="space-y-4">
             <div>
