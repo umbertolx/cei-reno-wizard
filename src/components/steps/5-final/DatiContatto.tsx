@@ -150,7 +150,7 @@ export const DatiContatto = ({
         </h1>
         <div className="w-full h-px bg-gray-200"></div>
         <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
-          <strong>Inserisci i tuoi dati di contatto per ricevere la stima personalizzata.</strong> I nostri algoritmi analizzeranno le specifiche del tuo progetto e i dati di mercato per generare una valutazione accurata e immediata.
+          <strong>Inserisci i tuoi dati di contatto per ricevere la stima personalizzata.</strong> I nostri algoritmi analizzeranno le specifiche del tuo progetto e i dati di mercato per generare una valutazione accurata e immediata. La stima fornita ha carattere puramente indicativo e non costituisce preventivo vincolante.
         </p>
       </div>
 
