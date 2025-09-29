@@ -1,0 +1,10 @@
+export { PhotovoltaicInterventionType } from './PhotovoltaicInterventionType';
+export { PotenzaAmpliamento } from './PotenzaAmpliamento';
+export { RoofCharacteristics } from './RoofCharacteristics';
+export { ConsumptionGoals } from './ConsumptionGoals';
+export { ExpansionGoals } from './ExpansionGoals';
+export { DettagliImpiantoEsistente } from './DettagliImpiantoEsistente';
+export { ConsumiAnnui } from './ConsumiAnnui';
+export { DefinizioneConsumiStandard } from './DefinizioneConsumiStandard';
+export { BatteriaAccumulo } from './BatteriaAccumulo';
+export { DisponibilitaSuperficieTetto } from './DisponibilitaSuperficieTetto';

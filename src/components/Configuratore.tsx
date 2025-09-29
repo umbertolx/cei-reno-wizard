@@ -15,6 +15,7 @@ import { RoofCharacteristics } from "./steps/4-photovoltaic/RoofCharacteristics"
 import { ConsumptionGoals } from "./steps/4-photovoltaic/ConsumptionGoals";
 import { ExpansionGoals } from "./steps/4-photovoltaic/ExpansionGoals";
 import { DettagliImpiantoEsistente } from "./steps/4-photovoltaic/DettagliImpiantoEsistente";
+import { PotenzaAmpliamento } from "./steps/4-photovoltaic/PotenzaAmpliamento";
 import { ConsumiAnnui } from "./steps/4-photovoltaic/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/4-photovoltaic/NuoveVociConsumo";
 import { DefinizioneConsumiStandard } from "./steps/4-photovoltaic/DefinizioneConsumiStandard";
@@ -96,6 +97,7 @@ export type FormData = {
     obiettivoAmpliamento?: string; // "risparmio-bolletta" | "indipendenza-energetica"
     percentualeCopertura?: number[]; // percentuale attuale di copertura dell'impianto esistente
     potenzaImpianto?: string; // potenza in kWp dell'impianto esistente
+    potenzaAmpliamento?: number; // potenza dell'ampliamento in kW
     annoInstallazione?: string; // "prima-2015" | "2015-2020" | "dopo-2020"
     hasBatteria?: string; // "si" | "no"
     conosceConsumi?: string; // "si" | "no"
@@ -444,6 +446,9 @@ export const Configuratore = () => {
       
       case 'DettagliImpiantoEsistente':
         return <DettagliImpiantoEsistente {...commonProps} />;
+      
+      case 'PotenzaAmpliamento':
+        return <PotenzaAmpliamento {...commonProps} />;
       
       case 'ConsumiAnnui':
         return <ConsumiAnnui {...commonProps} />;
