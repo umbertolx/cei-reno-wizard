@@ -420,7 +420,7 @@ export const DatiContatto = ({
       
 
       {/* Termini e condizioni e pulsanti */}
-      <div className="space-y-6">
+      <div className="space-y-2">
         <div className="flex items-start space-x-4 py-1">
           <Checkbox id="disclaimer" checked={accettoDisclaimer} onCheckedChange={checked => setAccettoDisclaimer(checked === true)} className="mt-1 h-5 w-5" />
           <Label htmlFor="disclaimer" className="text-md">
@@ -435,7 +435,7 @@ export const DatiContatto = ({
             accettoTermini: checked === true
           }
         })} className="mt-1 h-5 w-5" />
-          <Label htmlFor="termini" className="text-lg">
+          <Label htmlFor="termini" className="text-md">
             Ho letto e accetto i <a href="#" className="text-[#d8010c] underline">termini e condizioni</a> e l'<a href="#" className="text-[#d8010c] underline">informativa privacy</a>
           </Label>
         </div>
