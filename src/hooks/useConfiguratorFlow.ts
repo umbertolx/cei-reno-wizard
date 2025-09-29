@@ -114,12 +114,12 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     { 
       id: 'batteria-accumulo', 
       component: 'BatteriaAccumulo',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico === 'ampliamento'
     },
     { 
       id: 'disponibilita-superficie-tetto', 
       component: 'DisponibilitaSuperficieTetto',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico === 'ampliamento'
     },
     { id: 'dati-contatto', component: 'DatiContatto' },
     { id: 'stima-finale', component: 'StimaFinale', requiresEstimate: true },
