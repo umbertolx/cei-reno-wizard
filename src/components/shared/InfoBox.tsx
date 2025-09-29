@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import { Plus } from "lucide-react";
 
 export type InfoBoxType = {
   title: string;
-  content: string;
+  content: ReactNode;
 };
 
 type InfoBoxProps = InfoBoxType & {

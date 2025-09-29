@@ -6,7 +6,7 @@ import { InfoBox } from '@/components/shared/InfoBox';
 export type ScenarioOption = {
   id: string;
   title: string;
-  description: string;
+  description: ReactNode;
   features: Array<{
     text: string;
   }>;
