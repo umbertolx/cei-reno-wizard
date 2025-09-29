@@ -104,12 +104,12 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     { 
       id: 'definizione-consumi-standard', 
       component: 'DefinizioneConsumiStandard',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.conosceConsumi !== 'no'
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico === 'ampliamento' || data.moduloFotovoltaico?.conosceConsumi !== 'no'
     },
     { 
       id: 'nuove-voci-consumo', 
       component: 'NuoveVociConsumo',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.conosceConsumi !== 'si'
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico === 'ampliamento' || data.moduloFotovoltaico?.conosceConsumi !== 'si'
     },
     { 
       id: 'batteria-accumulo', 
