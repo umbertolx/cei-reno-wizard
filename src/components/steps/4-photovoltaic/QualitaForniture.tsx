@@ -76,7 +76,7 @@ export const QualitaForniture = ({ formData, updateFormData, onNext, onBack }: P
             
             <div className="pt-2 border-t border-border">
               <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Prezzo base</strong> - Ottimo rapporto qualità-prezzo per iniziare con il fotovoltaico
+                <strong className="text-foreground">Soluzione economica</strong> - Prezzo più contenuto per il massimo risparmio iniziale
               </p>
             </div>
           </div>
@@ -149,7 +149,7 @@ export const QualitaForniture = ({ formData, updateFormData, onNext, onBack }: P
             
             <div className="pt-2 border-t border-border">
               <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">+20-25% rispetto allo standard</strong> - Prestazioni superiori e maggiore durata
+                <strong className="text-foreground">Costo maggiore del 20-25%</strong> - Investimento superiore per massime prestazioni
               </p>
             </div>
           </div>
