@@ -66,7 +66,6 @@ export const DettagliImpiantoEsistente = ({ formData, updateFormData, onNext, on
 
   return (
     <StepLayout
-      badge="Ampliamento fotovoltaico"
       title="Dettagli dell'impianto esistente"
       description="Forniscimi alcune informazioni sul tuo impianto attuale"
       onNext={onNext}

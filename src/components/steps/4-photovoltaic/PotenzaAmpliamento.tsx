@@ -180,7 +180,6 @@ export const PotenzaAmpliamento = ({ formData, updateFormData, onNext, onBack }:
 
   return (
     <QuestionStepLayout
-      badge="Impianto fotovoltaico"
       title="Superficie necessaria per l'ampliamento"
       description="In base ai tuoi obiettivi di ampliamento e alle caratteristiche del tetto, abbiamo calcolato la superficie aggiuntiva necessaria per potenziare il tuo impianto fotovoltaico."
       infoBox={infoBox}
