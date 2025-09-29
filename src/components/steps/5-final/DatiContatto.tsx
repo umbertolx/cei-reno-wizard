@@ -342,12 +342,12 @@ export const DatiContatto = ({
 
       {/* Form di contatto */}
       <div className="space-y-6">
-        <div className="space-y-2 md:space-y-3">
-          <h2 className="text-[24px] md:text-[36px] font-bold text-[#1c1c1c] leading-[1.05] text-left">
+        <div className="space-y-3">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
             Compila i dati e prosegui per la valutazione
-          </h2>
-          <div className="w-12 h-0.5 bg-[#d8010c]"></div>
-          <p className="text-lg md:text-xl text-gray-600">
+          </h1>
+          <div className="w-full h-px bg-gray-200"></div>
+          <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
             Inserisci i tuoi dati di contatto per ricevere la stima personalizzata
           </p>
         </div>
