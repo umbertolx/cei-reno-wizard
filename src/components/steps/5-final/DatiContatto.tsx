@@ -430,7 +430,7 @@ export const DatiContatto = ({ formData, updateFormData, onBack, onNext, isCalcu
 
       {/* Form di contatto */}
       <div className="space-y-6">
-        <h2 className="text-2xl font-medium text-[#1c1c1c] text-left md:text-center">Inserisci i tuoi dati per continuare</h2>
+        <h2 className="text-2xl font-medium text-[#1c1c1c] text-left md:text-center">Compila i dati e prosegui per la stima immediata</h2>
         
         {/* Aggiunto messaggio che indica la stima immediata */}
         <div className="bg-white border-2 border-[#fbe12e] p-4 rounded-xl text-center shadow-sm">
