@@ -440,8 +440,11 @@ export const DatiContatto = ({
           </Label>
         </div>
 
+        {/* Linea separatrice */}
+        <div className="w-full h-px bg-gray-200 my-6"></div>
+        
         {/* Pulsanti */}
-        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <Button onClick={onBack} variant="outline" className="flex-1 p-6 text-lg border-[#1c1c1c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl" disabled={isCalculatingEstimate}>
             Torna indietro
           </Button>
@@ -451,7 +454,7 @@ export const DatiContatto = ({
                 <Loader2 className="h-5 w-5 animate-spin" />
                 Calcolo in corso...
               </> : <>
-                Calcola stima costi
+                Calcola
                 <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
               </>}
           </Button>
