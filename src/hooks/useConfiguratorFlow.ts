@@ -119,7 +119,7 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     { 
       id: 'disponibilita-superficie-tetto', 
       component: 'DisponibilitaSuperficieTetto',
-      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
+      skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico') || data.moduloFotovoltaico?.tipoInterventoFotovoltaico === 'ampliamento'
     },
     { 
       id: 'qualita-forniture', 
