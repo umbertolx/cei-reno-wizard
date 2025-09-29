@@ -135,11 +135,12 @@ export const DatiContatto = ({
     const numericCount = Number(count) || 0;
     return sum + numericCount;
   }, 0 as number);
-  return <div className="space-y-8">
-      <div className="space-y-2 md:space-y-3 mt-4">
-        <h1 className="text-[24px] md:text-[36px] font-bold text-[#1c1c1c] leading-[1.05] text-left md:text-center p-1">
-          Riepilogo e dati di contatto
-        </h1>
+  return <div className="space-y-4">
+      {/* Badge */}
+      <div className="flex justify-center px-3 md:px-0">
+        <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
+          Impianti civili
+        </div>
       </div>
 
       {/* Form di contatto header */}
