@@ -423,14 +423,14 @@ export const DatiContatto = ({
 
       {/* Termini e condizioni e pulsanti */}
       <div className="space-y-6">
-        <div className="flex items-start justify-center space-x-4 py-6">
+        <div className="flex items-start space-x-4 py-6">
           <Checkbox id="termini" checked={formData.contatti?.accettoTermini || false} onCheckedChange={checked => updateFormData({
           contatti: {
             ...formData.contatti,
             accettoTermini: checked === true
           }
         })} className="mt-1 h-5 w-5" />
-          <Label htmlFor="termini" className="text-lg text-center max-w-md">
+          <Label htmlFor="termini" className="text-lg">
             Ho letto e accetto i <a href="#" className="text-[#d8010c] underline">termini e condizioni</a> e l'<a href="#" className="text-[#d8010c] underline">informativa privacy</a>
           </Label>
         </div>
