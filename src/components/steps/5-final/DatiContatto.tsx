@@ -202,7 +202,7 @@ export const DatiContatto = ({
 
       {/* Titolo sezione riepilogo */}
       <div className="space-y-3">
-        <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+        <h1 className="text-xl md:text-2xl font-semibold text-[#1c1c1c] leading-tight">
           Riepilogo della configurazione
         </h1>
         <div className="w-full h-px bg-gray-200"></div>
