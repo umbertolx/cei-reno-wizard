@@ -20,6 +20,7 @@ import { ConsumiAnnui } from "./steps/4-photovoltaic/ConsumiAnnui";
 import NuoveVociConsumo from "./steps/4-photovoltaic/NuoveVociConsumo";
 import { DefinizioneConsumiStandard } from "./steps/4-photovoltaic/DefinizioneConsumiStandard";
 import { DisponibilitaSuperficieTetto } from "./steps/4-photovoltaic/DisponibilitaSuperficieTetto";
+import { QualitaForniture } from "./steps/4-photovoltaic/QualitaForniture";
 import { BatteriaAccumulo } from "./steps/4-photovoltaic/BatteriaAccumulo";
 import { RequestSent } from "./steps/5-final/RequestSent";
 import { DatiContatto } from "./steps/5-final/DatiContatto";
@@ -108,6 +109,7 @@ export type FormData = {
     batteriaAccumulo?: string; // "si" | "no"
     superficieDisponibile?: string; // "si" | "no" | "non-lo-so"
     superficieEffettiva?: string; // superficie in mq inserita dall'utente se ha selezionato "no"
+    qualitaForniture?: string; // "standard" | "premium"
     estimate?: EstimateResponse;
   };
   
@@ -464,6 +466,9 @@ export const Configuratore = () => {
       
       case 'DisponibilitaSuperficieTetto':
         return <DisponibilitaSuperficieTetto {...commonProps} />;
+      
+      case 'QualitaForniture':
+        return <QualitaForniture {...commonProps} />;
       
       case 'DatiContatto':
         return (

@@ -8,3 +8,4 @@ export { ConsumiAnnui } from './ConsumiAnnui';
 export { DefinizioneConsumiStandard } from './DefinizioneConsumiStandard';
 export { BatteriaAccumulo } from './BatteriaAccumulo';
 export { DisponibilitaSuperficieTetto } from './DisponibilitaSuperficieTetto';
+export { QualitaForniture } from './QualitaForniture';
