@@ -129,7 +129,7 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
   };
 
   return (
-    <div className="bg-muted/40 rounded-lg p-5 border border-border">
+    <div className="bg-muted/40 rounded-lg p-5">
       <h4 className="font-semibold text-foreground text-base mb-4">
         Riepilogo del tuo impianto
       </h4>
