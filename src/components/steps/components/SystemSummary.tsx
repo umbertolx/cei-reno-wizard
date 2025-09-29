@@ -105,20 +105,27 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
 
   // Ottieni orientamento
   const getOrientamento = (): string => {
+    const tipoFalda = formData.moduloFotovoltaico?.tipoFalda;
+    
+    // Per tetto piano
+    if (tipoFalda === 'piano') {
+      return '0º Sud';
+    }
+    
     const orientamento = Array.isArray(formData.moduloFotovoltaico?.orientamentoTetto) 
       ? formData.moduloFotovoltaico.orientamentoTetto[0] 
       : formData.moduloFotovoltaico?.orientamentoTetto;
     
-    if (orientamento === 'sud') return 'Sud';
-    if (orientamento === 'sud-est') return 'Sud-Est';
-    if (orientamento === 'sud-ovest') return 'Sud-Ovest';
-    if (orientamento === 'est') return 'Est';
-    if (orientamento === 'ovest') return 'Ovest';
-    if (orientamento === 'nord-est') return 'Nord-Est';
-    if (orientamento === 'nord-ovest') return 'Nord-Ovest';
-    if (orientamento === 'nord') return 'Nord';
-    if (orientamento === 'non-lo-so') return 'Da valutare';
-    return 'Non specificato';
+    if (orientamento === 'sud') return '0º Sud';
+    if (orientamento === 'sud-est') return '45º Sud-Est';
+    if (orientamento === 'sud-ovest') return '45º Sud-Ovest';
+    if (orientamento === 'est') return '90º Est';
+    if (orientamento === 'ovest') return '90º Ovest';
+    if (orientamento === 'nord-est') return '135º Nord-Est';
+    if (orientamento === 'nord-ovest') return '135º Nord-Ovest';
+    if (orientamento === 'nord') return '180º Nord';
+    if (orientamento === 'non-lo-so') return '0º Sud';
+    return '0º Sud';
   };
 
   return (
