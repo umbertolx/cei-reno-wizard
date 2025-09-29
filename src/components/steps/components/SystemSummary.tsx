@@ -77,6 +77,22 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
   const consumoAnnuale = getConsumoAnnuale();
   const produzionStimata = getProduzioneStimata();
   const hasBatteria = formData.moduloFotovoltaico?.batteriaAccumulo === 'si';
+  
+  // Calcola kWp stimati (6 mq = ~1 kWp)
+  const kWpStimati = Math.round(((superficieMin + superficieMax) / 2 / 6) * 10) / 10;
+  
+  // Determina l'obiettivo
+  const getObiettivo = (): string => {
+    const tipoIntervento = formData.moduloFotovoltaico?.tipoInterventoFotovoltaico;
+    const obiettivo = formData.moduloFotovoltaico?.obiettivoAmpliamento;
+    
+    if (tipoIntervento === 'ampliamento') {
+      if (obiettivo === 'risparmio-bolletta') return 'Risparmio bolletta';
+      if (obiettivo === 'indipendenza-energetica') return 'Indipendenza energetica';
+      return 'Ampliamento impianto';
+    }
+    return 'Nuovo impianto';
+  };
 
   return (
     <div className="bg-muted/40 rounded-lg p-5 border border-border">
@@ -84,27 +100,32 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
         Riepilogo del tuo impianto
       </h4>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="bg-background rounded-md p-3 border border-primary/30">
           <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Superficie necessaria</div>
           <div className="font-bold text-primary text-lg">{superficieMin}-{superficieMax} mq</div>
         </div>
         
         <div className="bg-background rounded-md p-3">
-          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Consumo annuale</div>
-          <div className="font-semibold text-foreground">{consumoAnnuale.toLocaleString()}</div>
-          <div className="text-muted-foreground text-xs">kWh</div>
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Obiettivo</div>
+          <div className="font-semibold text-foreground">{getObiettivo()}</div>
+        </div>
+        
+        <div className="bg-background rounded-md p-3">
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Potenza impianto</div>
+          <div className="font-semibold text-foreground">{kWpStimati}</div>
+          <div className="text-muted-foreground text-xs">kWp</div>
+        </div>
+        
+        <div className="bg-background rounded-md p-3">
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Resa attesa</div>
+          <div className="font-semibold text-foreground">{produzionStimata.toLocaleString()}</div>
+          <div className="text-muted-foreground text-xs">kWh/anno</div>
         </div>
         
         <div className="bg-background rounded-md p-3">
           <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Con batteria</div>
           <div className="font-semibold text-foreground">{hasBatteria ? 'Sì' : 'No'}</div>
-        </div>
-        
-        <div className="bg-background rounded-md p-3">
-          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Produzione stimata</div>
-          <div className="font-semibold text-foreground">{produzionStimata.toLocaleString()}</div>
-          <div className="text-muted-foreground text-xs">kWh/anno</div>
         </div>
       </div>
     </div>
