@@ -454,7 +454,7 @@ export const DatiContatto = ({
                 <Loader2 className="h-5 w-5 animate-spin" />
                 Calcolo in corso...
               </> : <>
-                Calcola
+                Calcola ora!
                 <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
               </>}
           </Button>
