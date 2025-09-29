@@ -112,7 +112,7 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
         </div>
         
         <div className="bg-background rounded-md p-3">
-          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Potenza impianto</div>
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Nuovo impianto</div>
           <div className="font-semibold text-foreground">{kWpStimati}</div>
           <div className="text-muted-foreground text-xs">kWp</div>
         </div>
