@@ -135,9 +135,9 @@ export const DatiContatto = ({
     const numericCount = Number(count) || 0;
     return sum + numericCount;
   }, 0 as number);
-  return <div className="space-y-4">
+  return <div className="space-y-8">
       {/* Badge */}
-      <div className="flex justify-center px-3 md:px-0">
+      <div className="flex justify-center px-3 md:px-0 mb-8">
         <div className="bg-[#d8010c] text-white px-3 py-1.5 md:px-6 md:py-3 rounded-full text-sm font-medium">
           Impianti civili
         </div>
