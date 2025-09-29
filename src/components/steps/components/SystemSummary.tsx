@@ -94,13 +94,40 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
     return 'Nuovo impianto';
   };
 
+  // Ottieni tipo di falda
+  const getTipoFalda = (): string => {
+    const tipo = formData.moduloFotovoltaico?.tipoFalda;
+    if (tipo === 'piano') return 'Tetto piano';
+    if (tipo === 'singola') return 'Falda singola';
+    if (tipo === 'multiple') return 'Falde multiple';
+    return 'Non specificato';
+  };
+
+  // Ottieni orientamento
+  const getOrientamento = (): string => {
+    const orientamento = Array.isArray(formData.moduloFotovoltaico?.orientamentoTetto) 
+      ? formData.moduloFotovoltaico.orientamentoTetto[0] 
+      : formData.moduloFotovoltaico?.orientamentoTetto;
+    
+    if (orientamento === 'sud') return 'Sud';
+    if (orientamento === 'sud-est') return 'Sud-Est';
+    if (orientamento === 'sud-ovest') return 'Sud-Ovest';
+    if (orientamento === 'est') return 'Est';
+    if (orientamento === 'ovest') return 'Ovest';
+    if (orientamento === 'nord-est') return 'Nord-Est';
+    if (orientamento === 'nord-ovest') return 'Nord-Ovest';
+    if (orientamento === 'nord') return 'Nord';
+    if (orientamento === 'non-lo-so') return 'Da valutare';
+    return 'Non specificato';
+  };
+
   return (
     <div className="bg-muted/40 rounded-lg p-5 border border-border">
       <h4 className="font-semibold text-foreground text-base mb-4">
         Riepilogo del tuo impianto
       </h4>
       
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
         <div className="bg-background rounded-md p-3 border border-primary/30">
           <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Superficie necessaria</div>
           <div className="font-bold text-primary text-lg">{superficieMin}-{superficieMax} mq</div>
@@ -126,6 +153,16 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
         <div className="bg-background rounded-md p-3">
           <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Con batteria</div>
           <div className="font-semibold text-foreground">{hasBatteria ? 'Sì' : 'No'}</div>
+        </div>
+        
+        <div className="bg-background rounded-md p-3">
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Tipo falda</div>
+          <div className="font-semibold text-foreground">{getTipoFalda()}</div>
+        </div>
+        
+        <div className="bg-background rounded-md p-3">
+          <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Orientamento</div>
+          <div className="font-semibold text-foreground">{getOrientamento()}</div>
         </div>
       </div>
     </div>
