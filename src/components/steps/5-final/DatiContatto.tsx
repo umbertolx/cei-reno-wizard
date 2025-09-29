@@ -239,6 +239,17 @@ export const DatiContatto = ({
         </div>
       </div>
 
+      {/* Titolo sezione riepilogo */}
+      <div className="space-y-3">
+        <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+          Riepilogo della configurazione
+        </h1>
+        <div className="w-full h-px bg-gray-200"></div>
+        <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
+          Verifica i dettagli della tua configurazione prima di procedere
+        </p>
+      </div>
+
       {/* Box di riepilogo abitazione in stile CEI */}
       <div className="bg-white border-2 border-dashed border-red-500 rounded-xl p-6">
         <div className="space-y-4">
