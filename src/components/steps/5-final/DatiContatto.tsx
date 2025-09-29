@@ -344,12 +344,6 @@ export const DatiContatto = ({
       <div className="space-y-6">
         <h2 className="text-2xl font-medium text-[#1c1c1c] text-left md:text-center">Compila i dati e prosegui per la valutazione</h2>
         
-        {/* Aggiunto messaggio che indica la stima immediata */}
-        <div className="bg-white border-2 border-[#fbe12e] p-4 rounded-xl text-center shadow-sm">
-          <p className="text-md text-[#1c1c1c] font-medium">
-            Completando questo form riceverai immediatamente una stima del costo della ristrutturazione
-          </p>
-        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
