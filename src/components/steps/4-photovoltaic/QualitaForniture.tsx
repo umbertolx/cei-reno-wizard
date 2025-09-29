@@ -76,7 +76,7 @@ export const QualitaForniture = ({ formData, updateFormData, onNext, onBack }: P
             
             <div className="pt-2 border-t border-border">
               <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Soluzione economica</strong> - Prezzo più contenuto per il massimo risparmio iniziale
+                <strong className="text-foreground">Prezzo standard</strong> - La soluzione più conveniente
               </p>
             </div>
           </div>
@@ -149,7 +149,7 @@ export const QualitaForniture = ({ formData, updateFormData, onNext, onBack }: P
             
             <div className="pt-2 border-t border-border">
               <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Costo maggiore del 20-25%</strong> - Investimento superiore per massime prestazioni
+                <strong className="text-foreground">Prezzo premium: +25%</strong> - Costa di più ma rende di più
               </p>
             </div>
           </div>
