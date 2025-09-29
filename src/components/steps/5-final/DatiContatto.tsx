@@ -424,7 +424,7 @@ export const DatiContatto = ({
         <div className="flex items-start space-x-4 py-1">
           <Checkbox id="disclaimer" checked={accettoDisclaimer} onCheckedChange={checked => setAccettoDisclaimer(checked === true)} className="mt-1 h-5 w-5" />
           <Label htmlFor="disclaimer" className="text-md">
-            Confermo che la stima ha carattere indicativo e non costituisce preventivo vincolante
+            Dichiaro di aver compreso che la stima è indicativa e non costituisce un preventivo vincolante
           </Label>
         </div>
         
