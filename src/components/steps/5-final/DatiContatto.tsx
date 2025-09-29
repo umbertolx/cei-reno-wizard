@@ -174,7 +174,7 @@ export const DatiContatto = ({
               ...formData.contatti,
               nome: e.target.value
             }
-          })} className="text-lg p-6 rounded-lg" placeholder="Il tuo nome" />
+          })} className="text-lg p-6 rounded-lg" placeholder="Inserisci il tuo nome" />
           </div>
           
           <div className="space-y-2">
@@ -184,7 +184,7 @@ export const DatiContatto = ({
               ...formData.contatti,
               cognome: e.target.value
             }
-          })} className="text-lg p-6 rounded-lg" placeholder="Il tuo cognome" />
+          })} className="text-lg p-6 rounded-lg" placeholder="Inserisci il tuo cognome" />
           </div>
           
           <div className="space-y-2">
@@ -194,7 +194,7 @@ export const DatiContatto = ({
               ...formData.contatti,
               email: e.target.value
             }
-          })} className="text-lg p-6 rounded-lg" placeholder="La tua email" />
+          })} className="text-lg p-6 rounded-lg" placeholder="esempio@email.com" />
           </div>
           
           <div className="space-y-2">
@@ -204,7 +204,7 @@ export const DatiContatto = ({
               ...formData.contatti,
               telefono: e.target.value
             }
-          })} className="text-lg p-6 rounded-lg" placeholder="Il tuo numero di telefono" />
+          })} className="text-lg p-6 rounded-lg" placeholder="+39 123 456 7890" />
           </div>
         </div>
         
@@ -445,7 +445,7 @@ export const DatiContatto = ({
         
         {/* Pulsanti */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button onClick={onBack} variant="outline" className="flex-1 p-6 text-lg border-[#1c1c1c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl" disabled={isCalculatingEstimate}>
+          <Button onClick={onBack} variant="outline" className="flex-1 p-6 text-lg border-[#d8010c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl" disabled={isCalculatingEstimate}>
             Torna indietro
           </Button>
           
