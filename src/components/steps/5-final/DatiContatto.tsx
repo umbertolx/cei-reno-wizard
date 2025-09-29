@@ -156,7 +156,7 @@ export const DatiContatto = ({
       {/* Form di contatto header */}
       <div className="space-y-3">
         <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
-          Compila i dati e prosegui per la valutazione
+          Compila i dati e termina la configurazione
         </h1>
         <div className="w-full h-px bg-gray-200"></div>
         <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
