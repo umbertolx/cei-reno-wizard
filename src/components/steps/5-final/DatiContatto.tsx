@@ -153,6 +153,92 @@ export const DatiContatto = ({
         </p>
       </div>
 
+      {/* Form di contatto */}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <User className="h-5 w-5 mr-2 text-[#d8010c]" />
+              <Label htmlFor="nome" className="text-lg">Nome</Label>
+            </div>
+            <Input id="nome" value={formData.contatti?.nome || ''} onChange={e => updateFormData({
+            contatti: {
+              ...formData.contatti,
+              nome: e.target.value
+            }
+          })} className="text-lg p-6 rounded-lg" placeholder="Il tuo nome" />
+          </div>
+          
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <User className="h-5 w-5 mr-2 text-[#d8010c]" />
+              <Label htmlFor="cognome" className="text-lg">Cognome</Label>
+            </div>
+            <Input id="cognome" value={formData.contatti?.cognome || ''} onChange={e => updateFormData({
+            contatti: {
+              ...formData.contatti,
+              cognome: e.target.value
+            }
+          })} className="text-lg p-6 rounded-lg" placeholder="Il tuo cognome" />
+          </div>
+          
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <Mail className="h-5 w-5 mr-2 text-[#d8010c]" />
+              <Label htmlFor="email" className="text-lg">Email</Label>
+            </div>
+            <Input id="email" type="email" value={formData.contatti?.email || ''} onChange={e => updateFormData({
+            contatti: {
+              ...formData.contatti,
+              email: e.target.value
+            }
+          })} className="text-lg p-6 rounded-lg" placeholder="La tua email" />
+          </div>
+          
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <Phone className="h-5 w-5 mr-2 text-[#d8010c]" />
+              <Label htmlFor="telefono" className="text-lg">Telefono</Label>
+            </div>
+            <Input id="telefono" type="tel" value={formData.contatti?.telefono || ''} onChange={e => updateFormData({
+            contatti: {
+              ...formData.contatti,
+              telefono: e.target.value
+            }
+          })} className="text-lg p-6 rounded-lg" placeholder="Il tuo numero di telefono" />
+          </div>
+        </div>
+        
+        <div className="flex items-start space-x-3 py-4">
+          <Checkbox id="termini" checked={formData.contatti?.accettoTermini || false} onCheckedChange={checked => updateFormData({
+          contatti: {
+            ...formData.contatti,
+            accettoTermini: checked === true
+          }
+        })} className="mt-1" />
+          <Label htmlFor="termini" className="text-md">
+            Ho letto e accetto i <a href="#" className="text-[#d8010c] underline">termini e condizioni</a> e l'<a href="#" className="text-[#d8010c] underline">informativa privacy</a>
+          </Label>
+        </div>
+
+        {/* Pulsanti */}
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <Button onClick={onBack} variant="outline" className="flex-1 p-6 text-lg border-[#1c1c1c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl" disabled={isCalculatingEstimate}>
+            Torna indietro
+          </Button>
+          
+          <Button onClick={handleSubmit} className="flex-1 p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl flex items-center justify-center gap-2 transition-all duration-300" disabled={isCalculatingEstimate}>
+            {isCalculatingEstimate ? <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Calcolo in corso...
+              </> : <>
+                Calcola stima costi
+                <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
+              </>}
+          </Button>
+        </div>
+      </div>
+
       {/* Box di riepilogo abitazione in stile CEI */}
       <div className="bg-white border-2 border-dashed border-red-500 rounded-xl p-6">
         <div className="space-y-4">
@@ -350,92 +436,5 @@ export const DatiContatto = ({
         </div>
       </div>
 
-      {/* Form di contatto */}
-      <div className="space-y-6">
-        
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <User className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="nome" className="text-lg">Nome</Label>
-            </div>
-            <Input id="nome" value={formData.contatti?.nome || ''} onChange={e => updateFormData({
-            contatti: {
-              ...formData.contatti,
-              nome: e.target.value
-            }
-          })} className="text-lg p-6 rounded-lg" placeholder="Il tuo nome" />
-          </div>
-          
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <User className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="cognome" className="text-lg">Cognome</Label>
-            </div>
-            <Input id="cognome" value={formData.contatti?.cognome || ''} onChange={e => updateFormData({
-            contatti: {
-              ...formData.contatti,
-              cognome: e.target.value
-            }
-          })} className="text-lg p-6 rounded-lg" placeholder="Il tuo cognome" />
-          </div>
-          
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <Mail className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="email" className="text-lg">Email</Label>
-            </div>
-            <Input id="email" type="email" value={formData.contatti?.email || ''} onChange={e => updateFormData({
-            contatti: {
-              ...formData.contatti,
-              email: e.target.value
-            }
-          })} className="text-lg p-6 rounded-lg" placeholder="La tua email" />
-          </div>
-          
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <Phone className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="telefono" className="text-lg">Telefono</Label>
-            </div>
-            <Input id="telefono" type="tel" value={formData.contatti?.telefono || ''} onChange={e => updateFormData({
-            contatti: {
-              ...formData.contatti,
-              telefono: e.target.value
-            }
-          })} className="text-lg p-6 rounded-lg" placeholder="Il tuo numero di telefono" />
-          </div>
-        </div>
-        
-        <div className="flex items-start space-x-3 py-4">
-          <Checkbox id="termini" checked={formData.contatti?.accettoTermini || false} onCheckedChange={checked => updateFormData({
-          contatti: {
-            ...formData.contatti,
-            accettoTermini: checked === true
-          }
-        })} className="mt-1" />
-          <Label htmlFor="termini" className="text-md">
-            Ho letto e accetto i <a href="#" className="text-[#d8010c] underline">termini e condizioni</a> e l'<a href="#" className="text-[#d8010c] underline">informativa privacy</a>
-          </Label>
-        </div>
-      </div>
-
-      {/* Pulsanti */}
-      <div className="flex flex-col sm:flex-row gap-4 pt-4">
-        <Button onClick={onBack} variant="outline" className="flex-1 p-6 text-lg border-[#1c1c1c] text-[#1c1c1c] hover:bg-[#f4f4f4] rounded-xl" disabled={isCalculatingEstimate}>
-          Torna indietro
-        </Button>
-        
-        <Button onClick={handleSubmit} className="flex-1 p-6 text-lg bg-[#fbe12e] hover:bg-[#d8010c] text-[#1c1c1c] hover:text-white rounded-xl flex items-center justify-center gap-2 transition-all duration-300" disabled={isCalculatingEstimate}>
-          {isCalculatingEstimate ? <>
-              <Loader2 className="h-5 w-5 animate-spin" />
-              Calcolo in corso...
-            </> : <>
-              Continua
-              <ChevronDown className="h-5 w-5 transform rotate-[-90deg]" />
-            </>}
-        </Button>
-      </div>
     </div>;
 };
