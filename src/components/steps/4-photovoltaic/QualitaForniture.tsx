@@ -149,7 +149,7 @@ export const QualitaForniture = ({ formData, updateFormData, onNext, onBack }: P
             
             <div className="pt-2 border-t border-border">
               <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">+20-25% rispetto allo standard</strong> - Maggiore produzione energetica e durata nel tempo garantiscono un ritorno sull'investimento superiore
+                <strong className="text-foreground">+20-25% rispetto allo standard</strong> - Prestazioni superiori e maggiore durata
               </p>
             </div>
           </div>
