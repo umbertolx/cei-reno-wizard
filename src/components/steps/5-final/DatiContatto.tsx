@@ -150,7 +150,7 @@ export const DatiContatto = ({
         </h1>
         <div className="w-full h-px bg-gray-200"></div>
         <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
-          Inserisci i tuoi dati di contatto per ricevere la stima personalizzata
+          Inserisci i tuoi dati di contatto per ricevere la stima personalizzata. I nostri algoritmi di machine learning analizzano in tempo reale oltre 500 variabili specifiche del tuo progetto, combinando dati di mercato aggiornati con le tue esigenze uniche. Ogni stima viene processata attraverso modelli predittivi avanzati che garantiscono precisione e personalizzazione senza precedenti.
         </p>
       </div>
 
