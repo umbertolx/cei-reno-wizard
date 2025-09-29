@@ -421,14 +421,14 @@ export const DatiContatto = ({
 
       {/* Termini e condizioni e pulsanti */}
       <div className="space-y-6">
-        <div className="flex items-start space-x-4 py-6">
+        <div className="flex items-start space-x-4 py-2">
           <Checkbox id="disclaimer" checked={accettoDisclaimer} onCheckedChange={checked => setAccettoDisclaimer(checked === true)} className="mt-1 h-5 w-5" />
           <Label htmlFor="disclaimer" className="text-lg">
-            Confermo di aver compreso che la stima fornita ha carattere puramente indicativo e non costituisce preventivo vincolante
+            Confermo che la stima ha carattere indicativo e non costituisce preventivo vincolante
           </Label>
         </div>
         
-        <div className="flex items-start space-x-4 py-6">
+        <div className="flex items-start space-x-4 py-2">
           <Checkbox id="termini" checked={formData.contatti?.accettoTermini || false} onCheckedChange={checked => updateFormData({
           contatti: {
             ...formData.contatti,
