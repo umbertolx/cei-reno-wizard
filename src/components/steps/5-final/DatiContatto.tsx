@@ -158,10 +158,7 @@ export const DatiContatto = ({
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <div className="flex items-center">
-              <User className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="nome" className="text-lg">Nome</Label>
-            </div>
+            <Label htmlFor="nome" className="text-lg">Nome</Label>
             <Input id="nome" value={formData.contatti?.nome || ''} onChange={e => updateFormData({
             contatti: {
               ...formData.contatti,
@@ -171,10 +168,7 @@ export const DatiContatto = ({
           </div>
           
           <div className="space-y-2">
-            <div className="flex items-center">
-              <User className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="cognome" className="text-lg">Cognome</Label>
-            </div>
+            <Label htmlFor="cognome" className="text-lg">Cognome</Label>
             <Input id="cognome" value={formData.contatti?.cognome || ''} onChange={e => updateFormData({
             contatti: {
               ...formData.contatti,
@@ -184,10 +178,7 @@ export const DatiContatto = ({
           </div>
           
           <div className="space-y-2">
-            <div className="flex items-center">
-              <Mail className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="email" className="text-lg">Email</Label>
-            </div>
+            <Label htmlFor="email" className="text-lg">Email</Label>
             <Input id="email" type="email" value={formData.contatti?.email || ''} onChange={e => updateFormData({
             contatti: {
               ...formData.contatti,
@@ -197,10 +188,7 @@ export const DatiContatto = ({
           </div>
           
           <div className="space-y-2">
-            <div className="flex items-center">
-              <Phone className="h-5 w-5 mr-2 text-[#d8010c]" />
-              <Label htmlFor="telefono" className="text-lg">Telefono</Label>
-            </div>
+            <Label htmlFor="telefono" className="text-lg">Telefono</Label>
             <Input id="telefono" type="tel" value={formData.contatti?.telefono || ''} onChange={e => updateFormData({
             contatti: {
               ...formData.contatti,
