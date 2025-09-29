@@ -98,6 +98,7 @@ export const ExpansionGoals = ({ formData, updateFormData, onNext, onBack }: Pro
 
   return (
     <QuestionStepLayout
+      badge="Ampliamento fotovoltaico"
       title="Obiettivi ampliamento"
       description="Qual è il tuo obiettivo con questo ampliamento?"
       infoBox={infoBox}
