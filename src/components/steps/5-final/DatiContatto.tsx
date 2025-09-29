@@ -142,6 +142,16 @@ export const DatiContatto = ({
         </h1>
       </div>
 
+      {/* Form di contatto header */}
+      <div className="space-y-3">
+        <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
+          Compila i dati e prosegui per la valutazione
+        </h1>
+        <div className="w-full h-px bg-gray-200"></div>
+        <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
+          Inserisci i tuoi dati di contatto per ricevere la stima personalizzata
+        </p>
+      </div>
 
       {/* Box di riepilogo abitazione in stile CEI */}
       <div className="bg-white border-2 border-dashed border-red-500 rounded-xl p-6">
@@ -342,15 +352,6 @@ export const DatiContatto = ({
 
       {/* Form di contatto */}
       <div className="space-y-6">
-        <div className="space-y-3">
-          <h1 className="text-2xl md:text-3xl font-semibold text-[#1c1c1c] leading-tight">
-            Compila i dati e prosegui per la valutazione
-          </h1>
-          <div className="w-full h-px bg-gray-200"></div>
-          <p className="text-sm md:text-base text-[#1c1c1c] opacity-75 mt-3">
-            Inserisci i tuoi dati di contatto per ricevere la stima personalizzata
-          </p>
-        </div>
         
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
