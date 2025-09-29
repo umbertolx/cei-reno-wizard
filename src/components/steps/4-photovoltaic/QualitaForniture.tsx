@@ -21,67 +21,62 @@ export const QualitaForniture = ({ formData, updateFormData, onNext, onBack }: P
       title: 'Standard',
       description: (
         <div className="space-y-4">
-          <div className="flex items-center gap-3 mb-4">
-            <img src={standardImage} alt="Sistema fotovoltaico standard" className="w-full h-32 object-cover rounded-lg border" />
-          </div>
+          <img src={standardImage} alt="Sistema fotovoltaico standard" className="w-full h-32 object-cover" />
           
           <div className="space-y-4">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+            <div>
+              <h4 className="font-semibold text-foreground mb-3">
                 Pannelli Fotovoltaici Standard
               </h4>
-              <div className="grid grid-cols-1 gap-2 text-sm text-gray-700">
+              <div className="space-y-2 text-sm text-muted-foreground">
                 <div className="flex justify-between">
-                  <span>• Tecnologia:</span>
+                  <span>Tecnologia:</span>
                   <span className="font-medium">Policristallina</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>• Efficienza:</span>
+                  <span>Efficienza:</span>
                   <span className="font-medium">18-20%</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>• Garanzia prodotto:</span>
+                  <span>Garanzia prodotto:</span>
                   <span className="font-medium">12 anni</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>• Garanzia prestazioni:</span>
+                  <span>Garanzia prestazioni:</span>
                   <span className="font-medium">25 anni</span>
                 </div>
               </div>
             </div>
             
             {hasBattery && (
-              <div className="bg-green-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+              <div>
+                <h4 className="font-semibold text-foreground mb-3">
                   Sistema di Accumulo Standard
                 </h4>
-                <div className="grid grid-cols-1 gap-2 text-sm text-gray-700">
+                <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex justify-between">
-                    <span>• Tecnologia:</span>
+                    <span>Tecnologia:</span>
                     <span className="font-medium">Litio Ferro Fosfato (LiFePO4)</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>• Cicli di vita:</span>
+                    <span>Cicli di vita:</span>
                     <span className="font-medium">6.000+ cicli</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>• Efficienza:</span>
+                    <span>Efficienza:</span>
                     <span className="font-medium">95%</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>• Garanzia:</span>
+                    <span>Garanzia:</span>
                     <span className="font-medium">10 anni</span>
                   </div>
                 </div>
               </div>
             )}
             
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-gray-900 mb-2">💰 Investimento</h4>
-              <p className="text-sm text-gray-700">
-                <strong>Prezzo base</strong> - Ottimo rapporto qualità-prezzo per iniziare con il fotovoltaico
+            <div className="pt-2 border-t border-border">
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">Prezzo base</strong> - Ottimo rapporto qualità-prezzo per iniziare con il fotovoltaico
               </p>
             </div>
           </div>
@@ -99,67 +94,62 @@ export const QualitaForniture = ({ formData, updateFormData, onNext, onBack }: P
       title: 'Premium',
       description: (
         <div className="space-y-4">
-          <div className="flex items-center gap-3 mb-4">
-            <img src={premiumImage} alt="Sistema fotovoltaico premium" className="w-full h-32 object-cover rounded-lg border" />
-          </div>
+          <img src={premiumImage} alt="Sistema fotovoltaico premium" className="w-full h-32 object-cover" />
           
           <div className="space-y-4">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+            <div>
+              <h4 className="font-semibold text-foreground mb-3">
                 Pannelli Fotovoltaici Premium
               </h4>
-              <div className="grid grid-cols-1 gap-2 text-sm text-gray-700">
+              <div className="space-y-2 text-sm text-muted-foreground">
                 <div className="flex justify-between">
-                  <span>• Tecnologia:</span>
+                  <span>Tecnologia:</span>
                   <span className="font-medium">Monocristallina ultima generazione</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>• Efficienza:</span>
+                  <span>Efficienza:</span>
                   <span className="font-medium text-green-600">21-23% (+15% prestazioni)</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>• Garanzia prodotto:</span>
+                  <span>Garanzia prodotto:</span>
                   <span className="font-medium text-green-600">20 anni (+67%)</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>• Garanzia prestazioni:</span>
+                  <span>Garanzia prestazioni:</span>
                   <span className="font-medium text-green-600">30 anni (+20%)</span>
                 </div>
               </div>
             </div>
             
             {hasBattery && (
-              <div className="bg-green-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+              <div>
+                <h4 className="font-semibold text-foreground mb-3">
                   Sistema di Accumulo Premium
                 </h4>
-                <div className="grid grid-cols-1 gap-2 text-sm text-gray-700">
+                <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex justify-between">
-                    <span>• Tecnologia:</span>
+                    <span>Tecnologia:</span>
                     <span className="font-medium">Litio NMC di alta qualità</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>• Cicli di vita:</span>
+                    <span>Cicli di vita:</span>
                     <span className="font-medium text-green-600">10.000+ cicli (+67%)</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>• Efficienza:</span>
+                    <span>Efficienza:</span>
                     <span className="font-medium text-green-600">98% (+3%)</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>• Garanzia:</span>
+                    <span>Garanzia:</span>
                     <span className="font-medium text-green-600">15 anni (+50%)</span>
                   </div>
                 </div>
               </div>
             )}
             
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-semibold text-gray-900 mb-2">💰 Investimento</h4>
-              <p className="text-sm text-gray-700">
-                <strong>+20-25% rispetto allo standard</strong> - Maggiore produzione energetica e durata nel tempo garantiscono un ritorno sull'investimento superiore
+            <div className="pt-2 border-t border-border">
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">+20-25% rispetto allo standard</strong> - Maggiore produzione energetica e durata nel tempo garantiscono un ritorno sull'investimento superiore
               </p>
             </div>
           </div>
