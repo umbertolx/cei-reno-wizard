@@ -134,7 +134,7 @@ export const SystemSummary = ({ formData, superficieMin, superficieMax }: Props)
         Riepilogo del tuo impianto
       </h4>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <div className="bg-background rounded-md p-3 border border-primary/30">
           <div className="text-muted-foreground text-xs mb-2 uppercase tracking-wide">Superficie necessaria</div>
           <div className="font-bold text-primary text-lg">{superficieMin}-{superficieMax} mq</div>
