@@ -15,30 +15,35 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
       key: 'soggiorno', 
       label: 'Sala/Living', 
       desc: 'Soggiorno, sala da pranzo',
+      minValue: 0,
       maxValue: Infinity
     },
     { 
       key: 'cucina', 
       label: 'Cucina', 
       desc: 'Cucina o angolo cottura',
+      minValue: 1,
       maxValue: 1
     },
     { 
       key: 'cameraDoppia', 
       label: 'Camera doppia', 
       desc: 'Camera matrimoniale',
+      minValue: 0,
       maxValue: Infinity
     },
     { 
       key: 'cameraSingola', 
       label: 'Camera singola', 
       desc: 'Camera singola, studio',
+      minValue: 0,
       maxValue: Infinity
     },
     { 
       key: 'bagno', 
       label: 'Bagno', 
       desc: 'Bagno completo o di servizio',
+      minValue: 1,
       maxValue: Infinity
     }
   ];
@@ -46,7 +51,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
   const RoomCard = ({ stanza }: { stanza: typeof stanze[0] }) => {
     const value = composizione[stanza.key as keyof FormData['composizione']];
     const isAtMax = value >= stanza.maxValue;
-    const isAtMin = value <= 0;
+    const isAtMin = value <= stanza.minValue;
 
     return (
       <div className={`p-4 rounded-xl transition-all duration-300 border cursor-pointer ${
@@ -73,7 +78,7 @@ export const SuddivisioneSpazi = ({ composizione, onChangeStanza, totalRooms }: 
                   ? 'opacity-30 cursor-not-allowed text-black/50' 
                   : 'text-black hover:text-black hover:bg-black/10 hover:scale-105 transition-all duration-200'
               }`}
-              onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], Math.max(0, value - 1))}
+              onClick={() => onChangeStanza(stanza.key as keyof FormData['composizione'], Math.max(stanza.minValue, value - 1))}
               disabled={isAtMin}
             >
               <Minus className="h-3.5 w-3.5" strokeWidth={2.5} />
