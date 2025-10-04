@@ -34,10 +34,10 @@ export const InformazioniGenerali = ({ formData, updateFormData, onNext, onBack 
           numeroPersone: 2,
           composizione: {
             cucina: 1,
-            cameraDoppia: 1,
-            cameraSingola: 1,
-            soggiorno: 1,
-            bagno: 2,
+            cameraDoppia: 0,
+            cameraSingola: 0,
+            soggiorno: 0,
+            bagno: 1,
             altro: 0
           }
         }
