@@ -121,7 +121,7 @@ export const MultipleSelectionLayout = ({
       </div>
 
       {/* Items Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         {items.map((item) => {
           const isSelected = selectedItems.includes(item.id);
           const isDisabled = isItemDisabled(item.id);
@@ -131,7 +131,7 @@ export const MultipleSelectionLayout = ({
               key={item.id}
               onClick={() => !isDisabled && handleItemToggle(item.id)}
               className={`
-                rounded-xl transition-all duration-300 border cursor-pointer p-4 min-h-[100px]
+                rounded-lg transition-all duration-300 border cursor-pointer p-3 min-h-[80px]
                 ${isSelected 
                   ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
                   : isDisabled
@@ -142,19 +142,19 @@ export const MultipleSelectionLayout = ({
             >
               <div className="flex items-center justify-between h-full">
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-base mb-1">
+                  <div className="font-medium text-sm mb-1">
                     {item.label}
                   </div>
                   {item.description && (
-                    <div className="text-sm opacity-70">
+                    <div className="text-xs opacity-70">
                       {item.description}
                     </div>
                   )}
                 </div>
                 
                 {isSelected && !isDisabled && (
-                  <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3 flex-shrink-0">
-                    <Check className="h-3 w-3 text-white" />
+                  <div className="w-4 h-4 bg-[#d8010c] rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+                    <Check className="h-2.5 w-2.5 text-white" />
                   </div>
                 )}
               </div>
