@@ -35,7 +35,7 @@ export const OutdoorSpaceSelection = ({ formData, updateFormData, onNext, onBack
 
   return (
     <MultipleSelectionLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Tipologia spazi esterni"
       description="Che tipo di spazi esterni vuoi proteggere?"
       items={items}

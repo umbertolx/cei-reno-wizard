@@ -97,7 +97,7 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
 
   return (
     <QuestionStepLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Tipo di protezione interna"
       description="Vuoi rilevare solo il movimento o anche aperture di finestre e porte?"
       options={options}

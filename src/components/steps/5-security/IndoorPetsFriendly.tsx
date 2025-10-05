@@ -45,7 +45,7 @@ export const IndoorPetsFriendly = ({ formData, updateFormData, onNext, onBack }:
 
   return (
     <QuestionStepLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Hai animali domestici in casa?"
       description="È importante saperlo per scegliere i sensori più adatti"
       options={options}

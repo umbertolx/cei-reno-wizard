@@ -72,7 +72,7 @@ export const IndoorCameras = ({ formData, updateFormData, onNext, onBack }: Prop
   if (telecamereInterne === true && !modalita) {
     return (
       <QuestionStepLayout
-        badge="[MODULO 3] Impianto di sicurezza"
+        badge="Impianto di sicurezza"
         title="Modalità di utilizzo"
         description="Vuoi solo visualizzare in diretta o anche registrare le immagini?"
         options={modeOptions}
@@ -86,7 +86,7 @@ export const IndoorCameras = ({ formData, updateFormData, onNext, onBack }: Prop
 
   return (
     <QuestionStepLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Telecamere interne"
       description="Vuoi aggiungere telecamere all'interno della casa?"
       options={mainOptions}

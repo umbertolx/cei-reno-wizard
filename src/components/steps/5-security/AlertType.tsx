@@ -32,7 +32,7 @@ export const AlertType = ({ formData, updateFormData, onNext, onBack }: Props) =
 
   return (
     <MultipleSelectionLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Gestione avvisi"
       description="Come vuoi essere avvisato in caso di movimento o intrusione?"
       items={items}

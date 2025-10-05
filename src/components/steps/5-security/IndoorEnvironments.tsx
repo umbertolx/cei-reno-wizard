@@ -100,12 +100,12 @@ export const IndoorEnvironments = ({ formData, updateFormData, onNext, onBack }:
   const items = ambientiDisponibili.map(ambiente => ({
     id: ambiente,
     label: ambiente,
-    description: recommendedRooms.some(rec => ambiente.includes(rec)) ? 'Consigliato' : undefined
+    description: undefined
   }));
 
   return (
     <MultipleSelectionLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Quali ambienti vuoi mettere in sicurezza?"
       description="Seleziona le stanze che vuoi proteggere con l'impianto di sicurezza"
       items={items}

@@ -40,7 +40,7 @@ export const AlertConnection = ({ formData, updateFormData, onNext, onBack }: Pr
 
   return (
     <QuestionStepLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Connessione Internet"
       description="La casa è già connessa a Internet?"
       options={options}

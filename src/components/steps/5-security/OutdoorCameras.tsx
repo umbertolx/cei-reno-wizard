@@ -114,7 +114,7 @@ export const OutdoorCameras = ({ formData, updateFormData, onNext, onBack }: Pro
 
     return (
       <QuestionStepLayout
-        badge="[MODULO 3] Impianto di sicurezza"
+        badge="Impianto di sicurezza"
         title="Modalità di utilizzo"
         description="Vuoi solo visualizzare in diretta o anche registrare?"
         options={modeOptions}
@@ -130,7 +130,7 @@ export const OutdoorCameras = ({ formData, updateFormData, onNext, onBack }: Pro
   // Step 1: Vuoi telecamere?
   return (
     <QuestionStepLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Telecamere esterne"
       description="Vuoi aggiungere telecamere di sorveglianza per l'esterno?"
       options={mainOptions}

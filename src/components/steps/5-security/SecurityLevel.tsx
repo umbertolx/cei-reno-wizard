@@ -49,7 +49,7 @@ export const SecurityLevel = ({ formData, updateFormData, onNext, onBack }: Prop
 
   return (
     <ScenarioComparisonLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Scegli il livello di dotazione"
       description="Seleziona la qualità dei componenti per il tuo impianto di sicurezza"
       options={scenarios}

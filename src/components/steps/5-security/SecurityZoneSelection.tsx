@@ -69,7 +69,7 @@ export const SecurityZoneSelection = ({ formData, updateFormData, onNext, onBack
 
   return (
     <MultipleSelectionLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Cosa vuoi proteggere?"
       description={getContextualDescription()}
       items={items}

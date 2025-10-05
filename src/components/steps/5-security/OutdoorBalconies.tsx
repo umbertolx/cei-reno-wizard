@@ -37,7 +37,7 @@ export const OutdoorBalconies = ({ formData, updateFormData, onNext, onBack }: P
 
   return (
     <StepLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Dettagli terrazzi e balconi"
       description="Indica le caratteristiche degli spazi esterni da proteggere"
       onBack={onBack}

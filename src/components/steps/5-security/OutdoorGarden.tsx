@@ -121,7 +121,7 @@ export const OutdoorGarden = ({ formData, updateFormData, onNext, onBack }: Prop
 
     return (
       <QuestionStepLayout
-        badge="[MODULO 3] Impianto di sicurezza"
+        badge="Impianto di sicurezza"
         title="Superficie del giardino"
         description="Quanti m² misura il giardino o cortile?"
         options={[]}
@@ -160,7 +160,7 @@ export const OutdoorGarden = ({ formData, updateFormData, onNext, onBack }: Prop
 
     return (
       <QuestionStepLayout
-        badge="[MODULO 3] Impianto di sicurezza"
+        badge="Impianto di sicurezza"
         title="Tipo di protezione"
         description="Vuoi proteggere tutto il perimetro o solo gli ingressi?"
         options={coperturaOptions}
@@ -176,7 +176,7 @@ export const OutdoorGarden = ({ formData, updateFormData, onNext, onBack }: Prop
   // Step 3: Connessione Internet
   return (
     <QuestionStepLayout
-      badge="[MODULO 3] Impianto di sicurezza"
+      badge="Impianto di sicurezza"
       title="Connessione Internet"
       description="La connessione Internet arriva anche in giardino?"
       options={connessioneOptions}
