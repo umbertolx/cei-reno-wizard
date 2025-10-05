@@ -16,7 +16,15 @@ export const IndoorWindowsSelection = ({ formData, updateFormData, onNext, onBac
   const ambientiSelezionati = formData.moduloSicurezza?.ambientiInterni?.ambientiSelezionati || [];
   const finestrePerAmbiente = formData.moduloSicurezza?.ambientiInterni?.finestrePerAmbiente || {};
   
-  const [windowsConfig, setWindowsConfig] = useState<Record<string, number>>(finestrePerAmbiente);
+  // Initialize with defaults: at least 1 window for bedrooms and kitchen
+  const initialConfig = { ...finestrePerAmbiente };
+  ambientiSelezionati.forEach((ambiente: string) => {
+    if ((ambiente === 'Camere da letto' || ambiente === 'Cucina') && !initialConfig[ambiente]) {
+      initialConfig[ambiente] = 1;
+    }
+  });
+  
+  const [windowsConfig, setWindowsConfig] = useState<Record<string, number>>(initialConfig);
 
   useEffect(() => {
     updateFormData({
