@@ -133,7 +133,7 @@ export const MultipleSelectionLayout = ({
                   )}
                 </div>
                 
-                {isSelected && !isDisabled && (
+                {isSelected && (
                   <div className="ml-3 flex-shrink-0">
                     <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
                       <Check className="h-3 w-3 text-white" />
