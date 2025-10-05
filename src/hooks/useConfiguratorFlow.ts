@@ -152,15 +152,48 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       component: 'IndoorCameras',
       skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza') || !data.moduloSicurezza?.zoneProtette?.includes('interni')
     },
+    // Outdoor spaces - diviso in 4 step separati
     { 
-      id: 'outdoor-spaces', 
-      component: 'OutdoorSpaces',
+      id: 'outdoor-space-selection', 
+      component: 'OutdoorSpaceSelection',
       skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza') || !data.moduloSicurezza?.zoneProtette?.includes('esterni')
     },
     { 
-      id: 'alert-management', 
-      component: 'AlertManagement',
+      id: 'outdoor-balconies', 
+      component: 'OutdoorBalconies',
+      skipConditions: (data) => 
+        !data.moduliSelezionati?.includes('sicurezza') || 
+        !data.moduloSicurezza?.zoneProtette?.includes('esterni') ||
+        !data.moduloSicurezza?.spaziEsterni?.tipologiaSpazi?.includes('terrazzi')
+    },
+    { 
+      id: 'outdoor-garden', 
+      component: 'OutdoorGarden',
+      skipConditions: (data) => 
+        !data.moduliSelezionati?.includes('sicurezza') || 
+        !data.moduloSicurezza?.zoneProtette?.includes('esterni') ||
+        !data.moduloSicurezza?.spaziEsterni?.tipologiaSpazi?.includes('giardino')
+    },
+    { 
+      id: 'outdoor-cameras', 
+      component: 'OutdoorCameras',
+      skipConditions: (data) => 
+        !data.moduliSelezionati?.includes('sicurezza') || 
+        !data.moduloSicurezza?.zoneProtette?.includes('esterni')
+    },
+    // Alert management - diviso in 2 step
+    { 
+      id: 'alert-type', 
+      component: 'AlertType',
       skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza')
+    },
+    { 
+      id: 'alert-connection', 
+      component: 'AlertConnection',
+      skipConditions: (data) => 
+        !data.moduliSelezionati?.includes('sicurezza') ||
+        !data.moduloSicurezza?.tipoAvviso?.includes('app') ||
+        data.moduloSicurezza?.hasDomotica === true
     },
     { 
       id: 'security-level', 

@@ -10,20 +10,29 @@ type Props = {
 
 export const SecurityZoneSelection = ({ formData, updateFormData, onNext, onBack }: Props) => {
   // Step 0 - Rilevamento automatico del contesto (logica invisibile)
+  // Eseguito ad ogni render per garantire che i dati siano sempre aggiornati
+  const hasPredisposizione = formData.moduloElettrico?.interventiElettrici?.['predisposizione-antifurto'] === true;
+  const hasDomotica = !!(formData.moduloElettrico?.knxConfig || formData.moduloElettrico?.bTicinoConfig);
+  const tipoDomotica = formData.moduloElettrico?.tipoDomotica;
+  
+  // Aggiorna il contesto solo se è cambiato
   useEffect(() => {
-    const hasPredisposizione = formData.moduloElettrico?.interventiElettrici?.['predisposizione-antifurto'] === true;
-    const hasDomotica = !!(formData.moduloElettrico?.knxConfig || formData.moduloElettrico?.bTicinoConfig);
-    const tipoDomotica = formData.moduloElettrico?.tipoDomotica;
-    
-    updateFormData({
-      moduloSicurezza: {
-        ...formData.moduloSicurezza,
-        hasPredisposizione,
-        hasDomotica,
-        tipoDomotica
-      }
-    });
-  }, []);
+    const currentContext = formData.moduloSicurezza;
+    if (
+      currentContext?.hasPredisposizione !== hasPredisposizione ||
+      currentContext?.hasDomotica !== hasDomotica ||
+      currentContext?.tipoDomotica !== tipoDomotica
+    ) {
+      updateFormData({
+        moduloSicurezza: {
+          ...formData.moduloSicurezza,
+          hasPredisposizione,
+          hasDomotica,
+          tipoDomotica
+        }
+      });
+    }
+  }, [hasPredisposizione, hasDomotica, tipoDomotica]);
 
   const items: SelectableItem[] = [
     {

@@ -1,7 +1,7 @@
-import { PreSelectedFeatureSelector } from '@/components/templates';
+import { Home, BedDouble, BedSingle, Bath, DoorOpen, Square } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { Home, Users, Bed, Bath, Square } from 'lucide-react';
-import { useState } from 'react';
+import { PreSelectedFeatureSelector } from '@/components/templates';
+import { useState, useEffect } from 'react';
 
 type Props = {
   formData: any;
@@ -14,10 +14,10 @@ const getRoomIcon = (roomType: string) => {
   switch(roomType) {
     case 'soggiorno': return Home;
     case 'cucina': return Square;
-    case 'cameraDoppia':
-    case 'cameraSingola': return Bed;
+    case 'cameraDoppia': return BedDouble;
+    case 'cameraSingola': return BedSingle;
     case 'bagno': return Bath;
-    default: return Square;
+    default: return DoorOpen;
   }
 };
 
@@ -34,19 +34,35 @@ const getRoomLabel = (roomType: string, count: number) => {
 };
 
 export const IndoorEnvironments = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  // Estrai le stanze dalla composizione
-  const composizione = formData.informazioniGenerali?.composizione || {};
+  const availableRooms = formData.suddivisioneSpazi || {};
   
-  // Stanze tipicamente a rischio (default selezionate)
-  const riskyRooms = ['soggiorno', 'cucina', 'cameraDoppia', 'cameraSingola'];
+  // Stanze consigliate per default
+  const recommendedRooms = ['soggiorno', 'cucina', 'cameraDoppia', 'cameraSingola'];
   
-  // Inizializza selezione se non esiste
-  const initialSelection = formData.moduloSicurezza?.ambientiInterni?.ambientiSelezionati || 
-    Object.entries(composizione)
-      .filter(([room, count]) => typeof count === 'number' && count > 0 && riskyRooms.includes(room))
-      .map(([room]) => room);
-
-  const [selectedRooms, setSelectedRooms] = useState<string[]>(initialSelection);
+  // Calcola le stanze consigliate disponibili
+  const recommendedAvailable = Object.keys(availableRooms).filter(room => 
+    recommendedRooms.includes(room) && availableRooms[room] > 0
+  );
+  
+  // Inizializza con le stanze già selezionate o con quelle consigliate
+  const [selectedRooms, setSelectedRooms] = useState<string[]>(
+    formData.moduloSicurezza?.ambientiInterni?.ambientiSelezionati || recommendedAvailable
+  );
+  
+  // Aggiorna formData con la selezione iniziale al primo mount se non esiste già
+  useEffect(() => {
+    if (!formData.moduloSicurezza?.ambientiInterni?.ambientiSelezionati && recommendedAvailable.length > 0) {
+      updateFormData({
+        moduloSicurezza: {
+          ...formData.moduloSicurezza,
+          ambientiInterni: {
+            ...formData.moduloSicurezza?.ambientiInterni,
+            ambientiSelezionati: recommendedAvailable
+          }
+        }
+      });
+    }
+  }, []);
 
   const handleToggleRoom = (roomType: string) => {
     const newSelection = selectedRooms.includes(roomType)
@@ -86,11 +102,11 @@ export const IndoorEnvironments = ({ formData, updateFormData, onNext, onBack }:
       isNextDisabled={selectedRooms.length === 0}
     >
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        {Object.entries(composizione)
+        {Object.entries(availableRooms)
           .filter(([_, count]) => typeof count === 'number' && count > 0)
           .map(([roomType, count]) => {
             const isSelected = selectedRooms.includes(roomType);
-            const isRisky = riskyRooms.includes(roomType);
+            const isRecommended = recommendedRooms.includes(roomType);
             
             return (
               <Card
@@ -114,7 +130,7 @@ export const IndoorEnvironments = ({ formData, updateFormData, onNext, onBack }:
                   <span className="text-sm font-medium">
                     {getRoomLabel(roomType, count as number)}
                   </span>
-                  {isRisky && !isSelected && (
+                  {isRecommended && !isSelected && (
                     <span className="text-xs text-muted-foreground">
                       (consigliato)
                     </span>

@@ -16,8 +16,12 @@ import {
   IndoorProtectionType,
   IndoorPetsFriendly,
   IndoorCameras,
-  OutdoorSpaces,
-  AlertManagement,
+  OutdoorSpaceSelection,
+  OutdoorBalconies,
+  OutdoorGarden,
+  OutdoorCameras,
+  AlertType,
+  AlertConnection,
   SecurityLevel
 } from "./steps/5-security";
 import { PhotovoltaicInterventionType } from "./steps/4-photovoltaic/PhotovoltaicInterventionType";
@@ -539,11 +543,23 @@ export const Configuratore = () => {
       case 'IndoorCameras':
         return <IndoorCameras {...commonProps} />;
       
-      case 'OutdoorSpaces':
-        return <OutdoorSpaces {...commonProps} />;
+      case 'OutdoorSpaceSelection':
+        return <OutdoorSpaceSelection {...commonProps} />;
       
-      case 'AlertManagement':
-        return <AlertManagement {...commonProps} />;
+      case 'OutdoorBalconies':
+        return <OutdoorBalconies {...commonProps} />;
+      
+      case 'OutdoorGarden':
+        return <OutdoorGarden {...commonProps} />;
+      
+      case 'OutdoorCameras':
+        return <OutdoorCameras {...commonProps} />;
+      
+      case 'AlertType':
+        return <AlertType {...commonProps} />;
+      
+      case 'AlertConnection':
+        return <AlertConnection {...commonProps} />;
       
       case 'SecurityLevel':
         return <SecurityLevel {...commonProps} />;
