@@ -101,25 +101,6 @@ export const MultipleSelectionLayout = ({
       onNext={handleSubmit}
       isNextDisabled={!hasMinSelections}
     >
-      {/* Selection Counter */}
-      <div className="flex items-center justify-between mb-4">
-        {showSelectAllButton && (
-          <Button
-            variant="outline"
-            onClick={handleSelectAll}
-            className="border-[#d8010c] text-[#d8010c] hover:bg-[#d8010c]/5"
-          >
-            {allSelected ? deselectAllText : selectAllText}
-          </Button>
-        )}
-        
-        {selectedItems.length > 0 && (
-          <div className="text-xs md:text-sm font-medium px-2 py-1 md:px-3 md:py-1.5 rounded-lg border bg-[#d8010c]/5 text-[#d8010c] border-[#d8010c]/20">
-            {selectionCountText(selectedItems.length, items.length)}
-          </div>
-        )}
-      </div>
-
       {/* Items Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         {items.map((item) => {
