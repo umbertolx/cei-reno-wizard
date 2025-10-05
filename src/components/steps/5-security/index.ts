@@ -1,6 +1,7 @@
 export { SecurityZoneSelection } from './SecurityZoneSelection';
 export { IndoorEnvironments } from './IndoorEnvironments';
 export { IndoorProtectionType } from './IndoorProtectionType';
+export { IndoorWindowsSelection } from './IndoorWindowsSelection';
 export { IndoorPetsFriendly } from './IndoorPetsFriendly';
 export { IndoorCameras } from './IndoorCameras';
 export { OutdoorSpaceSelection } from './OutdoorSpaceSelection';

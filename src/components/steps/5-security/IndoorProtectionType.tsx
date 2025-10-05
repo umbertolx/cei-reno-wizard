@@ -1,8 +1,9 @@
-import { QuestionStepLayout, QuestionOption } from '@/components/templates';
-import { Card } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { StepLayout } from '@/components/templates';
+import { InfoBox } from '@/components/shared/InfoBox';
+import { Check } from 'lucide-react';
+import motionOnlyImage from '@/assets/security-motion-only.jpg';
+import windowSensorsImage from '@/assets/security-window-sensors.jpg';
 
 type Props = {
   formData: any;
@@ -11,37 +12,9 @@ type Props = {
   onBack: () => void;
 };
 
-const getRoomLabel = (roomType: string) => {
-  const labels: Record<string, string> = {
-    soggiorno: 'Soggiorno',
-    cucina: 'Cucina',
-    cameraDoppia: 'Camera Doppia',
-    cameraSingola: 'Camera Singola',
-    bagno: 'Bagno',
-    altro: 'Altro'
-  };
-  return labels[roomType] || roomType;
-};
-
 export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack }: Props) => {
   const tipoProtezione = formData.moduloSicurezza?.ambientiInterni?.tipoProtezione || '';
-  const ambientiSelezionati = formData.moduloSicurezza?.ambientiInterni?.ambientiSelezionati || [];
-  const finestrePerAmbiente = formData.moduloSicurezza?.ambientiInterni?.finestrePerAmbiente || {};
-
-  const [windowsConfig, setWindowsConfig] = useState<Record<string, boolean>>(finestrePerAmbiente);
-
-  const options: QuestionOption[] = [
-    {
-      id: 'solo-movimento',
-      label: 'Solo movimento',
-      description: 'Rileva presenze all\'interno degli ambienti'
-    },
-    {
-      id: 'anche-finestre',
-      label: 'Anche finestre e porte esterne',
-      description: 'Sensori di apertura oltre al rilevamento movimento'
-    }
-  ];
+  const [openInfoBoxes, setOpenInfoBoxes] = useState<{ [key: string]: boolean }>({});
 
   const handleSelection = (value: string) => {
     updateFormData({
@@ -49,63 +22,223 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
         ...formData.moduloSicurezza,
         ambientiInterni: {
           ...formData.moduloSicurezza?.ambientiInterni,
-          tipoProtezione: value
+          tipoProtezione: value,
+          // Reset finestre config se cambia scelta
+          finestrePerAmbiente: value === 'solo-movimento' ? undefined : formData.moduloSicurezza?.ambientiInterni?.finestrePerAmbiente
         }
       }
     });
   };
 
-  const handleWindowToggle = (roomType: string, enabled: boolean) => {
-    const newConfig = { ...windowsConfig, [roomType]: enabled };
-    setWindowsConfig(newConfig);
-    updateFormData({
-      moduloSicurezza: {
-        ...formData.moduloSicurezza,
-        ambientiInterni: {
-          ...formData.moduloSicurezza?.ambientiInterni,
-          finestrePerAmbiente: newConfig
-        }
-      }
-    });
+  const toggleInfoBox = (typeId: string, isOpen: boolean) => {
+    setOpenInfoBoxes(prev => ({
+      ...prev,
+      [typeId]: isOpen
+    }));
   };
 
-  const conditionalContent = tipoProtezione === 'anche-finestre' && (
-    <div className="mt-6 space-y-4 animate-fade-in">
-      <div className="p-4 bg-muted/50 rounded-lg">
-        <h4 className="text-sm font-medium mb-3">
-          Seleziona gli ambienti con finestre da proteggere:
-        </h4>
-        <div className="space-y-3">
-          {ambientiSelezionati.map((room: string) => (
-            <Card key={room} className="p-4">
-              <div className="flex items-center justify-between">
-                <Label htmlFor={`window-${room}`} className="font-medium cursor-pointer">
-                  {getRoomLabel(room)}
-                </Label>
-                <Switch
-                  id={`window-${room}`}
-                  checked={windowsConfig[room] || false}
-                  onCheckedChange={(checked) => handleWindowToggle(room, checked)}
-                />
-              </div>
-            </Card>
-          ))}
+  const protectionTypes = [
+    {
+      id: 'solo-movimento',
+      title: 'Solo movimento',
+      image: motionOnlyImage,
+      infoContent: (
+        <div className="space-y-4">
+          <img 
+            src={motionOnlyImage} 
+            alt="Sensori di movimento" 
+            className="w-full h-48 object-cover rounded-lg"
+          />
+          <div className="space-y-3 text-sm">
+            <p className="font-medium text-[#1c1c1c]">Rilevamento movimento interno</p>
+            <p className="text-[#1c1c1c]/80">
+              I sensori di movimento rilevano presenze all'interno degli ambienti quando il sistema 
+              è attivo. Ideali per proteggere la casa quando sei fuori o durante la notte.
+            </p>
+            <p className="text-[#1c1c1c]/80">
+              Questi sensori sono discreti, si installano a parete e coprono ampie aree. 
+              Possono essere configurati per ignorare animali domestici fino a 25kg.
+            </p>
+          </div>
         </div>
-      </div>
-    </div>
-  );
+      ),
+      features: [
+        'Sensori di movimento a infrarossi',
+        'Copertura fino a 12 metri',
+        'Immuni agli animali domestici',
+        'Installazione discreta'
+      ]
+    },
+    {
+      id: 'anche-finestre',
+      title: 'Anche finestre e porte',
+      image: windowSensorsImage,
+      infoContent: (
+        <div className="space-y-4">
+          <img 
+            src={windowSensorsImage} 
+            alt="Sensori finestre e porte" 
+            className="w-full h-48 object-cover rounded-lg"
+          />
+          <div className="space-y-3 text-sm">
+            <p className="font-medium text-[#1c1c1c]">Protezione completa con sensori di apertura</p>
+            <p className="text-[#1c1c1c]/80">
+              Oltre ai sensori di movimento, aggiungi protezione su finestre e porte esterne. 
+              I sensori magnetici rilevano ogni apertura non autorizzata, attivando immediatamente l'allarme.
+            </p>
+            <p className="text-[#1c1c1c]/80">
+              Questa soluzione offre una protezione a più livelli: rilevi sia chi entra 
+              che chi cerca di aprire un accesso. Ideale per una sicurezza completa dell'abitazione.
+            </p>
+          </div>
+        </div>
+      ),
+      features: [
+        'Sensori magnetici su finestre',
+        'Protezione porte esterne',
+        'Allarme immediato all\'apertura',
+        'Doppio livello di sicurezza'
+      ]
+    }
+  ];
+
+  const isFormValid = tipoProtezione !== '';
 
   return (
-    <QuestionStepLayout
+    <StepLayout
       badge="Impianto di sicurezza"
       title="Tipo di protezione interna"
-      description="Vuoi rilevare solo il movimento o anche aperture di finestre e porte?"
-      options={options}
-      selectedValue={tipoProtezione}
-      onSelectionChange={handleSelection}
-      conditionalContent={conditionalContent}
+      description="Scegli il livello di protezione per gli ambienti interni"
       onBack={onBack}
       onNext={onNext}
-    />
+      isNextDisabled={!isFormValid}
+    >
+      <div className="space-y-6">
+        {/* Mobile Layout */}
+        <div className="md:hidden space-y-6">
+          {protectionTypes.map((type) => {
+            const isSelected = tipoProtezione === type.id;
+            const isInfoBoxOpen = openInfoBoxes[type.id] || false;
+            
+            return (
+              <div key={type.id} className="space-y-3">
+                <div
+                  onClick={() => handleSelection(type.id)}
+                  className={`
+                    relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden
+                    ${isSelected 
+                      ? 'bg-[#d8010c]/5 border-[#d8010c] shadow-sm' 
+                      : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                    }
+                  `}
+                >
+                  <div className="absolute top-4 right-4 z-10">
+                    {isSelected && (
+                      <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-white" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-6 pr-12">
+                    <div className="space-y-2 mb-4">
+                      <h3 className="text-xl font-semibold text-[#1c1c1c]">
+                        {type.title}
+                      </h3>
+                      <div className="w-8 h-0.5 bg-[#d8010c] rounded-full"></div>
+                    </div>
+
+                    <div className="space-y-3">
+                      {type.features.map((feature, index) => (
+                        <div key={index} className="flex items-start gap-3">
+                          <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#d8010c] mt-2"></div>
+                          <span className="text-sm text-[#1c1c1c] opacity-85 font-medium">
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <InfoBox
+                  title="Maggiori informazioni"
+                  content={type.infoContent}
+                  isOpen={isInfoBoxOpen}
+                  onToggle={(isOpen) => toggleInfoBox(type.id, isOpen)}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop Layout */}
+        <div className="hidden md:grid grid-cols-2 gap-6 items-stretch">
+          {protectionTypes.map((type) => {
+            const isSelected = tipoProtezione === type.id;
+            
+            return (
+              <div
+                key={type.id}
+                onClick={() => handleSelection(type.id)}
+                className={`
+                  relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden
+                  ${isSelected 
+                    ? 'bg-[#d8010c]/5 border-[#d8010c] shadow-sm' 
+                    : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
+                  }
+                `}
+              >
+                <div className="absolute top-4 right-4 z-10">
+                  {isSelected && (
+                    <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
+                      <Check className="h-3 w-3 text-white" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-8 pr-16">
+                  <div className="space-y-2 mb-6">
+                    <h3 className="text-2xl font-semibold text-[#1c1c1c]">
+                      {type.title}
+                    </h3>
+                    <div className="w-8 h-0.5 bg-[#d8010c] rounded-full"></div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {type.features.map((feature, index) => (
+                      <div key={index} className="flex items-start gap-4">
+                        <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#d8010c] mt-2.5"></div>
+                        <span className="text-base text-[#1c1c1c] opacity-85 font-medium">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop InfoBoxes Row */}
+        <div className="hidden md:grid grid-cols-2 gap-6">
+          {protectionTypes.map((type) => {
+            const isInfoBoxOpen = openInfoBoxes[type.id] || false;
+            
+            return (
+              <div key={`info-${type.id}`} className="h-full">
+                <InfoBox
+                  title="Maggiori informazioni"
+                  content={type.infoContent}
+                  isOpen={isInfoBoxOpen}
+                  onToggle={(isOpen) => toggleInfoBox(type.id, isOpen)}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </StepLayout>
   );
 };

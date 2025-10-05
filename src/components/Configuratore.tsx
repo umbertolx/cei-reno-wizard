@@ -14,6 +14,7 @@ import {
   SecurityZoneSelection,
   IndoorEnvironments,
   IndoorProtectionType,
+  IndoorWindowsSelection,
   IndoorPetsFriendly,
   IndoorCameras,
   OutdoorSpaceSelection,
@@ -536,6 +537,9 @@ export const Configuratore = () => {
       
       case 'IndoorProtectionType':
         return <IndoorProtectionType {...commonProps} />;
+      
+      case 'IndoorWindowsSelection':
+        return <IndoorWindowsSelection {...commonProps} />;
       
       case 'IndoorPetsFriendly':
         return <IndoorPetsFriendly {...commonProps} />;

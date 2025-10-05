@@ -143,6 +143,14 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza') || !data.moduloSicurezza?.zoneProtette?.includes('interni')
     },
     { 
+      id: 'indoor-windows-selection', 
+      component: 'IndoorWindowsSelection',
+      skipConditions: (data) => 
+        !data.moduliSelezionati?.includes('sicurezza') || 
+        !data.moduloSicurezza?.zoneProtette?.includes('interni') ||
+        data.moduloSicurezza?.ambientiInterni?.tipoProtezione !== 'anche-finestre'
+    },
+    { 
       id: 'indoor-pets', 
       component: 'IndoorPetsFriendly',
       skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza') || !data.moduloSicurezza?.zoneProtette?.includes('interni')
