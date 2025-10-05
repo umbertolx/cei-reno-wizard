@@ -16,6 +16,21 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
   const tipoProtezione = formData.moduloSicurezza?.ambientiInterni?.tipoProtezione || [];
   const [openInfoBoxes, setOpenInfoBoxes] = useState<{ [key: string]: boolean }>({});
 
+  // Preselect first option by default
+  useEffect(() => {
+    if (!Array.isArray(tipoProtezione) || tipoProtezione.length === 0) {
+      updateFormData({
+        moduloSicurezza: {
+          ...formData.moduloSicurezza,
+          ambientiInterni: {
+            ...formData.moduloSicurezza?.ambientiInterni,
+            tipoProtezione: ['solo-movimento']
+          }
+        }
+      });
+    }
+  }, []);
+
   const handleSelection = (value: string) => {
     const currentSelection = Array.isArray(tipoProtezione) ? tipoProtezione : [];
     const isSelected = currentSelection.includes(value);
@@ -85,7 +100,7 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
     },
     {
       id: 'anche-finestre',
-      title: 'Sensori finestre',
+      title: 'Sensori volumetrici + sensori apertura finestre',
       image: windowSensorsImage,
       infoContent: (
         <div className="space-y-4">
