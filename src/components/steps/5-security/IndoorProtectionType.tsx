@@ -13,21 +13,35 @@ type Props = {
 };
 
 export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const tipoProtezione = formData.moduloSicurezza?.ambientiInterni?.tipoProtezione || '';
+  const tipoProtezione = formData.moduloSicurezza?.ambientiInterni?.tipoProtezione || [];
   const [openInfoBoxes, setOpenInfoBoxes] = useState<{ [key: string]: boolean }>({});
 
   const handleSelection = (value: string) => {
+    const currentSelection = Array.isArray(tipoProtezione) ? tipoProtezione : [];
+    const isSelected = currentSelection.includes(value);
+    
+    const newSelection = isSelected
+      ? currentSelection.filter((item: string) => item !== value)
+      : [...currentSelection, value];
+    
     updateFormData({
       moduloSicurezza: {
         ...formData.moduloSicurezza,
         ambientiInterni: {
           ...formData.moduloSicurezza?.ambientiInterni,
-          tipoProtezione: value,
-          // Reset finestre config se cambia scelta
-          finestrePerAmbiente: value === 'solo-movimento' ? undefined : formData.moduloSicurezza?.ambientiInterni?.finestrePerAmbiente
+          tipoProtezione: newSelection,
+          // Reset finestre config solo se rimuovi 'anche-finestre'
+          finestrePerAmbiente: newSelection.includes('anche-finestre') 
+            ? formData.moduloSicurezza?.ambientiInterni?.finestrePerAmbiente 
+            : undefined
         }
       }
     });
+  };
+
+  const isSelected = (typeId: string) => {
+    const currentSelection = Array.isArray(tipoProtezione) ? tipoProtezione : [];
+    return currentSelection.includes(typeId);
   };
 
   const toggleInfoBox = (typeId: string, isOpen: boolean) => {
@@ -102,7 +116,7 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
     }
   ];
 
-  const isFormValid = tipoProtezione !== '';
+  const isFormValid = Array.isArray(tipoProtezione) && tipoProtezione.length > 0;
 
   return (
     <StepLayout
@@ -117,7 +131,7 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
         {/* Mobile Layout */}
         <div className="md:hidden space-y-6">
           {protectionTypes.map((type) => {
-            const isSelected = tipoProtezione === type.id;
+            const isTypeSelected = isSelected(type.id);
             const isInfoBoxOpen = openInfoBoxes[type.id] || false;
             
             return (
@@ -126,14 +140,14 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
                   onClick={() => handleSelection(type.id)}
                   className={`
                     relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden
-                    ${isSelected 
+                    ${isTypeSelected 
                       ? 'bg-[#d8010c]/5 border-[#d8010c] shadow-sm' 
                       : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
                     }
                   `}
                 >
                   <div className="absolute top-4 right-4 z-10">
-                    {isSelected && (
+                    {isTypeSelected && (
                       <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
                         <Check className="h-3 w-3 text-white" />
                       </div>
@@ -175,7 +189,7 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
         {/* Desktop Layout */}
         <div className="hidden md:grid grid-cols-2 gap-6 items-stretch">
           {protectionTypes.map((type) => {
-            const isSelected = tipoProtezione === type.id;
+            const isTypeSelected = isSelected(type.id);
             
             return (
               <div
@@ -183,14 +197,14 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
                 onClick={() => handleSelection(type.id)}
                 className={`
                   relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden
-                  ${isSelected 
+                  ${isTypeSelected 
                     ? 'bg-[#d8010c]/5 border-[#d8010c] shadow-sm' 
                     : 'bg-white border-gray-200 hover:border-[#d8010c] hover:shadow-sm'
                   }
                 `}
               >
                 <div className="absolute top-4 right-4 z-10">
-                  {isSelected && (
+                  {isTypeSelected && (
                     <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center">
                       <Check className="h-3 w-3 text-white" />
                     </div>

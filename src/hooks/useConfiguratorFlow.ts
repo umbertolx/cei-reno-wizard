@@ -145,10 +145,13 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
     { 
       id: 'indoor-windows-selection', 
       component: 'IndoorWindowsSelection',
-      skipConditions: (data) => 
-        !data.moduliSelezionati?.includes('sicurezza') || 
-        !data.moduloSicurezza?.zoneProtette?.includes('interni') ||
-        data.moduloSicurezza?.ambientiInterni?.tipoProtezione !== 'anche-finestre'
+      skipConditions: (data) => {
+        const tipoProtezione = data.moduloSicurezza?.ambientiInterni?.tipoProtezione;
+        return !data.moduliSelezionati?.includes('sicurezza') || 
+          !data.moduloSicurezza?.zoneProtette?.includes('interni') ||
+          !Array.isArray(tipoProtezione) ||
+          !tipoProtezione.includes('anche-finestre');
+      }
     },
     { 
       id: 'indoor-pets', 
