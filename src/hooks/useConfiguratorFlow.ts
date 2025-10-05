@@ -126,6 +126,47 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
       component: 'QualitaForniture',
       skipConditions: (data) => !data.moduliSelezionati?.includes('fotovoltaico')
     },
+    // Step modulo sicurezza
+    { 
+      id: 'security-zone-selection', 
+      component: 'SecurityZoneSelection',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza')
+    },
+    { 
+      id: 'indoor-environments', 
+      component: 'IndoorEnvironments',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza') || !data.moduloSicurezza?.zoneProtette?.includes('interni')
+    },
+    { 
+      id: 'indoor-protection-type', 
+      component: 'IndoorProtectionType',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza') || !data.moduloSicurezza?.zoneProtette?.includes('interni')
+    },
+    { 
+      id: 'indoor-pets', 
+      component: 'IndoorPetsFriendly',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza') || !data.moduloSicurezza?.zoneProtette?.includes('interni')
+    },
+    { 
+      id: 'indoor-cameras', 
+      component: 'IndoorCameras',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza') || !data.moduloSicurezza?.zoneProtette?.includes('interni')
+    },
+    { 
+      id: 'outdoor-spaces', 
+      component: 'OutdoorSpaces',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza') || !data.moduloSicurezza?.zoneProtette?.includes('esterni')
+    },
+    { 
+      id: 'alert-management', 
+      component: 'AlertManagement',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza')
+    },
+    { 
+      id: 'security-level', 
+      component: 'SecurityLevel',
+      skipConditions: (data) => !data.moduliSelezionati?.includes('sicurezza')
+    },
     { id: 'dati-contatto', component: 'DatiContatto' },
     { id: 'stima-finale', component: 'StimaFinale', requiresEstimate: true },
     { id: 'richiesta-inviata', component: 'RequestSent' }

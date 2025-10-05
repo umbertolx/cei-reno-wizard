@@ -10,6 +10,16 @@ import { TipoDomotica } from "./steps/3-electrical/04-automation/TipoDomotica";
 import { ConfigurazioneKNX } from "./steps/3-electrical/04-automation/ConfigurazioneKNX";
 import { ConfigurazioneBTicino } from "./steps/3-electrical/04-automation/ConfigurazioneBTicino";
 import { ElectricShutters } from "./steps/3-electrical/05-accessories/ElectricShutters";
+import { 
+  SecurityZoneSelection,
+  IndoorEnvironments,
+  IndoorProtectionType,
+  IndoorPetsFriendly,
+  IndoorCameras,
+  OutdoorSpaces,
+  AlertManagement,
+  SecurityLevel
+} from "./steps/5-security";
 import { PhotovoltaicInterventionType } from "./steps/4-photovoltaic/PhotovoltaicInterventionType";
 import { RoofCharacteristics } from "./steps/4-photovoltaic/RoofCharacteristics";
 import { ConsumptionGoals } from "./steps/4-photovoltaic/ConsumptionGoals";
@@ -110,6 +120,50 @@ export type FormData = {
     superficieDisponibile?: string; // "si" | "no" | "non-lo-so"
     superficieEffettiva?: string; // superficie in mq inserita dall'utente se ha selezionato "no"
     qualitaForniture?: string; // "standard" | "premium"
+    estimate?: EstimateResponse;
+  };
+  
+  // Modulo Sicurezza (compartimento stagno)
+  moduloSicurezza?: {
+    // Step 0 - Contesto (rilevato automaticamente)
+    hasPredisposizione?: boolean;
+    hasDomotica?: boolean;
+    tipoDomotica?: 'knx' | 'bticino';
+    
+    // Step 1 - Zone da proteggere
+    zoneProtette?: string[]; // ['interni', 'esterni']
+    
+    // Step 2 - Ambienti Interni
+    ambientiInterni?: {
+      ambientiSelezionati?: string[];
+      tipoProtezione?: string; // 'solo-movimento' | 'anche-finestre'
+      finestrePerAmbiente?: Record<string, boolean>;
+      animaliDomestici?: boolean;
+      telecamereInterne?: boolean;
+      modalitaTelecamereInterne?: string; // 'solo-diretta' | 'anche-registrazione'
+    };
+    
+    // Step 3 - Spazi Esterni
+    spaziEsterni?: {
+      tipologiaSpazi?: string[]; // ['terrazzi', 'giardino']
+      numeroTerrazzi?: number;
+      superficieTerrazzi?: number;
+      superficieGiardino?: number;
+      copertura?: string; // 'solo-ingressi' | 'tutto-perimetro'
+      numeroIngressi?: number;
+      connessioneInternet?: string; // 'wifi' | '4g-dedicato'
+      telecamereEsterne?: boolean;
+      modalitaTelecamereEsterne?: string; // 'solo-diretta' | 'anche-registrazione'
+      riconoscimentoAI?: boolean;
+    };
+    
+    // Step 4 - Gestione e Avvisi
+    tipoAvviso?: string[]; // ['app', 'sirena']
+    connessioneCasa?: string; // 'wifi-lan' | '4g-dedicato'
+    
+    // Step 5 - Livello Dotazione
+    livelloDotazione?: string; // 'standard' | 'premium'
+    
     estimate?: EstimateResponse;
   };
   
@@ -469,6 +523,30 @@ export const Configuratore = () => {
       
       case 'QualitaForniture':
         return <QualitaForniture {...commonProps} />;
+      
+      case 'SecurityZoneSelection':
+        return <SecurityZoneSelection {...commonProps} />;
+      
+      case 'IndoorEnvironments':
+        return <IndoorEnvironments {...commonProps} />;
+      
+      case 'IndoorProtectionType':
+        return <IndoorProtectionType {...commonProps} />;
+      
+      case 'IndoorPetsFriendly':
+        return <IndoorPetsFriendly {...commonProps} />;
+      
+      case 'IndoorCameras':
+        return <IndoorCameras {...commonProps} />;
+      
+      case 'OutdoorSpaces':
+        return <OutdoorSpaces {...commonProps} />;
+      
+      case 'AlertManagement':
+        return <AlertManagement {...commonProps} />;
+      
+      case 'SecurityLevel':
+        return <SecurityLevel {...commonProps} />;
       
       case 'DatiContatto':
         return (
