@@ -40,19 +40,19 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
   const protectionTypes = [
     {
       id: 'solo-movimento',
-      title: 'Solo movimento',
+      title: 'Sensori volumetrici a infrarossi',
       image: motionOnlyImage,
       infoContent: (
         <div className="space-y-4">
           <img 
             src={motionOnlyImage} 
-            alt="Sensori di movimento" 
+            alt="Sensori volumetrici a infrarossi" 
             className="w-full h-48 object-cover rounded-lg"
           />
           <div className="space-y-3 text-sm">
             <p className="font-medium text-[#1c1c1c]">Rilevamento movimento interno</p>
             <p className="text-[#1c1c1c]/80">
-              I sensori di movimento rilevano presenze all'interno degli ambienti quando il sistema 
+              I sensori volumetrici a infrarossi rilevano presenze all'interno degli ambienti quando il sistema 
               è attivo. Ideali per proteggere la casa quando sei fuori o durante la notte.
             </p>
             <p className="text-[#1c1c1c]/80">
@@ -71,19 +71,19 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
     },
     {
       id: 'anche-finestre',
-      title: 'Anche finestre e porte',
+      title: 'Sensori finestre',
       image: windowSensorsImage,
       infoContent: (
         <div className="space-y-4">
           <img 
             src={windowSensorsImage} 
-            alt="Sensori finestre e porte" 
+            alt="Sensori finestre" 
             className="w-full h-48 object-cover rounded-lg"
           />
           <div className="space-y-3 text-sm">
             <p className="font-medium text-[#1c1c1c]">Protezione completa con sensori di apertura</p>
             <p className="text-[#1c1c1c]/80">
-              Oltre ai sensori di movimento, aggiungi protezione su finestre e porte esterne. 
+              Oltre ai sensori volumetrici, aggiungi protezione su finestre e porte esterne. 
               I sensori magnetici rilevano ogni apertura non autorizzata, attivando immediatamente l'allarme.
             </p>
             <p className="text-[#1c1c1c]/80">
