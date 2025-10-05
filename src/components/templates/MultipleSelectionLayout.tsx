@@ -131,7 +131,7 @@ export const MultipleSelectionLayout = ({
               key={item.id}
               onClick={() => !isDisabled && handleItemToggle(item.id)}
               className={`
-                rounded-xl transition-all duration-300 border cursor-pointer p-4
+                rounded-xl transition-all duration-300 border cursor-pointer p-4 min-h-[100px]
                 ${isSelected 
                   ? 'bg-[#d8010c]/5 border-[#d8010c] text-[#1c1c1c] shadow-sm' 
                   : isDisabled
@@ -140,7 +140,7 @@ export const MultipleSelectionLayout = ({
                 }
               `}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between h-full">
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-base mb-1">
                     {item.label}
@@ -153,7 +153,7 @@ export const MultipleSelectionLayout = ({
                 </div>
                 
                 {isSelected && !isDisabled && (
-                  <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3">
+                  <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center ml-3 flex-shrink-0">
                     <Check className="h-3 w-3 text-white" />
                   </div>
                 )}
