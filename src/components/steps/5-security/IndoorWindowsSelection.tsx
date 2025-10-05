@@ -49,54 +49,46 @@ export const IndoorWindowsSelection = ({ formData, updateFormData, onNext, onBac
       onNext={onNext}
       isNextDisabled={!isFormValid}
     >
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-          {ambientiSelezionati.map((ambiente: string) => {
-            const windowCount = windowsConfig[ambiente] || 0;
-            const hasWindows = windowCount > 0;
-            
-            return (
-              <div
-                key={ambiente}
-                className={`
-                  rounded-xl transition-all duration-300 border p-4
-                  ${hasWindows 
-                    ? 'bg-[#d8010c]/5 border-[#d8010c] shadow-sm' 
-                    : 'bg-white border-gray-200'
-                  }
-                `}
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Label className="font-semibold text-base">
-                      {ambiente}
-                    </Label>
-                    {hasWindows && (
-                      <div className="w-4 h-4 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0">
-                        <Check className="h-2.5 w-2.5 text-white" />
-                      </div>
-                    )}
+      <div className="space-y-3">
+        {ambientiSelezionati.map((ambiente: string) => {
+          const windowCount = windowsConfig[ambiente] || 0;
+          const hasWindows = windowCount > 0;
+          
+          return (
+            <div
+              key={ambiente}
+              className={`
+                flex items-center justify-between gap-4 p-4 rounded-xl border transition-all duration-300
+                ${hasWindows 
+                  ? 'bg-[#d8010c]/5 border-[#d8010c]' 
+                  : 'bg-white border-gray-200'
+                }
+              `}
+            >
+              <div className="flex items-center gap-3 flex-1">
+                {hasWindows && (
+                  <div className="w-5 h-5 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="h-3 w-3 text-white" />
                   </div>
-                  <Input
-                    type="number"
-                    min={0}
-                    max={20}
-                    value={windowCount}
-                    onChange={(e) => handleWindowsChange(ambiente, parseInt(e.target.value) || 0)}
-                    className="text-center font-medium"
-                    placeholder="0"
-                  />
-                  <p className="text-xs text-muted-foreground text-center">
-                    N° finestre
-                  </p>
-                </div>
+                )}
+                <span className="font-medium text-base">{ambiente}</span>
               </div>
-            );
-          })}
-        </div>
+              
+              <Input
+                type="number"
+                min={0}
+                max={20}
+                value={windowCount}
+                onChange={(e) => handleWindowsChange(ambiente, parseInt(e.target.value) || 0)}
+                className="w-20 text-center"
+                placeholder="0"
+              />
+            </div>
+          );
+        })}
 
         {totalWindows > 0 && (
-          <div className="text-sm font-medium px-3 py-1.5 rounded-lg border bg-[#d8010c]/5 text-[#d8010c] border-[#d8010c]/20 text-center">
+          <div className="text-sm font-medium px-3 py-1.5 rounded-lg border bg-[#d8010c]/5 text-[#d8010c] border-[#d8010c]/20 text-center mt-4">
             Totale: {totalWindows} {totalWindows === 1 ? 'finestra' : 'finestre'}
           </div>
         )}
