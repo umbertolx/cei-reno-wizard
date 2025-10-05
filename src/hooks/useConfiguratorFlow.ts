@@ -149,8 +149,7 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
         const tipoProtezione = data.moduloSicurezza?.ambientiInterni?.tipoProtezione;
         return !data.moduliSelezionati?.includes('sicurezza') || 
           !data.moduloSicurezza?.zoneProtette?.includes('interni') ||
-          !Array.isArray(tipoProtezione) ||
-          !tipoProtezione.includes('anche-finestre');
+          tipoProtezione !== 'anche-finestre';
       }
     },
     { 
