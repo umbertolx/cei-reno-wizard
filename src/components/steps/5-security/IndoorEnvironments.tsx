@@ -34,15 +34,16 @@ const getRoomLabel = (roomType: string, count: number) => {
 };
 
 export const IndoorEnvironments = ({ formData, updateFormData, onNext, onBack }: Props) => {
-  const availableRooms = formData.suddivisioneSpazi || {};
+  // Pesca le stanze dal modulo informazioni generali
+  const availableRooms = formData.informazioniGenerali?.composizione || {};
   
-  // Stanze consigliate per default
+  // Stanze consigliate per default (tipicamente a rischio)
   const recommendedRooms = ['soggiorno', 'cucina', 'cameraDoppia', 'cameraSingola'];
   
-  // Calcola le stanze consigliate disponibili
-  const recommendedAvailable = Object.keys(availableRooms).filter(room => 
-    recommendedRooms.includes(room) && availableRooms[room] > 0
-  );
+  // Calcola le stanze consigliate che sono disponibili (count > 0)
+  const recommendedAvailable = Object.entries(availableRooms)
+    .filter(([room, count]) => recommendedRooms.includes(room) && typeof count === 'number' && count > 0)
+    .map(([room]) => room);
   
   // Inizializza con le stanze già selezionate o con quelle consigliate
   const [selectedRooms, setSelectedRooms] = useState<string[]>(
