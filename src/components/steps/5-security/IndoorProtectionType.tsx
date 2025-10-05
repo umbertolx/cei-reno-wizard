@@ -32,21 +32,14 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
   }, []);
 
   const handleSelection = (value: string) => {
-    const currentSelection = Array.isArray(tipoProtezione) ? tipoProtezione : [];
-    const isSelected = currentSelection.includes(value);
-    
-    const newSelection = isSelected
-      ? currentSelection.filter((item: string) => item !== value)
-      : [...currentSelection, value];
-    
     updateFormData({
       moduloSicurezza: {
         ...formData.moduloSicurezza,
         ambientiInterni: {
           ...formData.moduloSicurezza?.ambientiInterni,
-          tipoProtezione: newSelection,
-          // Reset finestre config solo se rimuovi 'anche-finestre'
-          finestrePerAmbiente: newSelection.includes('anche-finestre') 
+          tipoProtezione: [value],
+          // Reset finestre config se non selezioni 'anche-finestre'
+          finestrePerAmbiente: value === 'anche-finestre' 
             ? formData.moduloSicurezza?.ambientiInterni?.finestrePerAmbiente 
             : undefined
         }
