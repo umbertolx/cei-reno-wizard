@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { ScenarioComparisonLayout, ScenarioOption } from '@/components/templates';
-import motionOnlyImage from '@/assets/security-motion-only.jpg';
+import motionOnlyImage from '@/assets/security-motion-sensor-coverage.jpg';
 import windowSensorsImage from '@/assets/security-window-sensors.jpg';
 
 type Props = {
