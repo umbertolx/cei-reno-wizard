@@ -1,8 +1,8 @@
 import { StepLayout } from '@/components/templates';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Check } from 'lucide-react';
+import { Check, Plus, Minus } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 type Props = {
@@ -74,15 +74,29 @@ export const IndoorWindowsSelection = ({ formData, updateFormData, onNext, onBac
                 <span className="font-medium text-base">{ambiente}</span>
               </div>
               
-              <Input
-                type="number"
-                min={0}
-                max={20}
-                value={windowCount}
-                onChange={(e) => handleWindowsChange(ambiente, parseInt(e.target.value) || 0)}
-                className="w-20 text-center"
-                placeholder="0"
-              />
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={() => handleWindowsChange(ambiente, windowCount - 1)}
+                  disabled={windowCount === 0}
+                >
+                  <Minus className="h-3 w-3" />
+                </Button>
+                <span className="w-8 text-center font-medium">{windowCount}</span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={() => handleWindowsChange(ambiente, windowCount + 1)}
+                  disabled={windowCount >= 20}
+                >
+                  <Plus className="h-3 w-3" />
+                </Button>
+              </div>
             </div>
           );
         })}
