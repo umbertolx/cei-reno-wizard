@@ -2,6 +2,7 @@ import { StepLayout } from '@/components/templates';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Check } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 type Props = {
@@ -32,7 +33,7 @@ export const IndoorWindowsSelection = ({ formData, updateFormData, onNext, onBac
   const handleWindowsChange = (ambiente: string, value: number) => {
     setWindowsConfig(prev => ({
       ...prev,
-      [ambiente]: value
+      [ambiente]: Math.max(0, value)
     }));
   };
 
@@ -48,36 +49,55 @@ export const IndoorWindowsSelection = ({ formData, updateFormData, onNext, onBac
       onNext={onNext}
       isNextDisabled={!isFormValid}
     >
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {ambientiSelezionati.map((ambiente: string) => (
-            <Card key={ambiente} className="p-6">
-              <div className="space-y-4">
-                <Label htmlFor={`windows-${ambiente}`} className="text-base font-semibold">
-                  {ambiente}
-                </Label>
-                <Input
-                  id={`windows-${ambiente}`}
-                  type="number"
-                  min={0}
-                  max={20}
-                  value={windowsConfig[ambiente] || 0}
-                  onChange={(e) => handleWindowsChange(ambiente, parseInt(e.target.value) || 0)}
-                  className="text-center text-lg font-medium"
-                />
-                <p className="text-xs text-muted-foreground text-center">
-                  Numero finestre
-                </p>
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+          {ambientiSelezionati.map((ambiente: string) => {
+            const windowCount = windowsConfig[ambiente] || 0;
+            const hasWindows = windowCount > 0;
+            
+            return (
+              <div
+                key={ambiente}
+                className={`
+                  rounded-xl transition-all duration-300 border p-4
+                  ${hasWindows 
+                    ? 'bg-[#d8010c]/5 border-[#d8010c] shadow-sm' 
+                    : 'bg-white border-gray-200'
+                  }
+                `}
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label className="font-semibold text-base">
+                      {ambiente}
+                    </Label>
+                    {hasWindows && (
+                      <div className="w-4 h-4 bg-[#d8010c] rounded-full flex items-center justify-center flex-shrink-0">
+                        <Check className="h-2.5 w-2.5 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={20}
+                    value={windowCount}
+                    onChange={(e) => handleWindowsChange(ambiente, parseInt(e.target.value) || 0)}
+                    className="text-center font-medium"
+                    placeholder="0"
+                  />
+                  <p className="text-xs text-muted-foreground text-center">
+                    N° finestre
+                  </p>
+                </div>
               </div>
-            </Card>
-          ))}
+            );
+          })}
         </div>
 
         {totalWindows > 0 && (
-          <div className="text-center text-sm bg-[#d8010c]/5 rounded-lg p-4 border border-[#d8010c]/20">
-            <span className="font-semibold text-[#d8010c]">
-              Totale: {totalWindows} {totalWindows === 1 ? 'finestra' : 'finestre'} da proteggere
-            </span>
+          <div className="text-sm font-medium px-3 py-1.5 rounded-lg border bg-[#d8010c]/5 text-[#d8010c] border-[#d8010c]/20 text-center">
+            Totale: {totalWindows} {totalWindows === 1 ? 'finestra' : 'finestre'}
           </div>
         )}
       </div>
