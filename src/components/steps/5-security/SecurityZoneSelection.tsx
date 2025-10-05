@@ -270,7 +270,7 @@ export const SecurityZoneSelection = ({ formData, updateFormData, onNext, onBack
             const isInfoBoxOpen = openInfoBoxes[zone.id] || false;
             
             return (
-              <div key={`info-${zone.id}`}>
+              <div key={`info-${zone.id}`} className="h-full">
                 <InfoBox
                   title="Maggiori informazioni"
                   content={zone.infoContent}
@@ -281,12 +281,6 @@ export const SecurityZoneSelection = ({ formData, updateFormData, onNext, onBack
             );
           })}
         </div>
-
-        {selectedZones.length > 0 && (
-          <div className="text-center text-sm text-[#1c1c1c]/70 bg-[#d8010c]/5 rounded-lg p-3">
-            {selectedZones.length === 1 ? '1 zona selezionata' : `${selectedZones.length} zone selezionate`}
-          </div>
-        )}
       </div>
     </StepLayout>
   );
