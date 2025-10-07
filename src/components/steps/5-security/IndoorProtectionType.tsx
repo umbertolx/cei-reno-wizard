@@ -111,7 +111,7 @@ export const IndoorProtectionType = ({ formData, updateFormData, onNext, onBack 
   return (
     <ScenarioComparisonLayout
       badge="Impianto di sicurezza"
-      title="Tipo di protezione interna"
+      title="Vuoi che l'impianto rilevi solo il movimento o anche l'apertura di porte e finestre?"
       description="Scegli il livello di protezione per gli ambienti interni"
       options={options}
       selectedValue={tipoProtezione}
