@@ -203,15 +203,120 @@ export type Database = {
         }
         Relationships: []
       }
+      leads_real: {
+        Row: {
+          city: string | null
+          created_at: string | null
+          electrical_details: Json | null
+          email: string
+          first_name: string | null
+          full_address: string | null
+          house_type: string | null
+          id: string
+          last_name: string | null
+          latitude: number | null
+          longitude: number | null
+          num_people: string | null
+          phone: string | null
+          photovoltaic_details: Json | null
+          postal_code: string | null
+          property_type: string | null
+          raw_data: Json | null
+          region: string | null
+          rooms: Json | null
+          selected_systems: string[] | null
+          submitted_at: string | null
+          surface_area_sqm: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string | null
+          electrical_details?: Json | null
+          email: string
+          first_name?: string | null
+          full_address?: string | null
+          house_type?: string | null
+          id?: string
+          last_name?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          num_people?: string | null
+          phone?: string | null
+          photovoltaic_details?: Json | null
+          postal_code?: string | null
+          property_type?: string | null
+          raw_data?: Json | null
+          region?: string | null
+          rooms?: Json | null
+          selected_systems?: string[] | null
+          submitted_at?: string | null
+          surface_area_sqm?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string | null
+          electrical_details?: Json | null
+          email?: string
+          first_name?: string | null
+          full_address?: string | null
+          house_type?: string | null
+          id?: string
+          last_name?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          num_people?: string | null
+          phone?: string | null
+          photovoltaic_details?: Json | null
+          postal_code?: string | null
+          property_type?: string | null
+          raw_data?: Json | null
+          region?: string | null
+          rooms?: Json | null
+          selected_systems?: string[] | null
+          submitted_at?: string | null
+          surface_area_sqm?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -338,6 +443,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

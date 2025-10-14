@@ -2,6 +2,8 @@
 import { supabase } from "@/integrations/supabase/client";
 import { FormData } from "@/components/Configuratore";
 import { EstimateResponse } from "@/types/estimate";
+import { validateAndSanitizeLeadData } from "@/lib/validation";
+import { z } from "zod";
 
 export interface DatabaseLead {
   id: string;
@@ -218,17 +220,41 @@ export const saveLeadToDatabase = async (
     composizione: formData.composizione || {}
   };
 
-  // Validation checks
-  if (!contatti.nome || !contatti.cognome || !contatti.email || !contatti.telefono) {
-    const missingFields = [];
-    if (!contatti.nome) missingFields.push('nome');
-    if (!contatti.cognome) missingFields.push('cognome');
-    if (!contatti.email) missingFields.push('email');
-    if (!contatti.telefono) missingFields.push('telefono');
-    
-    const error = `Campi obbligatori mancanti: ${missingFields.join(', ')}`;
-    console.error("❌ Validation error:", error);
-    throw new Error(error);
+  // Validation checks with proper sanitization
+  try {
+    const validatedContact = validateAndSanitizeLeadData({
+      nome: contatti.nome,
+      cognome: contatti.cognome,
+      email: contatti.email,
+      telefono: contatti.telefono,
+      indirizzo: info.indirizzo,
+      citta: info.citta,
+      cap: info.cap,
+      regione: info.regione,
+      piano: info.piano,
+      note: contatti.note,
+    });
+
+    // Use validated data
+    contatti.nome = validatedContact.nome;
+    contatti.cognome = validatedContact.cognome;
+    contatti.email = validatedContact.email;
+    contatti.telefono = validatedContact.telefono;
+    info.indirizzo = validatedContact.indirizzo;
+    info.citta = validatedContact.citta;
+    info.cap = validatedContact.cap;
+    info.regione = validatedContact.regione;
+    info.piano = validatedContact.piano || '';
+    if (validatedContact.note) {
+      contatti.note = validatedContact.note;
+    }
+  } catch (validationError) {
+    if (validationError instanceof z.ZodError) {
+      const error = `Dati non validi: ${validationError.errors.map(e => e.message).join(', ')}`;
+      console.error("❌ Validation error:", error);
+      throw new Error(error);
+    }
+    throw validationError;
   }
 
   if (!estimate.min || !estimate.max) {

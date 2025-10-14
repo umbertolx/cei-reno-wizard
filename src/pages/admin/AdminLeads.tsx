@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Filter, Download, Plus, RefreshCw } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { 
   DndContext, 
   DragEndEvent, 
@@ -29,6 +30,7 @@ import {
 } from "@dnd-kit/sortable";
 
 const AdminLeads = () => {
+  const { isAdmin, isLoading: authLoading } = useAdminAuth();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -407,7 +409,7 @@ const AdminLeads = () => {
 
   const activeLead = activeId ? leads.find(lead => lead.id === activeId) : null;
 
-  if (isLoading) {
+  if (authLoading || isLoading) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
@@ -418,6 +420,10 @@ const AdminLeads = () => {
         </div>
       </AdminLayout>
     );
+  }
+
+  if (!isAdmin) {
+    return null; // useAdminAuth will redirect
   }
 
   return (

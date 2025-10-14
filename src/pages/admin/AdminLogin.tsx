@@ -1,32 +1,87 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const AdminLogin = () => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Check if user is already logged in
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        // Check if user has admin role
+        const { data: userRole } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+        
+        if (userRole) {
+          navigate("/admin/dashboard");
+        }
+      }
+    };
+    checkAuth();
+  }, [navigate]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
-    // Password mock per demo
-    if (password === "admin123") {
-      toast({
-        title: "Login effettuato",
-        description: "Benvenuto nel dashboard admin!",
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      navigate("/admin/dashboard");
-    } else {
+
+      if (authError) throw authError;
+
+      if (authData.user) {
+        // Check if user has admin role
+        const { data: userRole, error: roleError } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', authData.user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+
+        if (roleError) throw roleError;
+
+        if (!userRole) {
+          await supabase.auth.signOut();
+          toast({
+            title: "Accesso negato",
+            description: "Non hai i permessi di amministratore",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        toast({
+          title: "Login effettuato",
+          description: "Benvenuto nel dashboard admin!",
+        });
+        navigate("/admin/dashboard");
+      }
+    } catch (error: any) {
       toast({
         title: "Errore",
-        description: "Password non corretta",
+        description: error.message || "Credenziali non valide",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -43,25 +98,37 @@ const AdminLogin = () => {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@example.com"
+                required
+                disabled={isLoading}
+              />
+            </div>
+            <div>
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Inserisci la password admin"
+                placeholder="Inserisci la password"
                 required
+                disabled={isLoading}
               />
             </div>
-            <Button type="submit" className="w-full bg-[#d8010c] hover:bg-[#b8010a]">
-              Accedi
+            <Button 
+              type="submit" 
+              className="w-full bg-[#d8010c] hover:bg-[#b8010a]"
+              disabled={isLoading}
+            >
+              {isLoading ? "Accesso in corso..." : "Accedi"}
             </Button>
           </form>
-          <div className="mt-4 p-3 bg-blue-50 rounded-md">
-            <p className="text-sm text-blue-800">
-              <strong>Demo:</strong> Usa la password "admin123"
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>

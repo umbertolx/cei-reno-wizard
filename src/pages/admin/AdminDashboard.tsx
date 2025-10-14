@@ -8,11 +8,13 @@ import { leadStates, convertDatabaseLeadToLead } from "@/data/mockLeads";
 import { fetchLeads } from "@/services/leadService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { TrendingUp, Users, DollarSign, Calendar, RefreshCw, AlertCircle } from "lucide-react";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 type TimeFrame = 'oggi' | 'settimana' | 'mese' | 'anno';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const { isAdmin, isLoading: authLoading } = useAdminAuth();
   const [timeFrame, setTimeFrame] = useState<TimeFrame>('mese');
   const [leads, setLeads] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -106,7 +108,7 @@ const AdminDashboard = () => {
     .sort((a, b) => new Date(b.dataRichiesta).getTime() - new Date(a.dataRichiesta).getTime())
     .slice(0, 5);
 
-  if (isLoading) {
+  if (authLoading || isLoading) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
@@ -117,6 +119,10 @@ const AdminDashboard = () => {
         </div>
       </AdminLayout>
     );
+  }
+
+  if (!isAdmin) {
+    return null; // useAdminAuth will redirect
   }
 
   if (error) {
