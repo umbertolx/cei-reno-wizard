@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { WelcomePage } from "./steps/1-welcome/WelcomePage";
+import { WelcomeIntro } from "./steps/1-welcome/WelcomeIntro";
+import { ModuleSelection } from "./steps/1-welcome/ModuleSelection";
 import { InformazioniGenerali } from "./steps/2-general/InformazioniGenerali";
 import { ElectricalConfiguration } from "./steps/3-electrical/01-intervention-type/ElectricalConfiguration";
 import { ElectricalSystemAge } from "./steps/3-electrical/01-intervention-type/ElectricalSystemAge";
@@ -435,12 +436,6 @@ export const Configuratore = () => {
     }
   };
 
-  const handleWelcomeStart = (selectedModules: string[]) => {
-    console.log("🎯 Starting configurator with modules:", selectedModules);
-    updateFormData({ moduliSelezionati: selectedModules });
-    scrollToTop();
-    handleNext();
-  };
 
   const renderCurrentStep = () => {
     const currentStepConfig = flow.getCurrentStepConfig();
@@ -460,8 +455,11 @@ export const Configuratore = () => {
     };
 
     switch (currentStepConfig.component) {
-      case 'WelcomePage':
-        return <WelcomePage onStart={handleWelcomeStart} />;
+      case 'WelcomeIntro':
+        return <WelcomeIntro onNext={handleNext} />;
+      
+      case 'ModuleSelection':
+        return <ModuleSelection {...commonProps} />;
       
       case 'InformazioniGenerali':
         return <InformazioniGenerali {...commonProps} />;

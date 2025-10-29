@@ -14,7 +14,8 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
 
   // Definizione step con flusso logico corretto
   const steps: StepConfig[] = [
-    { id: 'welcome', component: 'WelcomePage' },
+    { id: 'welcome', component: 'WelcomeIntro' },
+    { id: 'module-selection', component: 'ModuleSelection' },
     { id: 'info-generali', component: 'InformazioniGenerali' },
     { 
       id: 'configuratore-elettrico', 
