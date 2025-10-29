@@ -113,7 +113,13 @@ export const QuestionStepLayout = ({
                 )}
               </div>
               
-              {isSelected(option.id) && (
+              {option.disabled ? (
+                <div className="flex-shrink-0 ml-3">
+                  <span className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-500 rounded-full">
+                    Prossimamente
+                  </span>
+                </div>
+              ) : isSelected(option.id) && (
                 <div className="flex-shrink-0 ml-3">
                   <CheckmarkIcon />
                 </div>
