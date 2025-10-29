@@ -16,7 +16,10 @@ export const useConfiguratorFlow = (formData: FormData, onStepChange?: () => voi
   const steps: StepConfig[] = [
     { id: 'welcome', component: 'WelcomeIntro' },
     { id: 'module-selection', component: 'ModuleSelection' },
-    { id: 'info-generali', component: 'InformazioniGenerali' },
+    { id: 'tipologia-superficie', component: 'TipologiaESuperficie' },
+    { id: 'ubicazione', component: 'Ubicazione' },
+    { id: 'destinazione-uso', component: 'DestinazioneUso' },
+    { id: 'composizione-spazi', component: 'ComposizioneSpazi' },
     { 
       id: 'configuratore-elettrico', 
       component: 'ElectricalConfiguration',

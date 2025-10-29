@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { WelcomeIntro } from "./steps/1-welcome/WelcomeIntro";
 import { ModuleSelection } from "./steps/1-welcome/ModuleSelection";
-import { InformazioniGenerali } from "./steps/2-general/InformazioniGenerali";
+import { TipologiaESuperficie } from "./steps/2-general/TipologiaESuperficie";
+import { Ubicazione } from "./steps/2-general/Ubicazione";
+import { DestinazioneUso } from "./steps/2-general/DestinazioneUso";
+import { ComposizioneSpazi } from "./steps/2-general/ComposizioneSpazi";
 import { ElectricalConfiguration } from "./steps/3-electrical/01-intervention-type/ElectricalConfiguration";
 import { ElectricalSystemAge } from "./steps/3-electrical/01-intervention-type/ElectricalSystemAge";
 import { ElectricalInterventions } from "./steps/3-electrical/02-system-planning/ElectricalInterventions";
@@ -461,8 +464,17 @@ export const Configuratore = () => {
       case 'ModuleSelection':
         return <ModuleSelection {...commonProps} />;
       
-      case 'InformazioniGenerali':
-        return <InformazioniGenerali {...commonProps} />;
+      case 'TipologiaESuperficie':
+        return <TipologiaESuperficie {...commonProps} />;
+      
+      case 'Ubicazione':
+        return <Ubicazione {...commonProps} />;
+      
+      case 'DestinazioneUso':
+        return <DestinazioneUso {...commonProps} />;
+      
+      case 'ComposizioneSpazi':
+        return <ComposizioneSpazi {...commonProps} />;
       
       case 'ElectricalConfiguration':
         return <ElectricalConfiguration {...commonProps} />;
