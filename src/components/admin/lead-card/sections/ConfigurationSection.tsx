@@ -262,7 +262,9 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         {hasElettrico && elettricoBadges.length > 0 && (
           <div>
             <div className="mb-3">
-              <ModuleBadge>🔌 MODULO ELETTRICO</ModuleBadge>
+              <h5 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                🔌 Modulo Elettrico
+              </h5>
             </div>
             <div className="flex flex-wrap gap-2">
               {elettricoBadges.map((badge, index) => (
@@ -280,7 +282,9 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         {hasFotovoltaico && fotovoltaicoBadges.length > 0 && (
           <div>
             <div className="mb-3">
-              <ModuleBadge>☀️ MODULO FOTOVOLTAICO</ModuleBadge>
+              <h5 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                ☀️ Modulo Fotovoltaico
+              </h5>
             </div>
             <div className="flex flex-wrap gap-2">
               {fotovoltaicoBadges.map((badge, index) => (
