@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Phone, Mail, Calendar, Euro, User, Building } from "lucide-react";
 import { ConfigurationSection } from "./lead-card/sections/ConfigurationSection";
+import { toast } from "sonner";
 
 interface LeadDetailsProps {
   lead: Lead | null;
@@ -47,6 +48,15 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
 
   const stimaMedia = lead.stimaMin && lead.stimaMax ? Math.round((lead.stimaMin + lead.stimaMax) / 2) : 0;
 
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(lead.email);
+      toast.success("Email copiata negli appunti");
+    } catch (err) {
+      toast.error("Errore nella copia dell'email");
+    }
+  };
+
   console.log("LeadDetails: About to render dialog with isOpen:", isOpen);
 
   return (
@@ -80,7 +90,12 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-gray-400" />
-                <span className="text-gray-900">{lead.email}</span>
+                <span 
+                  onClick={copyEmail}
+                  className="text-gray-900 cursor-pointer hover:text-primary transition-colors"
+                >
+                  {lead.email}
+                </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-gray-400" />
