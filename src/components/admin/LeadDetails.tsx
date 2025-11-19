@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { MapPin, Phone, Mail, Calendar, Euro, User, Building, Eye, Calculator } from "lucide-react";
+import { MapPin, Phone, Mail, Calendar, Euro, User, Building } from "lucide-react";
 import { ConfigurationSection } from "./lead-card/sections/ConfigurationSection";
 import { toast } from "sonner";
 
@@ -177,45 +177,23 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
               Analisi Economica
             </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Range Cliente */}
-              <div className="border-2 border-green-200 rounded-xl p-5 bg-gradient-to-br from-green-50 to-emerald-50">
-                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-green-200">
-                  <div className="p-2 bg-green-500 rounded-lg">
-                    <Eye className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-green-900 text-lg">Range Cliente</h4>
-                    <p className="text-xs text-green-700">Preventivo mostrato all'utente</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-white/80 rounded-lg p-3 text-center">
-                    <div className="text-xs text-green-700 font-medium mb-1">Minimo</div>
-                    <div className="text-xl font-bold text-green-900">€{lead.stimaMin?.toLocaleString()}</div>
-                  </div>
-                  <div className="bg-white/80 rounded-lg p-3 text-center">
-                    <div className="text-xs text-green-700 font-medium mb-1">Massimo</div>
-                    <div className="text-xl font-bold text-green-900">€{lead.stimaMax?.toLocaleString()}</div>
-                  </div>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-green-50 border-2 border-green-200 rounded-lg">
+                <Badge className="mb-2 bg-green-600">Range Cliente</Badge>
+                <div className="text-sm text-gray-600 mb-1">Preventivo Minimo</div>
+                <div className="text-2xl font-bold text-green-900">€{lead.stimaMin?.toLocaleString()}</div>
               </div>
-
-              {/* Stima Ricasa */}
-              <div className="border-2 border-blue-200 rounded-xl p-5 bg-gradient-to-br from-blue-50 to-indigo-50">
-                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-blue-200">
-                  <div className="p-2 bg-blue-500 rounded-lg">
-                    <Calculator className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-blue-900 text-lg">Stima Ricasa</h4>
-                    <p className="text-xs text-blue-700">Valutazione interna</p>
-                  </div>
-                </div>
-                <div className="bg-white/80 rounded-lg p-4 text-center">
-                  <div className="text-sm text-blue-700 font-medium mb-2">Valore Medio</div>
-                  <div className="text-3xl font-bold text-blue-900">€{stimaMedia?.toLocaleString()}</div>
-                </div>
+              
+              <div className="text-center p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
+                <Badge className="mb-2 bg-blue-600">Stima Ricasa</Badge>
+                <div className="text-sm text-gray-600 mb-1">Valore Medio</div>
+                <div className="text-2xl font-bold text-blue-900">€{stimaMedia?.toLocaleString()}</div>
+              </div>
+              
+              <div className="text-center p-4 bg-green-50 border-2 border-green-200 rounded-lg">
+                <Badge className="mb-2 bg-green-600">Range Cliente</Badge>
+                <div className="text-sm text-gray-600 mb-1">Preventivo Massimo</div>
+                <div className="text-2xl font-bold text-green-900">€{lead.stimaMax?.toLocaleString()}</div>
               </div>
             </div>
           </div>
