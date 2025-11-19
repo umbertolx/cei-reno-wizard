@@ -26,70 +26,102 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
     );
   }
 
+  // Fields to exclude from badge display (too technical or not relevant)
+  const excludedFields = [
+    'datiGenerali',
+    'ambientiModificheVecchioImpianto',
+    'consumo_aggiuntivo_completo',
+    'funzioni_knx',
+    'funzioni_bticino',
+    'numero_moduli_knx',
+    'configurazione_knx',
+    'configurazione_bticino'
+  ];
+
   // Helper function to get readable labels
   const getLabel = (key: string, value: any): { icon: any; label: string } | null => {
-    if (value === null || value === undefined) return null;
+    if (value === null || value === undefined || value === '') return null;
+    if (excludedFields.includes(key)) return null;
 
-    // Handle boolean values
+    // Handle boolean values (skip false values)
     if (typeof value === 'boolean') {
       if (!value) return null;
     }
 
-    // Mapping configuration
-    const labelMap: Record<string, { icon: any; label: string }> = {
-      // Tipo ristrutturazione
-      'tipo_ristrutturazione_completa': { icon: Home, label: 'Ristrutturazione Completa' },
-      'tipo_ristrutturazione_nuova': { icon: Home, label: 'Nuova Costruzione' },
-      'tipo_ristrutturazione_parziale': { icon: Home, label: 'Intervento Parziale' },
-      
-      // Tipo impianto elettrico
-      'tipo_nuovo_impianto_elettrico_livello1': { icon: Zap, label: 'Livello 1 - Standard' },
-      'tipo_nuovo_impianto_elettrico_livello2': { icon: Zap, label: 'Livello 2 - Avanzato' },
-      'tipo_nuovo_impianto_elettrico_livello3': { icon: Zap, label: 'Livello 3 - Domotico' },
-      
-      // Età impianto
-      'impianto_vecchio_true': { icon: Settings, label: 'Impianto Datato' },
-      'impianto_vecchio_false': { icon: Settings, label: 'Impianto Recente' },
-      
-      // Tipo domotica
-      'tipo_domotica_cablata': { icon: Cable, label: 'Domotica Cablata (KNX)' },
-      'tipo_domotica_wireless': { icon: Wifi, label: 'Domotica Wireless (BTicino)' },
-      
-      // Tipo fotovoltaico
-      'tipo_intervento_fotovoltaico_nuovo': { icon: Sun, label: 'Nuovo Impianto' },
-      'tipo_intervento_fotovoltaico_ampliamento': { icon: Sun, label: 'Ampliamento' },
-      
-      // Batteria
-      'batteria_accumulo_si': { icon: Battery, label: 'Con Batteria' },
-      'batteria_accumulo_no': { icon: Battery, label: 'Senza Batteria' },
-      
-      // Qualità forniture
-      'qualita_forniture_standard': { icon: Shield, label: 'Forniture Standard' },
-      'qualita_forniture_premium': { icon: Shield, label: 'Forniture Premium' },
-      
-      // Tapparelle elettriche
-      'tapparelle_elettriche_true': { icon: DoorOpen, label: 'Tapparelle Elettriche' },
-    };
-
-    // Try to find exact match
-    const exactKey = `${key}_${value}`;
-    if (labelMap[exactKey]) {
-      return labelMap[exactKey];
+    // Mapping for tipo_ristrutturazione
+    if (key === 'tipo_ristrutturazione') {
+      const ristruttuazioneMap: Record<string, { icon: any; label: string }> = {
+        'Completa': { icon: Home, label: 'Ristrutturazione Completa' },
+        'Nuova costruzione': { icon: Home, label: 'Nuova Costruzione' },
+        'Intervento parziale': { icon: Home, label: 'Intervento Parziale' },
+      };
+      return ristruttuazioneMap[value] || null;
     }
 
-    // Try key only
-    if (labelMap[key]) {
-      return labelMap[key];
+    // Mapping for tipo_nuovo_impianto_elettrico
+    if (key === 'tipo_nuovo_impianto_elettrico') {
+      const impiantoMap: Record<string, { icon: any; label: string }> = {
+        'Livello 1': { icon: Zap, label: 'Livello 1 - Standard' },
+        'Livello 2': { icon: Zap, label: 'Livello 2 - Avanzato' },
+        'Livello 3': { icon: Zap, label: 'Livello 3 - Domotico' },
+      };
+      return impiantoMap[value] || null;
     }
 
-    // Handle numeric values
-    if (typeof value === 'number') {
-      return { icon: ChevronRight, label: `${key}: ${value}` };
+    // Mapping for tipo_domotica
+    if (key === 'tipo_domotica') {
+      const domoticaMap: Record<string, { icon: any; label: string }> = {
+        'cablata': { icon: Cable, label: 'Domotica Cablata (KNX)' },
+        'wireless': { icon: Wifi, label: 'Domotica Wireless (BTicino)' },
+      };
+      return domoticaMap[value] || null;
     }
 
-    // Handle string values
-    if (typeof value === 'string' && value) {
-      return { icon: ChevronRight, label: value };
+    // Mapping for impianto_elettrico_obsoleto
+    if (key === 'impianto_elettrico_obsoleto') {
+      return value ? { icon: Settings, label: 'Impianto Obsoleto da Sostituire' } : null;
+    }
+
+    // Mapping for elettrificare_tapparelle
+    if (key === 'elettrificare_tapparelle' && value === 'Si') {
+      return { icon: DoorOpen, label: 'Tapparelle Elettriche' };
+    }
+
+    // Mapping for tipo_intervento_fotovoltaico
+    if (key === 'tipo_intervento_fotovoltaico') {
+      const interventoMap: Record<string, { icon: any; label: string }> = {
+        'nuovo': { icon: Sun, label: 'Nuovo Impianto Fotovoltaico' },
+        'ampliamento': { icon: Sun, label: 'Ampliamento Impianto Esistente' },
+      };
+      return interventoMap[value] || null;
+    }
+
+    // Mapping for batteria_accumulo
+    if (key === 'batteria_accumulo_nuovo_impianto' || key === 'batteria_accumulo_ampliamento') {
+      const batteriaMap: Record<string, { icon: any; label: string }> = {
+        'si': { icon: Battery, label: 'Con Batteria di Accumulo' },
+        'no': { icon: Battery, label: 'Senza Batteria' },
+      };
+      return batteriaMap[value] || null;
+    }
+
+    // Mapping for qualita_forniture
+    if (key === 'qualita_forniture') {
+      const qualitaMap: Record<string, { icon: any; label: string }> = {
+        'standard': { icon: Shield, label: 'Forniture Standard' },
+        'premium': { icon: Shield, label: 'Forniture Premium' },
+      };
+      return qualitaMap[value] || null;
+    }
+
+    // Mapping for obiettivo
+    if (key === 'obiettivo_nuovo_impianto' || key === 'obiettivo_ampliamento') {
+      const obiettivoMap: Record<string, { icon: any; label: string }> = {
+        'indipendenza-energetica': { icon: ChevronRight, label: 'Obiettivo: Indipendenza Energetica' },
+        'risparmio-bolletta': { icon: ChevronRight, label: 'Obiettivo: Risparmio in Bolletta' },
+        'valorizzazione-immobile': { icon: ChevronRight, label: 'Obiettivo: Valorizzazione Immobile' },
+      };
+      return obiettivoMap[value] || null;
     }
 
     return null;
@@ -102,12 +134,16 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
     const badges: Array<{ icon: any; label: string }> = [];
 
     Object.entries(moduleData).forEach(([key, value]) => {
-      // Skip null/undefined
-      if (value === null || value === undefined) return;
+      // Skip null/undefined/empty
+      if (value === null || value === undefined || value === '') return;
 
       // Handle nested objects (like funzioni_knx, funzioni_bticino)
       if (typeof value === 'object' && !Array.isArray(value)) {
+        // Skip if it's a nested object in the excluded list
+        if (excludedFields.includes(key)) return;
+        
         Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+          // Check for boolean true or objects with active: true
           if (nestedValue === true || (typeof nestedValue === 'object' && (nestedValue as any)?.active === true)) {
             const badge = getBadgeForFeature(nestedKey);
             if (badge) badges.push(badge);
