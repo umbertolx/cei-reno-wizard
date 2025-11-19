@@ -198,19 +198,53 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
     return null;
   };
 
-  // Extract badges from module data
-  const extractBadges = (moduleData: any): Array<{ icon: any; label: string }> => {
+  // Extract badges from module data in logical order
+  const extractBadges = (moduleData: any, moduleType: 'elettrico' | 'fotovoltaico'): Array<{ icon: any; label: string }> => {
     if (!moduleData || typeof moduleData !== 'object') return [];
     
     const badges: Array<{ icon: any; label: string }> = [];
 
-    Object.entries(moduleData).forEach(([key, value]) => {
-      // Skip null/undefined/empty
+    // Define logical order for each module type (as they appear in the configurator)
+    const elettricoOrder = [
+      'tipoRistrutturazione',
+      'tipo_ristrutturazione',
+      'impianto_elettrico_obsoleto',
+      'tipoImpianto',
+      'tipo_nuovo_impianto_elettrico',
+      'tipoDomotica',
+      'tipo_domotica',
+      'funzioni_knx',
+      'funzioni_bticino',
+      'configurazione_knx',
+      'configurazione_bticino',
+      'elettrificareTapparelle',
+      'elettrificare_tapparelle'
+    ];
+
+    const fotovoltaicoOrder = [
+      'tipoInterventoFotovoltaico',
+      'tipo_intervento_fotovoltaico',
+      'obiettivoAmpliamento',
+      'obiettivo_ampliamento',
+      'batteriaAccumulo',
+      'batteria_accumulo_nuovo_impianto',
+      'batteria_accumulo_ampliamento',
+      'qualitaForniture',
+      'qualita_forniture',
+      'obiettivoPrincipale',
+      'obiettivo_nuovo_impianto'
+    ];
+
+    const keyOrder = moduleType === 'elettrico' ? elettricoOrder : fotovoltaicoOrder;
+
+    // Process keys in the defined order
+    keyOrder.forEach(key => {
+      const value = moduleData[key];
+      
       if (value === null || value === undefined || value === '') return;
 
       // Handle nested objects (like funzioni_knx, funzioni_bticino)
       if (typeof value === 'object' && !Array.isArray(value)) {
-        // Skip if it's a nested object in the excluded list
         if (excludedFields.includes(key)) return;
         
         Object.entries(value).forEach(([nestedKey, nestedValue]) => {
@@ -247,8 +281,8 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
     return featureMap[featureKey] || null;
   };
 
-  const elettricoBadges = extractBadges(moduloElettrico);
-  const fotovoltaicoBadges = extractBadges(moduloFotovoltaico);
+  const elettricoBadges = extractBadges(moduloElettrico, 'elettrico');
+  const fotovoltaicoBadges = extractBadges(moduloFotovoltaico, 'fotovoltaico');
 
   return (
     <div className="bg-card rounded-lg p-6 border">
