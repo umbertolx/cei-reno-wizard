@@ -29,6 +29,8 @@ export interface Lead {
   configurazioneTecnica?: any;
   moduliCompletati?: string[];
   sopralluogoRichiesto?: boolean;
+  moduloElettrico?: any;
+  moduloFotovoltaico?: any;
 }
 
 export const leadStates = {
@@ -82,6 +84,8 @@ export const convertDatabaseLeadToLead = (dbLead: any): Lead => ({
   configurazioneTecnica: dbLead.configurazione_tecnica,
   moduliCompletati: [],
   sopralluogoRichiesto: !!dbLead.data_richiesta_sopralluogo,
+  moduloElettrico: dbLead.modulo_elettrico,
+  moduloFotovoltaico: dbLead.modulo_fotovoltaico,
 });
 
 export interface CustomColumn {
