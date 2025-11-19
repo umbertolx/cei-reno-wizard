@@ -425,7 +425,12 @@ export const fetchLeads = async (): Promise<DatabaseLead[]> => {
         stato,
         data_creazione,
         data_ultimo_contatto,
-        accetto_termini
+        accetto_termini,
+        moduli_selezionati,
+        informazioni_generali,
+        modulo_elettrico,
+        modulo_fotovoltaico,
+        stima_finale
       `)
       .order('data_creazione', { ascending: false });
 

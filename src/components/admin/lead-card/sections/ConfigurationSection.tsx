@@ -48,7 +48,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
       if (!value) return null;
     }
 
-    // Mapping for tipo_ristrutturazione
+    // Mapping for tipo_ristrutturazione (snake_case)
     if (key === 'tipo_ristrutturazione') {
       const ristruttuazioneMap: Record<string, { icon: any; label: string }> = {
         'Completa': { icon: Home, label: 'Ristrutturazione Completa' },
@@ -58,7 +58,17 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
       return ristruttuazioneMap[value] || null;
     }
 
-    // Mapping for tipo_nuovo_impianto_elettrico
+    // Mapping for tipoRistrutturazione (camelCase)
+    if (key === 'tipoRistrutturazione') {
+      const ristruttuazioneMap: Record<string, { icon: any; label: string }> = {
+        'completa': { icon: Home, label: 'Ristrutturazione Completa' },
+        'nuova': { icon: Home, label: 'Nuova Costruzione' },
+        'parziale': { icon: Home, label: 'Intervento Parziale' },
+      };
+      return ristruttuazioneMap[value] || null;
+    }
+
+    // Mapping for tipo_nuovo_impianto_elettrico (snake_case)
     if (key === 'tipo_nuovo_impianto_elettrico') {
       const impiantoMap: Record<string, { icon: any; label: string }> = {
         'Livello 1': { icon: Zap, label: 'Livello 1 - Standard' },
@@ -68,8 +78,27 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
       return impiantoMap[value] || null;
     }
 
-    // Mapping for tipo_domotica
+    // Mapping for tipoImpianto (camelCase)
+    if (key === 'tipoImpianto') {
+      const impiantoMap: Record<string, { icon: any; label: string }> = {
+        'livello1': { icon: Zap, label: 'Livello 1 - Standard' },
+        'livello2': { icon: Zap, label: 'Livello 2 - Avanzato' },
+        'livello3': { icon: Zap, label: 'Livello 3 - Domotico' },
+      };
+      return impiantoMap[value] || null;
+    }
+
+    // Mapping for tipo_domotica (snake_case)
     if (key === 'tipo_domotica') {
+      const domoticaMap: Record<string, { icon: any; label: string }> = {
+        'cablata': { icon: Cable, label: 'Domotica Cablata (KNX)' },
+        'wireless': { icon: Wifi, label: 'Domotica Wireless (BTicino)' },
+      };
+      return domoticaMap[value] || null;
+    }
+
+    // Mapping for tipoDomotica (camelCase)
+    if (key === 'tipoDomotica') {
       const domoticaMap: Record<string, { icon: any; label: string }> = {
         'cablata': { icon: Cable, label: 'Domotica Cablata (KNX)' },
         'wireless': { icon: Wifi, label: 'Domotica Wireless (BTicino)' },
@@ -82,12 +111,17 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
       return value ? { icon: Settings, label: 'Impianto Obsoleto da Sostituire' } : null;
     }
 
-    // Mapping for elettrificare_tapparelle
+    // Mapping for elettrificare_tapparelle (snake_case)
     if (key === 'elettrificare_tapparelle' && value === 'Si') {
       return { icon: DoorOpen, label: 'Tapparelle Elettriche' };
     }
 
-    // Mapping for tipo_intervento_fotovoltaico
+    // Mapping for elettrificareTapparelle (camelCase)
+    if (key === 'elettrificareTapparelle' && value === 'si') {
+      return { icon: DoorOpen, label: 'Tapparelle Elettriche' };
+    }
+
+    // Mapping for tipo_intervento_fotovoltaico (snake_case)
     if (key === 'tipo_intervento_fotovoltaico') {
       const interventoMap: Record<string, { icon: any; label: string }> = {
         'nuovo': { icon: Sun, label: 'Nuovo Impianto Fotovoltaico' },
@@ -96,7 +130,16 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
       return interventoMap[value] || null;
     }
 
-    // Mapping for batteria_accumulo
+    // Mapping for tipoInterventoFotovoltaico (camelCase)
+    if (key === 'tipoInterventoFotovoltaico') {
+      const interventoMap: Record<string, { icon: any; label: string }> = {
+        'nuovo': { icon: Sun, label: 'Nuovo Impianto Fotovoltaico' },
+        'ampliamento': { icon: Sun, label: 'Ampliamento Impianto Esistente' },
+      };
+      return interventoMap[value] || null;
+    }
+
+    // Mapping for batteria_accumulo (snake_case)
     if (key === 'batteria_accumulo_nuovo_impianto' || key === 'batteria_accumulo_ampliamento') {
       const batteriaMap: Record<string, { icon: any; label: string }> = {
         'si': { icon: Battery, label: 'Con Batteria di Accumulo' },
@@ -105,7 +148,16 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
       return batteriaMap[value] || null;
     }
 
-    // Mapping for qualita_forniture
+    // Mapping for batteriaAccumulo (camelCase)
+    if (key === 'batteriaAccumulo') {
+      const batteriaMap: Record<string, { icon: any; label: string }> = {
+        'si': { icon: Battery, label: 'Con Batteria di Accumulo' },
+        'no': { icon: Battery, label: 'Senza Batteria' },
+      };
+      return batteriaMap[value] || null;
+    }
+
+    // Mapping for qualita_forniture (snake_case)
     if (key === 'qualita_forniture') {
       const qualitaMap: Record<string, { icon: any; label: string }> = {
         'standard': { icon: Shield, label: 'Forniture Standard' },
@@ -114,8 +166,27 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
       return qualitaMap[value] || null;
     }
 
-    // Mapping for obiettivo
+    // Mapping for qualitaForniture (camelCase)
+    if (key === 'qualitaForniture') {
+      const qualitaMap: Record<string, { icon: any; label: string }> = {
+        'standard': { icon: Shield, label: 'Forniture Standard' },
+        'premium': { icon: Shield, label: 'Forniture Premium' },
+      };
+      return qualitaMap[value] || null;
+    }
+
+    // Mapping for obiettivo (snake_case)
     if (key === 'obiettivo_nuovo_impianto' || key === 'obiettivo_ampliamento') {
+      const obiettivoMap: Record<string, { icon: any; label: string }> = {
+        'indipendenza-energetica': { icon: ChevronRight, label: 'Obiettivo: Indipendenza Energetica' },
+        'risparmio-bolletta': { icon: ChevronRight, label: 'Obiettivo: Risparmio in Bolletta' },
+        'valorizzazione-immobile': { icon: ChevronRight, label: 'Obiettivo: Valorizzazione Immobile' },
+      };
+      return obiettivoMap[value] || null;
+    }
+
+    // Mapping for obiettivoPrincipale and obiettivoAmpliamento (camelCase)
+    if (key === 'obiettivoPrincipale' || key === 'obiettivoAmpliamento') {
       const obiettivoMap: Record<string, { icon: any; label: string }> = {
         'indipendenza-energetica': { icon: ChevronRight, label: 'Obiettivo: Indipendenza Energetica' },
         'risparmio-bolletta': { icon: ChevronRight, label: 'Obiettivo: Risparmio in Bolletta' },
