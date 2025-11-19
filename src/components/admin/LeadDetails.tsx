@@ -181,16 +181,19 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
               <div className="text-center p-4 bg-green-50 border rounded-lg">
                 <div className="text-sm font-medium text-green-800 mb-1">Preventivo Minimo</div>
                 <div className="text-2xl font-bold text-green-900">€{lead.stimaMin?.toLocaleString()}</div>
+                <div className="text-xs text-green-600 mt-1 italic">Range mostrato al cliente</div>
               </div>
               
               <div className="text-center p-4 bg-blue-50 border rounded-lg">
                 <div className="text-sm font-medium text-blue-800 mb-1">Preventivo Massimo</div>
                 <div className="text-2xl font-bold text-blue-900">€{lead.stimaMax?.toLocaleString()}</div>
+                <div className="text-xs text-blue-600 mt-1 italic">Range mostrato al cliente</div>
               </div>
               
               <div className="text-center p-4 bg-gray-50 border rounded-lg">
                 <div className="text-sm font-medium text-gray-800 mb-1">Valore Medio</div>
                 <div className="text-2xl font-bold text-gray-900">€{stimaMedia?.toLocaleString()}</div>
+                <div className="text-xs text-gray-600 mt-1 italic">Stima interna Ricasa</div>
               </div>
             </div>
           </div>
