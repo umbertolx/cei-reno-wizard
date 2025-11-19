@@ -257,16 +257,16 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         <h4 className="font-semibold text-foreground">Configurazione Richiesta</h4>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Modulo Elettrico */}
         {hasElettrico && elettricoBadges.length > 0 && (
           <div>
-            <div className="mb-3">
+            <div className="mb-4">
               <h5 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
                 🔌 Modulo Elettrico
               </h5>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {elettricoBadges.map((badge, index) => (
                 <ConfigBadge 
                   key={`elettrico-${index}`}
@@ -281,12 +281,12 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         {/* Modulo Fotovoltaico */}
         {hasFotovoltaico && fotovoltaicoBadges.length > 0 && (
           <div>
-            <div className="mb-3">
+            <div className="mb-4">
               <h5 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
                 ☀️ Modulo Fotovoltaico
               </h5>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {fotovoltaicoBadges.map((badge, index) => (
                 <ConfigBadge 
                   key={`fotovoltaico-${index}`}
