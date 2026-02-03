@@ -2,7 +2,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { KanbanColumn } from "./KanbanColumn";
-import { Lead, CustomColumn } from "@/data/mockLeads";
+import { Lead, CustomColumn } from "@/types/lead";
 
 interface SortableKanbanColumnProps {
   stato: string;

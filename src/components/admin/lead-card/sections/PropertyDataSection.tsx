@@ -1,5 +1,5 @@
 
-import { Lead } from "@/data/mockLeads";
+import { Lead } from "@/types/lead";
 import { Building2, Ruler, Layers, Home } from "lucide-react";
 
 interface PropertyDataSectionProps {
@@ -45,11 +45,12 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
       <div className="bg-white/80 backdrop-blur-sm p-5 rounded-lg border border-green-100">
         <div className="text-sm font-bold text-green-700 uppercase tracking-wide mb-4">Composizione Ambienti</div>
         <div className="flex flex-wrap gap-3">
-          {Object.entries(lead.composizione).map(([stanza, numero]) => (
-            numero > 0 && (
+          {Object.entries(lead.composizione).map(([stanza, numero]) => {
+            const count = Number(numero);
+            return count > 0 ? (
               <div key={stanza} className="bg-white px-4 py-2 rounded-full border-2 border-black">
                 <span className="text-sm font-medium text-black">
-                  {numero} {stanza === 'cameraDoppia' ? 'Cam. Doppie' : 
+                  {count} {stanza === 'cameraDoppia' ? 'Cam. Doppie' : 
                    stanza === 'cameraSingola' ? 'Cam. Singole' : 
                    stanza === 'bagno' ? 'Bagni' :
                    stanza === 'soggiorno' ? 'Soggiorni' :
@@ -57,8 +58,8 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
                    stanza === 'altro' ? 'Altri' : stanza}
                 </span>
               </div>
-            )
-          ))}
+            ) : null;
+          })}
         </div>
       </div>
     </div>

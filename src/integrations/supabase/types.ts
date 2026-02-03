@@ -116,6 +116,7 @@ export type Database = {
           moduli_selezionati: string[] | null
           modulo_elettrico: Json | null
           modulo_fotovoltaico: Json | null
+          modulo_sicurezza: Json | null
           nome: string
           note: string | null
           numero_persone: number | null
@@ -150,6 +151,7 @@ export type Database = {
           moduli_selezionati?: string[] | null
           modulo_elettrico?: Json | null
           modulo_fotovoltaico?: Json | null
+          modulo_sicurezza?: Json | null
           nome: string
           note?: string | null
           numero_persone?: number | null
@@ -184,6 +186,7 @@ export type Database = {
           moduli_selezionati?: string[] | null
           modulo_elettrico?: Json | null
           modulo_fotovoltaico?: Json | null
+          modulo_sicurezza?: Json | null
           nome?: string
           note?: string | null
           numero_persone?: number | null

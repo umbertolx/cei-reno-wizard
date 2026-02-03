@@ -1,5 +1,5 @@
 
-import { Lead } from "@/data/mockLeads";
+import { Lead } from "@/types/lead";
 import { Clock, Calendar, BarChart3, Eye } from "lucide-react";
 
 interface CommercialInfoSectionProps {

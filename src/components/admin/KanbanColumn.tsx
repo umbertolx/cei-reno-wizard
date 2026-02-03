@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Lead, leadStates, CustomColumn } from "@/data/mockLeads";
+import { Lead, leadStates, CustomColumn } from "@/types/lead";
 import { LeadCard } from "./LeadCard";
 import { DeleteColumnDialog } from "./DeleteColumnDialog";
 import { useDroppable } from "@dnd-kit/core";

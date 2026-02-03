@@ -1,5 +1,5 @@
 
-import { Lead } from "@/data/mockLeads";
+import { Lead } from "@/types/lead";
 import { Button } from "@/components/ui/button";
 import { MapPin, ChevronDown } from "lucide-react";
 

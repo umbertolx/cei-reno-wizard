@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
-import { leadStates, convertDatabaseLeadToLead } from "@/data/mockLeads";
+import { leadStates, convertDatabaseLeadToLead } from "@/types/lead";
 import { fetchLeads } from "@/services/leadService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { TrendingUp, Users, DollarSign, Calendar, RefreshCw, AlertCircle } from "lucide-react";

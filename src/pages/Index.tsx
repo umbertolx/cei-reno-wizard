@@ -1,12 +1,17 @@
-
-import { Configuratore } from "@/components/Configuratore";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect to admin login
+    navigate("/admin");
+  }, [navigate]);
+
   return (
-    <div className="min-h-screen bg-background font-[Bricolage_Grotesque,Arial,Helvetica,sans-serif]">
-      <div className="container max-w-6xl mx-auto px-4 py-6">
-        <Configuratore />
-      </div>
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <p className="text-muted-foreground">Reindirizzamento in corso...</p>
     </div>
   );
 };
