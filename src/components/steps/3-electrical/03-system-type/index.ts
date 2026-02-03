@@ -1,1 +1,0 @@
-export { ElectricalSystemType } from './ElectricalSystemType';

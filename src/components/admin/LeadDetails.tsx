@@ -1,5 +1,5 @@
 
-import { Lead, leadStates } from "@/data/mockLeads";
+import { Lead, leadStates } from "@/types/lead";
 import {
   Dialog,
   DialogContent,

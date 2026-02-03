@@ -1,11 +1,20 @@
-import { Lead } from "@/data/mockLeads";
-import { Zap, Sun, Home, Lightbulb, Settings, Wifi, Cable, Battery, Shield, Camera, DoorOpen, Wind, Droplet, Tv, Music, ChevronRight } from "lucide-react";
-import { ConfigBadge } from "@/components/shared/ConfigBadge";
-import { ModuleBadge } from "@/components/shared/ModuleBadge";
+import { Lead } from "@/types/lead";
+import { Badge } from "@/components/ui/badge";
+import { Zap, Sun, Home, Lightbulb, Settings, Wifi, Cable, Battery, Shield, Camera, DoorOpen, Wind, Droplet, Tv, Music, ChevronRight, LucideIcon } from "lucide-react";
 
 interface ConfigurationSectionProps {
   lead: Lead;
 }
+
+// Simple badge component for configuration items
+const ConfigBadge = ({ icon: Icon, label }: { icon: LucideIcon; label: string }) => {
+  return (
+    <Badge variant="secondary" className="px-3 py-1.5 text-sm font-medium gap-1.5">
+      <Icon className="h-3.5 w-3.5" />
+      {label}
+    </Badge>
+  );
+};
 
 export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
   const moduloElettrico = lead.moduloElettrico;
@@ -39,7 +48,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
   ];
 
   // Helper function to get readable labels
-  const getLabel = (key: string, value: any): { icon: any; label: string } | null => {
+  const getLabel = (key: string, value: any): { icon: LucideIcon; label: string } | null => {
     if (value === null || value === undefined || value === '') return null;
     if (excludedFields.includes(key)) return null;
 
@@ -50,7 +59,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for tipo_ristrutturazione (snake_case)
     if (key === 'tipo_ristrutturazione') {
-      const ristruttuazioneMap: Record<string, { icon: any; label: string }> = {
+      const ristruttuazioneMap: Record<string, { icon: LucideIcon; label: string }> = {
         'Completa': { icon: Home, label: 'Ristrutturazione Completa' },
         'Nuova costruzione': { icon: Home, label: 'Nuova Costruzione' },
         'Intervento parziale': { icon: Home, label: 'Intervento Parziale' },
@@ -60,7 +69,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for tipoRistrutturazione (camelCase)
     if (key === 'tipoRistrutturazione') {
-      const ristruttuazioneMap: Record<string, { icon: any; label: string }> = {
+      const ristruttuazioneMap: Record<string, { icon: LucideIcon; label: string }> = {
         'completa': { icon: Home, label: 'Ristrutturazione Completa' },
         'nuova': { icon: Home, label: 'Nuova Costruzione' },
         'parziale': { icon: Home, label: 'Intervento Parziale' },
@@ -70,7 +79,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for tipo_nuovo_impianto_elettrico (snake_case)
     if (key === 'tipo_nuovo_impianto_elettrico') {
-      const impiantoMap: Record<string, { icon: any; label: string }> = {
+      const impiantoMap: Record<string, { icon: LucideIcon; label: string }> = {
         'Livello 1': { icon: Zap, label: 'Livello 1 - Standard' },
         'Livello 2': { icon: Zap, label: 'Livello 2 - Avanzato' },
         'Livello 3': { icon: Zap, label: 'Livello 3 - Domotico' },
@@ -80,7 +89,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for tipoImpianto (camelCase)
     if (key === 'tipoImpianto') {
-      const impiantoMap: Record<string, { icon: any; label: string }> = {
+      const impiantoMap: Record<string, { icon: LucideIcon; label: string }> = {
         'livello1': { icon: Zap, label: 'Livello 1 - Standard' },
         'livello2': { icon: Zap, label: 'Livello 2 - Avanzato' },
         'livello3': { icon: Zap, label: 'Livello 3 - Domotico' },
@@ -90,7 +99,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for tipo_domotica (snake_case)
     if (key === 'tipo_domotica') {
-      const domoticaMap: Record<string, { icon: any; label: string }> = {
+      const domoticaMap: Record<string, { icon: LucideIcon; label: string }> = {
         'cablata': { icon: Cable, label: 'Domotica Cablata (KNX)' },
         'wireless': { icon: Wifi, label: 'Domotica Wireless (BTicino)' },
       };
@@ -99,7 +108,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for tipoDomotica (camelCase)
     if (key === 'tipoDomotica') {
-      const domoticaMap: Record<string, { icon: any; label: string }> = {
+      const domoticaMap: Record<string, { icon: LucideIcon; label: string }> = {
         'cablata': { icon: Cable, label: 'Domotica Cablata (KNX)' },
         'wireless': { icon: Wifi, label: 'Domotica Wireless (BTicino)' },
       };
@@ -123,7 +132,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for tipo_intervento_fotovoltaico (snake_case)
     if (key === 'tipo_intervento_fotovoltaico') {
-      const interventoMap: Record<string, { icon: any; label: string }> = {
+      const interventoMap: Record<string, { icon: LucideIcon; label: string }> = {
         'nuovo': { icon: Sun, label: 'Nuovo Impianto Fotovoltaico' },
         'ampliamento': { icon: Sun, label: 'Ampliamento Impianto Esistente' },
       };
@@ -132,7 +141,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for tipoInterventoFotovoltaico (camelCase)
     if (key === 'tipoInterventoFotovoltaico') {
-      const interventoMap: Record<string, { icon: any; label: string }> = {
+      const interventoMap: Record<string, { icon: LucideIcon; label: string }> = {
         'nuovo': { icon: Sun, label: 'Nuovo Impianto Fotovoltaico' },
         'ampliamento': { icon: Sun, label: 'Ampliamento Impianto Esistente' },
       };
@@ -141,7 +150,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for batteria_accumulo (snake_case)
     if (key === 'batteria_accumulo_nuovo_impianto' || key === 'batteria_accumulo_ampliamento') {
-      const batteriaMap: Record<string, { icon: any; label: string }> = {
+      const batteriaMap: Record<string, { icon: LucideIcon; label: string }> = {
         'si': { icon: Battery, label: 'Con Batteria di Accumulo' },
         'no': { icon: Battery, label: 'Senza Batteria' },
       };
@@ -150,7 +159,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for batteriaAccumulo (camelCase)
     if (key === 'batteriaAccumulo') {
-      const batteriaMap: Record<string, { icon: any; label: string }> = {
+      const batteriaMap: Record<string, { icon: LucideIcon; label: string }> = {
         'si': { icon: Battery, label: 'Con Batteria di Accumulo' },
         'no': { icon: Battery, label: 'Senza Batteria' },
       };
@@ -159,7 +168,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for qualita_forniture (snake_case)
     if (key === 'qualita_forniture') {
-      const qualitaMap: Record<string, { icon: any; label: string }> = {
+      const qualitaMap: Record<string, { icon: LucideIcon; label: string }> = {
         'standard': { icon: Shield, label: 'Forniture Standard' },
         'premium': { icon: Shield, label: 'Forniture Premium' },
       };
@@ -168,7 +177,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for qualitaForniture (camelCase)
     if (key === 'qualitaForniture') {
-      const qualitaMap: Record<string, { icon: any; label: string }> = {
+      const qualitaMap: Record<string, { icon: LucideIcon; label: string }> = {
         'standard': { icon: Shield, label: 'Forniture Standard' },
         'premium': { icon: Shield, label: 'Forniture Premium' },
       };
@@ -177,7 +186,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for obiettivo (snake_case)
     if (key === 'obiettivo_nuovo_impianto' || key === 'obiettivo_ampliamento') {
-      const obiettivoMap: Record<string, { icon: any; label: string }> = {
+      const obiettivoMap: Record<string, { icon: LucideIcon; label: string }> = {
         'indipendenza-energetica': { icon: ChevronRight, label: 'Obiettivo: Indipendenza Energetica' },
         'risparmio-bolletta': { icon: ChevronRight, label: 'Obiettivo: Risparmio in Bolletta' },
         'valorizzazione-immobile': { icon: ChevronRight, label: 'Obiettivo: Valorizzazione Immobile' },
@@ -187,7 +196,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
     // Mapping for obiettivoPrincipale and obiettivoAmpliamento (camelCase)
     if (key === 'obiettivoPrincipale' || key === 'obiettivoAmpliamento') {
-      const obiettivoMap: Record<string, { icon: any; label: string }> = {
+      const obiettivoMap: Record<string, { icon: LucideIcon; label: string }> = {
         'indipendenza-energetica': { icon: ChevronRight, label: 'Obiettivo: Indipendenza Energetica' },
         'risparmio-bolletta': { icon: ChevronRight, label: 'Obiettivo: Risparmio in Bolletta' },
         'valorizzazione-immobile': { icon: ChevronRight, label: 'Obiettivo: Valorizzazione Immobile' },
@@ -199,10 +208,10 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
   };
 
   // Extract badges from module data in logical order
-  const extractBadges = (moduleData: any, moduleType: 'elettrico' | 'fotovoltaico'): Array<{ icon: any; label: string }> => {
+  const extractBadges = (moduleData: any, moduleType: 'elettrico' | 'fotovoltaico'): Array<{ icon: LucideIcon; label: string }> => {
     if (!moduleData || typeof moduleData !== 'object') return [];
     
-    const badges: Array<{ icon: any; label: string }> = [];
+    const badges: Array<{ icon: LucideIcon; label: string }> = [];
 
     // Define logical order for each module type (as they appear in the configurator)
     const elettricoOrder = [
@@ -266,8 +275,8 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
   };
 
   // Get badge for specific features
-  const getBadgeForFeature = (featureKey: string): { icon: any; label: string } | null => {
-    const featureMap: Record<string, { icon: any; label: string }> = {
+  const getBadgeForFeature = (featureKey: string): { icon: LucideIcon; label: string } | null => {
+    const featureMap: Record<string, { icon: LucideIcon; label: string }> = {
       'illuminazione': { icon: Lightbulb, label: 'Illuminazione' },
       'clima': { icon: Wind, label: 'Climatizzazione' },
       'sicurezza': { icon: Shield, label: 'Sicurezza' },

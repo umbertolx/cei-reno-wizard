@@ -1,5 +1,5 @@
 
-import { Lead } from "@/data/mockLeads";
+import { Lead } from "@/types/lead";
 import { Calculator, TrendingUp, DollarSign, Receipt, TrendingDown } from "lucide-react";
 
 interface EconomicAnalysisSectionProps {

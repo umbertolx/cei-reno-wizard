@@ -1,5 +1,5 @@
 
-import { Lead } from "@/data/mockLeads";
+import { Lead } from "@/types/lead";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";

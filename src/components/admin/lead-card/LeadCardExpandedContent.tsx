@@ -1,5 +1,5 @@
 
-import { Lead } from "@/data/mockLeads";
+import { Lead } from "@/types/lead";
 import { PropertyDataSection } from "./sections/PropertyDataSection";
 import { ConfigurationSection } from "./sections/ConfigurationSection";
 import { EconomicAnalysisSection } from "./sections/EconomicAnalysisSection";

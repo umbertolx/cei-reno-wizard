@@ -1,5 +1,5 @@
 
-import { Lead } from "@/data/mockLeads";
+import { Lead } from "@/types/lead";
 import { MessageSquare } from "lucide-react";
 
 interface ClientNotesSectionProps {

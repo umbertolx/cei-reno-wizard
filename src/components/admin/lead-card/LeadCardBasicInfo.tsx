@@ -1,5 +1,5 @@
 
-import { Lead } from "@/data/mockLeads";
+import { Lead } from "@/types/lead";
 import { Home, Calendar, Euro } from "lucide-react";
 
 interface LeadCardBasicInfoProps {

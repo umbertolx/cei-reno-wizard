@@ -3,7 +3,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { SortableKanbanColumn } from "@/components/admin/SortableKanbanColumn";
 import { LeadDetails } from "@/components/admin/LeadDetails";
 import { AddColumnDialog } from "@/components/admin/AddColumnDialog";
-import { leadStates, Lead, CustomColumn, convertDatabaseLeadToLead } from "@/data/mockLeads";
+import { leadStates, Lead, CustomColumn, convertDatabaseLeadToLead } from "@/types/lead";
 import { fetchLeads, updateLeadStatus } from "@/services/leadService";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
