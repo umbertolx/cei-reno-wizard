@@ -114,8 +114,8 @@ const calcolaConsumiElettrodomestici = (data: Record<string, any>): { totale: nu
 const FotovoltaicoSection = ({ data }: { data: Record<string, any> | null | undefined }) => {
   if (!data || Object.keys(data).length === 0) return null;
 
-  const kwpStimati = calcolaKwpStimati(data);
   const { totale: consumiTotali, dettagli: elettrodomestici } = calcolaConsumiElettrodomestici(data);
+  const kwpStimati = calcolaKwpStimati(data, consumiTotali);
   
   // Supporta sia camelCase che snake_case
   const tipoIntervento = getValue(data, 'tipoInterventoFotovoltaico', 'tipo_intervento_fotovoltaico');
