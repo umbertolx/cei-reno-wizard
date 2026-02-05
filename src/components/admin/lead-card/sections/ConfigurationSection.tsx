@@ -7,36 +7,14 @@ interface ConfigurationSectionProps {
   lead: Lead;
 }
 
-// Mapping etichette per i campi
-const fieldLabels: Record<string, string> = {
-  // Fotovoltaico
-  tipoInterventoFotovoltaico: 'Tipo Intervento',
-  obiettivoPrincipale: 'Obiettivo Principale',
-  obiettivoAmpliamento: 'Obiettivo Ampliamento',
-  orientamentoTetto: 'Orientamento Tetto',
-  tipoFalda: 'Tipo Falda',
-  superficieDisponibile: 'Superficie Disponibile',
-  superficieEffettiva: 'Superficie Tetto (mq)',
-  zoneOmbra: 'Zone Ombra',
-  batteriaAccumulo: 'Batteria Accumulo',
-  conosceConsumi: 'Conosce Consumi',
-  consumoEnergetico: 'Consumo Mensile (€)',
-  percentualeCopertura: 'Copertura Desiderata (%)',
-  qualitaForniture: 'Qualità Forniture',
-  potenzaImpianto: 'Potenza Impianto (kWp)',
-  annoInstallazione: 'Anno Installazione',
-  hasBatteria: 'Ha Batteria Esistente',
-  // Elettrico
-  tipoRistrutturazione: 'Tipo Ristrutturazione',
-  tipoImpianto: 'Livello Impianto',
-  tipoDomotica: 'Tipo Domotica',
-  elettrificareTapparelle: 'Tapparelle Elettriche',
-  impiantoObsoleto: 'Impianto Obsoleto',
-  // Sicurezza
-  tipoSistemaSicurezza: 'Tipo Sistema',
-  numeroZone: 'Numero Zone',
-  videosorveglianza: 'Videosorveglianza',
-  antintrusione: 'Antintrusione',
+// Helper per ottenere un valore da snake_case o camelCase
+const getValue = (data: Record<string, any>, ...keys: string[]): any => {
+  for (const key of keys) {
+    if (data[key] !== undefined && data[key] !== null && data[key] !== '') {
+      return data[key];
+    }
+  }
+  return null;
 };
 
 const orientamentoLabels: Record<string, string> = {
@@ -54,15 +32,25 @@ const obiettivoLabels: Record<string, string> = {
   'valorizzazione-immobile': 'Valorizzazione Immobile',
 };
 
-// Calcola kWp stimati basandosi sui consumi
+// Calcola kWp stimati basandosi sui consumi o sulla superficie
 const calcolaKwpStimati = (data: Record<string, any>): number | null => {
   // Se ha il consumo energetico mensile in euro
-  if (data.consumoEnergetico && Array.isArray(data.consumoEnergetico)) {
-    const consumoMensile = data.consumoEnergetico[0] || 0;
-    // Stima: €1 = circa 3.5 kWh, consumo annuo / 1100 ore sole = kWp
-    const consumoAnnuoKwh = consumoMensile * 12 * 3.5;
-    return Math.round((consumoAnnuoKwh / 1100) * 10) / 10;
+  const consumo = getValue(data, 'consumoEnergetico', 'spesa_mensile');
+  if (consumo) {
+    const consumoMensile = Array.isArray(consumo) ? consumo[0] : consumo;
+    if (consumoMensile > 0) {
+      const consumoAnnuoKwh = consumoMensile * 12 * 3.5;
+      return Math.round((consumoAnnuoKwh / 1100) * 10) / 10;
+    }
   }
+  
+  // Stima basata sulla superficie del tetto
+  const superficie = getValue(data, 'superficieEffettiva', 'mq_tetto_effettivi');
+  if (superficie && Number(superficie) > 0) {
+    // Circa 6-7 mq per kWp
+    return Math.round((Number(superficie) / 6.5) * 10) / 10;
+  }
+  
   return null;
 };
 
@@ -78,44 +66,65 @@ const calcolaConsumiElettrodomestici = (data: Record<string, any>): { totale: nu
     'asciugatrice': 400,
     'climatizzatori': 800,
     'boiler-elettrico': 1500,
+    'boiler_elettrico': 1500,
     'piano-induzione': 500,
+    'piano_induzione': 500,
     'pompa-calore': 2500,
+    'pompa_calore': 2500,
   };
 
   let totale = 0;
   const dettagli: string[] = [];
 
-  if (data.definizioneConsumiStandard) {
-    Object.entries(data.definizioneConsumiStandard).forEach(([key, val]: [string, any]) => {
-      if (val?.selected) {
+  // Supporta sia camelCase che snake_case
+  const consumiStandard = getValue(data, 'definizioneConsumiStandard', 'consumo_aggiuntivo_completo');
+  
+  if (consumiStandard && typeof consumiStandard === 'object') {
+    Object.entries(consumiStandard).forEach(([key, val]: [string, any]) => {
+      const isSelected = val === true || val?.selected === true;
+      if (isSelected) {
         const consumo = consumiBase[key] || 0;
         totale += consumo;
         if (consumo > 0) {
-          dettagli.push(key.replace(/-/g, ' '));
+          dettagli.push(key.replace(/[-_]/g, ' '));
         }
       }
     });
   }
 
   // Auto elettrica
-  if (data.nuoveVociConsumo?.auto_elettrica?.active) {
-    const km = data.nuoveVociConsumo.auto_elettrica.inputValue || 15000;
-    const consumoAuto = Math.round(km * 0.2); // 0.2 kWh/km
+  const autoElettrica = data.nuoveVociConsumo?.auto_elettrica || data.consumo_aggiuntivo_stimato?.auto_elettrica;
+  if (autoElettrica?.active || autoElettrica?.selected) {
+    const km = autoElettrica.inputValue || autoElettrica.km_annui || 15000;
+    const consumoAuto = Math.round(Number(km) * 0.2);
     totale += consumoAuto;
-    dettagli.push(`auto elettrica (${km.toLocaleString()} km/anno)`);
+    dettagli.push(`auto elettrica (${Number(km).toLocaleString()} km/anno)`);
   }
 
   return { totale, dettagli };
 };
 
 // Componente Modulo Fotovoltaico dettagliato
-const FotovoltaicoSection = ({ data }: { data: Record<string, any> }) => {
+const FotovoltaicoSection = ({ data }: { data: Record<string, any> | null | undefined }) => {
   if (!data || Object.keys(data).length === 0) return null;
 
   const kwpStimati = calcolaKwpStimati(data);
   const { totale: consumiTotali, dettagli: elettrodomestici } = calcolaConsumiElettrodomestici(data);
   
-  const isAmpliamento = data.tipoInterventoFotovoltaico === 'ampliamento';
+  // Supporta sia camelCase che snake_case
+  const tipoIntervento = getValue(data, 'tipoInterventoFotovoltaico', 'tipo_intervento_fotovoltaico');
+  const isAmpliamento = tipoIntervento === 'ampliamento';
+  
+  const superficieTetto = getValue(data, 'superficieEffettiva', 'mq_tetto_effettivi');
+  const orientamento = getValue(data, 'orientamentoTetto', 'orientamento_falda');
+  const batteria = getValue(data, 'batteriaAccumulo', 'batteria_accumulo_nuovo_impianto', 'batteria_accumulo_ampliamento');
+  const obiettivo = getValue(data, 'obiettivoPrincipale', 'obiettivo_nuovo_impianto', 'obiettivoAmpliamento', 'obiettivo_ampliamento');
+  const tipoFalda = getValue(data, 'tipoFalda', 'tipologia_falda');
+  const zoneOmbra = getValue(data, 'zoneOmbra', 'zone_ombra');
+  const potenzaEsistente = getValue(data, 'potenzaImpianto', 'potenza_impianto');
+  const annoInstallazione = getValue(data, 'annoInstallazione', 'anno_installazione');
+  const qualitaForniture = getValue(data, 'qualitaForniture', 'qualita_forniture');
+  const percentualeCopertura = getValue(data, 'percentualeCopertura', 'percentuale_copertura', 'distribuzione_consumi');
 
   return (
     <Card className="border-border">
@@ -125,6 +134,9 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> }) => {
           Modulo Fotovoltaico
           {isAmpliamento && (
             <Badge variant="outline" className="ml-2 text-xs">Ampliamento</Badge>
+          )}
+          {tipoIntervento === 'nuovo' && (
+            <Badge variant="outline" className="ml-2 text-xs">Nuovo Impianto</Badge>
           )}
         </CardTitle>
       </CardHeader>
@@ -139,29 +151,29 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> }) => {
             </div>
           )}
           
-          {data.superficieEffettiva && (
+          {superficieTetto && (
             <div className="text-center p-3 bg-muted/50 rounded-lg">
               <Ruler className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-              <p className="text-2xl font-bold text-foreground">{data.superficieEffettiva}</p>
+              <p className="text-2xl font-bold text-foreground">{superficieTetto}</p>
               <p className="text-xs text-muted-foreground">mq Tetto</p>
             </div>
           )}
           
-          {data.orientamentoTetto && (
+          {orientamento && (
             <div className="text-center p-3 bg-muted/50 rounded-lg">
               <Compass className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
               <p className="text-lg font-bold text-foreground capitalize">
-                {orientamentoLabels[data.orientamentoTetto] || data.orientamentoTetto}
+                {orientamentoLabels[orientamento] || orientamento.replace(/-/g, ' ')}
               </p>
               <p className="text-xs text-muted-foreground">Orientamento</p>
             </div>
           )}
           
-          {data.batteriaAccumulo && (
+          {batteria && (
             <div className="text-center p-3 bg-muted/50 rounded-lg">
               <Battery className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
               <p className="text-lg font-bold text-foreground">
-                {data.batteriaAccumulo === 'si' ? 'Sì' : 'No'}
+                {batteria === 'si' || batteria === true ? 'Sì' : 'No'}
               </p>
               <p className="text-xs text-muted-foreground">Batteria</p>
             </div>
@@ -169,12 +181,12 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> }) => {
         </div>
 
         {/* Obiettivo */}
-        {(data.obiettivoPrincipale || data.obiettivoAmpliamento) && (
+        {obiettivo && (
           <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg">
             <Target className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">Obiettivo:</span>
             <span className="font-medium text-foreground">
-              {obiettivoLabels[data.obiettivoPrincipale || data.obiettivoAmpliamento] || data.obiettivoPrincipale || data.obiettivoAmpliamento}
+              {obiettivoLabels[obiettivo] || obiettivo.replace(/-/g, ' ')}
             </span>
           </div>
         )}
@@ -195,44 +207,76 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> }) => {
           </div>
         )}
 
-        {/* Consumo in bolletta */}
-        {data.consumoEnergetico && Array.isArray(data.consumoEnergetico) && data.consumoEnergetico[0] > 0 && (
+        {/* Percentuale copertura */}
+        {percentualeCopertura && (
           <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-            <span className="text-sm text-muted-foreground">Spesa Mensile Bolletta</span>
-            <span className="font-semibold text-foreground">€{data.consumoEnergetico[0]}/mese</span>
+            <span className="text-sm text-muted-foreground">Copertura Desiderata</span>
+            <span className="font-semibold text-foreground">{percentualeCopertura}%</span>
+          </div>
+        )}
+
+        {/* Qualità forniture */}
+        {qualitaForniture && (
+          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+            <span className="text-sm text-muted-foreground">Qualità Forniture</span>
+            <Badge variant={qualitaForniture === 'premium' ? 'default' : 'secondary'} className="capitalize">
+              {qualitaForniture}
+            </Badge>
           </div>
         )}
 
         {/* Altri dettagli */}
         <div className="grid grid-cols-2 gap-2">
-          {data.tipoFalda && (
+          {tipoFalda && (
             <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
               <span className="text-xs text-muted-foreground">Tipo Falda</span>
-              <span className="text-sm font-medium capitalize">{data.tipoFalda}</span>
+              <span className="text-sm font-medium capitalize">{tipoFalda}</span>
             </div>
           )}
-          {data.zoneOmbra && (
+          {zoneOmbra && (
             <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
               <span className="text-xs text-muted-foreground">Zone Ombra</span>
-              <span className="text-sm font-medium capitalize">{data.zoneOmbra}</span>
+              <span className="text-sm font-medium capitalize">{zoneOmbra}</span>
             </div>
           )}
-          {data.potenzaImpianto && (
+          {potenzaEsistente && (
             <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
               <span className="text-xs text-muted-foreground">Impianto Esistente</span>
-              <span className="text-sm font-medium">{data.potenzaImpianto} kWp</span>
+              <span className="text-sm font-medium">{potenzaEsistente} kWp</span>
             </div>
           )}
-          {data.annoInstallazione && (
+          {annoInstallazione && (
             <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
               <span className="text-xs text-muted-foreground">Anno Installazione</span>
-              <span className="text-sm font-medium">{data.annoInstallazione}</span>
+              <span className="text-sm font-medium">{annoInstallazione}</span>
             </div>
           )}
         </div>
       </CardContent>
     </Card>
   );
+};
+
+// Mapping etichette per campi generici
+const fieldLabels: Record<string, string> = {
+  // Elettrico
+  tipoRistrutturazione: 'Tipo Ristrutturazione',
+  tipo_ristrutturazione: 'Tipo Ristrutturazione',
+  tipoImpianto: 'Livello Impianto',
+  tipo_nuovo_impianto_elettrico: 'Livello Impianto',
+  tipoDomotica: 'Tipo Domotica',
+  tipo_domotica: 'Tipo Domotica',
+  elettrificareTapparelle: 'Tapparelle Elettriche',
+  elettrificare_tapparelle: 'Tapparelle Elettriche',
+  impiantoObsoleto: 'Impianto Obsoleto',
+  impianto_elettrico_obsoleto: 'Impianto Obsoleto',
+  // Sicurezza
+  tipoSistemaSicurezza: 'Tipo Sistema',
+  tipo_sistema_sicurezza: 'Tipo Sistema',
+  numeroZone: 'Numero Zone',
+  numero_zone: 'Numero Zone',
+  videosorveglianza: 'Videosorveglianza',
+  antintrusione: 'Antintrusione',
 };
 
 // Componente generico per altri moduli
@@ -249,7 +293,7 @@ const GenericModuleSection = ({
 }) => {
   if (!data || Object.keys(data).length === 0) return null;
 
-  const excludedFields = ['id', 'created_at', 'updated_at', 'lead_id', 'definizioneConsumiStandard', 'nuoveVociConsumo'];
+  const excludedFields = ['id', 'created_at', 'updated_at', 'lead_id', 'definizioneConsumiStandard', 'nuoveVociConsumo', 'consumo_aggiuntivo_completo', 'consumo_aggiuntivo_stimato'];
   
   const entries = Object.entries(data).filter(([key, value]) => {
     if (excludedFields.includes(key)) return false;
@@ -267,7 +311,7 @@ const GenericModuleSection = ({
     if (typeof value === 'string') {
       if (value === 'si' || value === 'sì') return 'Sì';
       if (value === 'no') return 'No';
-      return value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
+      return value.charAt(0).toUpperCase() + value.slice(1).replace(/[-_]/g, ' ');
     }
     return String(value);
   };
@@ -333,7 +377,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         colorClass="text-amber-600"
       />
       
-      <FotovoltaicoSection data={moduloFotovoltaico as Record<string, any>} />
+      <FotovoltaicoSection data={moduloFotovoltaico} />
       
       <GenericModuleSection
         title="Modulo Sicurezza"
