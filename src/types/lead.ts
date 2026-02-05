@@ -83,34 +83,59 @@ export interface DatabaseLead {
   superficie: number;
   indirizzo: string;
   citta: string;
-  cap: string;
   regione: string;
-  piano: string;
   composizione: any;
-  configurazione_tecnica: any;
-  stima_min: number | null;
-  stima_max: number | null;
-  stima_media: number | null;
-  stima_dettagli: any;
   data_richiesta_sopralluogo: string | null;
   orario_sopralluogo: string | null;
   note: string | null;
-  numero_persone?: number;
-  tipo_proprieta?: string;
-  stato: string;
-  data_creazione: string;
+  numero_persone: number | null;
+  tipo_proprieta: string | null;
+  stato: string | null;
+  data_creazione: string | null;
   data_ultimo_contatto: string | null;
   accetto_termini: boolean | null;
-  moduli_selezionati?: string[];
+  moduli_selezionati: string[] | null;
+
+  // JSON aggiuntivi presenti in tabella (vedi schema Supabase)
+  indirizzo_dettagli: any | null;
+  stime: any | null;
+  pvgis: any | null;
+
+  // JSON dei moduli (nullable in DB)
+  modulo_elettrico: any | null;
+  modulo_fotovoltaico: any | null;
+  modulo_sicurezza: any | null;
+
+  // Campi legacy (se presenti in alcuni record vecchi)
   informazioni_generali?: any;
-  modulo_elettrico?: any;
-  modulo_fotovoltaico?: any;
-  modulo_sicurezza?: any;
   stima_finale?: any;
 }
 
 // Convert database lead to frontend Lead format
 export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
+  const indirizzoDettagli = (dbLead.indirizzo_dettagli as any) || {};
+
+  const composizioneRaw = (dbLead.composizione as any) || {};
+  const composizione: Record<string, number> = {
+    cucina: composizioneRaw.cucina ?? 0,
+    cameraDoppia: composizioneRaw.cameraDoppia ?? 0,
+    cameraSingola: composizioneRaw.cameraSingola ?? 0,
+    bagno: composizioneRaw.bagno ?? 0,
+    soggiorno: composizioneRaw.soggiorno ?? 0,
+    ...composizioneRaw,
+  };
+
+  const stime = (dbLead.stime as any) || {};
+  const totale = (stime.totale as any) || {};
+  const stimaMin = typeof totale.min === "number" ? totale.min : 0;
+  const stimaMax = typeof totale.max === "number" ? totale.max : 0;
+  const stimaMedia =
+    typeof totale.media === "number"
+      ? totale.media
+      : stimaMin && stimaMax
+        ? Math.round((stimaMin + stimaMax) / 2)
+        : 0;
+
   return {
     id: dbLead.id,
     nome: dbLead.nome,
@@ -121,30 +146,30 @@ export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
     superficie: dbLead.superficie,
     indirizzo: dbLead.indirizzo,
     citta: dbLead.citta,
-    cap: dbLead.cap,
+    cap: String(indirizzoDettagli.cap ?? ""),
     regione: dbLead.regione,
-    piano: dbLead.piano,
-    composizione: dbLead.composizione || {},
-    stimaMin: dbLead.stima_min || 0,
-    stimaMax: dbLead.stima_max || 0,
-    stimaMedia: dbLead.stima_media || 0,
-    stimaDettagli: dbLead.stima_dettagli,
-    dataRichiesta: dbLead.data_creazione,
+    piano: String(indirizzoDettagli.piano ?? ""),
+    composizione,
+    stimaMin,
+    stimaMax,
+    stimaMedia,
+    stimaDettagli: stime.dettagli ?? stime,
+    dataRichiesta: dbLead.data_creazione || new Date().toISOString(),
     dataUltimoContatto: dbLead.data_ultimo_contatto,
     stato: (dbLead.stato as LeadState) || 'nuovo',
     note: dbLead.note,
     orarioSopralluogo: dbLead.orario_sopralluogo,
     dataSopralluogo: dbLead.data_richiesta_sopralluogo,
-    numeroPersone: dbLead.numero_persone || 2,
+    numeroPersone: dbLead.numero_persone ?? 2,
     utilizzoAbitazione: dbLead.tipo_proprieta || 'prima casa',
     tipoProprietà: dbLead.tipo_proprieta || 'prima casa',
-    accettoTermini: dbLead.accetto_termini || false,
+    accettoTermini: dbLead.accetto_termini ?? false,
     sopralluogoRichiesto: !!dbLead.data_richiesta_sopralluogo,
-    moduliSelezionati: dbLead.moduli_selezionati,
-    informazioniGenerali: dbLead.informazioni_generali,
-    moduloElettrico: dbLead.modulo_elettrico,
-    moduloFotovoltaico: dbLead.modulo_fotovoltaico,
-    moduloSicurezza: dbLead.modulo_sicurezza,
-    stimaFinale: dbLead.stima_finale,
+    moduliSelezionati: dbLead.moduli_selezionati || undefined,
+    informazioniGenerali: (dbLead as any).informazioni_generali,
+    moduloElettrico: dbLead.modulo_elettrico || undefined,
+    moduloFotovoltaico: dbLead.modulo_fotovoltaico || undefined,
+    moduloSicurezza: dbLead.modulo_sicurezza || undefined,
+    stimaFinale: (dbLead as any).stima_finale,
   };
 };
