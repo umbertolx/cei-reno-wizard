@@ -1,4 +1,3 @@
-
 import { Lead } from "@/types/lead";
 import { PropertyDataSection } from "./sections/PropertyDataSection";
 import { ConfigurationSection } from "./sections/ConfigurationSection";
@@ -12,7 +11,7 @@ interface LeadCardExpandedContentProps {
 
 export const LeadCardExpandedContent = ({ lead }: LeadCardExpandedContentProps) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 pt-4 border-t border-border mt-4">
       <PropertyDataSection lead={lead} />
       <ConfigurationSection lead={lead} />
       <EconomicAnalysisSection lead={lead} />
