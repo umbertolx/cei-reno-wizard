@@ -530,12 +530,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
   return (
     <div className="space-y-4">
-      <GenericModuleSection
-        title="Modulo Elettrico"
-        icon={Zap}
-        data={moduloElettrico}
-        colorClass="text-amber-600"
-      />
+      <ElettricoSection data={moduloElettrico} />
       
       <FotovoltaicoSection data={moduloFotovoltaico} />
       
@@ -543,7 +538,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         title="Modulo Sicurezza"
         icon={Shield}
         data={moduloSicurezza}
-        colorClass="text-red-600"
+        colorClass="text-destructive"
       />
     </div>
   );
