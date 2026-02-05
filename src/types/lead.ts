@@ -112,18 +112,24 @@ export interface DatabaseLead {
 }
 
 // Convert database lead to frontend Lead format
+// Normalizza la composizione supportando entrambi i formati (snake_case e camelCase)
+const normalizeComposizione = (raw: any): Record<string, number> => {
+  if (!raw || typeof raw !== 'object') {
+    return { cucina: 0, cameraDoppia: 0, cameraSingola: 0, bagno: 0, soggiorno: 0 };
+  }
+  return {
+    cucina: raw.cucina ?? raw.cucine ?? 0,
+    cameraDoppia: raw.cameraDoppia ?? raw.camere_doppie ?? 0,
+    cameraSingola: raw.cameraSingola ?? raw.camere_singole ?? 0,
+    bagno: raw.bagno ?? raw.bagni ?? 0,
+    soggiorno: raw.soggiorno ?? raw.soggiorni ?? 0,
+    altro: raw.altro ?? 0,
+  };
+};
+
 export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
   const indirizzoDettagli = (dbLead.indirizzo_dettagli as any) || {};
-
-  const composizioneRaw = (dbLead.composizione as any) || {};
-  const composizione: Record<string, number> = {
-    cucina: composizioneRaw.cucina ?? 0,
-    cameraDoppia: composizioneRaw.cameraDoppia ?? 0,
-    cameraSingola: composizioneRaw.cameraSingola ?? 0,
-    bagno: composizioneRaw.bagno ?? 0,
-    soggiorno: composizioneRaw.soggiorno ?? 0,
-    ...composizioneRaw,
-  };
+  const composizione = normalizeComposizione(dbLead.composizione);
 
   const stime = (dbLead.stime as any) || {};
   const totale = (stime.totale as any) || {};

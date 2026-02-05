@@ -263,29 +263,183 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> | null | unde
   );
 };
 
-// Mapping etichette per campi generici
+// Labels per livello impianto
+const livelloImpiantoLabels: Record<string, string> = {
+  'livello_1': 'Livello 1 - Base',
+  'livello_2': 'Livello 2 - Standard',
+  'livello_3': 'Livello 3 - Domotico',
+  'livello1': 'Livello 1 - Base',
+  'livello2': 'Livello 2 - Standard',
+  'livello3': 'Livello 3 - Domotico',
+  'Livello 1': 'Livello 1 - Base',
+  'Livello 2': 'Livello 2 - Standard',
+  'Livello 3': 'Livello 3 - Domotico',
+};
+
+// Labels per tipo intervento elettrico
+const tipoInterventoLabels: Record<string, string> = {
+  'rifacimento_completo': 'Rifacimento Completo',
+  'Rifacimento completo': 'Rifacimento Completo',
+  'completa': 'Rifacimento Completo',
+  'parziale': 'Intervento Parziale',
+  'Intervento parziale': 'Intervento Parziale',
+  'nuovo': 'Nuovo Impianto',
+};
+
+// Labels per tipo domotica
+const tipoDomoticaLabels: Record<string, string> = {
+  'cablata': 'Domotica Cablata',
+  'wireless': 'Domotica Wireless',
+  'knx': 'Sistema KNX',
+  'smart_home': 'Smart Home',
+};
+
+// Labels per funzioni domotiche
+const funzioniDomoticheLabels: Record<string, string> = {
+  'luci': 'Controllo Luci',
+  'tapparelle': 'Tapparelle Motorizzate',
+  'clima': 'Controllo Clima',
+  'hvac': 'HVAC',
+  'audio': 'Sistema Audio',
+  'sicurezza': 'Sicurezza Integrata',
+  'videocitofono': 'Videocitofono',
+  'prese_smart': 'Prese Smart',
+  'tende': 'Tende Motorizzate',
+  'supervisor': 'Supervisore Centrale',
+  'luci_dali': 'Luci DALI',
+};
+
+// Componente Modulo Elettrico dettagliato
+const ElettricoSection = ({ data }: { data: Record<string, any> | null | undefined }) => {
+  if (!data || Object.keys(data).length === 0) return null;
+
+  // Estrai i dati con supporto per entrambi i formati
+  const tipoIntervento = getValue(data, 'tipo_intervento', 'tipoRistrutturazione', 'tipo_ristrutturazione');
+  const livelloImpianto = getValue(data, 'livello_impianto', 'tipoImpianto', 'tipo_nuovo_impianto_elettrico');
+  const tipoDomotica = getValue(data, 'tipo_domotica', 'tipoDomotica');
+  
+  // Estrai funzioni domotiche (supporta sia nuovo che vecchio formato)
+  const domoticaData = data.domotica || {};
+  const funzioniDomotiche = domoticaData.funzioni || data.funzioni_domotiche || {};
+  const tipoDomoticaFromNested = domoticaData.tipo;
+  
+  // Conta tapparelle/tende
+  const numTapparelle = getValue(data, 'numero_tapparelle_domotica') || 
+                        (funzioniDomotiche.tapparelle?.quantita) || 
+                        (funzioniDomotiche.tapparelle === true ? 1 : 0);
+  const numTende = getValue(data, 'numero_tende_domotica') || 
+                   (funzioniDomotiche.tende?.quantita) || 
+                   (funzioniDomotiche.tende === true ? 1 : 0);
+
+  // Raccogli funzioni attive
+  const funzioniAttive: string[] = [];
+  if (funzioniDomotiche && typeof funzioniDomotiche === 'object') {
+    Object.entries(funzioniDomotiche).forEach(([key, val]: [string, any]) => {
+      const isActive = val === true || val?.attivo === true || (typeof val === 'object' && val !== null);
+      if (isActive && funzioniDomoticheLabels[key]) {
+        let label = funzioniDomoticheLabels[key];
+        if (key === 'tapparelle' && numTapparelle > 0) {
+          label += ` (${numTapparelle})`;
+        }
+        if (key === 'tende' && numTende > 0) {
+          label += ` (${numTende})`;
+        }
+        funzioniAttive.push(label);
+      }
+    });
+  }
+
+  const finalTipoDomotica = tipoDomoticaFromNested || tipoDomotica;
+
+  return (
+    <Card className="border-border">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-lg text-amber-600">
+          <Zap className="h-5 w-5" />
+          Modulo Elettrico
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {/* Dati principali */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {tipoIntervento && (
+            <div className="p-3 bg-muted/50 rounded-lg">
+              <p className="text-xs text-muted-foreground uppercase mb-1">Tipo Intervento</p>
+              <p className="font-semibold text-foreground">
+                {tipoInterventoLabels[tipoIntervento] || tipoIntervento.replace(/[-_]/g, ' ')}
+              </p>
+            </div>
+          )}
+          
+          {livelloImpianto && (
+            <div className="p-3 bg-muted/50 rounded-lg">
+              <p className="text-xs text-muted-foreground uppercase mb-1">Livello Impianto</p>
+              <p className="font-semibold text-foreground">
+                {livelloImpiantoLabels[livelloImpianto] || livelloImpianto}
+              </p>
+            </div>
+          )}
+          
+          {finalTipoDomotica && (
+            <div className="p-3 bg-muted/50 rounded-lg">
+              <p className="text-xs text-muted-foreground uppercase mb-1">Tipo Domotica</p>
+              <p className="font-semibold text-foreground">
+                {tipoDomoticaLabels[finalTipoDomotica] || finalTipoDomotica}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Funzioni Domotiche */}
+        {funzioniAttive.length > 0 && (
+          <div>
+            <p className="text-xs text-muted-foreground uppercase mb-2">Funzioni Domotiche Richieste</p>
+            <div className="flex flex-wrap gap-2">
+              {funzioniAttive.map((fn, i) => (
+                <Badge key={i} variant="secondary" className="text-xs">
+                  {fn}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Statistiche aggiuntive */}
+        {(numTapparelle > 0 || numTende > 0) && !funzioniAttive.some(f => f.includes('Tapparelle') || f.includes('Tende')) && (
+          <div className="grid grid-cols-2 gap-2">
+            {numTapparelle > 0 && (
+              <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
+                <span className="text-xs text-muted-foreground">Tapparelle</span>
+                <span className="text-sm font-medium">{numTapparelle}</span>
+              </div>
+            )}
+            {numTende > 0 && (
+              <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
+                <span className="text-xs text-muted-foreground">Tende</span>
+                <span className="text-sm font-medium">{numTende}</span>
+              </div>
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+// Mapping etichette per campi generici sicurezza
 const fieldLabels: Record<string, string> = {
-  // Elettrico
-  tipoRistrutturazione: 'Tipo Ristrutturazione',
-  tipo_ristrutturazione: 'Tipo Ristrutturazione',
-  tipoImpianto: 'Livello Impianto',
-  tipo_nuovo_impianto_elettrico: 'Livello Impianto',
-  tipoDomotica: 'Tipo Domotica',
-  tipo_domotica: 'Tipo Domotica',
-  elettrificareTapparelle: 'Tapparelle Elettriche',
-  elettrificare_tapparelle: 'Tapparelle Elettriche',
-  impiantoObsoleto: 'Impianto Obsoleto',
-  impianto_elettrico_obsoleto: 'Impianto Obsoleto',
-  // Sicurezza
   tipoSistemaSicurezza: 'Tipo Sistema',
   tipo_sistema_sicurezza: 'Tipo Sistema',
   numeroZone: 'Numero Zone',
   numero_zone: 'Numero Zone',
   videosorveglianza: 'Videosorveglianza',
   antintrusione: 'Antintrusione',
+  sensori_perimetrali: 'Sensori Perimetrali',
+  sirena_esterna: 'Sirena Esterna',
+  nebbiogeno: 'Nebbiogeno',
 };
 
-// Componente generico per altri moduli
+// Componente generico per modulo sicurezza
 const GenericModuleSection = ({ 
   title, 
   icon: Icon, 
@@ -299,7 +453,7 @@ const GenericModuleSection = ({
 }) => {
   if (!data || Object.keys(data).length === 0) return null;
 
-  const excludedFields = ['id', 'created_at', 'updated_at', 'lead_id', 'definizioneConsumiStandard', 'nuoveVociConsumo', 'consumo_aggiuntivo_completo', 'consumo_aggiuntivo_stimato'];
+  const excludedFields = ['id', 'created_at', 'updated_at', 'lead_id'];
   
   const entries = Object.entries(data).filter(([key, value]) => {
     if (excludedFields.includes(key)) return false;
@@ -376,12 +530,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
   return (
     <div className="space-y-4">
-      <GenericModuleSection
-        title="Modulo Elettrico"
-        icon={Zap}
-        data={moduloElettrico}
-        colorClass="text-amber-600"
-      />
+      <ElettricoSection data={moduloElettrico} />
       
       <FotovoltaicoSection data={moduloFotovoltaico} />
       
@@ -389,7 +538,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         title="Modulo Sicurezza"
         icon={Shield}
         data={moduloSicurezza}
-        colorClass="text-red-600"
+        colorClass="text-destructive"
       />
     </div>
   );
