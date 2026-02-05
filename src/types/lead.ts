@@ -115,16 +115,21 @@ export interface DatabaseLead {
 // Normalizza la composizione supportando entrambi i formati (snake_case e camelCase)
 const normalizeComposizione = (raw: any): Record<string, number> => {
   if (!raw || typeof raw !== 'object') {
+    console.log("⚠️ normalizeComposizione: raw is empty or not object", raw);
     return { cucina: 0, cameraDoppia: 0, cameraSingola: 0, bagno: 0, soggiorno: 0 };
   }
-  return {
-    cucina: raw.cucina ?? raw.cucine ?? 0,
-    cameraDoppia: raw.cameraDoppia ?? raw.camere_doppie ?? 0,
-    cameraSingola: raw.cameraSingola ?? raw.camere_singole ?? 0,
-    bagno: raw.bagno ?? raw.bagni ?? 0,
-    soggiorno: raw.soggiorno ?? raw.soggiorni ?? 0,
-    altro: raw.altro ?? 0,
+  
+  const result = {
+    cucina: Number(raw.cucina ?? raw.cucine ?? 0),
+    cameraDoppia: Number(raw.cameraDoppia ?? raw.camere_doppie ?? 0),
+    cameraSingola: Number(raw.cameraSingola ?? raw.camere_singole ?? 0),
+    bagno: Number(raw.bagno ?? raw.bagni ?? 0),
+    soggiorno: Number(raw.soggiorno ?? raw.soggiorni ?? 0),
+    altro: Number(raw.altro ?? 0),
   };
+  
+  console.log("🏠 normalizeComposizione:", { raw, result });
+  return result;
 };
 
 export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
