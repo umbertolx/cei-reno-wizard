@@ -33,7 +33,7 @@ const obiettivoLabels: Record<string, string> = {
 };
 
 // Calcola kWp stimati basandosi sui consumi o sulla superficie
-const calcolaKwpStimati = (data: Record<string, any>): number | null => {
+const calcolaKwpStimati = (data: Record<string, any>, consumiDaElettrodomestici: number): number | null => {
   // Se ha il consumo energetico mensile in euro
   const consumo = getValue(data, 'consumoEnergetico', 'spesa_mensile');
   if (consumo) {
@@ -42,6 +42,12 @@ const calcolaKwpStimati = (data: Record<string, any>): number | null => {
       const consumoAnnuoKwh = consumoMensile * 12 * 3.5;
       return Math.round((consumoAnnuoKwh / 1100) * 10) / 10;
     }
+  }
+  
+  // Usa i consumi calcolati dagli elettrodomestici
+  if (consumiDaElettrodomestici > 0) {
+    // Produzione media annua per kWp in Italia: ~1100 kWh
+    return Math.round((consumiDaElettrodomestici / 1100) * 10) / 10;
   }
   
   // Stima basata sulla superficie del tetto
