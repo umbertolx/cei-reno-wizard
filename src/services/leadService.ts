@@ -7,41 +7,8 @@ export const fetchLeads = async (): Promise<DatabaseLead[]> => {
   try {
     const { data, error } = await supabase
       .from('leads')
-      .select(`
-        id,
-        nome,
-        cognome,
-        email,
-        telefono,
-        tipologia_abitazione,
-        superficie,
-        indirizzo,
-        citta,
-        cap,
-        regione,
-        piano,
-        composizione,
-        configurazione_tecnica,
-        stima_min,
-        stima_max,
-        stima_media,
-        stima_dettagli,
-        data_richiesta_sopralluogo,
-        orario_sopralluogo,
-        note,
-        numero_persone,
-        tipo_proprieta,
-        stato,
-        data_creazione,
-        data_ultimo_contatto,
-        accetto_termini,
-        moduli_selezionati,
-        informazioni_generali,
-        modulo_elettrico,
-        modulo_fotovoltaico,
-        modulo_sicurezza,
-        stima_finale
-      `)
+      // NOTE: usare '*' evita errori quando cambiano i campi/JSON (es. cap/piano non sono colonne ma dentro indirizzo_dettagli)
+      .select('*')
       .order('data_creazione', { ascending: false });
 
     if (error) {
