@@ -132,297 +132,79 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> | null | unde
   const qualitaForniture = getValue(data, 'qualitaForniture', 'qualita_forniture');
   const percentualeCopertura = getValue(data, 'percentualeCopertura', 'percentuale_copertura', 'distribuzione_consumi');
 
+  // Build description text like reference
+  const descriptionParts: string[] = [];
+  if (tipoIntervento === 'nuovo') descriptionParts.push('nuovo impianto');
+  if (isAmpliamento) descriptionParts.push('ampliamento impianto esistente');
+  if (kwpStimati) descriptionParts.push(`${kwpStimati} kWp stimati`);
+  if (batteria === 'si' || batteria === true) descriptionParts.push('con batteria di accumulo');
+  if (orientamento) descriptionParts.push(`orientamento ${orientamentoLabels[orientamento] || orientamento}`);
+  if (obiettivo) descriptionParts.push(`obiettivo ${obiettivoLabels[obiettivo]?.toLowerCase() || obiettivo}`);
+
+  // Badge items
+  const badges: { label: string; highlighted?: boolean }[] = [];
+  if (kwpStimati) badges.push({ label: `${kwpStimati} kWp`, highlighted: true });
+  if (superficieTetto) badges.push({ label: `${superficieTetto} mq tetto` });
+  if (orientamento) badges.push({ label: orientamentoLabels[orientamento] || orientamento, highlighted: true });
+  if (batteria === 'si' || batteria === true) badges.push({ label: 'Batteria' });
+  if (qualitaForniture) badges.push({ label: `Qualità ${qualitaForniture}` });
+  if (consumiTotali > 0) badges.push({ label: `~${consumiTotali.toLocaleString()} kWh/anno` });
+
   return (
-    <Card className="border-border">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg text-yellow-600">
-          <Sun className="h-5 w-5" />
+    <div className="bg-card rounded-xl border border-border/50 shadow-sm overflow-hidden">
+      {/* Header */}
+      <div className="px-5 py-4 border-b border-border/30 flex items-center justify-between">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Modulo Fotovoltaico
-          {isAmpliamento && (
-            <Badge variant="outline" className="ml-2 text-xs">Ampliamento</Badge>
-          )}
-          {tipoIntervento === 'nuovo' && (
-            <Badge variant="outline" className="ml-2 text-xs">Nuovo Impianto</Badge>
-          )}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Dati tecnici principali */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {kwpStimati && (
-            <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-950/30 rounded-lg border border-yellow-200 dark:border-yellow-800">
-              <Gauge className="h-5 w-5 text-yellow-600 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-yellow-700 dark:text-yellow-400">{kwpStimati}</p>
-              <p className="text-xs text-muted-foreground">kWp Stimati</p>
-            </div>
-          )}
-          
-          {superficieTetto && (
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <Ruler className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-              <p className="text-2xl font-bold text-foreground">{superficieTetto}</p>
-              <p className="text-xs text-muted-foreground">mq Tetto</p>
-            </div>
-          )}
-          
-          {orientamento && (
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <Compass className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-              <p className="text-lg font-bold text-foreground capitalize">
-                {orientamentoLabels[orientamento] || orientamento.replace(/-/g, ' ')}
-              </p>
-              <p className="text-xs text-muted-foreground">Orientamento</p>
-            </div>
-          )}
-          
-          {batteria && (
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <Battery className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-              <p className="text-lg font-bold text-foreground">
-                {batteria === 'si' || batteria === true ? 'Sì' : 'No'}
-              </p>
-              <p className="text-xs text-muted-foreground">Batteria</p>
-            </div>
-          )}
-        </div>
-
-        {/* Obiettivo */}
-        {obiettivo && (
-          <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg">
-            <Target className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Obiettivo:</span>
-            <span className="font-medium text-foreground">
-              {obiettivoLabels[obiettivo] || obiettivo.replace(/-/g, ' ')}
+        </h3>
+        {isAmpliamento && (
+          <span className="text-xs font-medium text-muted-foreground">Ampliamento</span>
+        )}
+      </div>
+      
+      {/* Description + Badges like reference */}
+      <div className="px-5 py-5">
+        <p className="text-sm text-foreground leading-relaxed mb-4">
+          Stai realizzando un <strong>impianto fotovoltaico</strong>
+          {isAmpliamento ? ', ampliamento dell\'esistente' : tipoIntervento === 'nuovo' ? ', nuovo' : ''}
+          {kwpStimati && `, ${kwpStimati} kWp stimati`}
+          {batteria === 'si' || batteria === true ? ', con batteria di accumulo' : ''}
+          {obiettivo && `, per ${obiettivoLabels[obiettivo]?.toLowerCase() || obiettivo}`}.
+        </p>
+        
+        {/* Badge pills */}
+        <div className="flex flex-wrap gap-2">
+          {badges.map((badge, i) => (
+            <span 
+              key={i} 
+              className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium
+                ${badge.highlighted 
+                  ? 'bg-primary/10 text-primary border border-primary/20' 
+                  : 'bg-muted text-foreground border border-border'
+                }`}
+            >
+              {badge.label}
             </span>
-          </div>
-        )}
-
-        {/* Consumi stimati */}
-        {consumiTotali > 0 && (
-          <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
-            <p className="text-sm font-medium text-blue-700 dark:text-blue-400 mb-2">
-              Consumo Annuo Stimato: ~{consumiTotali.toLocaleString()} kWh
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {elettrodomestici.map((item, i) => (
-                <Badge key={i} variant="secondary" className="text-xs capitalize">
-                  {item}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Percentuale copertura */}
-        {percentualeCopertura && (
-          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-            <span className="text-sm text-muted-foreground">Copertura Desiderata</span>
-            <span className="font-semibold text-foreground">{percentualeCopertura}%</span>
-          </div>
-        )}
-
-        {/* Qualità forniture */}
-        {qualitaForniture && (
-          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-            <span className="text-sm text-muted-foreground">Qualità Forniture</span>
-            <Badge variant={qualitaForniture === 'premium' ? 'default' : 'secondary'} className="capitalize">
-              {qualitaForniture}
-            </Badge>
-          </div>
-        )}
-
-        {/* Altri dettagli */}
-        <div className="grid grid-cols-2 gap-2">
-          {tipoFalda && (
-            <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-              <span className="text-xs text-muted-foreground">Tipo Falda</span>
-              <span className="text-sm font-medium capitalize">{tipoFalda}</span>
-            </div>
-          )}
-          {zoneOmbra && (
-            <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-              <span className="text-xs text-muted-foreground">Zone Ombra</span>
-              <span className="text-sm font-medium capitalize">{zoneOmbra}</span>
-            </div>
-          )}
-          {potenzaEsistente && (
-            <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-              <span className="text-xs text-muted-foreground">Impianto Esistente</span>
-              <span className="text-sm font-medium">{potenzaEsistente} kWp</span>
-            </div>
-          )}
-          {annoInstallazione && (
-            <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-              <span className="text-xs text-muted-foreground">Anno Installazione</span>
-              <span className="text-sm font-medium">{annoInstallazione}</span>
-            </div>
-          )}
+          ))}
         </div>
-      </CardContent>
-    </Card>
-  );
-};
+      </div>
 
-// Labels per livello impianto
-const livelloImpiantoLabels: Record<string, string> = {
-  'livello_1': 'Livello 1 - Base',
-  'livello_2': 'Livello 2 - Standard',
-  'livello_3': 'Livello 3 - Domotico',
-  'livello1': 'Livello 1 - Base',
-  'livello2': 'Livello 2 - Standard',
-  'livello3': 'Livello 3 - Domotico',
-  'Livello 1': 'Livello 1 - Base',
-  'Livello 2': 'Livello 2 - Standard',
-  'Livello 3': 'Livello 3 - Domotico',
-};
-
-// Labels per tipo intervento elettrico
-const tipoInterventoLabels: Record<string, string> = {
-  'rifacimento_completo': 'Rifacimento Completo',
-  'Rifacimento completo': 'Rifacimento Completo',
-  'completa': 'Rifacimento Completo',
-  'parziale': 'Intervento Parziale',
-  'Intervento parziale': 'Intervento Parziale',
-  'nuovo': 'Nuovo Impianto',
-};
-
-// Labels per tipo domotica
-const tipoDomoticaLabels: Record<string, string> = {
-  'cablata': 'Domotica Cablata',
-  'wireless': 'Domotica Wireless',
-  'knx': 'Sistema KNX',
-  'smart_home': 'Smart Home',
-};
-
-// Labels per funzioni domotiche
-const funzioniDomoticheLabels: Record<string, string> = {
-  'luci': 'Controllo Luci',
-  'tapparelle': 'Tapparelle Motorizzate',
-  'clima': 'Controllo Clima',
-  'hvac': 'HVAC',
-  'audio': 'Sistema Audio',
-  'sicurezza': 'Sicurezza Integrata',
-  'videocitofono': 'Videocitofono',
-  'prese_smart': 'Prese Smart',
-  'tende': 'Tende Motorizzate',
-  'supervisor': 'Supervisore Centrale',
-  'luci_dali': 'Luci DALI',
-};
-
-// Componente Modulo Elettrico dettagliato
-const ElettricoSection = ({ data }: { data: Record<string, any> | null | undefined }) => {
-  if (!data || Object.keys(data).length === 0) return null;
-
-  // Estrai i dati con supporto per entrambi i formati
-  const tipoIntervento = getValue(data, 'tipo_intervento', 'tipoRistrutturazione', 'tipo_ristrutturazione');
-  const livelloImpianto = getValue(data, 'livello_impianto', 'tipoImpianto', 'tipo_nuovo_impianto_elettrico');
-  const tipoDomotica = getValue(data, 'tipo_domotica', 'tipoDomotica');
-  
-  // Estrai funzioni domotiche (supporta sia nuovo che vecchio formato)
-  const domoticaData = data.domotica || {};
-  const funzioniDomotiche = domoticaData.funzioni || data.funzioni_domotiche || {};
-  const tipoDomoticaFromNested = domoticaData.tipo;
-  
-  // Conta tapparelle/tende
-  const numTapparelle = getValue(data, 'numero_tapparelle_domotica') || 
-                        (funzioniDomotiche.tapparelle?.quantita) || 
-                        (funzioniDomotiche.tapparelle === true ? 1 : 0);
-  const numTende = getValue(data, 'numero_tende_domotica') || 
-                   (funzioniDomotiche.tende?.quantita) || 
-                   (funzioniDomotiche.tende === true ? 1 : 0);
-
-  // Raccogli funzioni attive
-  const funzioniAttive: string[] = [];
-  if (funzioniDomotiche && typeof funzioniDomotiche === 'object') {
-    Object.entries(funzioniDomotiche).forEach(([key, val]: [string, any]) => {
-      const isActive = val === true || val?.attivo === true || (typeof val === 'object' && val !== null);
-      if (isActive && funzioniDomoticheLabels[key]) {
-        let label = funzioniDomoticheLabels[key];
-        if (key === 'tapparelle' && numTapparelle > 0) {
-          label += ` (${numTapparelle})`;
-        }
-        if (key === 'tende' && numTende > 0) {
-          label += ` (${numTende})`;
-        }
-        funzioniAttive.push(label);
-      }
-    });
-  }
-
-  const finalTipoDomotica = tipoDomoticaFromNested || tipoDomotica;
-
-  return (
-    <Card className="border-border">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg text-amber-600">
-          <Zap className="h-5 w-5" />
-          Modulo Elettrico
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Dati principali */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {tipoIntervento && (
-            <div className="p-3 bg-muted/50 rounded-lg">
-              <p className="text-xs text-muted-foreground uppercase mb-1">Tipo Intervento</p>
-              <p className="font-semibold text-foreground">
-                {tipoInterventoLabels[tipoIntervento] || tipoIntervento.replace(/[-_]/g, ' ')}
-              </p>
-            </div>
-          )}
-          
-          {livelloImpianto && (
-            <div className="p-3 bg-muted/50 rounded-lg">
-              <p className="text-xs text-muted-foreground uppercase mb-1">Livello Impianto</p>
-              <p className="font-semibold text-foreground">
-                {livelloImpiantoLabels[livelloImpianto] || livelloImpianto}
-              </p>
-            </div>
-          )}
-          
-          {finalTipoDomotica && (
-            <div className="p-3 bg-muted/50 rounded-lg">
-              <p className="text-xs text-muted-foreground uppercase mb-1">Tipo Domotica</p>
-              <p className="font-semibold text-foreground">
-                {tipoDomoticaLabels[finalTipoDomotica] || finalTipoDomotica}
-              </p>
-            </div>
-          )}
+      {/* Elettrodomestici inclusi */}
+      {elettrodomestici.length > 0 && (
+        <div className="px-5 py-4 border-t border-border/30 bg-muted/20">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+            Elettrodomestici considerati
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {elettrodomestici.map((item, i) => (
+              <span key={i} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs bg-muted text-foreground border border-border capitalize">
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
-
-        {/* Funzioni Domotiche */}
-        {funzioniAttive.length > 0 && (
-          <div>
-            <p className="text-xs text-muted-foreground uppercase mb-2">Funzioni Domotiche Richieste</p>
-            <div className="flex flex-wrap gap-2">
-              {funzioniAttive.map((fn, i) => (
-                <Badge key={i} variant="secondary" className="text-xs">
-                  {fn}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Statistiche aggiuntive */}
-        {(numTapparelle > 0 || numTende > 0) && !funzioniAttive.some(f => f.includes('Tapparelle') || f.includes('Tende')) && (
-          <div className="grid grid-cols-2 gap-2">
-            {numTapparelle > 0 && (
-              <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-                <span className="text-xs text-muted-foreground">Tapparelle</span>
-                <span className="text-sm font-medium">{numTapparelle}</span>
-              </div>
-            )}
-            {numTende > 0 && (
-              <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-                <span className="text-xs text-muted-foreground">Tende</span>
-                <span className="text-sm font-medium">{numTende}</span>
-              </div>
-            )}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 };
 
