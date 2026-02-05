@@ -101,18 +101,16 @@ export type Database = {
       leads: {
         Row: {
           accetto_termini: boolean | null
-          cap: string
           citta: string
           cognome: string
           composizione: Json
-          configurazione_tecnica: Json | null
           data_creazione: string | null
           data_richiesta_sopralluogo: string | null
           data_ultimo_contatto: string | null
           email: string
           id: string
           indirizzo: string
-          informazioni_generali: Json | null
+          indirizzo_dettagli: Json | null
           moduli_selezionati: string[] | null
           modulo_elettrico: Json | null
           modulo_fotovoltaico: Json | null
@@ -121,14 +119,10 @@ export type Database = {
           note: string | null
           numero_persone: number | null
           orario_sopralluogo: string | null
-          piano: string
+          pvgis: Json | null
           regione: string
           stato: string | null
-          stima_dettagli: Json | null
-          stima_finale: Json | null
-          stima_max: number | null
-          stima_media: number | null
-          stima_min: number | null
+          stime: Json | null
           superficie: number
           telefono: string
           tipo_proprieta: string | null
@@ -136,18 +130,16 @@ export type Database = {
         }
         Insert: {
           accetto_termini?: boolean | null
-          cap: string
           citta: string
           cognome: string
           composizione?: Json
-          configurazione_tecnica?: Json | null
           data_creazione?: string | null
           data_richiesta_sopralluogo?: string | null
           data_ultimo_contatto?: string | null
           email: string
           id?: string
           indirizzo: string
-          informazioni_generali?: Json | null
+          indirizzo_dettagli?: Json | null
           moduli_selezionati?: string[] | null
           modulo_elettrico?: Json | null
           modulo_fotovoltaico?: Json | null
@@ -156,14 +148,10 @@ export type Database = {
           note?: string | null
           numero_persone?: number | null
           orario_sopralluogo?: string | null
-          piano: string
+          pvgis?: Json | null
           regione: string
           stato?: string | null
-          stima_dettagli?: Json | null
-          stima_finale?: Json | null
-          stima_max?: number | null
-          stima_media?: number | null
-          stima_min?: number | null
+          stime?: Json | null
           superficie: number
           telefono: string
           tipo_proprieta?: string | null
@@ -171,18 +159,16 @@ export type Database = {
         }
         Update: {
           accetto_termini?: boolean | null
-          cap?: string
           citta?: string
           cognome?: string
           composizione?: Json
-          configurazione_tecnica?: Json | null
           data_creazione?: string | null
           data_richiesta_sopralluogo?: string | null
           data_ultimo_contatto?: string | null
           email?: string
           id?: string
           indirizzo?: string
-          informazioni_generali?: Json | null
+          indirizzo_dettagli?: Json | null
           moduli_selezionati?: string[] | null
           modulo_elettrico?: Json | null
           modulo_fotovoltaico?: Json | null
@@ -191,14 +177,10 @@ export type Database = {
           note?: string | null
           numero_persone?: number | null
           orario_sopralluogo?: string | null
-          piano?: string
+          pvgis?: Json | null
           regione?: string
           stato?: string | null
-          stima_dettagli?: Json | null
-          stima_finale?: Json | null
-          stima_max?: number | null
-          stima_media?: number | null
-          stima_min?: number | null
+          stime?: Json | null
           superficie?: number
           telefono?: string
           tipo_proprieta?: string | null
