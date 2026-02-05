@@ -1,6 +1,7 @@
-
 import { Lead } from "@/types/lead";
-import { Clock, Calendar, BarChart3, Eye } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Clock, Calendar, CheckCircle } from "lucide-react";
 
 interface CommercialInfoSectionProps {
   lead: Lead;
@@ -11,63 +12,75 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
     return new Date(dateString).toLocaleDateString('it-IT', {
       day: '2-digit',
       month: '2-digit',
-      year: 'numeric'
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
     });
   };
 
-  const completionPercentage = ((lead.moduliCompletati?.length || 0) / 12) * 100;
-
   return (
-    <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-6 border border-gray-200 shadow-sm">
-      <div className="flex items-center mb-6">
-        <div className="p-2 bg-gray-600 rounded-lg mr-3">
-          <Clock className="h-6 w-6 text-white" />
-        </div>
-        <h4 className="font-bold text-xl text-gray-800">Info Commerciali</h4>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
-          <div className="flex items-center mb-3">
-            <Calendar className="h-5 w-5 text-gray-600 mr-2" />
-            <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">Ultimo Contatto</span>
-          </div>
-          <div className="font-bold text-lg text-gray-900">
-            {lead.dataUltimoContatto ? formatDate(lead.dataUltimoContatto) : (
-              <span className="text-orange-600">Mai contattato</span>
-            )}
-          </div>
-        </div>
-        
-        <div className="bg-white/80 backdrop-blur-sm p-5 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
-          <div className="flex items-center mb-3">
-            <BarChart3 className="h-5 w-5 text-gray-600 mr-2" />
-            <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">Progresso Moduli</span>
-          </div>
-          <div className="flex items-center mb-2">
-            <span className="font-bold text-lg text-gray-900 mr-3">{lead.moduliCompletati?.length || 0}/12</span>
-            <span className="text-sm font-medium text-gray-600">({Math.round(completionPercentage)}%)</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
-            <div 
-              className="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full transition-all duration-500" 
-              style={{ width: `${completionPercentage}%` }}
-            ></div>
-          </div>
-        </div>
-      </div>
-
-      {lead.sopralluogoRichiesto && (
-        <div className="bg-gradient-to-r from-orange-100 to-yellow-100 border-2 border-orange-300 p-5 rounded-xl">
-          <div className="flex items-center text-orange-800">
-            <div className="text-2xl mr-3">🔍</div>
+    <Card className="border-border">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <Clock className="h-5 w-5 text-primary" />
+          Cronologia & Stato
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+            <Calendar className="h-5 w-5 text-muted-foreground" />
             <div>
-              <span className="font-bold text-lg">SOPRALLUOGO RICHIESTO</span>
-              <p className="text-sm text-orange-700 mt-1">Il cliente ha richiesto un sopralluogo tecnico</p>
+              <p className="text-xs text-muted-foreground uppercase">Data Richiesta</p>
+              <p className="font-medium text-foreground">{formatDate(lead.dataRichiesta)}</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+            <Clock className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="text-xs text-muted-foreground uppercase">Ultimo Contatto</p>
+              <p className="font-medium text-foreground">
+                {lead.dataUltimoContatto ? formatDate(lead.dataUltimoContatto) : 'Mai contattato'}
+              </p>
             </div>
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Moduli selezionati */}
+        {lead.moduliSelezionati && lead.moduliSelezionati.length > 0 && (
+          <div>
+            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">
+              Moduli Selezionati
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {lead.moduliSelezionati.map((modulo) => (
+                <Badge key={modulo} variant="outline" className="gap-1">
+                  <CheckCircle className="h-3 w-3" />
+                  {modulo.charAt(0).toUpperCase() + modulo.slice(1)}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Sopralluogo */}
+        {lead.sopralluogoRichiesto && (
+          <div className="p-4 bg-amber-50 dark:bg-amber-950/30 rounded-lg border border-amber-200 dark:border-amber-800">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">📅</span>
+              <div>
+                <p className="font-medium text-amber-800 dark:text-amber-200">Sopralluogo Richiesto</p>
+                {lead.dataSopralluogo && (
+                  <p className="text-sm text-amber-600 dark:text-amber-400">
+                    {lead.dataSopralluogo} {lead.orarioSopralluogo && `alle ${lead.orarioSopralluogo}`}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
