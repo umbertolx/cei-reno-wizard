@@ -34,6 +34,54 @@ export interface CustomColumn {
   order?: number;
 }
 
+// ─── Stime (costi calcolati server-side) ───────────────────────────────────
+export interface StimeModulo {
+  costo: number;
+  dettagli: Record<string, number>;
+}
+
+export interface StimeTotale {
+  min: number;
+  media: number;
+  max: number;
+}
+
+export interface Stime {
+  elettrico?: StimeModulo;
+  fotovoltaico?: StimeModulo;
+  sicurezza?: StimeModulo;
+  totale: StimeTotale;
+  calcolato_il?: string;
+}
+
+// ─── PVGIS (dati irraggiamento solare) ─────────────────────────────────────
+export interface Pvgis {
+  energia_annua_kwh: number;
+  kwh_per_kwp: number;
+}
+
+// ─── Indirizzo dettagli ────────────────────────────────────────────────────
+export interface IndirizzoDettagli {
+  via?: string;
+  citta?: string;
+  cap?: string;
+  regione?: string;
+  piano?: string;
+  lat?: number;
+  lng?: number;
+}
+
+// ─── Composizione stanze ───────────────────────────────────────────────────
+export interface Composizione {
+  soggiorni: number;
+  cucine: number;
+  camere_doppie: number;
+  camere_singole: number;
+  bagni: number;
+  altro: number;
+}
+
+// ─── Frontend Lead interface ───────────────────────────────────────────────
 export interface Lead {
   id: string;
   nome: string;
@@ -41,38 +89,39 @@ export interface Lead {
   email: string;
   telefono: string;
   tipologiaAbitazione: string;
+  tipoProprietà: string;
   superficie: number;
   indirizzo: string;
   citta: string;
-  cap: string;
   regione: string;
-  piano: string;
-  composizione: Record<string, number>;
+  indirizzoDettagli: IndirizzoDettagli;
+  composizione: Composizione;
+  numeroPersone: number;
+  accettoTermini: boolean;
+  // Stime economiche
+  stime: Stime | null;
   stimaMin: number;
   stimaMax: number;
   stimaMedia: number;
-  stimaDettagli: any;
+  pvgis: Pvgis | null;
+  // Moduli
+  moduliSelezionati: string[];
+  moduloElettrico: Record<string, any> | null;
+  moduloFotovoltaico: Record<string, any> | null;
+  moduloSicurezza: Record<string, any> | null;
+  // Timeline & stato
   dataRichiesta: string;
   dataUltimoContatto: string | null;
   stato: LeadState | string;
-  note: string | null;
-  orarioSopralluogo: string | null;
+  // Sopralluogo
   dataSopralluogo: string | null;
-  numeroPersone: number;
-  utilizzoAbitazione: string;
-  tipoProprietà?: string;
-  accettoTermini: boolean;
-  sopralluogoRichiesto?: boolean;
-  moduliCompletati?: string[];
-  // Modular fields
-  moduliSelezionati?: string[];
-  informazioniGenerali?: any;
-  moduloElettrico?: any;
-  moduloFotovoltaico?: any;
-  moduloSicurezza?: any;
-  stimaFinale?: any;
+  orarioSopralluogo: string | null;
+  sopralluogoRichiesto: boolean;
+  // Note
+  note: string | null;
 }
 
+// ─── Database Lead (matches Supabase schema) ───────────────────────────────
 export interface DatabaseLead {
   id: string;
   nome: string;
@@ -80,72 +129,76 @@ export interface DatabaseLead {
   email: string;
   telefono: string;
   tipologia_abitazione: string;
+  tipo_proprieta: string | null;
   superficie: number;
   indirizzo: string;
   citta: string;
   regione: string;
-  composizione: any;
-  data_richiesta_sopralluogo: string | null;
-  orario_sopralluogo: string | null;
-  note: string | null;
-  numero_persone: number | null;
-  tipo_proprieta: string | null;
-  stato: string | null;
-  data_creazione: string | null;
-  data_ultimo_contatto: string | null;
-  accetto_termini: boolean | null;
-  moduli_selezionati: string[] | null;
-
-  // JSON aggiuntivi presenti in tabella (vedi schema Supabase)
   indirizzo_dettagli: any | null;
+  composizione: any;
+  numero_persone: number | null;
+  accetto_termini: boolean | null;
+  // Stime & PVGIS
   stime: any | null;
   pvgis: any | null;
-
-  // JSON dei moduli (nullable in DB)
+  // Moduli
+  moduli_selezionati: string[] | null;
   modulo_elettrico: any | null;
   modulo_fotovoltaico: any | null;
   modulo_sicurezza: any | null;
-
-  // Campi legacy (se presenti in alcuni record vecchi)
-  informazioni_generali?: any;
-  stima_finale?: any;
+  // Timeline
+  data_creazione: string | null;
+  data_ultimo_contatto: string | null;
+  stato: string | null;
+  // Sopralluogo
+  data_richiesta_sopralluogo: string | null;
+  orario_sopralluogo: string | null;
+  // Note
+  note: string | null;
 }
 
-// Convert database lead to frontend Lead format
-// Normalizza la composizione supportando entrambi i formati (snake_case e camelCase)
-const normalizeComposizione = (raw: any): Record<string, number> => {
+// ─── Normalizza composizione (snake_case DB → snake_case frontend) ─────────
+const normalizeComposizione = (raw: any): Composizione => {
   if (!raw || typeof raw !== 'object') {
-    console.log("⚠️ normalizeComposizione: raw is empty or not object", raw);
-    return { cucina: 0, cameraDoppia: 0, cameraSingola: 0, bagno: 0, soggiorno: 0 };
+    return { soggiorni: 0, cucine: 0, camere_doppie: 0, camere_singole: 0, bagni: 0, altro: 0 };
   }
-  
-  const result = {
-    cucina: Number(raw.cucina ?? raw.cucine ?? 0),
-    cameraDoppia: Number(raw.cameraDoppia ?? raw.camere_doppie ?? 0),
-    cameraSingola: Number(raw.cameraSingola ?? raw.camere_singole ?? 0),
-    bagno: Number(raw.bagno ?? raw.bagni ?? 0),
-    soggiorno: Number(raw.soggiorno ?? raw.soggiorni ?? 0),
+
+  return {
+    soggiorni: Number(raw.soggiorni ?? raw.soggiorno ?? 0),
+    cucine: Number(raw.cucine ?? raw.cucina ?? 0),
+    camere_doppie: Number(raw.camere_doppie ?? raw.cameraDoppia ?? 0),
+    camere_singole: Number(raw.camere_singole ?? raw.cameraSingola ?? 0),
+    bagni: Number(raw.bagni ?? raw.bagno ?? 0),
     altro: Number(raw.altro ?? 0),
   };
-  
-  console.log("🏠 normalizeComposizione:", { raw, result });
-  return result;
 };
 
-export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
-  const indirizzoDettagli = (dbLead.indirizzo_dettagli as any) || {};
-  const composizione = normalizeComposizione(dbLead.composizione);
+// ─── Normalizza stime ──────────────────────────────────────────────────────
+const normalizeStime = (raw: any): Stime | null => {
+  if (!raw || typeof raw !== 'object') return null;
+  const totale = raw.totale || {};
+  return {
+    elettrico: raw.elettrico || undefined,
+    fotovoltaico: raw.fotovoltaico || undefined,
+    sicurezza: raw.sicurezza || undefined,
+    totale: {
+      min: typeof totale.min === 'number' ? totale.min : 0,
+      media: typeof totale.media === 'number' ? totale.media : 0,
+      max: typeof totale.max === 'number' ? totale.max : 0,
+    },
+    calcolato_il: raw.calcolato_il || undefined,
+  };
+};
 
-  const stime = (dbLead.stime as any) || {};
-  const totale = (stime.totale as any) || {};
-  const stimaMin = typeof totale.min === "number" ? totale.min : 0;
-  const stimaMax = typeof totale.max === "number" ? totale.max : 0;
-  const stimaMedia =
-    typeof totale.media === "number"
-      ? totale.media
-      : stimaMin && stimaMax
-        ? Math.round((stimaMin + stimaMax) / 2)
-        : 0;
+// ─── Convert database lead → frontend Lead ─────────────────────────────────
+export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
+  const indirizzoDettagli: IndirizzoDettagli = dbLead.indirizzo_dettagli || {};
+  const composizione = normalizeComposizione(dbLead.composizione);
+  const stime = normalizeStime(dbLead.stime);
+
+  const stimaMin = stime?.totale.min ?? 0;
+  const stimaMax = stime?.totale.max ?? 0;
+  const stimaMedia = stime?.totale.media ?? (stimaMin && stimaMax ? Math.round((stimaMin + stimaMax) / 2) : 0);
 
   return {
     id: dbLead.id,
@@ -154,33 +207,35 @@ export const convertDatabaseLeadToLead = (dbLead: DatabaseLead): Lead => {
     email: dbLead.email,
     telefono: dbLead.telefono,
     tipologiaAbitazione: dbLead.tipologia_abitazione,
+    tipoProprietà: dbLead.tipo_proprieta || 'prima casa',
     superficie: dbLead.superficie,
     indirizzo: dbLead.indirizzo,
     citta: dbLead.citta,
-    cap: String(indirizzoDettagli.cap ?? ""),
     regione: dbLead.regione,
-    piano: String(indirizzoDettagli.piano ?? ""),
+    indirizzoDettagli,
     composizione,
+    numeroPersone: dbLead.numero_persone ?? 2,
+    accettoTermini: dbLead.accetto_termini ?? false,
+    // Stime
+    stime,
     stimaMin,
     stimaMax,
     stimaMedia,
-    stimaDettagli: stime.dettagli ?? stime,
+    pvgis: dbLead.pvgis || null,
+    // Moduli
+    moduliSelezionati: dbLead.moduli_selezionati || [],
+    moduloElettrico: dbLead.modulo_elettrico || null,
+    moduloFotovoltaico: dbLead.modulo_fotovoltaico || null,
+    moduloSicurezza: dbLead.modulo_sicurezza || null,
+    // Timeline
     dataRichiesta: dbLead.data_creazione || new Date().toISOString(),
     dataUltimoContatto: dbLead.data_ultimo_contatto,
     stato: (dbLead.stato as LeadState) || 'nuovo',
-    note: dbLead.note,
-    orarioSopralluogo: dbLead.orario_sopralluogo,
+    // Sopralluogo
     dataSopralluogo: dbLead.data_richiesta_sopralluogo,
-    numeroPersone: dbLead.numero_persone ?? 2,
-    utilizzoAbitazione: dbLead.tipo_proprieta || 'prima casa',
-    tipoProprietà: dbLead.tipo_proprieta || 'prima casa',
-    accettoTermini: dbLead.accetto_termini ?? false,
+    orarioSopralluogo: dbLead.orario_sopralluogo,
     sopralluogoRichiesto: !!dbLead.data_richiesta_sopralluogo,
-    moduliSelezionati: dbLead.moduli_selezionati || undefined,
-    informazioniGenerali: (dbLead as any).informazioni_generali,
-    moduloElettrico: dbLead.modulo_elettrico || undefined,
-    moduloFotovoltaico: dbLead.modulo_fotovoltaico || undefined,
-    moduloSicurezza: dbLead.modulo_sicurezza || undefined,
-    stimaFinale: (dbLead as any).stima_finale,
+    // Note
+    note: dbLead.note,
   };
 };

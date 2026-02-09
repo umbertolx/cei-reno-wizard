@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Lead, leadStates } from "@/types/lead";
 import { X, MapPin, Phone, Mail, Calendar, Euro, UserCircle, Building2, Zap, ArrowRightLeft, ChevronDown, Check } from "lucide-react";
@@ -40,8 +39,8 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
   };
 
   const getTotalRooms = () => {
-    const { cucina, cameraDoppia, cameraSingola, bagno, soggiorno } = lead.composizione;
-    return cucina + cameraDoppia + cameraSingola + bagno + soggiorno;
+    const c = lead.composizione;
+    return (c.cucine || 0) + (c.camere_doppie || 0) + (c.camere_singole || 0) + (c.bagni || 0) + (c.soggiorni || 0) + (c.altro || 0);
   };
 
   const stimaMedia = lead.stimaMin && lead.stimaMax ? Math.round((lead.stimaMin + lead.stimaMax) / 2) : 0;
@@ -88,7 +87,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
         onClick={onClose}
       />
       
-      {/* Content - Full screen on mobile, centered modal on desktop */}
+      {/* Content */}
       <div className="relative bg-white w-full md:max-w-4xl md:mx-4 rounded-t-2xl md:rounded-2xl shadow-xl overflow-y-auto max-h-[95vh] md:max-h-[90vh]">
         {/* Close button */}
         <button
@@ -103,7 +102,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
           <div className="w-10 h-1 bg-gray-300 rounded-full" />
         </div>
 
-        {/* Header */}
+        {/* ═══════════════════ HEADER ═══════════════════ */}
         <div className="p-4 md:p-6 border-b border-gray-200">
           <div className="flex items-center gap-3 md:gap-4">
             <div className="w-11 h-11 md:w-14 md:h-14 rounded-full bg-[#d8010c] text-white font-bold text-base md:text-lg flex items-center justify-center flex-shrink-0">
@@ -113,21 +112,21 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 truncate">{lead.nome} {lead.cognome}</h2>
               <div className="flex items-center gap-2 md:gap-3 mt-1 flex-wrap">
                 {stateInfo && (
-                  <span className="bg-orange-100 text-orange-800 rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-semibold">
+                  <span className="bg-orange-100 text-orange-800 rounded-full px-3 py-1 text-xs font-semibold">
                     {stateInfo.label}
                   </span>
                 )}
                 <span className="text-xs text-gray-400 font-mono hidden md:inline">ID: {lead.id.substring(0, 8)}...</span>
-                <span className="text-xs md:text-sm text-gray-500">{formatDate(lead.dataRichiesta)}</span>
+                <span className="text-xs md:text-sm text-gray-500">Richiesta: {formatDate(lead.dataRichiesta)}</span>
               </div>
             </div>
           </div>
 
-          {/* ── Mobile "Sposta" button ── */}
+          {/* Mobile "Sposta" button */}
           {isMobile && onMoveLead && availableColumns && (
             <button
               onClick={() => setShowMovePanel(true)}
-              className="mt-3 w-full flex items-center justify-center gap-2 bg-[#d8010c] text-white rounded-xl py-2.5 text-sm font-semibold shadow-sm active:bg-[#b8010a] transition-colors"
+              className="mt-3 w-full flex items-center justify-center gap-2 bg-[#d8010c] hover:bg-[#b8000a] text-white rounded-xl py-2.5 text-sm font-semibold shadow-sm active:scale-[0.98] transition-all"
             >
               <ArrowRightLeft className="h-4 w-4" />
               Sposta Lead
@@ -135,30 +134,24 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
           )}
         </div>
 
-        {/* ── Mobile Move Panel (slide-up) ── */}
+        {/* ═══════════════════ MOVE PANEL (Mobile) ═══════════════════ */}
         {showMovePanel && isMobile && onMoveLead && availableColumns && (
           <div className="fixed inset-0 z-[60] flex items-end justify-center">
             <div className="absolute inset-0 bg-black/40" onClick={handleCloseMovePanel} />
             <div className="relative bg-white w-full rounded-t-2xl shadow-xl max-h-[75vh] flex flex-col">
-              {/* Handle */}
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 bg-gray-300 rounded-full" />
               </div>
-
-              {/* Move panel header */}
               <div className="px-4 py-3 border-b border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900">Sposta Lead</h3>
                 <p className="text-sm text-gray-500 mt-0.5">
                   Seleziona la colonna di destinazione per <span className="font-medium text-gray-700">{lead.nome} {lead.cognome}</span>
                 </p>
               </div>
-
-              {/* Column options list */}
               <div className="flex-1 overflow-y-auto px-2 py-2">
                 {availableColumns.map((col) => {
                   const isCurrentColumn = col.id === lead.stato;
                   const isSelected = col.id === selectedTargetColumn;
-
                   return (
                     <button
                       key={col.id}
@@ -190,21 +183,19 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
                   );
                 })}
               </div>
-
-              {/* Confirm / Cancel buttons */}
               <div className="px-4 py-4 border-t border-gray-100 flex gap-3">
                 <button
                   onClick={handleCloseMovePanel}
-                  className="flex-1 bg-gray-100 text-gray-700 rounded-xl py-3 text-sm font-semibold active:bg-gray-200 transition-colors"
+                  className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl py-3 text-sm font-semibold transition-colors"
                 >
                   Annulla
                 </button>
                 <button
                   onClick={handleMoveConfirm}
                   disabled={!selectedTargetColumn || isMoving}
-                  className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-colors ${
+                  className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-all active:scale-[0.98] ${
                     selectedTargetColumn && !isMoving
-                      ? 'bg-[#d8010c] text-white active:bg-[#b8010a]'
+                      ? 'bg-[#d8010c] text-white hover:bg-[#b8000a]'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
                 >
@@ -215,10 +206,11 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
           </div>
         )}
 
-        {/* Sections */}
+        {/* ═══════════════════ SECTIONS ═══════════════════ */}
         <div className="space-y-4 md:space-y-6 p-4 md:p-6">
-          {/* Informazioni di Contatto */}
-          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+
+          {/* ── Informazioni di Contatto ── */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
             <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
               <UserCircle className="h-5 w-5 text-gray-700" />
               Informazioni di Contatto
@@ -243,14 +235,16 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
                 <MapPin className="h-4 w-4 text-gray-400 flex-shrink-0" />
                 <div className="min-w-0">
                   <div className="text-sm text-gray-900 truncate">{lead.indirizzo}</div>
-                  <div className="text-sm text-gray-500 truncate">{lead.citta}, {lead.cap} ({lead.regione})</div>
+                  <div className="text-sm text-gray-500 truncate">
+                    {lead.citta}{lead.indirizzoDettagli?.cap ? `, ${lead.indirizzoDettagli.cap}` : ""} ({lead.regione})
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Dettagli Immobile */}
-          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+          {/* ── Dettagli Immobile ── */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
             <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
               <Building2 className="h-5 w-5 text-gray-700" />
               Dettagli Immobile
@@ -264,7 +258,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               </div>
               <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
                 <div className="text-xl md:text-2xl font-bold text-gray-900">{getTotalRooms()}</div>
-                <div className="text-[10px] md:text-xs text-gray-500">stanze</div>
+                <div className="text-[10px] md:text-xs text-gray-500">stanze totali</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
                 <div className="text-sm md:text-2xl font-bold text-gray-900 capitalize leading-tight">
@@ -277,85 +271,84 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
             {/* Composizione Stanze */}
             <div className="mt-4">
               <h4 className="text-sm font-semibold text-gray-700 mb-2">Composizione Stanze</h4>
-              <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
-                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
-                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.cucina}</div>
-                  <div className="text-[10px] md:text-xs text-gray-500">Cucina</div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
-                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.cameraDoppia}</div>
-                  <div className="text-[10px] md:text-xs text-gray-500">Cam. Doppia</div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
-                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.cameraSingola}</div>
-                  <div className="text-[10px] md:text-xs text-gray-500">Cam. Singola</div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
-                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.bagno}</div>
-                  <div className="text-[10px] md:text-xs text-gray-500">Bagno</div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
-                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.soggiorno}</div>
-                  <div className="text-[10px] md:text-xs text-gray-500">Soggiorno</div>
-                </div>
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+                {[
+                  { key: "soggiorni", label: "Soggiorno" },
+                  { key: "cucine", label: "Cucina" },
+                  { key: "camere_doppie", label: "Cam. Doppia" },
+                  { key: "camere_singole", label: "Cam. Singola" },
+                  { key: "bagni", label: "Bagno" },
+                  { key: "altro", label: "Altro" },
+                ].map(({ key, label }) => (
+                  <div key={key} className="bg-gray-50 rounded-xl p-2 md:p-3 text-center">
+                    <div className="text-base md:text-lg font-bold text-gray-900">
+                      {(lead.composizione as any)[key] || 0}
+                    </div>
+                    <div className="text-[10px] md:text-xs text-gray-500">{label}</div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Configurazione Tecnica */}
+          {/* ── Configurazione Tecnica ── */}
           <ConfigurationSection lead={lead} />
 
-          {/* Analisi Economica */}
-          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+          {/* ── Analisi Economica ── */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
             <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
               <Euro className="h-5 w-5 text-gray-700" />
               Analisi Economica
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-              <div className="border-2 border-green-200 bg-green-50/30 rounded-xl md:rounded-2xl p-4 md:p-5 text-center">
-                <span className="inline-block bg-green-600 text-white rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-bold mb-2">Range Cliente</span>
+              <div className="border-2 border-green-200 bg-green-50/30 rounded-2xl p-4 md:p-5 text-center">
+                <span className="inline-block bg-green-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
                 <div className="text-xs md:text-sm text-gray-600">Preventivo Minimo</div>
-                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1">€{lead.stimaMin?.toLocaleString()}</div>
+                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1">€{lead.stimaMin?.toLocaleString("it-IT")}</div>
               </div>
               
-              <div className="border-2 border-blue-200 bg-blue-50/30 rounded-xl md:rounded-2xl p-4 md:p-5 text-center">
-                <span className="inline-block bg-blue-600 text-white rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-bold mb-2">Stima Ricasa</span>
+              <div className="border-2 border-blue-200 bg-blue-50/30 rounded-2xl p-4 md:p-5 text-center">
+                <span className="inline-block bg-blue-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Stima Ricasa</span>
                 <div className="text-xs md:text-sm text-gray-600">Valore Medio</div>
-                <div className="text-xl md:text-2xl font-bold text-blue-600 mt-1">€{stimaMedia?.toLocaleString()}</div>
+                <div className="text-xl md:text-2xl font-bold text-blue-600 mt-1">€{stimaMedia?.toLocaleString("it-IT")}</div>
               </div>
               
-              <div className="border-2 border-green-200 bg-green-50/30 rounded-xl md:rounded-2xl p-4 md:p-5 text-center">
-                <span className="inline-block bg-green-600 text-white rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-bold mb-2">Range Cliente</span>
+              <div className="border-2 border-green-200 bg-green-50/30 rounded-2xl p-4 md:p-5 text-center">
+                <span className="inline-block bg-green-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
                 <div className="text-xs md:text-sm text-gray-600">Preventivo Massimo</div>
-                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1">€{lead.stimaMax?.toLocaleString()}</div>
+                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1">€{lead.stimaMax?.toLocaleString("it-IT")}</div>
               </div>
             </div>
           </div>
 
-          {/* Note del Cliente */}
+          {/* ── Note del Cliente ── */}
           {lead.note && (
-            <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
               <h3 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">Note del Cliente</h3>
-              <div className="bg-[#F9FBFF] border border-gray-100 p-3 md:p-4 rounded-xl">
-                <p className="text-sm text-gray-700">{lead.note}</p>
+              <div className="bg-[#F9FBFF] border-l-4 border-[#d8010c] p-3 md:p-4 rounded-xl">
+                <p className="text-sm text-gray-700 italic leading-relaxed">
+                  "{lead.note}"
+                </p>
               </div>
             </div>
           )}
 
-          {/* Cronologia Contatti */}
-          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+          {/* ── Cronologia Contatti ── */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
             <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
               <Calendar className="h-5 w-5 text-gray-700" />
               Cronologia Contatti
             </h3>
-            <div>
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
+            <div className="border-l-2 border-gray-200 ml-2">
+              <div className="flex items-center justify-between py-3 pl-4 relative">
+                <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#d8010c]" />
                 <span className="text-sm text-gray-700">Richiesta inviata</span>
                 <span className="text-xs md:text-sm text-gray-500">{formatDate(lead.dataRichiesta)}</span>
               </div>
               {lead.dataUltimoContatto && (
-                <div className="flex items-center justify-between py-3">
+                <div className="flex items-center justify-between py-3 pl-4 relative">
+                  <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-gray-400" />
                   <span className="text-sm text-gray-700">Ultimo contatto</span>
                   <span className="text-xs md:text-sm text-gray-500">{formatDate(lead.dataUltimoContatto)}</span>
                 </div>

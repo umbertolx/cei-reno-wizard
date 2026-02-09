@@ -63,9 +63,9 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer ${
+      className={`bg-white rounded-2xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer ${
         isDragging ? 'shadow-xl ring-2 ring-[#d8010c]/30 rotate-3' : ''
-      } ${isExpanded ? 'min-h-[800px]' : ''}`}
+      }`}
     >
       <LeadCardHeader
         lead={lead}

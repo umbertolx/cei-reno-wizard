@@ -64,9 +64,9 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
       >
         {/* Logo */}
         <div className="px-5 py-5 border-b border-gray-200 flex items-center justify-between">
-          <div className="flex flex-col min-w-0">
-            <span className="text-[#d8010c] font-bold text-xl leading-tight">CEI Admin</span>
-            <span className="text-xs text-gray-400 mt-0.5 truncate">Dashboard Preventivi</span>
+          <div className="min-w-0">
+            <div className="text-[#d8010c] font-bold text-xl leading-tight">CEI Admin</div>
+            <div className="text-xs text-gray-400 mt-0.5">Dashboard Preventivi</div>
           </div>
           {isMobile && (
             <button
@@ -90,7 +90,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
                       navigate(item.path);
                       setSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm transition-all ${
+                    className={`w-full flex items-center gap-3 py-2.5 px-4 rounded-xl text-sm transition-all ${
                       isActive
                         ? "bg-[#d8010c] text-white font-semibold shadow-sm"
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium"
@@ -110,7 +110,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
           <div className="p-4 border-t border-gray-200">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+              className="w-full flex items-center gap-3 py-2.5 px-4 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
             >
               <LogOut className="h-5 w-5" />
               <span>Logout</span>

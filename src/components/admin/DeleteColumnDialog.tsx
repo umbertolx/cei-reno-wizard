@@ -67,7 +67,7 @@ export const DeleteColumnDialog = ({
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium text-gray-700 block mb-1.5">
-              Per confermare, digita <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded-lg text-xs">DELETE</span>:
+              Per confermare, digita <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded-xl text-xs">DELETE</span>:
             </label>
             <input
               value={confirmText}

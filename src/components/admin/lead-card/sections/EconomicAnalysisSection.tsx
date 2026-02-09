@@ -1,73 +1,145 @@
 import { Lead } from "@/types/lead";
-import { Euro, TrendingUp, TrendingDown, Percent } from "lucide-react";
+import { Euro, TrendingDown, Percent, Zap, Sun, Shield, PiggyBank } from "lucide-react";
 
 interface EconomicAnalysisSectionProps {
   lead: Lead;
 }
 
 export const EconomicAnalysisSection = ({ lead }: EconomicAnalysisSectionProps) => {
-  const hasEstimates = lead.stimaMin || lead.stimaMax || lead.stimaMedia;
+  const { stime, stimaMin, stimaMax, stimaMedia, tipoProprietà } = lead;
 
-  if (!hasEstimates) {
-    return null;
+  const hasEstimates = stimaMin || stimaMax || stimaMedia;
+  if (!hasEstimates) return null;
+
+  // ── IVA ──────────────────────────────────────────────────────────────────
+  const isPrimaCasa = tipoProprietà === "prima casa";
+  const aliquotaIva = isPrimaCasa ? 0.10 : 0.22;
+  const iva = Math.round(stimaMedia * aliquotaIva);
+
+  // ── Detrazione fiscale ───────────────────────────────────────────────────
+  const aliquotaDetrazione = isPrimaCasa ? 0.50 : 0.36;
+  const detrazioneLabel = isPrimaCasa ? "50%" : "36%";
+  const detrazioneTotale = Math.round(stimaMedia * aliquotaDetrazione);
+  const detrazioneAnno = Math.round(detrazioneTotale / 10);
+
+  // ── Costi per modulo (da stime JSONB) ────────────────────────────────────
+  const moduloCosts: { label: string; icon: React.ReactNode; costo: number; colorClass: string }[] = [];
+  if (stime?.elettrico) {
+    moduloCosts.push({
+      label: "Elettrico",
+      icon: <Zap className="h-4 w-4" />,
+      costo: stime.elettrico.costo,
+      colorClass: "text-[#d8010c]",
+    });
+  }
+  if (stime?.fotovoltaico) {
+    moduloCosts.push({
+      label: "Fotovoltaico",
+      icon: <Sun className="h-4 w-4" />,
+      costo: stime.fotovoltaico.costo,
+      colorClass: "text-yellow-600",
+    });
+  }
+  if (stime?.sicurezza) {
+    moduloCosts.push({
+      label: "Sicurezza",
+      icon: <Shield className="h-4 w-4" />,
+      costo: stime.sicurezza.costo,
+      colorClass: "text-red-600",
+    });
   }
 
-  // Calcoli fiscali
-  const stimaMedia = lead.stimaMedia || Math.round((lead.stimaMin + lead.stimaMax) / 2);
-  const iva = Math.round(stimaMedia * 0.22);
-  const detrazione = Math.round(stimaMedia * 0.50);
-
   return (
-    <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
       <h3 className="flex items-center gap-2 text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">
         <Euro className="h-5 w-5 text-gray-700" />
         Analisi Economica
       </h3>
+
       <div className="space-y-4 md:space-y-6">
-        {/* Stime principali */}
+        {/* Stime principali: min / media / max */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-          <div className="border-2 border-green-200 bg-green-50/30 rounded-xl md:rounded-2xl p-4 md:p-5 text-center">
-            <span className="inline-block bg-green-600 text-white rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-bold mb-2">Range Cliente</span>
+          <div className="border-2 border-green-200 bg-green-50/30 rounded-2xl p-4 md:p-5 text-center">
+            <span className="inline-block bg-green-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">
+              Range Cliente
+            </span>
             <div className="text-xs md:text-sm text-gray-600">Preventivo Minimo</div>
             <p className="text-xl md:text-2xl font-bold text-green-600 mt-1">
-              €{lead.stimaMin?.toLocaleString('it-IT') || 'N/D'}
+              €{stimaMin?.toLocaleString("it-IT") || "N/D"}
             </p>
           </div>
-          
-          <div className="border-2 border-blue-200 bg-blue-50/30 rounded-xl md:rounded-2xl p-4 md:p-5 text-center">
-            <span className="inline-block bg-blue-600 text-white rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-bold mb-2">Stima Ricasa</span>
+
+          <div className="border-2 border-blue-200 bg-blue-50/30 rounded-2xl p-4 md:p-5 text-center">
+            <span className="inline-block bg-blue-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">
+              Stima Ricasa
+            </span>
             <div className="text-xs md:text-sm text-gray-600">Valore Medio</div>
             <p className="text-xl md:text-2xl font-bold text-blue-600 mt-1">
-              €{stimaMedia?.toLocaleString('it-IT') || 'N/D'}
+              €{stimaMedia?.toLocaleString("it-IT") || "N/D"}
             </p>
           </div>
-          
-          <div className="border-2 border-green-200 bg-green-50/30 rounded-xl md:rounded-2xl p-4 md:p-5 text-center">
-            <span className="inline-block bg-green-600 text-white rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-bold mb-2">Range Cliente</span>
+
+          <div className="border-2 border-green-200 bg-green-50/30 rounded-2xl p-4 md:p-5 text-center">
+            <span className="inline-block bg-green-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">
+              Range Cliente
+            </span>
             <div className="text-xs md:text-sm text-gray-600">Preventivo Massimo</div>
             <p className="text-xl md:text-2xl font-bold text-green-600 mt-1">
-              €{lead.stimaMax?.toLocaleString('it-IT') || 'N/D'}
+              €{stimaMax?.toLocaleString("it-IT") || "N/D"}
             </p>
           </div>
         </div>
 
-        {/* Info fiscali */}
+        {/* Costi per modulo */}
+        {moduloCosts.length > 0 && (
+          <div>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+              Suddivisione per Modulo
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+              {moduloCosts.map(({ label, icon, costo, colorClass }) => (
+                <div key={label} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                  <div className={`flex items-center gap-2 ${colorClass}`}>
+                    {icon}
+                    <span className="text-sm font-medium">{label}</span>
+                  </div>
+                  <span className="font-semibold text-gray-900">€{costo.toLocaleString("it-IT")}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* IVA & Detrazioni */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
             <div className="flex items-center gap-2">
               <Percent className="h-4 w-4 text-gray-400" />
-              <span className="text-sm text-gray-500">IVA (22%)</span>
+              <span className="text-sm text-gray-500">
+                IVA ({isPrimaCasa ? "10% ristrutturazione" : "22% standard"})
+              </span>
             </div>
-            <span className="font-semibold text-gray-900">+€{iva.toLocaleString('it-IT')}</span>
+            <span className="font-semibold text-gray-900">+€{iva.toLocaleString("it-IT")}</span>
           </div>
-          
+
           <div className="flex items-center justify-between p-3 bg-green-50 rounded-xl">
             <div className="flex items-center gap-2">
               <TrendingDown className="h-4 w-4 text-green-600" />
-              <span className="text-sm text-green-600">Detrazione 50%</span>
+              <span className="text-sm text-green-600">
+                Detrazione {detrazioneLabel}
+              </span>
             </div>
-            <span className="font-semibold text-green-700">-€{detrazione.toLocaleString('it-IT')}</span>
+            <span className="font-semibold text-green-700">−€{detrazioneTotale.toLocaleString("it-IT")}</span>
           </div>
+        </div>
+
+        {/* Info detrazione recupero annuo */}
+        <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-200">
+          <PiggyBank className="h-4 w-4 text-blue-600 flex-shrink-0" />
+          <p className="text-xs md:text-sm text-blue-700">
+            <span className="font-medium">Recupero annuo:</span> €{detrazioneAnno.toLocaleString("it-IT")}/anno per 10 anni
+            {isPrimaCasa ? " (prima casa)" : " (seconda casa)"}
+          </p>
         </div>
       </div>
     </div>

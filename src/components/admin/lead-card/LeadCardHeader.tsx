@@ -1,4 +1,3 @@
-
 import { Lead } from "@/types/lead";
 import { MapPin, ChevronDown } from "lucide-react";
 
@@ -23,6 +22,8 @@ export const LeadCardHeader = ({
     return `${nome.charAt(0)}${cognome.charAt(0)}`.toUpperCase();
   };
 
+  const cap = lead.indirizzoDettagli?.cap || "";
+
   return (
     <div 
       {...attributes}
@@ -38,7 +39,7 @@ export const LeadCardHeader = ({
         </h3>
         <p className="text-sm text-gray-500 flex items-center truncate">
           <MapPin className="h-3 w-3 mr-1 text-gray-400 flex-shrink-0" />
-          {lead.citta}, {lead.cap}
+          {lead.citta}{cap ? `, ${cap}` : ""}
         </p>
       </div>
       {forceExpanded === undefined && (

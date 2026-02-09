@@ -128,14 +128,14 @@ export const KanbanColumn = ({
               <span className="font-semibold text-gray-700 text-sm truncate">{displayTitle}</span>
               <button
                 onClick={() => setIsEditingTitle(true)}
-                className="p-1 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
+                className="p-1 hover:bg-gray-100 rounded-xl transition-colors flex-shrink-0"
               >
                 <Pencil className="h-3.5 w-3.5 text-gray-400 hover:text-gray-600" />
               </button>
               {customColumn && !isDefaultColumn && (
                 <button
                   onClick={handleDeleteClick}
-                  className="p-1 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                  className="p-1 hover:bg-red-50 rounded-xl transition-colors flex-shrink-0"
                 >
                   <Trash2 className="h-3.5 w-3.5 text-red-400 hover:text-red-600" />
                 </button>

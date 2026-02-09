@@ -386,7 +386,7 @@ const AdminLeads = () => {
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Gestione Lead</h1>
           <p className="text-sm md:text-base font-light text-gray-600">
-            Visualizza e gestisci i preventivi ({leads.length} totali)
+            Visualizza e gestisci tutti i preventivi richiesti ({leads.length} totali)
           </p>
         </div>
 
@@ -564,7 +564,7 @@ const AdminLeads = () => {
                         </h3>
                         <p className="text-sm text-gray-500 flex items-center truncate">
                           <MapPin className="h-3 w-3 mr-1 text-gray-400 flex-shrink-0" />
-                          {lead.citta}, {lead.cap}
+                          {lead.citta}{lead.indirizzoDettagli?.cap ? `, ${lead.indirizzoDettagli.cap}` : ""}
                         </p>
                       </div>
                       <Eye className="h-5 w-5 text-gray-300 flex-shrink-0" />

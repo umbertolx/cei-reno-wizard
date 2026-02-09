@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { leadStates, convertDatabaseLeadToLead } from "@/types/lead";
 import { fetchLeads } from "@/services/leadService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { RefreshCw, AlertCircle, ChevronDown, Users } from "lucide-react";
+import { RefreshCw, AlertCircle, ChevronDown, Users, BarChart3 } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -160,7 +160,7 @@ const AdminDashboard = () => {
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
             <p className="text-sm md:text-base font-light text-gray-600">
-              Panoramica generale ({leads.length} totali)
+              Panoramica generale dei preventivi ({leads.length} totali)
               {leads.length === 0 && (
                 <span className="text-amber-600 ml-2">
                   ⚠️ Nessun lead
@@ -286,7 +286,7 @@ const AdminDashboard = () => {
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-400">
                   <div className="text-center">
-                    <BarChart className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                    <BarChart3 className="h-12 w-12 mx-auto mb-2 opacity-50" />
                     <p className="text-sm">Nessun dato disponibile</p>
                   </div>
                 </div>

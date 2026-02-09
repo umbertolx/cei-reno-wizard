@@ -1,4 +1,3 @@
-
 import { Lead } from "@/types/lead";
 import { Home, Calendar, Euro } from "lucide-react";
 
@@ -32,7 +31,7 @@ export const LeadCardBasicInfo = ({ lead }: LeadCardBasicInfoProps) => {
           Preventivo
         </span>
         <span className="font-semibold text-[#d8010c]">
-          €{lead.stimaMin?.toLocaleString()} - €{lead.stimaMax?.toLocaleString()}
+          €{lead.stimaMin?.toLocaleString("it-IT")} - €{lead.stimaMax?.toLocaleString("it-IT")}
         </span>
       </div>
 

@@ -17,7 +17,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
   };
 
   return (
-    <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
       <h3 className="flex items-center gap-2 text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">
         <Clock className="h-5 w-5 text-gray-700" />
         Cronologia & Stato
@@ -46,12 +46,12 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
         {/* Moduli selezionati */}
         {lead.moduliSelezionati && lead.moduliSelezionati.length > 0 && (
           <div>
-            <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
               Moduli Selezionati
             </p>
             <div className="flex flex-wrap gap-1.5 md:gap-2">
               {lead.moduliSelezionati.map((modulo) => (
-                <span key={modulo} className="flex items-center gap-1 bg-gray-100 text-gray-800 rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-xs font-medium">
+                <span key={modulo} className="flex items-center gap-1 bg-gray-100 text-gray-800 rounded-full px-3 py-1.5 text-xs font-medium">
                   <CheckCircle className="h-3 w-3" />
                   {modulo.charAt(0).toUpperCase() + modulo.slice(1)}
                 </span>
@@ -64,7 +64,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
         {lead.sopralluogoRichiesto && (
           <div className="p-3 md:p-4 bg-orange-50 rounded-xl border border-orange-200">
             <div className="flex items-center gap-2">
-              <span className="text-lg md:text-xl">📅</span>
+              <Calendar className="h-4 w-4 text-orange-500 flex-shrink-0" />
               <div>
                 <p className="font-medium text-orange-800 text-sm md:text-base">Sopralluogo Richiesto</p>
                 {lead.dataSopralluogo && (

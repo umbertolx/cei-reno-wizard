@@ -11,12 +11,12 @@ export const ClientNotesSection = ({ lead }: ClientNotesSectionProps) => {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-      <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+      <h3 className="flex items-center gap-2 text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">
         <MessageSquare className="h-5 w-5 text-gray-700" />
         Note del Cliente
       </h3>
-      <div className="p-4 bg-[#F9FBFF] rounded-xl border-l-4 border-[#d8010c]">
+      <div className="p-3 md:p-4 bg-[#F9FBFF] rounded-xl border-l-4 border-[#d8010c]">
         <p className="text-sm text-gray-700 italic leading-relaxed">
           "{lead.note}"
         </p>
