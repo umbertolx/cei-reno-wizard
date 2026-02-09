@@ -1,5 +1,4 @@
 
-import { Button } from "@/components/ui/button";
 import { Expand, Minimize } from "lucide-react";
 
 interface CardExpansionToggleProps {
@@ -9,11 +8,9 @@ interface CardExpansionToggleProps {
 
 export const CardExpansionToggle = ({ allExpanded, onToggle }: CardExpansionToggleProps) => {
   return (
-    <Button
-      variant="outline"
-      size="sm"
+    <button
       onClick={onToggle}
-      className="flex items-center gap-2"
+      className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
     >
       {allExpanded ? (
         <>
@@ -26,6 +23,6 @@ export const CardExpansionToggle = ({ allExpanded, onToggle }: CardExpansionTogg
           Espandi Tutte
         </>
       )}
-    </Button>
+    </button>
   );
 };

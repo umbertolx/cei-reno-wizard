@@ -1,10 +1,7 @@
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { availableColors, CustomColumn } from "@/types/lead";
+import { X } from "lucide-react";
 
 interface AddColumnDialogProps {
   isOpen: boolean;
@@ -36,49 +33,68 @@ export const AddColumnDialog = ({ isOpen, onClose, onAdd, existingColumns }: Add
     onClose();
   };
 
+  if (!isOpen) return null;
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Aggiungi Nuova Colonna</DialogTitle>
-        </DialogHeader>
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={handleClose} />
+      <div className="relative bg-white rounded-2xl shadow-xl max-w-md w-full mx-4 p-6">
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-gray-50 flex items-center justify-center transition-colors"
+        >
+          <X className="h-4 w-4 text-gray-500" />
+        </button>
+
+        <h2 className="text-lg font-bold text-gray-900 mb-6">Aggiungi Nuova Colonna</h2>
+        
         <div className="space-y-4">
           <div>
-            <Label htmlFor="column-label">Nome Colonna</Label>
-            <Input
+            <label htmlFor="column-label" className="block text-sm font-semibold text-gray-900 mb-1.5">
+              Nome Colonna
+            </label>
+            <input
               id="column-label"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
               placeholder="Inserisci nome colonna..."
               onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+              className="w-full bg-white border border-gray-200 rounded-xl h-10 px-4 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
             />
           </div>
           
           <div>
-            <Label>Colore</Label>
-            <div className="grid grid-cols-6 gap-2 mt-2">
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Colore</label>
+            <div className="grid grid-cols-6 gap-2">
               {availableColors.map((color) => (
                 <button
                   key={color}
                   onClick={() => setSelectedColor(color)}
-                  className={`w-8 h-8 rounded-full ${color} ${
-                    selectedColor === color ? 'ring-2 ring-gray-400 ring-offset-2' : ''
+                  className={`w-8 h-8 rounded-full ${color} transition-all ${
+                    selectedColor === color ? 'ring-2 ring-gray-400 ring-offset-2 scale-110' : 'hover:scale-105'
                   }`}
                 />
               ))}
             </div>
           </div>
           
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button variant="outline" onClick={handleClose}>
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              onClick={handleClose}
+              className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
+            >
               Annulla
-            </Button>
-            <Button onClick={handleSubmit} disabled={!label.trim()}>
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={!label.trim()}
+              className="bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-6 py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-sm disabled:bg-[#f5b7b1] disabled:cursor-not-allowed"
+            >
               Aggiungi
-            </Button>
+            </button>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };

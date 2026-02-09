@@ -1,7 +1,5 @@
 
 import { Lead } from "@/types/lead";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -50,10 +48,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
   const handleViewDetails = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("LeadCard: handleViewDetails clicked for lead:", lead.id, lead.nome, lead.cognome);
-    console.log("LeadCard: About to call onViewDetails function");
     onViewDetails();
-    console.log("LeadCard: onViewDetails function called");
   };
 
   const toggleExpansion = (e: React.MouseEvent) => {
@@ -65,44 +60,41 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
   };
 
   return (
-    <Card
+    <div
       ref={setNodeRef}
       style={style}
-      className={`hover:shadow-lg transition-all duration-300 ${
-        isDragging ? 'shadow-2xl ring-2 ring-blue-500 bg-white rotate-3' : 'hover:shadow-md'
-      } ${isExpanded ? 'min-h-[800px] shadow-xl' : ''}`}
+      className={`bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer ${
+        isDragging ? 'shadow-xl ring-2 ring-[#d8010c]/30 rotate-3' : ''
+      } ${isExpanded ? 'min-h-[800px]' : ''}`}
     >
-      <CardContent className="p-4">
-        <LeadCardHeader
-          lead={lead}
-          isExpanded={isExpanded}
-          forceExpanded={forceExpanded}
-          onToggleExpansion={toggleExpansion}
-          attributes={attributes}
-          listeners={listeners}
-        />
+      <LeadCardHeader
+        lead={lead}
+        isExpanded={isExpanded}
+        forceExpanded={forceExpanded}
+        onToggleExpansion={toggleExpansion}
+        attributes={attributes}
+        listeners={listeners}
+      />
 
-        <LeadCardBasicInfo lead={lead} />
+      <LeadCardBasicInfo lead={lead} />
 
-        {isExpanded && (
-          <div className="mt-6">
-            <LeadCardExpandedContent lead={lead} />
-          </div>
-        )}
-
-        <div className="flex gap-2 mt-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleViewDetails}
-            className="flex-1 hover:bg-blue-50 hover:border-blue-300 transition-colors"
-            type="button"
-          >
-            <Eye className="h-4 w-4 mr-1" />
-            Dettagli Completi
-          </Button>
+      {isExpanded && (
+        <div className="mt-4 md:mt-6">
+          <LeadCardExpandedContent lead={lead} />
         </div>
-      </CardContent>
-    </Card>
+      )}
+
+      {/* Footer */}
+      <div className="mt-3 pt-3 border-t border-gray-100">
+        <button
+          onClick={handleViewDetails}
+          type="button"
+          className="w-full bg-white border border-gray-200 rounded-xl py-2.5 md:py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors active:bg-gray-100"
+        >
+          <Eye className="h-4 w-4" />
+          Dettagli Completi
+        </button>
+      </div>
+    </div>
   );
 };

@@ -1,8 +1,8 @@
 
-import { ReactNode, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Home, Users, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { ReactNode, useState, useEffect } from "react";
+import { Home, Users, LogOut, Menu, X } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -11,7 +11,25 @@ interface AdminLayoutProps {
 export const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const isMobile = useIsMobile();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  // Prevent body scroll when sidebar is open on mobile
+  useEffect(() => {
+    if (isMobile && sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobile, sidebarOpen]);
 
   const handleLogout = () => {
     navigate("/admin");
@@ -23,69 +41,158 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 w-full overflow-hidden">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b w-full">
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-[#d8010c]">CEI Admin</h1>
-            <span className="text-gray-500">|</span>
-            <span className="text-gray-600">Dashboard Preventivi</span>
-          </div>
-          <Button 
-            variant="outline" 
-            onClick={handleLogout}
-            className="flex items-center space-x-2"
-          >
-            <LogOut className="h-4 w-4" />
-            <span>Logout</span>
-          </Button>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gray-50 flex w-full overflow-hidden">
+      {/* Mobile Overlay */}
+      {isMobile && sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      <div className="flex w-full h-[calc(100vh-73px)]">
-        {/* Sidebar */}
-        <aside className={`${sidebarCollapsed ? 'w-16' : 'w-64'} bg-white shadow-sm h-full border-r transition-all duration-300 flex flex-col flex-shrink-0`}>
-          <div className="p-4 flex-1">
-            <nav>
-              <ul className="space-y-2">
-                {menuItems.map((item) => (
-                  <li key={item.path}>
-                    <Button
-                      variant={location.pathname === item.path ? "default" : "ghost"}
-                      className={`w-full ${sidebarCollapsed ? 'justify-center px-2' : 'justify-start'}`}
-                      onClick={() => navigate(item.path)}
-                      title={sidebarCollapsed ? item.label : undefined}
-                    >
-                      <item.icon className="h-4 w-4" />
-                      {!sidebarCollapsed && <span className="ml-2">{item.label}</span>}
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+      {/* Sidebar - Desktop: always visible, Mobile: slide-in drawer */}
+      <aside
+        className={`
+          ${isMobile
+            ? `fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out ${
+                sidebarOpen ? "translate-x-0" : "-translate-x-full"
+              }`
+            : "w-56 flex-shrink-0 sticky top-0"
+          }
+          bg-white border-r border-gray-200 flex flex-col h-screen
+        `}
+      >
+        {/* Logo */}
+        <div className="px-5 py-5 border-b border-gray-200 flex items-center justify-between">
+          <div className="flex flex-col min-w-0">
+            <span className="text-[#d8010c] font-bold text-xl leading-tight">CEI Admin</span>
+            <span className="text-xs text-gray-400 mt-0.5 truncate">Dashboard Preventivi</span>
           </div>
-          
-          {/* Collapse Toggle */}
-          <div className="p-4 border-t">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="w-full justify-center"
+          {isMobile && (
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
             >
-              {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-            </Button>
+              <X className="h-5 w-5 text-gray-500" />
+            </button>
+          )}
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 py-4">
+          <ul className="space-y-1">
+            {menuItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <li key={item.path} className="mx-2">
+                  <button
+                    onClick={() => {
+                      navigate(item.path);
+                      setSidebarOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm transition-all ${
+                      isActive
+                        ? "bg-[#d8010c] text-white font-semibold shadow-sm"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium"
+                    }`}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.label}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Logout button inside sidebar (mobile) */}
+        {isMobile && (
+          <div className="p-4 border-t border-gray-200">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+            >
+              <LogOut className="h-5 w-5" />
+              <span>Logout</span>
+            </button>
           </div>
-        </aside>
+        )}
+      </aside>
+
+      {/* Main area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Top Bar */}
+        <header className="h-14 md:h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 flex-shrink-0 sticky top-0 z-30">
+          {/* Mobile hamburger */}
+          {isMobile && (
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 -ml-2 rounded-xl hover:bg-gray-100 transition-colors"
+            >
+              <Menu className="h-5 w-5 text-gray-700" />
+            </button>
+          )}
+
+          {/* Mobile centered logo */}
+          {isMobile && (
+            <span className="text-[#d8010c] font-bold text-lg">CEI Admin</span>
+          )}
+
+          {/* Desktop: right-aligned logout. Mobile: placeholder for balanced layout */}
+          <div className={isMobile ? "w-9" : "ml-auto"}>
+            {!isMobile && (
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </button>
+            )}
+          </div>
+        </header>
 
         {/* Main Content */}
         <main className="flex-1 min-w-0 overflow-hidden">
-          <div className="h-full overflow-y-auto p-6">
+          <div className="h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] overflow-y-auto p-4 md:p-8">
             {children}
           </div>
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      {isMobile && (
+        <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 safe-area-bottom">
+          <div className="flex items-center justify-around py-2 pb-safe">
+            {menuItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <button
+                  key={item.path}
+                  onClick={() => navigate(item.path)}
+                  className={`flex flex-col items-center gap-1 py-1 px-6 rounded-xl transition-colors ${
+                    isActive
+                      ? "text-[#d8010c]"
+                      : "text-gray-400"
+                  }`}
+                >
+                  <item.icon className={`h-5 w-5 ${isActive ? "stroke-[2.5]" : ""}`} />
+                  <span className={`text-xs ${isActive ? "font-semibold" : "font-medium"}`}>
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+            <button
+              onClick={handleLogout}
+              className="flex flex-col items-center gap-1 py-1 px-6 rounded-xl transition-colors text-gray-400"
+            >
+              <LogOut className="h-5 w-5" />
+              <span className="text-xs font-medium">Esci</span>
+            </button>
+          </div>
+        </nav>
+      )}
     </div>
   );
 };

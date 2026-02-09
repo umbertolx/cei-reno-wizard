@@ -16,32 +16,32 @@ export const LeadCardBasicInfo = ({ lead }: LeadCardBasicInfoProps) => {
   };
 
   return (
-    <div className="space-y-2 mb-3">
+    <div className="mt-3 space-y-1.5">
       <div className="flex items-center justify-between text-sm">
-        <span className="flex items-center text-gray-600">
-          <Home className="h-3 w-3 mr-1" />
+        <span className="flex items-center text-gray-500">
+          <Home className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
           {lead.tipologiaAbitazione === 'appartamento' ? 'Appartamento' : 
            lead.tipologiaAbitazione === 'casa indipendente' ? 'Casa indipendente' : 'Villa'}
         </span>
-        <span className="font-medium">{lead.superficie} mq</span>
+        <span className="text-gray-900">{lead.superficie} mq</span>
       </div>
       
       <div className="flex items-center justify-between text-sm">
-        <span className="flex items-center text-gray-600">
-          <Euro className="h-3 w-3 mr-1" />
+        <span className="flex items-center text-gray-500">
+          <Euro className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
           Preventivo
         </span>
-        <span className="font-medium text-green-600 text-xs">
+        <span className="font-semibold text-[#d8010c]">
           €{lead.stimaMin?.toLocaleString()} - €{lead.stimaMax?.toLocaleString()}
         </span>
       </div>
 
       <div className="flex items-center justify-between text-sm">
-        <span className="flex items-center text-gray-600">
-          <Calendar className="h-3 w-3 mr-1" />
+        <span className="flex items-center text-gray-500">
+          <Calendar className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
           Richiesta
         </span>
-        <span className="text-gray-600 text-xs">
+        <span className="text-gray-900 text-xs">
           {formatDate(lead.dataRichiesta)}
         </span>
       </div>

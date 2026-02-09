@@ -1,10 +1,6 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -86,51 +82,61 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 bg-[#d8010c] rounded-full flex items-center justify-center mb-4">
-            <span className="text-white text-2xl font-bold">CEI</span>
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+        {/* Header */}
+        <div className="text-center mb-6 md:mb-8">
+          <div className="mx-auto w-14 h-14 md:w-16 md:h-16 bg-[#d8010c] rounded-full flex items-center justify-center mb-4">
+            <span className="text-white text-xl md:text-2xl font-bold">CEI</span>
           </div>
-          <CardTitle className="text-2xl">Admin Dashboard</CardTitle>
-          <p className="text-gray-600">Accedi al pannello di controllo</p>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@example.com"
-                required
-                disabled={isLoading}
-              />
-            </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Inserisci la password"
-                required
-                disabled={isLoading}
-              />
-            </div>
-            <Button 
-              type="submit" 
-              className="w-full bg-[#d8010c] hover:bg-[#b8010a]"
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-sm md:text-base font-light text-gray-600 mt-1">Accedi al pannello di controllo</p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleLogin} className="space-y-4 md:space-y-5">
+          <div>
+            <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-1.5">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@example.com"
+              required
               disabled={isLoading}
-            >
-              {isLoading ? "Accesso in corso..." : "Accedi"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+              autoComplete="email"
+              inputMode="email"
+              className="w-full bg-white border border-gray-200 rounded-xl h-11 md:h-10 px-4 text-base md:text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none disabled:opacity-50"
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-900 mb-1.5">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Inserisci la password"
+              required
+              disabled={isLoading}
+              autoComplete="current-password"
+              className="w-full bg-white border border-gray-200 rounded-xl h-11 md:h-10 px-4 text-base md:text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none disabled:opacity-50"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-6 py-3 md:py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:bg-[#f5b7b1] disabled:cursor-not-allowed text-base md:text-sm"
+          >
+            {isLoading ? "Accesso in corso..." : "Accedi"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

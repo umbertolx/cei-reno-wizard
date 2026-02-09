@@ -1,6 +1,4 @@
 import { Lead } from "@/types/lead";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Zap, Sun, Shield, AlertCircle, Battery, Compass, Target, Ruler, Gauge } from "lucide-react";
 
 interface ConfigurationSectionProps {
@@ -34,7 +32,6 @@ const obiettivoLabels: Record<string, string> = {
 
 // Calcola kWp stimati basandosi sui consumi o sulla superficie
 const calcolaKwpStimati = (data: Record<string, any>, consumiDaElettrodomestici: number): number | null => {
-  // Se ha il consumo energetico mensile in euro
   const consumo = getValue(data, 'consumoEnergetico', 'spesa_mensile');
   if (consumo) {
     const consumoMensile = Array.isArray(consumo) ? consumo[0] : consumo;
@@ -44,16 +41,12 @@ const calcolaKwpStimati = (data: Record<string, any>, consumiDaElettrodomestici:
     }
   }
   
-  // Usa i consumi calcolati dagli elettrodomestici
   if (consumiDaElettrodomestici > 0) {
-    // Produzione media annua per kWp in Italia: ~1100 kWh
     return Math.round((consumiDaElettrodomestici / 1100) * 10) / 10;
   }
   
-  // Stima basata sulla superficie del tetto
   const superficie = getValue(data, 'superficieEffettiva', 'mq_tetto_effettivi');
   if (superficie && Number(superficie) > 0) {
-    // Circa 6-7 mq per kWp
     return Math.round((Number(superficie) / 6.5) * 10) / 10;
   }
   
@@ -82,7 +75,6 @@ const calcolaConsumiElettrodomestici = (data: Record<string, any>): { totale: nu
   let totale = 0;
   const dettagli: string[] = [];
 
-  // Supporta sia camelCase che snake_case
   const consumiStandard = getValue(data, 'definizioneConsumiStandard', 'consumo_aggiuntivo_completo');
   
   if (consumiStandard && typeof consumiStandard === 'object') {
@@ -98,7 +90,6 @@ const calcolaConsumiElettrodomestici = (data: Record<string, any>): { totale: nu
     });
   }
 
-  // Auto elettrica
   const autoElettrica = data.nuoveVociConsumo?.auto_elettrica || data.consumo_aggiuntivo_stimato?.auto_elettrica;
   if (autoElettrica?.active || autoElettrica?.selected) {
     const km = autoElettrica.inputValue || autoElettrica.km_annui || 15000;
@@ -117,7 +108,6 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> | null | unde
   const { totale: consumiTotali, dettagli: elettrodomestici } = calcolaConsumiElettrodomestici(data);
   const kwpStimati = calcolaKwpStimati(data, consumiTotali);
   
-  // Supporta sia camelCase che snake_case
   const tipoIntervento = getValue(data, 'tipoInterventoFotovoltaico', 'tipo_intervento_fotovoltaico');
   const isAmpliamento = tipoIntervento === 'ampliamento';
   
@@ -133,65 +123,63 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> | null | unde
   const percentualeCopertura = getValue(data, 'percentualeCopertura', 'percentuale_copertura', 'distribuzione_consumi');
 
   return (
-    <Card className="border-border">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg text-yellow-600">
-          <Sun className="h-5 w-5" />
-          Modulo Fotovoltaico
-          {isAmpliamento && (
-            <Badge variant="outline" className="ml-2 text-xs">Ampliamento</Badge>
-          )}
-          {tipoIntervento === 'nuovo' && (
-            <Badge variant="outline" className="ml-2 text-xs">Nuovo Impianto</Badge>
-          )}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+      <h3 className="flex items-center gap-2 text-base md:text-lg font-bold text-yellow-600 mb-3 md:mb-4">
+        <Sun className="h-5 w-5" />
+        <span className="truncate">Modulo Fotovoltaico</span>
+        {isAmpliamento && (
+          <span className="bg-gray-100 text-gray-800 rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-medium ml-auto flex-shrink-0">Ampliamento</span>
+        )}
+        {tipoIntervento === 'nuovo' && (
+          <span className="bg-gray-100 text-gray-800 rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-medium ml-auto flex-shrink-0">Nuovo</span>
+        )}
+      </h3>
+      <div className="space-y-3 md:space-y-4">
         {/* Dati tecnici principali */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
           {kwpStimati && (
-            <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-950/30 rounded-lg border border-yellow-200 dark:border-yellow-800">
-              <Gauge className="h-5 w-5 text-yellow-600 mx-auto mb-1" />
-              <p className="text-2xl font-bold text-yellow-700 dark:text-yellow-400">{kwpStimati}</p>
-              <p className="text-xs text-muted-foreground">kWp Stimati</p>
+            <div className="text-center p-2.5 md:p-3 bg-yellow-50 rounded-xl border border-yellow-200">
+              <Gauge className="h-4 w-4 md:h-5 md:w-5 text-yellow-600 mx-auto mb-1" />
+              <p className="text-xl md:text-2xl font-bold text-yellow-700">{kwpStimati}</p>
+              <p className="text-[10px] md:text-xs text-gray-500">kWp Stimati</p>
             </div>
           )}
           
           {superficieTetto && (
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <Ruler className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-              <p className="text-2xl font-bold text-foreground">{superficieTetto}</p>
-              <p className="text-xs text-muted-foreground">mq Tetto</p>
+            <div className="text-center p-2.5 md:p-3 bg-gray-50 rounded-xl">
+              <Ruler className="h-4 w-4 md:h-5 md:w-5 text-gray-400 mx-auto mb-1" />
+              <p className="text-xl md:text-2xl font-bold text-gray-900">{superficieTetto}</p>
+              <p className="text-[10px] md:text-xs text-gray-500">mq Tetto</p>
             </div>
           )}
           
           {orientamento && (
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <Compass className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-              <p className="text-lg font-bold text-foreground capitalize">
+            <div className="text-center p-2.5 md:p-3 bg-gray-50 rounded-xl">
+              <Compass className="h-4 w-4 md:h-5 md:w-5 text-gray-400 mx-auto mb-1" />
+              <p className="text-sm md:text-lg font-bold text-gray-900 capitalize leading-tight">
                 {orientamentoLabels[orientamento] || orientamento.replace(/-/g, ' ')}
               </p>
-              <p className="text-xs text-muted-foreground">Orientamento</p>
+              <p className="text-[10px] md:text-xs text-gray-500">Orientamento</p>
             </div>
           )}
           
           {batteria && (
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <Battery className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-              <p className="text-lg font-bold text-foreground">
+            <div className="text-center p-2.5 md:p-3 bg-gray-50 rounded-xl">
+              <Battery className="h-4 w-4 md:h-5 md:w-5 text-gray-400 mx-auto mb-1" />
+              <p className="text-sm md:text-lg font-bold text-gray-900">
                 {batteria === 'si' || batteria === true ? 'Sì' : 'No'}
               </p>
-              <p className="text-xs text-muted-foreground">Batteria</p>
+              <p className="text-[10px] md:text-xs text-gray-500">Batteria</p>
             </div>
           )}
         </div>
 
         {/* Obiettivo */}
         {obiettivo && (
-          <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg">
-            <Target className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Obiettivo:</span>
-            <span className="font-medium text-foreground">
+          <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+            <Target className="h-4 w-4 text-gray-400 flex-shrink-0" />
+            <span className="text-xs md:text-sm text-gray-500">Obiettivo:</span>
+            <span className="font-medium text-gray-900 text-xs md:text-sm truncate">
               {obiettivoLabels[obiettivo] || obiettivo.replace(/-/g, ' ')}
             </span>
           </div>
@@ -199,15 +187,15 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> | null | unde
 
         {/* Consumi stimati */}
         {consumiTotali > 0 && (
-          <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
-            <p className="text-sm font-medium text-blue-700 dark:text-blue-400 mb-2">
+          <div className="p-3 bg-blue-50 rounded-xl border border-blue-200">
+            <p className="text-xs md:text-sm font-medium text-blue-700 mb-2">
               Consumo Annuo Stimato: ~{consumiTotali.toLocaleString()} kWh
             </p>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-1 md:gap-1.5">
               {elettrodomestici.map((item, i) => (
-                <Badge key={i} variant="secondary" className="text-xs capitalize">
+                <span key={i} className="bg-blue-100 text-blue-800 rounded-full px-2 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs font-medium capitalize">
                   {item}
-                </Badge>
+                </span>
               ))}
             </div>
           </div>
@@ -215,51 +203,53 @@ const FotovoltaicoSection = ({ data }: { data: Record<string, any> | null | unde
 
         {/* Percentuale copertura */}
         {percentualeCopertura && (
-          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-            <span className="text-sm text-muted-foreground">Copertura Desiderata</span>
-            <span className="font-semibold text-foreground">{percentualeCopertura}%</span>
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+            <span className="text-xs md:text-sm text-gray-500">Copertura Desiderata</span>
+            <span className="font-semibold text-gray-900 text-sm">{percentualeCopertura}%</span>
           </div>
         )}
 
         {/* Qualità forniture */}
         {qualitaForniture && (
-          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-            <span className="text-sm text-muted-foreground">Qualità Forniture</span>
-            <Badge variant={qualitaForniture === 'premium' ? 'default' : 'secondary'} className="capitalize">
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+            <span className="text-xs md:text-sm text-gray-500">Qualità Forniture</span>
+            <span className={`rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-semibold capitalize ${
+              qualitaForniture === 'premium' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'
+            }`}>
               {qualitaForniture}
-            </Badge>
+            </span>
           </div>
         )}
 
         {/* Altri dettagli */}
         <div className="grid grid-cols-2 gap-2">
           {tipoFalda && (
-            <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-              <span className="text-xs text-muted-foreground">Tipo Falda</span>
-              <span className="text-sm font-medium capitalize">{tipoFalda}</span>
+            <div className="flex justify-between items-center p-2 bg-gray-50 rounded-xl">
+              <span className="text-[10px] md:text-xs text-gray-500">Tipo Falda</span>
+              <span className="text-xs md:text-sm font-medium text-gray-900 capitalize">{tipoFalda}</span>
             </div>
           )}
           {zoneOmbra && (
-            <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-              <span className="text-xs text-muted-foreground">Zone Ombra</span>
-              <span className="text-sm font-medium capitalize">{zoneOmbra}</span>
+            <div className="flex justify-between items-center p-2 bg-gray-50 rounded-xl">
+              <span className="text-[10px] md:text-xs text-gray-500">Zone Ombra</span>
+              <span className="text-xs md:text-sm font-medium text-gray-900 capitalize">{zoneOmbra}</span>
             </div>
           )}
           {potenzaEsistente && (
-            <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-              <span className="text-xs text-muted-foreground">Impianto Esistente</span>
-              <span className="text-sm font-medium">{potenzaEsistente} kWp</span>
+            <div className="flex justify-between items-center p-2 bg-gray-50 rounded-xl">
+              <span className="text-[10px] md:text-xs text-gray-500">Imp. Esistente</span>
+              <span className="text-xs md:text-sm font-medium text-gray-900">{potenzaEsistente} kWp</span>
             </div>
           )}
           {annoInstallazione && (
-            <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-              <span className="text-xs text-muted-foreground">Anno Installazione</span>
-              <span className="text-sm font-medium">{annoInstallazione}</span>
+            <div className="flex justify-between items-center p-2 bg-gray-50 rounded-xl">
+              <span className="text-[10px] md:text-xs text-gray-500">Anno Install.</span>
+              <span className="text-xs md:text-sm font-medium text-gray-900">{annoInstallazione}</span>
             </div>
           )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
@@ -313,17 +303,14 @@ const funzioniDomoticheLabels: Record<string, string> = {
 const ElettricoSection = ({ data }: { data: Record<string, any> | null | undefined }) => {
   if (!data || Object.keys(data).length === 0) return null;
 
-  // Estrai i dati con supporto per entrambi i formati
   const tipoIntervento = getValue(data, 'tipo_intervento', 'tipoRistrutturazione', 'tipo_ristrutturazione');
   const livelloImpianto = getValue(data, 'livello_impianto', 'tipoImpianto', 'tipo_nuovo_impianto_elettrico');
   const tipoDomotica = getValue(data, 'tipo_domotica', 'tipoDomotica');
   
-  // Estrai funzioni domotiche (supporta sia nuovo che vecchio formato)
   const domoticaData = data.domotica || {};
   const funzioniDomotiche = domoticaData.funzioni || data.funzioni_domotiche || {};
   const tipoDomoticaFromNested = domoticaData.tipo;
   
-  // Conta tapparelle/tende
   const numTapparelle = getValue(data, 'numero_tapparelle_domotica') || 
                         (funzioniDomotiche.tapparelle?.quantita) || 
                         (funzioniDomotiche.tapparelle === true ? 1 : 0);
@@ -331,7 +318,6 @@ const ElettricoSection = ({ data }: { data: Record<string, any> | null | undefin
                    (funzioniDomotiche.tende?.quantita) || 
                    (funzioniDomotiche.tende === true ? 1 : 0);
 
-  // Raccogli funzioni attive
   const funzioniAttive: string[] = [];
   if (funzioniDomotiche && typeof funzioniDomotiche === 'object') {
     Object.entries(funzioniDomotiche).forEach(([key, val]: [string, any]) => {
@@ -352,38 +338,36 @@ const ElettricoSection = ({ data }: { data: Record<string, any> | null | undefin
   const finalTipoDomotica = tipoDomoticaFromNested || tipoDomotica;
 
   return (
-    <Card className="border-border">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg text-amber-600">
-          <Zap className="h-5 w-5" />
-          Modulo Elettrico
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+      <h3 className="flex items-center gap-2 text-base md:text-lg font-bold text-[#d8010c] mb-3 md:mb-4">
+        <Zap className="h-5 w-5" />
+        Modulo Elettrico
+      </h3>
+      <div className="space-y-3 md:space-y-4">
         {/* Dati principali */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
           {tipoIntervento && (
-            <div className="p-3 bg-muted/50 rounded-lg">
-              <p className="text-xs text-muted-foreground uppercase mb-1">Tipo Intervento</p>
-              <p className="font-semibold text-foreground">
+            <div className="bg-gray-50 rounded-xl p-3 md:p-4">
+              <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Tipo Intervento</p>
+              <p className="text-sm md:text-base font-semibold text-gray-900 mt-1">
                 {tipoInterventoLabels[tipoIntervento] || tipoIntervento.replace(/[-_]/g, ' ')}
               </p>
             </div>
           )}
           
           {livelloImpianto && (
-            <div className="p-3 bg-muted/50 rounded-lg">
-              <p className="text-xs text-muted-foreground uppercase mb-1">Livello Impianto</p>
-              <p className="font-semibold text-foreground">
+            <div className="bg-gray-50 rounded-xl p-3 md:p-4">
+              <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Livello Impianto</p>
+              <p className="text-sm md:text-base font-semibold text-gray-900 mt-1">
                 {livelloImpiantoLabels[livelloImpianto] || livelloImpianto}
               </p>
             </div>
           )}
           
           {finalTipoDomotica && (
-            <div className="p-3 bg-muted/50 rounded-lg">
-              <p className="text-xs text-muted-foreground uppercase mb-1">Tipo Domotica</p>
-              <p className="font-semibold text-foreground">
+            <div className="bg-gray-50 rounded-xl p-3 md:p-4">
+              <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Tipo Domotica</p>
+              <p className="text-sm md:text-base font-semibold text-gray-900 mt-1">
                 {tipoDomoticaLabels[finalTipoDomotica] || finalTipoDomotica}
               </p>
             </div>
@@ -393,12 +377,12 @@ const ElettricoSection = ({ data }: { data: Record<string, any> | null | undefin
         {/* Funzioni Domotiche */}
         {funzioniAttive.length > 0 && (
           <div>
-            <p className="text-xs text-muted-foreground uppercase mb-2">Funzioni Domotiche Richieste</p>
-            <div className="flex flex-wrap gap-2">
+            <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide mt-3 md:mt-4 mb-2">Funzioni Domotiche Richieste</p>
+            <div className="flex flex-wrap gap-1.5 md:gap-2">
               {funzioniAttive.map((fn, i) => (
-                <Badge key={i} variant="secondary" className="text-xs">
+                <span key={i} className="bg-gray-100 text-gray-800 rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-xs font-medium">
                   {fn}
-                </Badge>
+                </span>
               ))}
             </div>
           </div>
@@ -408,21 +392,21 @@ const ElettricoSection = ({ data }: { data: Record<string, any> | null | undefin
         {(numTapparelle > 0 || numTende > 0) && !funzioniAttive.some(f => f.includes('Tapparelle') || f.includes('Tende')) && (
           <div className="grid grid-cols-2 gap-2">
             {numTapparelle > 0 && (
-              <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-                <span className="text-xs text-muted-foreground">Tapparelle</span>
-                <span className="text-sm font-medium">{numTapparelle}</span>
+              <div className="flex justify-between items-center p-2 bg-gray-50 rounded-xl">
+                <span className="text-[10px] md:text-xs text-gray-500">Tapparelle</span>
+                <span className="text-xs md:text-sm font-medium text-gray-900">{numTapparelle}</span>
               </div>
             )}
             {numTende > 0 && (
-              <div className="flex justify-between items-center p-2 bg-muted/20 rounded">
-                <span className="text-xs text-muted-foreground">Tende</span>
-                <span className="text-sm font-medium">{numTende}</span>
+              <div className="flex justify-between items-center p-2 bg-gray-50 rounded-xl">
+                <span className="text-[10px] md:text-xs text-gray-500">Tende</span>
+                <span className="text-xs md:text-sm font-medium text-gray-900">{numTende}</span>
               </div>
             )}
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
@@ -477,32 +461,28 @@ const GenericModuleSection = ({
   };
 
   return (
-    <Card className="border-border">
-      <CardHeader className="pb-3">
-        <CardTitle className={`flex items-center gap-2 text-lg ${colorClass}`}>
-          <Icon className="h-5 w-5" />
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {entries.map(([key, value]) => {
-            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-              return null; // Skip nested objects in generic view
-            }
-            
-            return (
-              <div key={key} className="flex justify-between items-center p-2 bg-muted/30 rounded">
-                <span className="text-sm text-muted-foreground">
-                  {fieldLabels[key] || key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim()}
-                </span>
-                <span className="font-medium text-foreground text-sm">{formatValue(value)}</span>
-              </div>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
+    <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+      <h3 className={`flex items-center gap-2 text-base md:text-lg font-bold mb-3 md:mb-4 ${colorClass}`}>
+        <Icon className="h-5 w-5" />
+        {title}
+      </h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        {entries.map(([key, value]) => {
+          if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            return null;
+          }
+          
+          return (
+            <div key={key} className="flex justify-between items-center p-2.5 md:p-3 bg-gray-50 rounded-xl">
+              <span className="text-xs md:text-sm text-gray-500 truncate mr-2">
+                {fieldLabels[key] || key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim()}
+              </span>
+              <span className="font-medium text-gray-900 text-xs md:text-sm flex-shrink-0">{formatValue(value)}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
@@ -517,19 +497,17 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
 
   if (!hasAnyModule) {
     return (
-      <Card className="border-border">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-3 text-muted-foreground">
-            <AlertCircle className="h-5 w-5" />
-            <p>Nessuna configurazione tecnica disponibile per questo lead.</p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+        <div className="flex items-center gap-3 text-gray-500">
+          <AlertCircle className="h-5 w-5 flex-shrink-0" />
+          <p className="text-sm">Nessuna configurazione tecnica disponibile per questo lead.</p>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 md:space-y-4">
       <ElettricoSection data={moduloElettrico} />
       
       <FotovoltaicoSection data={moduloFotovoltaico} />
@@ -538,7 +516,7 @@ export const ConfigurationSection = ({ lead }: ConfigurationSectionProps) => {
         title="Modulo Sicurezza"
         icon={Shield}
         data={moduloSicurezza}
-        colorClass="text-destructive"
+        colorClass="text-red-600"
       />
     </div>
   );

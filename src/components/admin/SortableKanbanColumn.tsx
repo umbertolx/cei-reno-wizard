@@ -45,7 +45,7 @@ export const SortableKanbanColumn = (props: SortableKanbanColumnProps) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={isDragging ? 'z-50' : ''}
+      className={`w-[80vw] md:w-[350px] flex-shrink-0 ${isDragging ? 'z-50' : ''}`}
     >
       <KanbanColumn
         {...props}

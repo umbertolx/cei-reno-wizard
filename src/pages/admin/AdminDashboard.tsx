@@ -1,21 +1,28 @@
 import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { leadStates, convertDatabaseLeadToLead } from "@/types/lead";
 import { fetchLeads } from "@/services/leadService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { TrendingUp, Users, DollarSign, Calendar, RefreshCw, AlertCircle } from "lucide-react";
+import { RefreshCw, AlertCircle, ChevronDown, Users } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type TimeFrame = 'oggi' | 'settimana' | 'mese' | 'anno';
 
+const timeFrameLabels: Record<TimeFrame, string> = {
+  oggi: 'Oggi',
+  settimana: 'Questa settimana',
+  mese: 'Questo mese',
+  anno: "Quest'anno",
+};
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const { isAdmin, isLoading: authLoading } = useAdminAuth();
   const [timeFrame, setTimeFrame] = useState<TimeFrame>('mese');
+  const [timeFrameOpen, setTimeFrameOpen] = useState(false);
   const [leads, setLeads] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -113,8 +120,8 @@ const AdminDashboard = () => {
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
-            <p>Caricamento dashboard...</p>
+            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-gray-400" />
+            <p className="text-gray-500">Caricamento dashboard...</p>
           </div>
         </div>
       </AdminLayout>
@@ -129,13 +136,16 @@ const AdminDashboard = () => {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-center">
+          <div className="text-center px-4">
             <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Errore nel caricamento</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Errore nel caricamento</h2>
             <p className="text-gray-600 mb-4">{error}</p>
-            <Button onClick={handleRefresh} className="bg-[#d8010c] hover:bg-[#b8010a]">
+            <button
+              onClick={handleRefresh}
+              className="bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-6 py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+            >
               Riprova
-            </Button>
+            </button>
           </div>
         </div>
       </AdminLayout>
@@ -144,175 +154,173 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-6 w-full">
+      <div className="space-y-4 md:space-y-6 w-full pb-20 md:pb-0">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600">
-              Panoramica generale dei preventivi ({leads.length} totali)
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
+            <p className="text-sm md:text-base font-light text-gray-600">
+              Panoramica generale ({leads.length} totali)
               {leads.length === 0 && (
                 <span className="text-amber-600 ml-2">
-                  ⚠️ Nessun lead presente nel database
+                  ⚠️ Nessun lead
                 </span>
               )}
             </p>
           </div>
-          <div className="flex items-center space-x-4">
-            <Button 
+          <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+            <button 
               onClick={handleRefresh}
-              variant="outline"
-              className="flex items-center gap-2"
               disabled={isLoading}
+              className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors"
             >
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-              Aggiorna
-            </Button>
-            <Select value={timeFrame} onValueChange={(value: TimeFrame) => setTimeFrame(value)}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Seleziona periodo" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="oggi">Oggi</SelectItem>
-                <SelectItem value="settimana">Questa settimana</SelectItem>
-                <SelectItem value="mese">Questo mese</SelectItem>
-                <SelectItem value="anno">Quest'anno</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button 
+              {!isMobile && "Aggiorna"}
+            </button>
+
+            {/* Custom dropdown for time frame */}
+            <div className="relative">
+              <button
+                onClick={() => setTimeFrameOpen(!timeFrameOpen)}
+                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors min-w-[130px] md:min-w-[160px] justify-between"
+              >
+                <span className="truncate">{timeFrameLabels[timeFrame]}</span>
+                <ChevronDown className="h-4 w-4 text-gray-400 flex-shrink-0" />
+              </button>
+              {timeFrameOpen && (
+                <>
+                  {/* Backdrop to close dropdown on mobile */}
+                  <div className="fixed inset-0 z-10" onClick={() => setTimeFrameOpen(false)} />
+                  <div className="absolute right-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-md z-20 overflow-hidden">
+                    {(Object.keys(timeFrameLabels) as TimeFrame[]).map((tf) => (
+                      <button
+                        key={tf}
+                        onClick={() => { setTimeFrame(tf); setTimeFrameOpen(false); }}
+                        className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                          tf === timeFrame ? 'bg-gray-50 text-[#d8010c] font-semibold' : 'text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        {timeFrameLabels[tf]}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            <button 
               onClick={() => navigate("/admin/leads")}
-              className="bg-[#d8010c] hover:bg-[#b8010a]"
+              className="bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-4 md:px-6 py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-sm whitespace-nowrap"
             >
-              Gestisci Leads
-            </Button>
+              {isMobile ? "Leads" : "Gestisci Leads"}
+            </button>
           </div>
         </div>
 
         {/* Debug info per sviluppatori */}
         {leads.length === 0 && (
-          <Card className="bg-amber-50 border-amber-200">
-            <CardContent className="pt-4">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
-                <div>
-                  <h3 className="font-medium text-amber-800">Database vuoto</h3>
-                  <p className="text-sm text-amber-700 mt-1">
-                    Per testare la dashboard, completa il configuratore sul sito principale per generare dei lead di esempio.
-                  </p>
-                  <Button 
-                    onClick={() => navigate("/")}
-                    variant="outline"
-                    size="sm"
-                    className="mt-2 border-amber-300 text-amber-700 hover:bg-amber-100"
-                  >
-                    Vai al configuratore
-                  </Button>
-                </div>
+          <div className="bg-white rounded-2xl border border-amber-200 shadow-sm p-4 md:p-5">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-amber-800">Database vuoto</h3>
+                <p className="text-sm text-amber-700 mt-1">
+                  Per testare la dashboard, completa il configuratore sul sito principale per generare dei lead di esempio.
+                </p>
+                <button 
+                  onClick={() => navigate("/")}
+                  className="mt-2 bg-white border border-amber-300 text-amber-700 hover:bg-amber-50 rounded-xl px-4 py-1.5 text-sm font-medium transition-colors"
+                >
+                  Vai al configuratore
+                </button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Leads</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{data.totalLeads}</div>
-              <p className="text-xs text-muted-foreground">
-                {data.comparison.total} {data.benchmark}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Valore Totale</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">€{data.totalValue.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">
-                {data.comparison.value} {data.benchmark}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Valore Medio</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">€{Math.round(data.avgValue).toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">
-                {data.comparison.avg} {data.benchmark}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Acquisiti</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{data.acquired}</div>
-              <p className="text-xs text-muted-foreground">
-                {data.comparison.acquired} {data.benchmark}
-              </p>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+          {[
+            { label: "Total Leads", value: data.totalLeads.toString(), sub: `${data.comparison.total} ${data.benchmark}` },
+            { label: "Valore Totale", value: `€${data.totalValue.toLocaleString()}`, sub: `${data.comparison.value} ${data.benchmark}` },
+            { label: "Valore Medio", value: `€${Math.round(data.avgValue).toLocaleString()}`, sub: `${data.comparison.avg} ${data.benchmark}` },
+            { label: "Acquisiti", value: data.acquired.toString(), sub: `${data.comparison.acquired} ${data.benchmark}` },
+          ].map((stat) => (
+            <div key={stat.label} className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+              <p className="text-xs md:text-sm font-medium text-gray-500 truncate">{stat.label}</p>
+              <p className="text-xl md:text-3xl font-bold text-gray-900 mt-1 md:mt-2 truncate">{stat.value}</p>
+              <p className="text-[10px] md:text-xs text-gray-400 mt-1 truncate">{stat.sub}</p>
+            </div>
+          ))}
         </div>
 
         {/* Charts and Recent Leads */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {/* Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Lead per Stato</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6 flex flex-col lg:min-h-[420px]">
+            <h2 className="text-base md:text-lg font-bold text-gray-900 mb-4">Lead per Stato</h2>
+            <div className="flex-1 min-h-[220px] md:min-h-[300px]">
               {leadsByState.length > 0 ? (
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={leadsByState}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="stato" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#d8010c" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis 
+                      dataKey="stato" 
+                      tick={{ fontSize: isMobile ? 10 : 12, fill: '#6B7280' }} 
+                      angle={isMobile ? -45 : 0}
+                      textAnchor={isMobile ? "end" : "middle"}
+                      height={isMobile ? 60 : 30}
+                    />
+                    <YAxis tick={{ fontSize: 12, fill: '#6B7280' }} width={30} />
+                    <Tooltip
+                      contentStyle={{
+                        borderRadius: '0.75rem',
+                        border: '1px solid #E5E7EB',
+                        boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+                        fontSize: '0.875rem',
+                      }}
+                    />
+                    <Bar dataKey="count" fill="#d8010c" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="flex items-center justify-center h-[300px] text-gray-500">
+                <div className="flex items-center justify-center h-full text-gray-400">
                   <div className="text-center">
                     <BarChart className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p>Nessun dato disponibile</p>
+                    <p className="text-sm">Nessun dato disponibile</p>
                   </div>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Recent Leads */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Ultimi Lead</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6 flex flex-col lg:min-h-[420px]">
+            <h2 className="text-base md:text-lg font-bold text-gray-900 mb-4">Ultimi Lead</h2>
+            <div className="flex-1">
               {recentLeads.length > 0 ? (
-                <div className="space-y-4">
-                  {recentLeads.map((lead) => {
+                <div>
+                  {recentLeads.map((lead, index) => {
                     const leadStateInfo = leadStates[lead.stato as keyof typeof leadStates];
                     return (
-                      <div key={lead.id} className="flex items-center justify-between border-b pb-2">
-                        <div>
-                          <p className="font-medium">{lead.nome} {lead.cognome}</p>
-                          <p className="text-sm text-gray-600">{lead.citta}</p>
+                      <div 
+                        key={lead.id} 
+                        className={`flex items-center justify-between py-3 gap-2 ${
+                          index < recentLeads.length - 1 ? 'border-b border-gray-100' : ''
+                        }`}
+                      >
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold text-gray-900 text-sm md:text-base truncate">
+                            {lead.nome} {lead.cognome}
+                          </p>
+                          <p className="text-xs md:text-sm text-gray-500 truncate">{lead.citta}</p>
                         </div>
-                        <div className="text-right">
-                          <p className="font-medium">€{lead.stimaMax.toLocaleString()}</p>
-                          {leadStateInfo && (
-                            <span className={`inline-block px-2 py-1 rounded-full text-xs text-white ${leadStateInfo.color}`}>
+                        <div className="text-right flex items-center gap-2 md:gap-3 flex-shrink-0">
+                          <p className="font-bold text-[#d8010c] text-sm md:text-base">
+                            €{lead.stimaMax.toLocaleString()}
+                          </p>
+                          {leadStateInfo && !isMobile && (
+                            <span className="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap">
                               {leadStateInfo.label}
                             </span>
                           )}
@@ -322,15 +330,15 @@ const AdminDashboard = () => {
                   })}
                 </div>
               ) : (
-                <div className="flex items-center justify-center h-[200px] text-gray-500">
+                <div className="flex items-center justify-center h-full text-gray-400">
                   <div className="text-center">
                     <Users className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p>Nessun lead recente</p>
+                    <p className="text-sm">Nessun lead recente</p>
                   </div>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </AdminLayout>

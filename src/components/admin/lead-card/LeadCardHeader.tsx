@@ -1,6 +1,5 @@
 
 import { Lead } from "@/types/lead";
-import { Button } from "@/components/ui/button";
 import { MapPin, ChevronDown } from "lucide-react";
 
 interface LeadCardHeaderProps {
@@ -28,33 +27,31 @@ export const LeadCardHeader = ({
     <div 
       {...attributes}
       {...listeners}
-      className="flex items-center space-x-3 mb-3 cursor-grab"
+      className="flex items-center gap-3 cursor-grab"
     >
-      <div className="w-10 h-10 bg-[#d8010c] rounded-full flex items-center justify-center text-white font-medium text-sm flex-shrink-0">
+      <div className="w-10 h-10 bg-[#d8010c] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
         {getInitials(lead.nome, lead.cognome)}
       </div>
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-gray-900 truncate">
+        <h3 className="font-semibold text-gray-900 text-base truncate">
           {lead.nome} {lead.cognome}
         </h3>
-        <p className="text-sm text-gray-600 flex items-center truncate">
-          <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+        <p className="text-sm text-gray-500 flex items-center truncate">
+          <MapPin className="h-3 w-3 mr-1 text-gray-400 flex-shrink-0" />
           {lead.citta}, {lead.cap}
         </p>
       </div>
       {forceExpanded === undefined && (
-        <Button
-          variant="ghost"
-          size="sm"
+        <button
           onClick={onToggleExpansion}
-          className="p-1 h-8 w-8"
+          className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
         >
           <ChevronDown 
-            className={`h-4 w-4 transition-transform duration-200 ${
+            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${
               isExpanded ? 'rotate-180' : ''
             }`} 
           />
-        </Button>
+        </button>
       )}
     </div>
   );

@@ -5,9 +5,7 @@ import { LeadCard } from "./LeadCard";
 import { DeleteColumnDialog } from "./DeleteColumnDialog";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Edit2, Check, X, Trash2, GripVertical } from "lucide-react";
+import { GripVertical, Pencil, Check, X, Trash2 } from "lucide-react";
 
 interface KanbanColumnProps {
   stato: string;
@@ -22,6 +20,17 @@ interface KanbanColumnProps {
   isDraggedOver?: boolean;
   isDraggable?: boolean;
 }
+
+// Map column states to counter badge colors per design system
+const counterColors: Record<string, string> = {
+  nuovo: "bg-green-500",
+  in_contatto: "bg-yellow-500",
+  preventivo_inviato: "bg-red-500",
+  sopralluogo_fissato: "bg-orange-500",
+  lavori_in_corso: "bg-cyan-500",
+  lavori_conclusi: "bg-green-500",
+  perso: "bg-red-500",
+};
 
 export const KanbanColumn = ({ 
   stato, 
@@ -51,7 +60,7 @@ export const KanbanColumn = ({
 
   const stateInfo = customColumn || leadStates[stato as keyof typeof leadStates];
   const displayTitle = customTitle || customColumn?.label || stateInfo?.label || stato;
-  const columnColor = customColumn?.color || stateInfo?.color || "bg-gray-500";
+  const counterColor = counterColors[stato] || customColumn?.color || "bg-gray-500";
 
   const handleSaveTitle = () => {
     if (onTitleChange && editedTitle.trim()) {
@@ -75,95 +84,92 @@ export const KanbanColumn = ({
     }
   };
 
-  // Enhanced visual feedback for drag over
   const isDragActive = isOver || isDraggedOver;
   const dragOverClass = isDragActive
     ? 'bg-blue-50 border-2 border-blue-300 border-dashed ring-2 ring-blue-200 ring-opacity-50 shadow-lg' 
     : '';
 
-  console.log("KanbanColumn render:", { stato, isDragActive, isOver, isDraggedOver, leadsCount: leads.length });
-
   return (
     <>
-      <div className="flex-1 min-w-80 max-w-80">
-        <div className="mb-4 bg-white rounded-lg p-3 shadow-sm border">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {isDraggable && (
-                <div className="cursor-grab hover:cursor-grabbing">
-                  <GripVertical className="h-4 w-4 text-gray-400" />
-                </div>
-              )}
-              
-              {isEditingTitle ? (
-                <div className="flex items-center space-x-2 flex-1">
-                  <Input
-                    value={editedTitle}
-                    onChange={(e) => setEditedTitle(e.target.value)}
-                    className="text-sm font-semibold"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleSaveTitle();
-                      if (e.key === 'Escape') handleCancelEdit();
-                    }}
-                    autoFocus
-                  />
-                  <Button size="sm" variant="ghost" onClick={handleSaveTitle}>
-                    <Check className="h-3 w-3" />
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={handleCancelEdit}>
-                    <X className="h-3 w-3" />
-                  </Button>
-                </div>
-              ) : (
-                <div className="flex items-center space-x-2 flex-1">
-                  <h3 className="font-semibold text-gray-900 text-sm">{displayTitle}</h3>
-                  <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    onClick={() => setIsEditingTitle(true)}
-                    className="h-6 w-6 p-0"
-                  >
-                    <Edit2 className="h-3 w-3" />
-                  </Button>
-                  {customColumn && !isDefaultColumn && (
-                    <Button 
-                      size="sm" 
-                      variant="ghost" 
-                      onClick={handleDeleteClick}
-                      className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
-                  )}
-                </div>
-              )}
+      <div className="min-w-[280px] md:min-w-[350px] w-[80vw] md:w-[350px] max-w-[350px] flex-shrink-0 flex flex-col snap-start">
+        {/* Column Header */}
+        <div className="flex items-center gap-2 mb-3 md:mb-4">
+          {isDraggable && (
+            <GripVertical className="h-4 w-4 text-gray-400 cursor-grab hover:cursor-grabbing flex-shrink-0" />
+          )}
+          
+          {isEditingTitle ? (
+            <div className="flex items-center gap-2 flex-1">
+              <input
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+                className="bg-white border border-gray-200 rounded-xl h-8 px-3 text-sm font-semibold text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none flex-1 min-w-0"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSaveTitle();
+                  if (e.key === 'Escape') handleCancelEdit();
+                }}
+                autoFocus
+              />
+              <button
+                onClick={handleSaveTitle}
+                className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
+              >
+                <Check className="h-3 w-3 text-gray-500" />
+              </button>
+              <button
+                onClick={handleCancelEdit}
+                className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
+              >
+                <X className="h-3 w-3 text-gray-500" />
+              </button>
             </div>
-            <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-sm font-medium ${columnColor}`}>
-              {leads.length}
-            </span>
-          </div>
+          ) : (
+            <>
+              <span className="font-semibold text-gray-700 text-sm truncate">{displayTitle}</span>
+              <button
+                onClick={() => setIsEditingTitle(true)}
+                className="p-1 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
+              >
+                <Pencil className="h-3.5 w-3.5 text-gray-400 hover:text-gray-600" />
+              </button>
+              {customColumn && !isDefaultColumn && (
+                <button
+                  onClick={handleDeleteClick}
+                  className="p-1 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                >
+                  <Trash2 className="h-3.5 w-3.5 text-red-400 hover:text-red-600" />
+                </button>
+              )}
+            </>
+          )}
+          
+          <span className={`ml-auto w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0 ${counterColor}`}>
+            {leads.length}
+          </span>
         </div>
 
+        {/* Column body */}
         <div
           ref={setNodeRef}
-          className={`bg-gray-50 rounded-lg p-4 h-[calc(100vh-280px)] overflow-y-auto transition-all duration-300 min-h-32 ${dragOverClass}`}
+          className={`rounded-xl md:rounded-2xl p-3 md:p-4 flex-1 overflow-y-auto transition-all duration-300 min-h-32 ${dragOverClass} ${!isDragActive ? 'bg-gray-50/50' : ''}`}
+          style={{ maxHeight: 'calc(100vh - 320px)' }}
         >
           <SortableContext
             items={leads.map(lead => lead.id)}
             strategy={verticalListSortingStrategy}
           >
             {leads.length === 0 ? (
-              <div className="text-center text-gray-500 py-8 h-full flex flex-col justify-center">
-                <p className="mb-2">Nessun lead in questo stato</p>
+              <div className="text-center text-gray-400 py-8 h-full flex flex-col justify-center">
+                <p className="text-sm mb-2">Nessun lead in questo stato</p>
                 {isDragActive && (
-                  <div className="text-blue-600 font-medium text-sm animate-pulse bg-white/80 rounded-lg p-4 border-2 border-dashed border-blue-300">
+                  <div className="text-blue-600 font-medium text-sm animate-pulse bg-white/80 rounded-xl p-4 border-2 border-dashed border-blue-300">
                     <p>🎯 Rilascia qui per spostare il lead</p>
                     <p className="text-xs mt-1">in "{displayTitle}"</p>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-3 md:space-y-4">
                 {leads.map((lead) => (
                   <LeadCard
                     key={lead.id}
@@ -173,7 +179,7 @@ export const KanbanColumn = ({
                   />
                 ))}
                 {isDragActive && (
-                  <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-lg bg-white/80 mx-2">
+                  <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-xl bg-white/80 mx-2">
                     <p>🎯 Rilascia qui per aggiungere a "{displayTitle}"</p>
                   </div>
                 )}

@@ -1,33 +1,31 @@
 
+import { useState } from "react";
 import { Lead, leadStates } from "@/types/lead";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { MapPin, Phone, Mail, Calendar, Euro, User, Building } from "lucide-react";
+import { X, MapPin, Phone, Mail, Calendar, Euro, UserCircle, Building2, Zap, ArrowRightLeft, ChevronDown, Check } from "lucide-react";
 import { ConfigurationSection } from "./lead-card/sections/ConfigurationSection";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
+
+interface ColumnOption {
+  id: string;
+  label: string;
+}
 
 interface LeadDetailsProps {
   lead: Lead | null;
   isOpen: boolean;
   onClose: () => void;
+  onMoveLead?: (leadId: string, targetColumnId: string) => Promise<void>;
+  availableColumns?: ColumnOption[];
 }
 
-export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
-  console.log("=== LeadDetails Render Start ===");
-  console.log("LeadDetails render - lead:", lead?.id, lead?.nome, lead?.cognome);
-  console.log("LeadDetails render - isOpen:", isOpen);
-  console.log("LeadDetails render - lead is null?", lead === null);
-  console.log("LeadDetails render - lead is undefined?", lead === undefined);
-  console.log("=== LeadDetails Render End ===");
-  
-  if (!lead) {
-    console.log("LeadDetails: No lead provided, returning null");
+export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumns }: LeadDetailsProps) => {
+  const isMobile = useIsMobile();
+  const [showMovePanel, setShowMovePanel] = useState(false);
+  const [selectedTargetColumn, setSelectedTargetColumn] = useState<string | null>(null);
+  const [isMoving, setIsMoving] = useState(false);
+
+  if (!lead || !isOpen) {
     return null;
   }
 
@@ -57,182 +55,315 @@ export const LeadDetails = ({ lead, isOpen, onClose }: LeadDetailsProps) => {
     }
   };
 
-  console.log("LeadDetails: About to render dialog with isOpen:", isOpen);
+  const getInitials = (nome: string, cognome: string) => {
+    return `${nome.charAt(0)}${cognome.charAt(0)}`.toUpperCase();
+  };
+
+  const stateInfo = leadStates[lead.stato as keyof typeof leadStates];
+
+  const handleMoveConfirm = async () => {
+    if (!selectedTargetColumn || !onMoveLead) return;
+    setIsMoving(true);
+    try {
+      await onMoveLead(lead.id, selectedTargetColumn);
+      setShowMovePanel(false);
+      setSelectedTargetColumn(null);
+    } catch (error) {
+      // Error handled in parent
+    } finally {
+      setIsMoving(false);
+    }
+  };
+
+  const handleCloseMovePanel = () => {
+    setShowMovePanel(false);
+    setSelectedTargetColumn(null);
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="pb-6 border-b">
-          <DialogTitle className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-              {lead.nome.charAt(0)}{lead.cognome.charAt(0)}
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
+        onClick={onClose}
+      />
+      
+      {/* Content - Full screen on mobile, centered modal on desktop */}
+      <div className="relative bg-white w-full md:max-w-4xl md:mx-4 rounded-t-2xl md:rounded-2xl shadow-xl overflow-y-auto max-h-[95vh] md:max-h-[90vh]">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 md:top-4 md:right-4 z-10 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white border border-gray-200 hover:bg-gray-50 shadow-sm flex items-center justify-center transition-colors"
+        >
+          <X className="h-4 w-4 md:h-5 md:w-5 text-gray-500" />
+        </button>
+
+        {/* Mobile drag handle */}
+        <div className="md:hidden flex justify-center pt-2 pb-0">
+          <div className="w-10 h-1 bg-gray-300 rounded-full" />
+        </div>
+
+        {/* Header */}
+        <div className="p-4 md:p-6 border-b border-gray-200">
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="w-11 h-11 md:w-14 md:h-14 rounded-full bg-[#d8010c] text-white font-bold text-base md:text-lg flex items-center justify-center flex-shrink-0">
+              {getInitials(lead.nome, lead.cognome)}
             </div>
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{lead.nome} {lead.cognome}</h2>
-              <div className="flex items-center space-x-4">
-                <Badge className={`${leadStates[lead.stato].color} text-white`}>
-                  {leadStates[lead.stato].label}
-                </Badge>
-                <span className="text-sm text-gray-500">ID: {lead.id}</span>
-                <span className="text-sm text-gray-600">Richiesta: {formatDate(lead.dataRichiesta)}</span>
+            <div className="flex-1 min-w-0 pr-10 md:pr-12">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 truncate">{lead.nome} {lead.cognome}</h2>
+              <div className="flex items-center gap-2 md:gap-3 mt-1 flex-wrap">
+                {stateInfo && (
+                  <span className="bg-orange-100 text-orange-800 rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-semibold">
+                    {stateInfo.label}
+                  </span>
+                )}
+                <span className="text-xs text-gray-400 font-mono hidden md:inline">ID: {lead.id.substring(0, 8)}...</span>
+                <span className="text-xs md:text-sm text-gray-500">{formatDate(lead.dataRichiesta)}</span>
               </div>
             </div>
-          </DialogTitle>
-        </DialogHeader>
+          </div>
 
-        <div className="space-y-6">
-          {/* 1. Informazioni di Contatto */}
-          <div className="bg-white border rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <User className="h-5 w-5 mr-2" />
+          {/* ── Mobile "Sposta" button ── */}
+          {isMobile && onMoveLead && availableColumns && (
+            <button
+              onClick={() => setShowMovePanel(true)}
+              className="mt-3 w-full flex items-center justify-center gap-2 bg-[#d8010c] text-white rounded-xl py-2.5 text-sm font-semibold shadow-sm active:bg-[#b8010a] transition-colors"
+            >
+              <ArrowRightLeft className="h-4 w-4" />
+              Sposta Lead
+            </button>
+          )}
+        </div>
+
+        {/* ── Mobile Move Panel (slide-up) ── */}
+        {showMovePanel && isMobile && onMoveLead && availableColumns && (
+          <div className="fixed inset-0 z-[60] flex items-end justify-center">
+            <div className="absolute inset-0 bg-black/40" onClick={handleCloseMovePanel} />
+            <div className="relative bg-white w-full rounded-t-2xl shadow-xl max-h-[75vh] flex flex-col">
+              {/* Handle */}
+              <div className="flex justify-center pt-3 pb-1">
+                <div className="w-10 h-1 bg-gray-300 rounded-full" />
+              </div>
+
+              {/* Move panel header */}
+              <div className="px-4 py-3 border-b border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900">Sposta Lead</h3>
+                <p className="text-sm text-gray-500 mt-0.5">
+                  Seleziona la colonna di destinazione per <span className="font-medium text-gray-700">{lead.nome} {lead.cognome}</span>
+                </p>
+              </div>
+
+              {/* Column options list */}
+              <div className="flex-1 overflow-y-auto px-2 py-2">
+                {availableColumns.map((col) => {
+                  const isCurrentColumn = col.id === lead.stato;
+                  const isSelected = col.id === selectedTargetColumn;
+
+                  return (
+                    <button
+                      key={col.id}
+                      onClick={() => !isCurrentColumn && setSelectedTargetColumn(col.id)}
+                      disabled={isCurrentColumn}
+                      className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl mb-1 transition-colors ${
+                        isCurrentColumn
+                          ? 'bg-gray-50 text-gray-400 cursor-not-allowed'
+                          : isSelected
+                            ? 'bg-[#d8010c]/10 border-2 border-[#d8010c] text-[#d8010c] font-semibold'
+                            : 'bg-white text-gray-700 hover:bg-gray-50 active:bg-gray-100 border-2 border-transparent'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-3 h-3 rounded-full ${
+                          leadStates[col.id as keyof typeof leadStates]?.color || 'bg-gray-400'
+                        }`} />
+                        <span className="text-sm">{col.label}</span>
+                        {isCurrentColumn && (
+                          <span className="text-[10px] bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full font-medium">
+                            Attuale
+                          </span>
+                        )}
+                      </div>
+                      {isSelected && (
+                        <Check className="h-5 w-5 text-[#d8010c]" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Confirm / Cancel buttons */}
+              <div className="px-4 py-4 border-t border-gray-100 flex gap-3">
+                <button
+                  onClick={handleCloseMovePanel}
+                  className="flex-1 bg-gray-100 text-gray-700 rounded-xl py-3 text-sm font-semibold active:bg-gray-200 transition-colors"
+                >
+                  Annulla
+                </button>
+                <button
+                  onClick={handleMoveConfirm}
+                  disabled={!selectedTargetColumn || isMoving}
+                  className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-colors ${
+                    selectedTargetColumn && !isMoving
+                      ? 'bg-[#d8010c] text-white active:bg-[#b8010a]'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  {isMoving ? 'Spostamento...' : 'Conferma Spostamento'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Sections */}
+        <div className="space-y-4 md:space-y-6 p-4 md:p-6">
+          {/* Informazioni di Contatto */}
+          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+            <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
+              <UserCircle className="h-5 w-5 text-gray-700" />
               Informazioni di Contatto
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center space-x-3">
-                <Mail className="h-4 w-4 text-gray-400" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-gray-400 flex-shrink-0" />
                 <span 
                   onClick={copyEmail}
-                  className="text-gray-900 cursor-pointer hover:text-primary transition-colors"
+                  className="text-sm text-gray-900 cursor-pointer hover:text-[#d8010c] transition-colors truncate"
                 >
                   {lead.email}
                 </span>
               </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="h-4 w-4 text-gray-400" />
-                <span className="text-gray-900">{lead.telefono}</span>
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                <a href={`tel:${lead.telefono}`} className="text-sm text-gray-900 hover:text-[#d8010c] transition-colors">
+                  {lead.telefono}
+                </a>
               </div>
-              <div className="flex items-center space-x-3 md:col-span-2">
-                <MapPin className="h-4 w-4 text-gray-400" />
-                <div>
-                  <div className="text-gray-900">{lead.indirizzo}</div>
-                  <div className="text-gray-600 text-sm">{lead.citta}, {lead.cap} ({lead.regione})</div>
+              <div className="flex items-center gap-2 md:col-span-2">
+                <MapPin className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                <div className="min-w-0">
+                  <div className="text-sm text-gray-900 truncate">{lead.indirizzo}</div>
+                  <div className="text-sm text-gray-500 truncate">{lead.citta}, {lead.cap} ({lead.regione})</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <Separator />
-
-          {/* 2. Dettagli Immobile */}
-          <div className="bg-white border rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Building className="h-5 w-5 mr-2" />
+          {/* Dettagli Immobile */}
+          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+            <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
+              <Building2 className="h-5 w-5 text-gray-700" />
               Dettagli Immobile
             </h3>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
-                <div className="text-2xl font-bold text-gray-900">{lead.superficie}</div>
-                <div className="text-sm text-gray-600">mq totali</div>
+            {/* 3 stat cards */}
+            <div className="grid grid-cols-3 gap-2 md:gap-4">
+              <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
+                <div className="text-xl md:text-2xl font-bold text-gray-900">{lead.superficie}</div>
+                <div className="text-[10px] md:text-xs text-gray-500">mq totali</div>
               </div>
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
-                <div className="text-2xl font-bold text-gray-900">{getTotalRooms()}</div>
-                <div className="text-sm text-gray-600">stanze totali</div>
+              <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
+                <div className="text-xl md:text-2xl font-bold text-gray-900">{getTotalRooms()}</div>
+                <div className="text-[10px] md:text-xs text-gray-500">stanze</div>
               </div>
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
-                <div className="text-2xl font-bold text-gray-900 capitalize">{lead.tipologiaAbitazione}</div>
-                <div className="text-sm text-gray-600">tipologia</div>
+              <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
+                <div className="text-sm md:text-2xl font-bold text-gray-900 capitalize leading-tight">
+                  {lead.tipologiaAbitazione}
+                </div>
+                <div className="text-[10px] md:text-xs text-gray-500">tipologia</div>
               </div>
             </div>
 
             {/* Composizione Stanze */}
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-3">Composizione Stanze</h4>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                <div className="text-center p-3 border rounded-lg">
-                  <div className="text-xl font-bold text-gray-900">{lead.composizione.cucina}</div>
-                  <div className="text-xs text-gray-600">Cucina</div>
+            <div className="mt-4">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Composizione Stanze</h4>
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
+                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.cucina}</div>
+                  <div className="text-[10px] md:text-xs text-gray-500">Cucina</div>
                 </div>
-                <div className="text-center p-3 border rounded-lg">
-                  <div className="text-xl font-bold text-gray-900">{lead.composizione.cameraDoppia}</div>
-                  <div className="text-xs text-gray-600">Camera Doppia</div>
+                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
+                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.cameraDoppia}</div>
+                  <div className="text-[10px] md:text-xs text-gray-500">Cam. Doppia</div>
                 </div>
-                <div className="text-center p-3 border rounded-lg">
-                  <div className="text-xl font-bold text-gray-900">{lead.composizione.cameraSingola}</div>
-                  <div className="text-xs text-gray-600">Camera Singola</div>
+                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
+                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.cameraSingola}</div>
+                  <div className="text-[10px] md:text-xs text-gray-500">Cam. Singola</div>
                 </div>
-                <div className="text-center p-3 border rounded-lg">
-                  <div className="text-xl font-bold text-gray-900">{lead.composizione.bagno}</div>
-                  <div className="text-xs text-gray-600">Bagno</div>
+                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
+                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.bagno}</div>
+                  <div className="text-[10px] md:text-xs text-gray-500">Bagno</div>
                 </div>
-                <div className="text-center p-3 border rounded-lg">
-                  <div className="text-xl font-bold text-gray-900">{lead.composizione.soggiorno}</div>
-                  <div className="text-xs text-gray-600">Soggiorno</div>
+                <div className="bg-gray-50 rounded-lg p-2 md:p-3 text-center">
+                  <div className="text-base md:text-lg font-bold text-gray-900">{lead.composizione.soggiorno}</div>
+                  <div className="text-[10px] md:text-xs text-gray-500">Soggiorno</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <Separator />
-
-          {/* 3. Configurazione Tecnica Dettagliata */}
+          {/* Configurazione Tecnica */}
           <ConfigurationSection lead={lead} />
 
-          <Separator />
-
-          {/* 4. Analisi Economica */}
-          <div className="bg-white border rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Euro className="h-5 w-5 mr-2" />
+          {/* Analisi Economica */}
+          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+            <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
+              <Euro className="h-5 w-5 text-gray-700" />
               Analisi Economica
             </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="text-center p-4 bg-green-50 border-2 border-green-200 rounded-lg">
-                <Badge className="mb-2 bg-green-600">Range Cliente</Badge>
-                <div className="text-sm text-gray-600 mb-1">Preventivo Minimo</div>
-                <div className="text-2xl font-bold text-green-900">€{lead.stimaMin?.toLocaleString()}</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+              <div className="border-2 border-green-200 bg-green-50/30 rounded-xl md:rounded-2xl p-4 md:p-5 text-center">
+                <span className="inline-block bg-green-600 text-white rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-bold mb-2">Range Cliente</span>
+                <div className="text-xs md:text-sm text-gray-600">Preventivo Minimo</div>
+                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1">€{lead.stimaMin?.toLocaleString()}</div>
               </div>
               
-              <div className="text-center p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
-                <Badge className="mb-2 bg-blue-600">Stima Ricasa</Badge>
-                <div className="text-sm text-gray-600 mb-1">Valore Medio</div>
-                <div className="text-2xl font-bold text-blue-900">€{stimaMedia?.toLocaleString()}</div>
+              <div className="border-2 border-blue-200 bg-blue-50/30 rounded-xl md:rounded-2xl p-4 md:p-5 text-center">
+                <span className="inline-block bg-blue-600 text-white rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-bold mb-2">Stima Ricasa</span>
+                <div className="text-xs md:text-sm text-gray-600">Valore Medio</div>
+                <div className="text-xl md:text-2xl font-bold text-blue-600 mt-1">€{stimaMedia?.toLocaleString()}</div>
               </div>
               
-              <div className="text-center p-4 bg-green-50 border-2 border-green-200 rounded-lg">
-                <Badge className="mb-2 bg-green-600">Range Cliente</Badge>
-                <div className="text-sm text-gray-600 mb-1">Preventivo Massimo</div>
-                <div className="text-2xl font-bold text-green-900">€{lead.stimaMax?.toLocaleString()}</div>
+              <div className="border-2 border-green-200 bg-green-50/30 rounded-xl md:rounded-2xl p-4 md:p-5 text-center">
+                <span className="inline-block bg-green-600 text-white rounded-full px-2.5 md:px-3 py-0.5 md:py-1 text-xs font-bold mb-2">Range Cliente</span>
+                <div className="text-xs md:text-sm text-gray-600">Preventivo Massimo</div>
+                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1">€{lead.stimaMax?.toLocaleString()}</div>
               </div>
             </div>
           </div>
 
-          {/* 5. Note del Cliente */}
+          {/* Note del Cliente */}
           {lead.note && (
-            <>
-              <Separator />
-              <div className="bg-white border rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Note del Cliente</h3>
-                <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
-                  <p className="text-gray-800">{lead.note}</p>
-                </div>
+            <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+              <h3 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">Note del Cliente</h3>
+              <div className="bg-[#F9FBFF] border border-gray-100 p-3 md:p-4 rounded-xl">
+                <p className="text-sm text-gray-700">{lead.note}</p>
               </div>
-            </>
+            </div>
           )}
 
-          {/* 6. Cronologia Contatti */}
-          <Separator />
-          <div className="bg-white border rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Calendar className="h-5 w-5 mr-2" />
+          {/* Cronologia Contatti */}
+          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
+            <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
+              <Calendar className="h-5 w-5 text-gray-700" />
               Cronologia Contatti
             </h3>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-700">Richiesta inviata</span>
-                <span className="text-gray-600 text-sm">{formatDate(lead.dataRichiesta)}</span>
+            <div>
+              <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                <span className="text-sm text-gray-700">Richiesta inviata</span>
+                <span className="text-xs md:text-sm text-gray-500">{formatDate(lead.dataRichiesta)}</span>
               </div>
               {lead.dataUltimoContatto && (
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-700">Ultimo contatto</span>
-                  <span className="text-gray-600 text-sm">{formatDate(lead.dataUltimoContatto)}</span>
+                <div className="flex items-center justify-between py-3">
+                  <span className="text-sm text-gray-700">Ultimo contatto</span>
+                  <span className="text-xs md:text-sm text-gray-500">{formatDate(lead.dataUltimoContatto)}</span>
                 </div>
               )}
             </div>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };
