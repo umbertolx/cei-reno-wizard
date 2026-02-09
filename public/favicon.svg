@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="8" fill="#ffffff"/>
+  <!-- Letter R -->
+  <text x="4" y="52" font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" font-size="52" fill="#1a1a1a" letter-spacing="-2">R</text>
+  <!-- Orange double stripes -->
+  <polygon points="48,8 56,8 44,56 36,56" fill="#F7941D"/>
+  <polygon points="56,8 64,8 52,56 44,56" fill="#F7941D"/>
+</svg>
