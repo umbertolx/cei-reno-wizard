@@ -120,7 +120,7 @@ const AdminLogin = () => {
             <img 
               src="/logo-cei.png" 
               alt="CEI Logo" 
-              className="h-8 sm:h-11 md:h-14 w-auto object-contain"
+              className="h-[25.6px] sm:h-[35.2px] md:h-[44.8px] w-auto object-contain"
             />
           </div>
           {showResetPassword && (
