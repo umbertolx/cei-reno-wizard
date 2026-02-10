@@ -1,8 +1,9 @@
 
 import { ReactNode, useState, useEffect } from "react";
-import { Home, Users, LogOut, Menu, X } from "lucide-react";
+import { Home, Users, LogOut, Menu, X, UserCircle } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -31,13 +32,15 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
     };
   }, [isMobile, sidebarOpen]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     navigate("/admin");
   };
 
   const menuItems = [
     { icon: Home, label: "Dashboard", path: "/admin/dashboard" },
     { icon: Users, label: "Leads", path: "/admin/leads" },
+    { icon: UserCircle, label: "Account", path: "/admin/account" },
   ];
 
   return (
