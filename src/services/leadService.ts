@@ -1,6 +1,16 @@
 import { supabase } from "@/integrations/supabase/client";
 import { DatabaseLead, leadStates } from "@/types/lead";
 
+// ─── Lead Note type ─────────────────────────────────────────────────────────
+export interface LeadNote {
+  id: string;
+  lead_id: string;
+  user_id: string;
+  author_name: string;
+  content: string;
+  created_at: string;
+}
+
 export const fetchLeads = async (): Promise<DatabaseLead[]> => {
   try {
     const { data, error } = await supabase
@@ -14,6 +24,77 @@ export const fetchLeads = async (): Promise<DatabaseLead[]> => {
     }
     
     return (data || []) as DatabaseLead[];
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ─── Fetch notes for a lead ──────────────────────────────────────────────────
+export const fetchLeadNotes = async (leadId: string): Promise<LeadNote[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('lead_notes')
+      .select('*')
+      .eq('lead_id', leadId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw new Error(`Errore nel recuperare le note: ${error.message}`);
+    }
+
+    return (data || []) as LeadNote[];
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ─── Add a note to a lead ────────────────────────────────────────────────────
+export const addLeadNote = async (
+  leadId: string,
+  content: string
+): Promise<LeadNote> => {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Utente non autenticato');
+
+    const meta = user.user_metadata;
+    const fullName = meta?.full_name || meta?.fullName;
+    const firstName = meta?.first_name || meta?.firstName || '';
+    const lastName = meta?.last_name || meta?.lastName || '';
+    const authorName = fullName || (firstName && lastName ? `${firstName} ${lastName}` : firstName || user.email || 'Utente');
+
+    const { data, error } = await supabase
+      .from('lead_notes')
+      .insert({
+        lead_id: leadId,
+        user_id: user.id,
+        author_name: authorName,
+        content: content.trim(),
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Errore nell'aggiungere la nota: ${error.message}`);
+    }
+
+    return data as LeadNote;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ─── Delete a note ───────────────────────────────────────────────────────────
+export const deleteLeadNote = async (noteId: string): Promise<void> => {
+  try {
+    const { error } = await supabase
+      .from('lead_notes')
+      .delete()
+      .eq('id', noteId);
+
+    if (error) {
+      throw new Error(`Errore nell'eliminare la nota: ${error.message}`);
+    }
   } catch (error) {
     throw error;
   }

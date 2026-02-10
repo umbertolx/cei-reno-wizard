@@ -212,17 +212,17 @@ const AdminDashboard = () => {
 
         {/* Debug info per sviluppatori */}
         {leads.length === 0 && (
-          <div className="bg-white rounded-2xl border border-amber-200 shadow-sm p-4 md:p-5">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-5">
             <div className="flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+              <AlertCircle className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
               <div>
-                <h3 className="font-semibold text-amber-800">Database vuoto</h3>
-                <p className="text-sm text-amber-700 mt-1">
+                <h3 className="font-semibold text-gray-800">Database vuoto</h3>
+                <p className="text-sm text-gray-500 mt-1">
                   Per testare la dashboard, completa il configuratore sul sito principale per generare dei lead di esempio.
                 </p>
                 <button 
                   onClick={() => navigate("/")}
-                  className="mt-2 bg-white border border-amber-300 text-amber-700 hover:bg-amber-50 rounded-xl px-4 py-1.5 text-sm font-medium transition-colors"
+                  className="mt-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-1.5 text-sm font-medium transition-colors"
                 >
                   Vai al configuratore
                 </button>
@@ -313,7 +313,7 @@ const AdminDashboard = () => {
                             €{lead.stimaMax.toLocaleString()}
                           </p>
                           {leadStateInfo && !isMobile && (
-                            <span className="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap">
+                            <span className="inline-block bg-gray-100 text-gray-700 border border-gray-200 rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap">
                               {leadStateInfo.label}
                             </span>
                           )}

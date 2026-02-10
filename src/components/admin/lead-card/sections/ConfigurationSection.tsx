@@ -192,7 +192,7 @@ const ElettricoSection = ({ data }: { data: Record<string, any> }) => {
         }
         funzioniAttive.push({
           text: funzioniDomoticheLabels[key] + extra,
-          className: "bg-blue-50 text-blue-800 border border-blue-200",
+          className: "bg-gray-100 text-gray-700 border border-gray-200",
         });
       }
     });
@@ -211,7 +211,7 @@ const ElettricoSection = ({ data }: { data: Record<string, any> }) => {
         }
         interventiSelezionati.push({
           text: interventiParzialiLabels[key] + extra,
-          className: "bg-amber-50 text-amber-800 border border-amber-200",
+          className: "bg-gray-100 text-gray-700 border border-gray-200",
         });
       }
     });
@@ -258,9 +258,9 @@ const ElettricoSection = ({ data }: { data: Record<string, any> }) => {
 
         {/* Impianto obsoleto */}
         {parziale?.impianto_obsoleto && (
-          <div className="flex items-center gap-3 p-4 bg-red-50 rounded-xl border border-red-200">
-            <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
-            <span className="text-sm md:text-base text-red-800 font-medium">Impianto segnalato come obsoleto</span>
+          <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <AlertCircle className="h-5 w-5 text-[#d8010c] flex-shrink-0" />
+            <span className="text-sm md:text-base text-gray-800 font-medium">Impianto segnalato come obsoleto</span>
           </div>
         )}
 
@@ -347,7 +347,7 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
               <DetailRow
                 label="Qualità Forniture"
                 value={
-                  <Badge className={qualita === "premium" ? "bg-purple-100 text-purple-800 text-xs" : "bg-gray-100 text-gray-800 text-xs"}>
+                  <Badge className="bg-gray-100 text-gray-700 border border-gray-200 text-xs">
                     {qualita.charAt(0).toUpperCase() + qualita.slice(1)}
                   </Badge>
                 }
@@ -385,7 +385,7 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
             label="Consumi Aggiuntivi"
             badges={aggiuntiviEntries.map(([key, val]: [string, any]) => ({
               text: `${consumiAggiuntiviLabels[key] || key.replace(/_/g, " ")}${typeof val === "object" && val.valore ? ` (${fmtInt(val.valore)})` : ""}`,
-              className: "bg-blue-50 text-blue-800 border border-blue-200",
+              className: "bg-gray-100 text-gray-700 border border-gray-200",
             }))}
           />
         )}
@@ -500,7 +500,7 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
               value={
                 <span className="flex flex-wrap gap-1.5 mt-0.5">
                   {aree.map((area) => (
-                    <Badge key={area} className="bg-red-100 text-red-800 capitalize text-xs px-2.5 py-1">{area}</Badge>
+                    <Badge key={area} className="bg-gray-100 text-gray-700 border border-gray-200 capitalize text-xs px-2.5 py-1">{area}</Badge>
                   ))}
                 </span>
               }
@@ -510,7 +510,7 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
             <InfoCard
               label="Qualità"
               value={
-                <Badge className={`text-xs px-2.5 py-1 ${qualita === "premium" ? "bg-purple-100 text-purple-800" : "bg-gray-100 text-gray-800"}`}>
+                <Badge className="bg-gray-100 text-gray-700 border border-gray-200 text-xs px-2.5 py-1">
                   {qualita.charAt(0).toUpperCase() + qualita.slice(1)}
                 </Badge>
               }
@@ -623,9 +623,9 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
             badges={[
               ...(notifiche.tipi || []).map((tipo: string) => ({
                 text: tipo.charAt(0).toUpperCase() + tipo.slice(1),
-                className: "bg-red-100 text-red-800",
+                className: "bg-gray-100 text-gray-700 border border-gray-200",
               })),
-              ...(notifiche.backup_4g ? [{ text: "Backup 4G", className: "bg-orange-100 text-orange-800" }] : []),
+              ...(notifiche.backup_4g ? [{ text: "Backup 4G", className: "bg-gray-100 text-gray-700 border border-gray-200" }] : []),
             ]}
           />
         )}

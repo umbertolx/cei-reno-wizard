@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Lead, leadStates } from "@/types/lead";
 import { X, MapPin, Phone, Mail, Calendar, Euro, UserCircle, Building2, Zap, ArrowRightLeft, ChevronDown, Check } from "lucide-react";
 import { ConfigurationSection } from "./lead-card/sections/ConfigurationSection";
+import { LeadNotesSection } from "./LeadNotesSection";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { formatDateTime, getInitials } from "@/lib/utils";
@@ -99,7 +100,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 truncate">{lead.nome} {lead.cognome}</h2>
               <div className="flex items-center gap-2 md:gap-3 mt-1 flex-wrap">
                 {stateInfo && (
-                  <span className="bg-orange-100 text-orange-800 rounded-full px-3 py-1 text-xs font-semibold">
+                  <span className="bg-gray-100 text-gray-700 border border-gray-200 rounded-full px-3 py-1 text-xs font-semibold">
                     {stateInfo.label}
                   </span>
                 )}
@@ -230,6 +231,9 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
             </div>
           </div>
 
+          {/* ── Note Interne ── */}
+          <LeadNotesSection leadId={lead.id} />
+
           {/* ── Dettagli Immobile ── */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
             <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
@@ -289,22 +293,22 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-              <div className="border-2 border-green-200 bg-green-50/30 rounded-2xl p-4 md:p-5 text-center">
-                <span className="inline-block bg-green-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
-                <div className="text-xs md:text-sm text-gray-600">Preventivo Minimo</div>
-                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1 font-nums">€{lead.stimaMin?.toLocaleString("it-IT")}</div>
+              <div className="bg-gray-50 rounded-xl p-4 md:p-5 text-center">
+                <span className="inline-block bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
+                <div className="text-xs md:text-sm text-gray-500">Preventivo Minimo</div>
+                <div className="text-xl md:text-2xl font-bold text-gray-900 mt-1 font-nums">€{lead.stimaMin?.toLocaleString("it-IT")}</div>
               </div>
               
-              <div className="border-2 border-blue-200 bg-blue-50/30 rounded-2xl p-4 md:p-5 text-center">
-                <span className="inline-block bg-blue-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Stima Ricasa</span>
-                <div className="text-xs md:text-sm text-gray-600">Valore Medio</div>
-                <div className="text-xl md:text-2xl font-bold text-blue-600 mt-1 font-nums">€{stimaMedia?.toLocaleString("it-IT")}</div>
+              <div className="bg-gray-50 rounded-xl p-4 md:p-5 text-center border border-gray-200">
+                <span className="inline-block bg-[#d8010c] text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Stima Ricasa</span>
+                <div className="text-xs md:text-sm text-gray-500">Valore Medio</div>
+                <div className="text-xl md:text-2xl font-bold text-[#d8010c] mt-1 font-nums">€{stimaMedia?.toLocaleString("it-IT")}</div>
               </div>
               
-              <div className="border-2 border-green-200 bg-green-50/30 rounded-2xl p-4 md:p-5 text-center">
-                <span className="inline-block bg-green-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
-                <div className="text-xs md:text-sm text-gray-600">Preventivo Massimo</div>
-                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1 font-nums">€{lead.stimaMax?.toLocaleString("it-IT")}</div>
+              <div className="bg-gray-50 rounded-xl p-4 md:p-5 text-center">
+                <span className="inline-block bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
+                <div className="text-xs md:text-sm text-gray-500">Preventivo Massimo</div>
+                <div className="text-xl md:text-2xl font-bold text-gray-900 mt-1 font-nums">€{lead.stimaMax?.toLocaleString("it-IT")}</div>
               </div>
             </div>
           </div>

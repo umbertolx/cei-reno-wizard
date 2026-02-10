@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { UserCircle, Lock, Mail, User, Shield, RefreshCw, Eye, EyeOff } from "lucide-react";
+import { UserCircle, Lock, Mail, User, Shield, RefreshCw, Eye, EyeOff, Pencil, Check, X } from "lucide-react";
 
 const AdminAccount = () => {
   const { user, isAdmin, isLoading: authLoading } = useAdminAuth();
@@ -15,12 +15,72 @@ const AdminAccount = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // Editable name state
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editFirstName, setEditFirstName] = useState("");
+  const [editLastName, setEditLastName] = useState("");
+  const [isSavingName, setIsSavingName] = useState(false);
+
   // Extract user info from user metadata
-  const firstName = user?.user_metadata?.first_name || user?.user_metadata?.firstName || null;
-  const lastName = user?.user_metadata?.last_name || user?.user_metadata?.lastName || null;
-  const fullName = user?.user_metadata?.full_name || user?.user_metadata?.fullName || null;
-  const displayName = fullName || (firstName && lastName ? `${firstName} ${lastName}` : null);
+  const firstName = user?.user_metadata?.first_name || user?.user_metadata?.firstName || "";
+  const lastName = user?.user_metadata?.last_name || user?.user_metadata?.lastName || "";
+  const fullName = user?.user_metadata?.full_name || user?.user_metadata?.fullName || "";
+  const displayName = fullName || (firstName && lastName ? `${firstName} ${lastName}` : firstName || "");
   const email = user?.email || "";
+
+  // Sync edit fields when user data changes
+  useEffect(() => {
+    if (user) {
+      setEditFirstName(firstName);
+      setEditLastName(lastName);
+    }
+  }, [user]);
+
+  const handleStartEditName = () => {
+    setEditFirstName(firstName);
+    setEditLastName(lastName);
+    setIsEditingName(true);
+  };
+
+  const handleCancelEditName = () => {
+    setIsEditingName(false);
+    setEditFirstName(firstName);
+    setEditLastName(lastName);
+  };
+
+  const handleSaveName = async () => {
+    const trimmedFirst = editFirstName.trim();
+    const trimmedLast = editLastName.trim();
+
+    if (!trimmedFirst || !trimmedLast) {
+      toast.error("Errore", { description: "Nome e cognome sono obbligatori" });
+      return;
+    }
+
+    setIsSavingName(true);
+    try {
+      const { error } = await supabase.auth.updateUser({
+        data: {
+          first_name: trimmedFirst,
+          last_name: trimmedLast,
+          full_name: `${trimmedFirst} ${trimmedLast}`,
+        },
+      });
+
+      if (error) throw error;
+
+      toast.success("Profilo aggiornato", {
+        description: "Nome e cognome salvati con successo",
+      });
+      setIsEditingName(false);
+    } catch (error: any) {
+      toast.error("Errore", {
+        description: error.message || "Impossibile aggiornare il profilo",
+      });
+    } finally {
+      setIsSavingName(false);
+    }
+  };
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,32 +182,104 @@ const AdminAccount = () => {
 
         {/* User Info Card */}
         <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
-          <h2 className="text-base md:text-lg font-bold text-gray-900 mb-4 md:mb-6">
-            Informazioni Account
-          </h2>
-          <div className="space-y-4 md:space-y-5">
-            {/* Nome */}
-            <div>
-              <label className="flex items-center gap-2 text-xs md:text-sm font-semibold text-gray-500 mb-1.5">
-                <User className="h-4 w-4" />
-                Nome
-              </label>
-              <div className="text-sm md:text-base text-gray-900 font-medium">
-                {displayName || firstName || "Non impostato"}
-              </div>
-            </div>
+          <div className="flex items-center justify-between mb-4 md:mb-6">
+            <h2 className="text-base md:text-lg font-bold text-gray-900">
+              Informazioni Account
+            </h2>
+            {!isEditingName && (
+              <button
+                onClick={handleStartEditName}
+                className="flex items-center gap-1.5 text-xs md:text-sm font-medium text-gray-500 hover:text-[#d8010c] transition-colors"
+              >
+                <Pencil className="h-3.5 w-3.5" />
+                Modifica
+              </button>
+            )}
+          </div>
 
-            {/* Cognome (only if we have separate first/last name) */}
-            {firstName && lastName && (
-              <div>
-                <label className="flex items-center gap-2 text-xs md:text-sm font-semibold text-gray-500 mb-1.5">
-                  <User className="h-4 w-4" />
-                  Cognome
-                </label>
-                <div className="text-sm md:text-base text-gray-900 font-medium">
-                  {lastName}
+          <div className="space-y-4 md:space-y-5">
+            {isEditingName ? (
+              <>
+                {/* Editable Nome */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs md:text-sm font-semibold text-gray-500 mb-1.5">
+                    <User className="h-4 w-4" />
+                    Nome
+                  </label>
+                  <input
+                    type="text"
+                    value={editFirstName}
+                    onChange={(e) => setEditFirstName(e.target.value)}
+                    placeholder="Inserisci il tuo nome"
+                    disabled={isSavingName}
+                    className="w-full bg-white border border-gray-200 rounded-xl h-11 md:h-10 px-4 text-base md:text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none disabled:opacity-50"
+                  />
                 </div>
-              </div>
+
+                {/* Editable Cognome */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs md:text-sm font-semibold text-gray-500 mb-1.5">
+                    <User className="h-4 w-4" />
+                    Cognome
+                  </label>
+                  <input
+                    type="text"
+                    value={editLastName}
+                    onChange={(e) => setEditLastName(e.target.value)}
+                    placeholder="Inserisci il tuo cognome"
+                    disabled={isSavingName}
+                    className="w-full bg-white border border-gray-200 rounded-xl h-11 md:h-10 px-4 text-base md:text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none disabled:opacity-50"
+                  />
+                </div>
+
+                {/* Save / Cancel buttons */}
+                <div className="flex gap-2 pt-1">
+                  <button
+                    onClick={handleSaveName}
+                    disabled={isSavingName}
+                    className="flex items-center gap-1.5 bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-5 py-2.5 md:py-2 text-sm shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:opacity-50"
+                  >
+                    {isSavingName ? (
+                      <RefreshCw className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Check className="h-4 w-4" />
+                    )}
+                    {isSavingName ? "Salvataggio..." : "Salva"}
+                  </button>
+                  <button
+                    onClick={handleCancelEditName}
+                    disabled={isSavingName}
+                    className="flex items-center gap-1.5 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold rounded-xl px-5 py-2.5 md:py-2 text-sm transition-colors disabled:opacity-50"
+                  >
+                    <X className="h-4 w-4" />
+                    Annulla
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Display Nome */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs md:text-sm font-semibold text-gray-500 mb-1.5">
+                    <User className="h-4 w-4" />
+                    Nome
+                  </label>
+                  <div className="text-sm md:text-base text-gray-900 font-medium">
+                    {firstName || <span className="text-gray-400 italic">Non impostato</span>}
+                  </div>
+                </div>
+
+                {/* Display Cognome */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs md:text-sm font-semibold text-gray-500 mb-1.5">
+                    <User className="h-4 w-4" />
+                    Cognome
+                  </label>
+                  <div className="text-sm md:text-base text-gray-900 font-medium">
+                    {lastName || <span className="text-gray-400 italic">Non impostato</span>}
+                  </div>
+                </div>
+              </>
             )}
 
             {/* Email */}

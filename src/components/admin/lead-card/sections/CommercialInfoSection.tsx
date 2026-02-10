@@ -53,13 +53,13 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
 
         {/* Sopralluogo */}
         {lead.sopralluogoRichiesto && (
-          <div className="p-3 md:p-4 bg-orange-50 rounded-xl border border-orange-200">
+          <div className="p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-200">
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-orange-500 flex-shrink-0" />
+              <Calendar className="h-4 w-4 text-gray-400 flex-shrink-0" />
               <div>
-                <p className="font-medium text-orange-800 text-sm md:text-base">Sopralluogo Richiesto</p>
+                <p className="font-medium text-gray-800 text-sm md:text-base">Sopralluogo Richiesto</p>
                 {lead.dataSopralluogo && (
-                  <p className="text-xs md:text-sm text-orange-600 font-nums">
+                  <p className="text-xs md:text-sm text-gray-500 font-nums">
                     {lead.dataSopralluogo} {lead.orarioSopralluogo && `alle ${lead.orarioSopralluogo}`}
                   </p>
                 )}
