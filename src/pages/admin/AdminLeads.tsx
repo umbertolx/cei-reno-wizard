@@ -217,45 +217,53 @@ const AdminLeads = () => {
     );
   };
 
+  // Helper: filter leads given a filter state
+  const filterLeadsWith = (source: Lead[], filters: FilterState) => {
+    return source.filter(lead => {
+      if (filters.searchTerm) {
+        const term = filters.searchTerm.toLowerCase();
+        const matchesSearch =
+          lead.nome.toLowerCase().includes(term) ||
+          lead.cognome.toLowerCase().includes(term) ||
+          lead.email.toLowerCase().includes(term) ||
+          lead.citta.toLowerCase().includes(term);
+        if (!matchesSearch) return false;
+      }
+      if (filters.impianti.length > 0) {
+        const hasMatch = filters.impianti.some(imp => lead.moduliSelezionati.includes(imp));
+        if (!hasMatch) return false;
+      }
+      if (filters.dateFrom) {
+        const leadDate = new Date(lead.dataRichiesta).toISOString().split('T')[0];
+        if (leadDate < filters.dateFrom) return false;
+      }
+      if (filters.dateTo) {
+        const leadDate = new Date(lead.dataRichiesta).toISOString().split('T')[0];
+        if (leadDate > filters.dateTo) return false;
+      }
+      if (filters.priceMin) {
+        if (lead.stimaMax < Number(filters.priceMin)) return false;
+      }
+      if (filters.priceMax) {
+        if (lead.stimaMin > Number(filters.priceMax)) return false;
+      }
+      return true;
+    });
+  };
+
   // filteredLeads uses APPLIED filters (committed state)
-  const filteredLeads = leads.filter(lead => {
-    // Text search
-    if (appliedFilters.searchTerm) {
-      const term = appliedFilters.searchTerm.toLowerCase();
-      const matchesSearch =
-        lead.nome.toLowerCase().includes(term) ||
-        lead.cognome.toLowerCase().includes(term) ||
-        lead.email.toLowerCase().includes(term) ||
-        lead.citta.toLowerCase().includes(term);
-      if (!matchesSearch) return false;
-    }
+  const filteredLeads = filterLeadsWith(leads, appliedFilters);
 
-    // Impianto configurato
-    if (appliedFilters.impianti.length > 0) {
-      const hasMatch = appliedFilters.impianti.some(imp => lead.moduliSelezionati.includes(imp));
-      if (!hasMatch) return false;
-    }
-
-    // Data range
-    if (appliedFilters.dateFrom) {
-      const leadDate = new Date(lead.dataRichiesta).toISOString().split('T')[0];
-      if (leadDate < appliedFilters.dateFrom) return false;
-    }
-    if (appliedFilters.dateTo) {
-      const leadDate = new Date(lead.dataRichiesta).toISOString().split('T')[0];
-      if (leadDate > appliedFilters.dateTo) return false;
-    }
-
-    // Fascia di prezzo
-    if (appliedFilters.priceMin) {
-      if (lead.stimaMax < Number(appliedFilters.priceMin)) return false;
-    }
-    if (appliedFilters.priceMax) {
-      if (lead.stimaMin > Number(appliedFilters.priceMax)) return false;
-    }
-
-    return true;
-  });
+  // Live preview count using DRAFT filters (while panel is open)
+  const draftFilters: FilterState = {
+    impianti: filterImpianti,
+    searchTerm,
+    dateFrom: filterDateFrom,
+    dateTo: filterDateTo,
+    priceMin: filterPriceMin,
+    priceMax: filterPriceMax,
+  };
+  const draftFilteredCount = filterLeadsWith(leads, draftFilters).length;
 
   const allColumns = [
     ...Object.keys(leadStates).map(state => ({ id: state, type: 'default' as const })),
@@ -607,98 +615,104 @@ const AdminLeads = () => {
               </div>
             </div>
 
-            {/* Mobile: stacked, Desktop: single row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[auto_1fr_1.2fr_1fr] gap-x-5 gap-y-4 items-end">
-              {/* Impianto configurato */}
-              <div>
-                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Impianto configurato</label>
-                <div className="flex flex-col gap-1.5">
-                  {[
-                    { id: "elettrico", label: "Elettrico", icon: Zap },
-                    { id: "fotovoltaico", label: "Fotovoltaico", icon: Sun },
-                    { id: "sicurezza", label: "Sicurezza", icon: Shield },
-                  ].map(imp => {
-                    const isActive = filterImpianti.includes(imp.id);
-                    const Icon = imp.icon;
-                    return (
-                      <button
-                        key={imp.id}
-                        onClick={() => toggleImpianto(imp.id)}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium border-2 transition-all duration-150 whitespace-nowrap ${
-                          isActive
-                            ? 'bg-[#d8010c]/10 border-[#d8010c] text-[#d8010c]'
-                            : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300'
-                        }`}
-                      >
-                        <Icon className={`h-4 w-4 flex-shrink-0 ${isActive ? 'text-[#d8010c]' : 'text-gray-400'}`} />
-                        {imp.label}
-                      </button>
-                    );
-                  })}
+            {/* Filter fields – 2 rows on desktop, stacked on mobile */}
+            <div className="space-y-4">
+              {/* Row 1: Impianto (pills orizzontali) + Nome/Cognome */}
+              <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-x-5 gap-y-4 items-end">
+                {/* Impianto configurato */}
+                <div>
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Impianto configurato</label>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { id: "elettrico", label: "Elettrico", icon: Zap },
+                      { id: "fotovoltaico", label: "Fotovoltaico", icon: Sun },
+                      { id: "sicurezza", label: "Sicurezza", icon: Shield },
+                    ].map(imp => {
+                      const isActive = filterImpianti.includes(imp.id);
+                      const Icon = imp.icon;
+                      return (
+                        <button
+                          key={imp.id}
+                          onClick={() => toggleImpianto(imp.id)}
+                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium border-2 transition-all duration-150 whitespace-nowrap ${
+                            isActive
+                              ? 'bg-[#d8010c]/10 border-[#d8010c] text-[#d8010c]'
+                              : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300'
+                          }`}
+                        >
+                          <Icon className={`h-4 w-4 flex-shrink-0 ${isActive ? 'text-[#d8010c]' : 'text-gray-400'}`} />
+                          {imp.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
 
-              {/* Nome / Cognome */}
-              <div>
-                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Nome / Cognome</label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
-                  <input
-                    type="text"
-                    placeholder="Cerca per nome..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-9 pr-3 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Data richiesta */}
-              <div>
-                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Data richiesta</label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="date"
-                    value={filterDateFrom}
-                    onChange={(e) => setFilterDateFrom(e.target.value)}
-                    title="Da"
-                    className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
-                  />
-                  <span className="text-gray-300 text-xs flex-shrink-0">→</span>
-                  <input
-                    type="date"
-                    value={filterDateTo}
-                    onChange={(e) => setFilterDateTo(e.target.value)}
-                    title="A"
-                    className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Fascia di prezzo */}
-              <div>
-                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Fascia di prezzo (€)</label>
-                <div className="flex items-center gap-2">
-                  <div className="relative flex-1 min-w-0">
-                    <Euro className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
+                {/* Nome / Cognome */}
+                <div>
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Nome / Cognome</label>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
                     <input
-                      type="number"
-                      placeholder="Min"
-                      value={filterPriceMin}
-                      onChange={(e) => setFilterPriceMin(e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                      type="text"
+                      placeholder="Cerca per nome..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-9 pr-3 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
                     />
                   </div>
-                  <span className="text-gray-300 text-xs flex-shrink-0">—</span>
-                  <div className="relative flex-1 min-w-0">
-                    <Euro className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
+                </div>
+              </div>
+
+              {/* Row 2: Data richiesta + Fascia di prezzo */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4 items-end">
+                {/* Data richiesta */}
+                <div>
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Data richiesta</label>
+                  <div className="flex items-center gap-2">
                     <input
-                      type="number"
-                      placeholder="Max"
-                      value={filterPriceMax}
-                      onChange={(e) => setFilterPriceMax(e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                      type="date"
+                      value={filterDateFrom}
+                      onChange={(e) => setFilterDateFrom(e.target.value)}
+                      title="Da"
+                      className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
                     />
+                    <span className="text-gray-300 text-xs flex-shrink-0">→</span>
+                    <input
+                      type="date"
+                      value={filterDateTo}
+                      onChange={(e) => setFilterDateTo(e.target.value)}
+                      title="A"
+                      className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Fascia di prezzo */}
+                <div>
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Fascia di prezzo (€)</label>
+                  <div className="flex items-center gap-2">
+                    <div className="relative flex-1 min-w-0">
+                      <Euro className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
+                      <input
+                        type="number"
+                        placeholder="Min"
+                        value={filterPriceMin}
+                        onChange={(e) => setFilterPriceMin(e.target.value)}
+                        className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                      />
+                    </div>
+                    <span className="text-gray-300 text-xs flex-shrink-0">—</span>
+                    <div className="relative flex-1 min-w-0">
+                      <Euro className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
+                      <input
+                        type="number"
+                        placeholder="Max"
+                        value={filterPriceMax}
+                        onChange={(e) => setFilterPriceMax(e.target.value)}
+                        className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -764,8 +778,12 @@ const AdminLeads = () => {
 
             {/* Footer con bottone applica */}
             <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-              <span className="text-xs text-gray-400">
-                {leads.length} lead totali
+              <span className="text-sm text-gray-500 font-medium">
+                {draftFilterCount > 0 ? (
+                  <><span className={draftFilteredCount < leads.length ? 'text-[#d8010c]' : ''}>{draftFilteredCount}</span> <span className="text-gray-400 font-normal">di {leads.length} lead</span></>
+                ) : (
+                  <>{leads.length} lead totali</>
+                )}
               </span>
               <button
                 onClick={applyFilters}
