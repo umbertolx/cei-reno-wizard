@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 const AdminLogin = () => {
@@ -56,25 +56,20 @@ const AdminLogin = () => {
 
         if (!userRole) {
           await supabase.auth.signOut();
-          toast({
-            title: "Accesso negato",
+          toast.error("Accesso negato", {
             description: "Non hai i permessi di amministratore",
-            variant: "destructive",
           });
           return;
         }
 
-        toast({
-          title: "Login effettuato",
+        toast.success("Login effettuato", {
           description: "Benvenuto nel dashboard admin!",
         });
         navigate("/admin/dashboard");
       }
     } catch (error: any) {
-      toast({
-        title: "Errore",
+      toast.error("Errore", {
         description: error.message || "Credenziali non valide",
-        variant: "destructive",
       });
     } finally {
       setIsLoading(false);

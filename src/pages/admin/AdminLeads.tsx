@@ -3,10 +3,11 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { SortableKanbanColumn } from "@/components/admin/SortableKanbanColumn";
 import { LeadDetails } from "@/components/admin/LeadDetails";
 import { AddColumnDialog } from "@/components/admin/AddColumnDialog";
-import { leadStates, Lead, CustomColumn, convertDatabaseLeadToLead } from "@/types/lead";
+import { leadStates, Lead, CustomColumn, convertDatabaseLeadToLead, counterColors } from "@/types/lead";
+import { formatDateShort } from "@/lib/utils";
 import { fetchLeads, updateLeadStatus } from "@/services/leadService";
 import { Search, Filter, Download, Plus, RefreshCw, MoreHorizontal, ChevronDown, Eye, MapPin, Home, Euro, Calendar } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { 
@@ -27,17 +28,6 @@ import {
   arrayMove, 
   horizontalListSortingStrategy 
 } from "@dnd-kit/sortable";
-
-// Counter badge colors
-const counterColors: Record<string, string> = {
-  nuovo: "bg-green-500",
-  in_contatto: "bg-yellow-500",
-  preventivo_inviato: "bg-red-500",
-  sopralluogo_fissato: "bg-orange-500",
-  lavori_in_corso: "bg-cyan-500",
-  lavori_conclusi: "bg-green-500",
-  perso: "bg-red-500",
-};
 
 const AdminLeads = () => {
   const { isAdmin, isLoading: authLoading } = useAdminAuth();
@@ -76,17 +66,13 @@ const AdminLeads = () => {
       setLeads(convertedLeads);
       
       if (showRefreshToast) {
-        toast({
-          title: "Dati aggiornati",
+        toast.success("Dati aggiornati", {
           description: `Caricati ${convertedLeads.length} lead dal database`,
         });
       }
     } catch (error) {
-      console.error("❌ Error loading leads:", error);
-      toast({
-        title: "Errore",
+      toast.error("Errore", {
         description: "Impossibile caricare i lead dal database",
-        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -188,8 +174,7 @@ const AdminLeads = () => {
       
       const displayName = getColumnLabel(targetColumnId);
       
-      toast({
-        title: "✅ Lead spostato",
+      toast.success("✅ Lead spostato", {
         description: `${leadToMove.nome} ${leadToMove.cognome} spostato in "${displayName}"`,
       });
 
@@ -199,8 +184,6 @@ const AdminLeads = () => {
       }
 
     } catch (error) {
-      console.error("💥 Database update failed:", error);
-      
       // Rollback
       setLeads(prev => prev.map(lead =>
         lead.id === leadId 
@@ -208,10 +191,8 @@ const AdminLeads = () => {
           : lead
       ));
       
-      toast({
-        title: "❌ Errore",
+      toast.error("❌ Errore", {
         description: "Impossibile spostare il lead",
-        variant: "destructive",
       });
     }
   };
@@ -302,14 +283,14 @@ const AdminLeads = () => {
 
   const handleTitleChange = (stato: string, title: string) => {
     setCustomTitles(prev => ({ ...prev, [stato]: title }));
-    toast({ title: "Titolo aggiornato", description: `Titolo aggiornato a "${title}"` });
+    toast.success("Titolo aggiornato", { description: `Titolo aggiornato a "${title}"` });
   };
 
   const handleAddColumn = (columnData: Omit<CustomColumn, 'id'>) => {
     const newColumn: CustomColumn = { ...columnData, id: `custom_${Date.now()}` };
     setCustomColumns(prev => [...prev, newColumn]);
     setColumnOrder(prev => [...prev, newColumn.id]);
-    toast({ title: "Colonna aggiunta", description: `"${columnData.label}" aggiunta` });
+    toast.success("Colonna aggiunta", { description: `"${columnData.label}" aggiunta` });
   };
 
   const handleDeleteColumn = (columnId: string) => {
@@ -324,8 +305,7 @@ const AdminLeads = () => {
     setCustomColumns(prev => prev.filter(col => col.id !== columnId));
     setColumnOrder(prev => prev.filter(id => id !== columnId));
     setLeadPositions(prev => { const { [columnId]: _, ...rest } = prev; return rest; });
-    toast({
-      title: "Colonna eliminata",
+    toast.success("Colonna eliminata", {
       description: leadsToMove.length > 0 
         ? `Colonna eliminata. ${leadsToMove.length} lead spostati in "Nuovo"`
         : "Colonna eliminata",
@@ -342,7 +322,7 @@ const AdminLeads = () => {
     a.href = url;
     a.download = `leads_${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
-    toast({ title: "Export completato", description: "Dati esportati in CSV" });
+    toast.success("Export completato", { description: "Dati esportati in CSV" });
   };
 
   const activeLead = activeId ? leads.find(lead => lead.id === activeId) : null;
@@ -361,10 +341,6 @@ const AdminLeads = () => {
   }
 
   if (!isAdmin) return null;
-
-  // ── Helper: format date
-  const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
   // ── Mobile column leads
   const mobileLeads = leadsByState[mobileSelectedColumn] || [];
@@ -593,7 +569,7 @@ const AdminLeads = () => {
                     {/* Date */}
                     <div className="mt-2 flex items-center gap-1.5 text-xs text-gray-400">
                       <Calendar className="h-3 w-3" />
-                      <span>{formatDate(lead.dataRichiesta)}</span>
+                      <span>{formatDateShort(lead.dataRichiesta)}</span>
                     </div>
                   </div>
                 ))}

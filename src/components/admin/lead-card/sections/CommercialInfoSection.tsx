@@ -1,21 +1,12 @@
 import { Lead } from "@/types/lead";
 import { Clock, Calendar, CheckCircle } from "lucide-react";
+import { formatDateTime } from "@/lib/utils";
 
 interface CommercialInfoSectionProps {
   lead: Lead;
 }
 
 export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('it-IT', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
       <h3 className="flex items-center gap-2 text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">
@@ -28,7 +19,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
             <Calendar className="h-4 w-4 md:h-5 md:w-5 text-gray-400 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Data Richiesta</p>
-              <p className="font-medium text-gray-900 text-sm md:text-base truncate">{formatDate(lead.dataRichiesta)}</p>
+              <p className="font-medium text-gray-900 text-sm md:text-base truncate">{formatDateTime(lead.dataRichiesta)}</p>
             </div>
           </div>
           
@@ -37,7 +28,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
             <div className="min-w-0">
               <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Ultimo Contatto</p>
               <p className="font-medium text-gray-900 text-sm md:text-base truncate">
-                {lead.dataUltimoContatto ? formatDate(lead.dataUltimoContatto) : 'Mai contattato'}
+                {lead.dataUltimoContatto ? formatDateTime(lead.dataUltimoContatto) : 'Mai contattato'}
               </p>
             </div>
           </div>

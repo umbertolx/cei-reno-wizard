@@ -1,5 +1,6 @@
 import { Lead } from "@/types/lead";
 import { MapPin, ChevronDown } from "lucide-react";
+import { getInitials } from "@/lib/utils";
 
 interface LeadCardHeaderProps {
   lead: Lead;
@@ -18,10 +19,6 @@ export const LeadCardHeader = ({
   attributes, 
   listeners 
 }: LeadCardHeaderProps) => {
-  const getInitials = (nome: string, cognome: string) => {
-    return `${nome.charAt(0)}${cognome.charAt(0)}`.toUpperCase();
-  };
-
   const cap = lead.indirizzoDettagli?.cap || "";
 
   return (

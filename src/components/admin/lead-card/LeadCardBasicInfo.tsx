@@ -1,19 +1,12 @@
 import { Lead } from "@/types/lead";
 import { Home, Calendar, Euro } from "lucide-react";
+import { formatDateShort } from "@/lib/utils";
 
 interface LeadCardBasicInfoProps {
   lead: Lead;
 }
 
 export const LeadCardBasicInfo = ({ lead }: LeadCardBasicInfoProps) => {
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('it-IT', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
-  };
-
   return (
     <div className="mt-3 space-y-1.5">
       <div className="flex items-center justify-between text-sm">
@@ -41,7 +34,7 @@ export const LeadCardBasicInfo = ({ lead }: LeadCardBasicInfoProps) => {
           Richiesta
         </span>
         <span className="text-gray-900 text-xs">
-          {formatDate(lead.dataRichiesta)}
+          {formatDateShort(lead.dataRichiesta)}
         </span>
       </div>
     </div>

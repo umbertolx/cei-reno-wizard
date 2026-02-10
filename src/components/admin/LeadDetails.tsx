@@ -4,6 +4,7 @@ import { X, MapPin, Phone, Mail, Calendar, Euro, UserCircle, Building2, Zap, Arr
 import { ConfigurationSection } from "./lead-card/sections/ConfigurationSection";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { formatDateTime, getInitials } from "@/lib/utils";
 
 interface ColumnOption {
   id: string;
@@ -28,16 +29,6 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
     return null;
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('it-IT', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
   const getTotalRooms = () => {
     const c = lead.composizione;
     return (c.cucine || 0) + (c.camere_doppie || 0) + (c.camere_singole || 0) + (c.bagni || 0) + (c.soggiorni || 0) + (c.altro || 0);
@@ -52,10 +43,6 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
     } catch (err) {
       toast.error("Errore nella copia dell'email");
     }
-  };
-
-  const getInitials = (nome: string, cognome: string) => {
-    return `${nome.charAt(0)}${cognome.charAt(0)}`.toUpperCase();
   };
 
   const stateInfo = leadStates[lead.stato as keyof typeof leadStates];
@@ -117,7 +104,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
                   </span>
                 )}
                 <span className="text-xs text-gray-400 font-mono hidden md:inline">ID: {lead.id.substring(0, 8)}...</span>
-                <span className="text-xs md:text-sm text-gray-500">Richiesta: {formatDate(lead.dataRichiesta)}</span>
+                <span className="text-xs md:text-sm text-gray-500">Richiesta: {formatDateTime(lead.dataRichiesta)}</span>
               </div>
             </div>
           </div>
@@ -344,13 +331,13 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               <div className="flex items-center justify-between py-3 pl-4 relative">
                 <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#d8010c]" />
                 <span className="text-sm text-gray-700">Richiesta inviata</span>
-                <span className="text-xs md:text-sm text-gray-500">{formatDate(lead.dataRichiesta)}</span>
+                  <span className="text-xs md:text-sm text-gray-500">{formatDateTime(lead.dataRichiesta)}</span>
               </div>
               {lead.dataUltimoContatto && (
                 <div className="flex items-center justify-between py-3 pl-4 relative">
                   <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-gray-400" />
                   <span className="text-sm text-gray-700">Ultimo contatto</span>
-                  <span className="text-xs md:text-sm text-gray-500">{formatDate(lead.dataUltimoContatto)}</span>
+                  <span className="text-xs md:text-sm text-gray-500">{formatDateTime(lead.dataUltimoContatto)}</span>
                 </div>
               )}
             </div>

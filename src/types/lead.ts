@@ -11,6 +11,17 @@ export const leadStates = {
 
 export type LeadState = keyof typeof leadStates;
 
+// Counter badge colors for lead states
+export const counterColors: Record<string, string> = {
+  nuovo: "bg-green-500",
+  in_contatto: "bg-yellow-500",
+  preventivo_inviato: "bg-red-500",
+  sopralluogo_fissato: "bg-orange-500",
+  lavori_in_corso: "bg-cyan-500",
+  lavori_conclusi: "bg-green-500",
+  perso: "bg-red-500",
+};
+
 // Available colors for custom columns
 export const availableColors = [
   "bg-blue-500",

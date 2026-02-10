@@ -36,7 +36,6 @@ export const useAdminAuth = () => {
 
         setIsAdmin(true);
       } catch (error) {
-        console.error('Admin auth check failed:', error);
         navigate('/admin');
       } finally {
         setIsLoading(false);

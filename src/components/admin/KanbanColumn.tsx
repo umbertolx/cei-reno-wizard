@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Lead, leadStates, CustomColumn } from "@/types/lead";
+import { Lead, leadStates, CustomColumn, counterColors } from "@/types/lead";
 import { LeadCard } from "./LeadCard";
 import { DeleteColumnDialog } from "./DeleteColumnDialog";
 import { useDroppable } from "@dnd-kit/core";
@@ -20,17 +20,6 @@ interface KanbanColumnProps {
   isDraggedOver?: boolean;
   isDraggable?: boolean;
 }
-
-// Map column states to counter badge colors per design system
-const counterColors: Record<string, string> = {
-  nuovo: "bg-green-500",
-  in_contatto: "bg-yellow-500",
-  preventivo_inviato: "bg-red-500",
-  sopralluogo_fissato: "bg-orange-500",
-  lavori_in_corso: "bg-cyan-500",
-  lavori_conclusi: "bg-green-500",
-  perso: "bg-red-500",
-};
 
 export const KanbanColumn = ({ 
   stato, 

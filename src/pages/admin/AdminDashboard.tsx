@@ -29,20 +29,14 @@ const AdminDashboard = () => {
 
   // Carica i lead dal database
   const loadLeads = async () => {
-    console.log("📊 Dashboard: Loading leads...");
     setIsLoading(true);
     setError(null);
     
     try {
       const dbLeads = await fetchLeads();
-      console.log(`📊 Dashboard: Fetched ${dbLeads.length} leads from database`);
-      
       const convertedLeads = dbLeads.map(convertDatabaseLeadToLead);
-      console.log("📊 Dashboard: Converted leads:", convertedLeads);
-      
       setLeads(convertedLeads);
     } catch (error) {
-      console.error("❌ Dashboard: Error loading leads:", error);
       setError(error instanceof Error ? error.message : 'Errore sconosciuto');
     } finally {
       setIsLoading(false);
@@ -55,7 +49,6 @@ const AdminDashboard = () => {
 
   // Funzione per ricaricare manualmente i dati
   const handleRefresh = () => {
-    console.log("🔄 Dashboard: Manual refresh requested");
     loadLeads();
   };
 
