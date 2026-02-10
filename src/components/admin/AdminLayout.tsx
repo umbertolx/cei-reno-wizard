@@ -1,6 +1,6 @@
 
 import { ReactNode, useState, useEffect } from "react";
-import { Home, Users, LogOut, Menu, X, UserCircle } from "lucide-react";
+import { Home, Users, LogOut, Menu, X, UserCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,6 +14,22 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  // Desktop sidebar collapse state (persisted in localStorage)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sidebarCollapsed');
+      return saved === 'true';
+    }
+    return false;
+  });
+
+  // Save sidebar collapse state to localStorage
+  useEffect(() => {
+    if (!isMobile) {
+      localStorage.setItem('sidebarCollapsed', String(sidebarCollapsed));
+    }
+  }, [sidebarCollapsed, isMobile]);
 
   // Close sidebar on route change (mobile)
   useEffect(() => {
@@ -53,29 +69,48 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
         />
       )}
 
-      {/* Sidebar - Desktop: always visible, Mobile: slide-in drawer */}
+      {/* Sidebar - Desktop: collapsible, Mobile: slide-in drawer */}
       <aside
         className={`
           ${isMobile
             ? `fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out ${
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
               }`
-            : "w-56 flex-shrink-0 sticky top-0"
+            : `flex-shrink-0 sticky top-0 transition-all duration-300 ease-in-out ${
+                sidebarCollapsed ? "w-16" : "w-56"
+              }`
           }
           bg-white border-r border-gray-200 flex flex-col h-screen h-[100dvh] safe-area-top
         `}
       >
         {/* Logo */}
-        <div className="px-5 py-5 border-b border-gray-200 flex items-center justify-between">
-          <div className="min-w-0">
+        <div 
+          className="px-5 border-b border-gray-200 flex items-center justify-between"
+          style={{
+            height: isMobile ? '3.5rem' : '4rem',
+          }}
+        >
+          <div className={`min-w-0 transition-opacity duration-300 ${sidebarCollapsed && !isMobile ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
             <img src="/logo-cei.png" alt="Logo CEI" className="h-10 w-auto" />
           </div>
-          {isMobile && (
+          {isMobile ? (
             <button
               onClick={() => setSidebarOpen(false)}
               className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
             >
               <X className="h-5 w-5 text-gray-500" />
+            </button>
+          ) : (
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="p-2 rounded-xl hover:bg-gray-100 transition-colors flex-shrink-0"
+              title={sidebarCollapsed ? "Espandi menu" : "Collassa menu"}
+            >
+              {sidebarCollapsed ? (
+                <ChevronRight className="h-5 w-5 text-gray-500" />
+              ) : (
+                <ChevronLeft className="h-5 w-5 text-gray-500" />
+              )}
             </button>
           )}
         </div>
@@ -86,20 +121,31 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
             {menuItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
-                <li key={item.path} className="mx-2">
+                <li key={item.path} className={isMobile ? "mx-2" : sidebarCollapsed ? "mx-2" : "mx-2"}>
                   <button
                     onClick={() => {
                       navigate(item.path);
                       setSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 py-2.5 px-4 rounded-xl text-sm transition-all ${
+                    className={`w-full flex items-center ${
+                      sidebarCollapsed && !isMobile 
+                        ? "justify-center px-2" 
+                        : "gap-3 px-4"
+                    } py-2.5 rounded-xl text-sm transition-all ${
                       isActive
                         ? "bg-[#d8010c] text-white font-semibold shadow-sm"
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium"
                     }`}
+                    title={sidebarCollapsed && !isMobile ? item.label : undefined}
                   >
-                    <item.icon className="h-5 w-5" />
-                    <span>{item.label}</span>
+                    <item.icon className="h-5 w-5 flex-shrink-0" />
+                    <span className={`transition-opacity duration-300 ${
+                      sidebarCollapsed && !isMobile 
+                        ? "opacity-0 w-0 overflow-hidden" 
+                        : "opacity-100"
+                    }`}>
+                      {item.label}
+                    </span>
                   </button>
                 </li>
               );
@@ -107,15 +153,39 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
           </ul>
         </nav>
 
-        {/* Logout button inside sidebar (mobile) */}
-        {isMobile && (
+        {/* Logout button inside sidebar (mobile) or desktop when expanded */}
+        {(isMobile || !sidebarCollapsed) && (
           <div className="p-4 border-t border-gray-200 safe-area-bottom">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 py-2.5 px-4 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+              className={`w-full flex items-center ${
+                sidebarCollapsed && !isMobile 
+                  ? "justify-center px-2" 
+                  : "gap-3 px-4"
+              } py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors`}
+              title={sidebarCollapsed && !isMobile ? "Logout" : undefined}
+            >
+              <LogOut className="h-5 w-5 flex-shrink-0" />
+              <span className={`transition-opacity duration-300 ${
+                sidebarCollapsed && !isMobile 
+                  ? "opacity-0 w-0 overflow-hidden" 
+                  : "opacity-100"
+              }`}>
+                Logout
+              </span>
+            </button>
+          </div>
+        )}
+        
+        {/* Desktop: Logout button when collapsed */}
+        {!isMobile && sidebarCollapsed && (
+          <div className="p-2 border-t border-gray-200 safe-area-bottom">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center p-2 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+              title="Logout"
             >
               <LogOut className="h-5 w-5" />
-              <span>Logout</span>
             </button>
           </div>
         )}
