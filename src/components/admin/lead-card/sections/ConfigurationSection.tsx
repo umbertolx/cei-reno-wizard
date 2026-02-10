@@ -31,7 +31,7 @@ const fmtEuro = (val: number | undefined | null): string => {
 const InfoCard = ({ label, value, accent = false }: { label: string; value: React.ReactNode; accent?: boolean }) => (
   <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-5">
     <p className="text-[10px] md:text-sm font-medium text-gray-500 uppercase tracking-wide">{label}</p>
-    <p className={`text-sm md:text-lg font-semibold mt-1 md:mt-1.5 font-nums ${accent ? "text-[#d8010c]" : "text-gray-900"}`}>
+    <p className={`text-xs md:text-lg font-semibold mt-1 md:mt-1.5 font-nums break-words ${accent ? "text-[#d8010c]" : "text-gray-900"}`}>
       {value}
     </p>
   </div>
@@ -39,9 +39,9 @@ const InfoCard = ({ label, value, accent = false }: { label: string; value: Reac
 
 /** Single detail row — label left, value right */
 const DetailRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
-  <div className="flex items-center justify-between py-2.5 px-1 border-b border-gray-100 last:border-0">
-    <span className="text-sm text-gray-500">{label}</span>
-    <span className="text-sm font-semibold text-gray-900 text-right font-nums">{value}</span>
+  <div className="flex items-center justify-between gap-3 py-2.5 px-1 border-b border-gray-100 last:border-0">
+    <span className="text-xs md:text-sm text-gray-500 min-w-0 truncate">{label}</span>
+    <span className="text-xs md:text-sm font-semibold text-gray-900 text-right font-nums flex-shrink-0">{value}</span>
   </div>
 );
 

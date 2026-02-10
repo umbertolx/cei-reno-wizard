@@ -76,7 +76,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
       />
       
       {/* Content */}
-      <div className="relative bg-white w-full md:max-w-4xl md:mx-4 rounded-t-2xl md:rounded-2xl shadow-xl overflow-y-auto max-h-[95vh] max-h-[95dvh] md:max-h-[90vh] md:max-h-[90dvh] safe-area-bottom">
+      <div className="relative bg-white w-full md:max-w-4xl md:mx-4 rounded-t-2xl md:rounded-2xl shadow-xl overflow-y-auto max-h-[85vh] max-h-[85dvh] md:max-h-[90vh] md:max-h-[90dvh] safe-area-bottom">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -252,7 +252,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
                 <div className="text-[10px] md:text-xs text-gray-500">stanze totali</div>
               </div>
               <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-4 text-center">
-                <div className="text-sm md:text-2xl font-bold text-gray-900 capitalize leading-tight">
+                <div className="text-xs md:text-2xl font-bold text-gray-900 capitalize leading-tight break-words">
                   {lead.tipologiaAbitazione}
                 </div>
                 <div className="text-[10px] md:text-xs text-gray-500">tipologia</div>
@@ -332,16 +332,16 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               Cronologia Contatti
             </h3>
             <div className="border-l-2 border-gray-200 ml-2">
-              <div className="flex items-center justify-between py-3 pl-4 relative">
+              <div className="flex items-center justify-between gap-3 py-3 pl-4 relative">
                 <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#d8010c]" />
                 <span className="text-sm text-gray-700">Richiesta inviata</span>
-                  <span className="text-xs md:text-sm text-gray-500 font-nums">{formatDateTime(lead.dataRichiesta)}</span>
+                <span className="text-xs md:text-sm text-gray-500 font-nums flex-shrink-0">{formatDateTime(lead.dataRichiesta)}</span>
               </div>
               {lead.dataUltimoContatto && (
-                <div className="flex items-center justify-between py-3 pl-4 relative">
+                <div className="flex items-center justify-between gap-3 py-3 pl-4 relative">
                   <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-gray-400" />
                   <span className="text-sm text-gray-700">Ultimo contatto</span>
-                  <span className="text-xs md:text-sm text-gray-500 font-nums">{formatDateTime(lead.dataUltimoContatto)}</span>
+                  <span className="text-xs md:text-sm text-gray-500 font-nums flex-shrink-0">{formatDateTime(lead.dataUltimoContatto)}</span>
                 </div>
               )}
             </div>

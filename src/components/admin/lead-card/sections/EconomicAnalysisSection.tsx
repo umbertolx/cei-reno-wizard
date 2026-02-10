@@ -51,7 +51,7 @@ export const EconomicAnalysisSection = ({ lead }: EconomicAnalysisSectionProps) 
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
-      <h3 className="flex items-center gap-2 text-sm md:text-lg font-bold text-gray-900 mb-3 md:mb-4">
+      <h3 className="flex items-center gap-2 text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">
         <Euro className="h-5 w-5 text-gray-700 flex-shrink-0" />
         Analisi Economica
       </h3>

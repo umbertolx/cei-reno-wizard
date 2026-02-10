@@ -239,7 +239,7 @@ const AdminDashboard = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {[
-            { label: "Total Leads", value: data.totalLeads.toString(), sub: `${data.comparison.total} ${data.benchmark}` },
+            { label: "Lead Totali", value: data.totalLeads.toString(), sub: `${data.comparison.total} ${data.benchmark}` },
             { label: "Valore Totale", value: `€${data.totalValue.toLocaleString()}`, sub: `${data.comparison.value} ${data.benchmark}` },
             { label: "Valore Medio", value: `€${Math.round(data.avgValue).toLocaleString()}`, sub: `${data.comparison.avg} ${data.benchmark}` },
             { label: "Acquisiti", value: data.acquired.toString(), sub: `${data.comparison.acquired} ${data.benchmark}` },

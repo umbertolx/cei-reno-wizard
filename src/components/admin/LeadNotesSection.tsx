@@ -210,7 +210,7 @@ export const LeadNotesSection = ({ leadId }: LeadNotesSectionProps) => {
                         ) : (
                           <button
                             onClick={() => setConfirmDeleteId(note.id)}
-                            className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-[#d8010c] transition-all p-0.5 rounded"
+                            className="opacity-100 md:opacity-0 md:group-hover:opacity-100 text-gray-400 hover:text-[#d8010c] transition-all p-0.5 rounded"
                             title="Elimina nota"
                           >
                             <Trash2 className="h-3.5 w-3.5" />

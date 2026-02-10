@@ -790,8 +790,8 @@ const AdminLeads = () => {
             )}
 
             {/* Footer con bottone applica */}
-            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-              <span className="text-sm text-gray-500 font-medium">
+            <div className="flex items-center justify-between gap-3 pt-3 border-t border-gray-100">
+              <span className="text-sm text-gray-500 font-medium min-w-0">
                 {draftFilterCount > 0 ? (
                   <><span className={`font-nums ${draftFilteredCount < leads.length ? 'text-[#d8010c]' : ''}`}>{draftFilteredCount}</span> <span className="text-gray-400 font-normal">di <span className="font-nums">{leads.length}</span> lead</span></>
                 ) : (
@@ -931,30 +931,36 @@ const AdminLeads = () => {
                       <Eye className="h-5 w-5 text-gray-300 flex-shrink-0" />
                     </div>
 
-                    {/* Card info */}
-                    <div className="mt-3 grid grid-cols-3 gap-2">
-                      <div className="flex items-center gap-1.5 text-sm text-gray-500">
-                        <Home className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
-                        <span className="truncate">
-                          {lead.tipologiaAbitazione === 'appartamento' ? 'Appart.' : 
-                           lead.tipologiaAbitazione === 'casa indipendente' ? 'Casa' : 'Villa'}
+                    {/* Card info — same layout as desktop LeadCardBasicInfo */}
+                    <div className="mt-3 space-y-1.5">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="flex items-center text-sm font-semibold text-gray-900">
+                          <Home className="h-3.5 w-3.5 mr-1.5 text-gray-900 flex-shrink-0" />
+                          {lead.tipologiaAbitazione === 'appartamento' ? 'Appartamento' : 
+                           lead.tipologiaAbitazione === 'casa indipendente' ? 'Casa indipendente' : 'Villa'}
                         </span>
+                        <span className="text-sm font-semibold text-gray-900 font-nums flex-shrink-0">{lead.superficie} mq</span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-sm text-gray-500 justify-center">
-                        <span className="font-nums">{lead.superficie} mq</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-sm justify-end">
-                        <Euro className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
-                        <span className="font-semibold text-[#d8010c] truncate font-nums">
+                      
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="flex items-center text-gray-500">
+                          <Euro className="h-3.5 w-3.5 mr-1.5 text-gray-400 flex-shrink-0" />
+                          Stima Ricasa
+                        </span>
+                        <span className="text-sm font-semibold text-[#d8010c] font-nums flex-shrink-0">
                           €{lead.stimaMedia?.toLocaleString("it-IT") || "N/D"}
                         </span>
                       </div>
-                    </div>
 
-                    {/* Date */}
-                    <div className="mt-2 flex items-center gap-1.5 text-xs text-gray-400">
-                      <Calendar className="h-3 w-3" />
-                      <span className="font-nums">{formatDateShort(lead.dataRichiesta)}</span>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="flex items-center text-gray-500">
+                          <Calendar className="h-3.5 w-3.5 mr-1.5 text-gray-400 flex-shrink-0" />
+                          Richiesta
+                        </span>
+                        <span className="text-sm font-semibold text-gray-900 font-nums flex-shrink-0">
+                          {formatDateShort(lead.dataRichiesta)}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -8,8 +8,8 @@ interface PropertyDataSectionProps {
 const roomLabels: Record<string, string> = {
   soggiorni: "Soggiorno",
   cucine: "Cucina",
-  camere_doppie: "Camera Doppia",
-  camere_singole: "Camera Singola",
+  camere_doppie: "Cam. Doppia",
+  camere_singole: "Cam. Singola",
   bagni: "Bagno",
   altro: "Altro",
 };
@@ -41,7 +41,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
           </div>
 
           <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-4 text-center">
-            <div className="text-sm md:text-2xl font-bold text-gray-900 capitalize leading-tight">
+            <div className="text-xs md:text-2xl font-bold text-gray-900 capitalize leading-tight break-words">
               {lead.tipologiaAbitazione?.replace(/_/g, " ") || "N/D"}
             </div>
             <div className="text-[10px] md:text-xs text-gray-500">tipologia</div>
