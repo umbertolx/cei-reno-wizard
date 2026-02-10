@@ -21,10 +21,10 @@ export const LeadCardBasicInfo = ({ lead }: LeadCardBasicInfoProps) => {
       <div className="flex items-center justify-between text-sm">
         <span className="flex items-center text-gray-500">
           <Euro className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
-          Preventivo
+          Stima Ricasa
         </span>
         <span className="font-semibold text-[#d8010c]">
-          €{lead.stimaMin?.toLocaleString("it-IT")} - €{lead.stimaMax?.toLocaleString("it-IT")}
+          €{lead.stimaMedia?.toLocaleString("it-IT") || "N/D"}
         </span>
       </div>
 

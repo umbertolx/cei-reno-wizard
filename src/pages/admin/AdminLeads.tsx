@@ -6,7 +6,7 @@ import { AddColumnDialog } from "@/components/admin/AddColumnDialog";
 import { leadStates, Lead, CustomColumn, convertDatabaseLeadToLead, counterColors } from "@/types/lead";
 import { formatDateShort } from "@/lib/utils";
 import { fetchLeads, updateLeadStatus } from "@/services/leadService";
-import { Search, Filter, Download, Plus, RefreshCw, MoreHorizontal, ChevronDown, Eye, MapPin, Home, Euro, Calendar } from "lucide-react";
+import { Search, Filter, X as XIcon, Plus, RefreshCw, MoreHorizontal, ChevronDown, Eye, MapPin, Home, Euro, Calendar, Zap, Sun, Shield, SlidersHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -45,6 +45,14 @@ const AdminLeads = () => {
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [showMoreActions, setShowMoreActions] = useState(false);
+  // Filters
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterImpianti, setFilterImpianti] = useState<string[]>([]);
+  const [filterDateFrom, setFilterDateFrom] = useState("");
+  const [filterDateTo, setFilterDateTo] = useState("");
+  const [filterPriceMin, setFilterPriceMin] = useState("");
+  const [filterPriceMax, setFilterPriceMax] = useState("");
+
   // Mobile-specific state
   const [mobileSelectedColumn, setMobileSelectedColumn] = useState<string>("nuovo");
   const [mobileColumnDropdownOpen, setMobileColumnDropdownOpen] = useState(false);
@@ -95,12 +103,67 @@ const AdminLeads = () => {
     }
   }, [customColumns, columnOrder.length]);
 
-  const filteredLeads = leads.filter(lead => 
-    lead.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lead.cognome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lead.citta.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const activeFilterCount = [
+    filterImpianti.length > 0,
+    filterDateFrom !== "",
+    filterDateTo !== "",
+    filterPriceMin !== "",
+    filterPriceMax !== "",
+  ].filter(Boolean).length;
+
+  const clearAllFilters = () => {
+    setFilterImpianti([]);
+    setFilterDateFrom("");
+    setFilterDateTo("");
+    setFilterPriceMin("");
+    setFilterPriceMax("");
+    setSearchTerm("");
+  };
+
+  const toggleImpianto = (imp: string) => {
+    setFilterImpianti(prev =>
+      prev.includes(imp) ? prev.filter(i => i !== imp) : [...prev, imp]
+    );
+  };
+
+  const filteredLeads = leads.filter(lead => {
+    // Text search (nome / cognome / email / città)
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      const matchesSearch =
+        lead.nome.toLowerCase().includes(term) ||
+        lead.cognome.toLowerCase().includes(term) ||
+        lead.email.toLowerCase().includes(term) ||
+        lead.citta.toLowerCase().includes(term);
+      if (!matchesSearch) return false;
+    }
+
+    // Impianto configurato
+    if (filterImpianti.length > 0) {
+      const hasMatch = filterImpianti.some(imp => lead.moduliSelezionati.includes(imp));
+      if (!hasMatch) return false;
+    }
+
+    // Data range
+    if (filterDateFrom) {
+      const leadDate = new Date(lead.dataRichiesta).toISOString().split('T')[0];
+      if (leadDate < filterDateFrom) return false;
+    }
+    if (filterDateTo) {
+      const leadDate = new Date(lead.dataRichiesta).toISOString().split('T')[0];
+      if (leadDate > filterDateTo) return false;
+    }
+
+    // Fascia di prezzo
+    if (filterPriceMin) {
+      if (lead.stimaMax < Number(filterPriceMin)) return false;
+    }
+    if (filterPriceMax) {
+      if (lead.stimaMin > Number(filterPriceMax)) return false;
+    }
+
+    return true;
+  });
 
   const allColumns = [
     ...Object.keys(leadStates).map(state => ({ id: state, type: 'default' as const })),
@@ -312,19 +375,6 @@ const AdminLeads = () => {
     });
   };
 
-  const handleExport = () => {
-    const csvContent = leads.map(lead => 
-      `${lead.nome},${lead.cognome},${lead.email},${lead.telefono},${lead.citta},${lead.stimaMax},${lead.stato}`
-    ).join('\n');
-    const blob = new Blob([`Nome,Cognome,Email,Telefono,Città,Stima Max,Stato\n${csvContent}`], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `leads_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    toast.success("Export completato", { description: "Dati esportati in CSV" });
-  };
-
   const activeLead = activeId ? leads.find(lead => lead.id === activeId) : null;
 
   if (authLoading || isLoading) {
@@ -367,18 +417,7 @@ const AdminLeads = () => {
         </div>
 
         {/* Toolbar */}
-        <div className="flex flex-col gap-3 md:flex-row md:items-center">
-          <div className="flex-1 relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <input
-              placeholder={isMobile ? "Cerca lead..." : "Cerca per nome, email o città..."}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white border border-gray-200 rounded-xl h-10 pl-11 pr-4 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
-            />
-          </div>
-
-          <div className="flex items-center gap-2 md:gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
             <button 
               onClick={() => loadLeads(true)}
               disabled={isRefreshing}
@@ -386,6 +425,27 @@ const AdminLeads = () => {
             >
               <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
               {!isMobile && "Aggiorna"}
+            </button>
+
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className={`flex items-center gap-2 border rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors relative ${
+                showFilters || activeFilterCount > 0
+                  ? 'bg-[#d8010c] border-[#d8010c] text-white hover:bg-[#b8000a]'
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+              {!isMobile && "Filtri"}
+              {activeFilterCount > 0 && (
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                  showFilters || activeFilterCount > 0
+                    ? 'bg-white text-[#d8010c]'
+                    : 'bg-[#d8010c] text-white'
+                }`}>
+                  {activeFilterCount}
+                </span>
+              )}
             </button>
 
             {isMobile ? (
@@ -401,54 +461,212 @@ const AdminLeads = () => {
                     <div className="fixed inset-0 z-10" onClick={() => setShowMoreActions(false)} />
                     <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-20 overflow-hidden min-w-[180px]">
                       <button
-                        onClick={() => { handleExport(); setShowMoreActions(false); }}
-                        className="w-full text-left flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                      >
-                        <Download className="h-4 w-4" />
-                        Esporta CSV
-                      </button>
-                      <button
                         onClick={() => { setIsAddColumnOpen(true); setShowMoreActions(false); }}
-                        className="w-full text-left flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-t border-gray-100"
+                        className="w-full text-left flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       >
                         <Plus className="h-4 w-4" />
                         Aggiungi Colonna
-                      </button>
-                      <button
-                        className="w-full text-left flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-t border-gray-100"
-                        onClick={() => setShowMoreActions(false)}
-                      >
-                        <Filter className="h-4 w-4" />
-                        Filtri
                       </button>
                     </div>
                   </>
                 )}
               </div>
             ) : (
-              <>
-                <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors">
-                  <Filter className="h-4 w-4" />
-                  Filtri
-                </button>
-                <button 
-                  onClick={handleExport}
-                  className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
+              <button 
+                onClick={() => setIsAddColumnOpen(true)}
+                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
+              >
+                <Plus className="h-4 w-4" />
+                Aggiungi Colonna
+              </button>
+            )}
+        </div>
+
+        {/* ════════════════════════════════════════════════════
+            FILTER PANEL
+            ════════════════════════════════════════════════════ */}
+        {showFilters && (
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-4 md:p-5 space-y-5 animate-in slide-in-from-top-2 duration-200">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <Filter className="h-4 w-4 text-[#d8010c]" />
+                Filtri avanzati
+              </h3>
+              <div className="flex items-center gap-2">
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={clearAllFilters}
+                    className="text-xs text-[#d8010c] hover:text-[#b8000a] font-medium transition-colors flex items-center gap-1"
+                  >
+                    <XIcon className="h-3 w-3" />
+                    Cancella tutto
+                  </button>
+                )}
+                <button
+                  onClick={() => setShowFilters(false)}
+                  className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
                 >
-                  <Download className="h-4 w-4" />
-                  Esporta CSV
+                  <XIcon className="h-4 w-4 text-gray-400" />
                 </button>
-                <button 
-                  onClick={() => setIsAddColumnOpen(true)}
-                  className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
-                >
-                  <Plus className="h-4 w-4" />
-                  Aggiungi Colonna
-                </button>
-              </>
+              </div>
+            </div>
+
+            {/* Mobile: stacked, Desktop: single row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[auto_1fr_1.2fr_1fr] gap-x-5 gap-y-4 items-end">
+              {/* Impianto configurato */}
+              <div>
+                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Impianto configurato</label>
+                <div className="flex flex-col gap-1.5">
+                  {[
+                    { id: "elettrico", label: "Elettrico", icon: Zap },
+                    { id: "fotovoltaico", label: "Fotovoltaico", icon: Sun },
+                    { id: "sicurezza", label: "Sicurezza", icon: Shield },
+                  ].map(imp => {
+                    const isActive = filterImpianti.includes(imp.id);
+                    const Icon = imp.icon;
+                    return (
+                      <button
+                        key={imp.id}
+                        onClick={() => toggleImpianto(imp.id)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium border-2 transition-all duration-150 whitespace-nowrap ${
+                          isActive
+                            ? 'bg-[#d8010c]/10 border-[#d8010c] text-[#d8010c]'
+                            : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300'
+                        }`}
+                      >
+                        <Icon className={`h-4 w-4 flex-shrink-0 ${isActive ? 'text-[#d8010c]' : 'text-gray-400'}`} />
+                        {imp.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Nome / Cognome */}
+              <div>
+                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Nome / Cognome</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
+                  <input
+                    type="text"
+                    placeholder="Cerca per nome..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-9 pr-3 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Data richiesta */}
+              <div>
+                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Data richiesta</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="date"
+                    value={filterDateFrom}
+                    onChange={(e) => setFilterDateFrom(e.target.value)}
+                    title="Da"
+                    className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                  />
+                  <span className="text-gray-300 text-xs flex-shrink-0">→</span>
+                  <input
+                    type="date"
+                    value={filterDateTo}
+                    onChange={(e) => setFilterDateTo(e.target.value)}
+                    title="A"
+                    className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Fascia di prezzo */}
+              <div>
+                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-2">Fascia di prezzo (€)</label>
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1 min-w-0">
+                    <Euro className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={filterPriceMin}
+                      onChange={(e) => setFilterPriceMin(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                    />
+                  </div>
+                  <span className="text-gray-300 text-xs flex-shrink-0">—</span>
+                  <div className="relative flex-1 min-w-0">
+                    <Euro className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={filterPriceMax}
+                      onChange={(e) => setFilterPriceMax(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Active filter summary */}
+            {activeFilterCount > 0 && (
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 pt-3 border-t border-gray-100">
+                <span className="text-xs text-gray-500 flex-shrink-0">Filtri attivi:</span>
+                <div className="flex flex-wrap gap-1.5 flex-1 min-w-0">
+                  {filterImpianti.map(imp => (
+                    <span
+                      key={imp}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700"
+                    >
+                      {imp === 'elettrico' && <Zap className="h-3 w-3" />}
+                      {imp === 'fotovoltaico' && <Sun className="h-3 w-3" />}
+                      {imp === 'sicurezza' && <Shield className="h-3 w-3" />}
+                      {imp.charAt(0).toUpperCase() + imp.slice(1)}
+                      <button onClick={() => toggleImpianto(imp)} className="ml-0.5 hover:text-[#d8010c]">
+                        <XIcon className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                  {filterDateFrom && (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
+                      <Calendar className="h-3 w-3 flex-shrink-0" /> Da: {filterDateFrom}
+                      <button onClick={() => setFilterDateFrom("")} className="ml-0.5 hover:text-[#d8010c]">
+                        <XIcon className="h-3 w-3" />
+                      </button>
+                    </span>
+                  )}
+                  {filterDateTo && (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
+                      <Calendar className="h-3 w-3 flex-shrink-0" /> A: {filterDateTo}
+                      <button onClick={() => setFilterDateTo("")} className="ml-0.5 hover:text-[#d8010c]">
+                        <XIcon className="h-3 w-3" />
+                      </button>
+                    </span>
+                  )}
+                  {filterPriceMin && (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
+                      <Euro className="h-3 w-3 flex-shrink-0" /> Min: €{Number(filterPriceMin).toLocaleString()}
+                      <button onClick={() => setFilterPriceMin("")} className="ml-0.5 hover:text-[#d8010c]">
+                        <XIcon className="h-3 w-3" />
+                      </button>
+                    </span>
+                  )}
+                  {filterPriceMax && (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
+                      <Euro className="h-3 w-3 flex-shrink-0" /> Max: €{Number(filterPriceMax).toLocaleString()}
+                      <button onClick={() => setFilterPriceMax("")} className="ml-0.5 hover:text-[#d8010c]">
+                        <XIcon className="h-3 w-3" />
+                      </button>
+                    </span>
+                  )}
+                </div>
+                <span className="text-xs text-gray-400 flex-shrink-0">
+                  {filteredLeads.length} / {leads.length} lead
+                </span>
+              </div>
             )}
           </div>
-        </div>
+        )}
 
         {/* ════════════════════════════════════════════════════
             MOBILE VIEW: Column dropdown + full-width cards
@@ -561,7 +779,7 @@ const AdminLeads = () => {
                       <div className="flex items-center gap-1.5 text-sm justify-end">
                         <Euro className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
                         <span className="font-semibold text-[#d8010c] truncate">
-                          €{lead.stimaMax?.toLocaleString()}
+                          €{lead.stimaMedia?.toLocaleString("it-IT") || "N/D"}
                         </span>
                       </div>
                     </div>
