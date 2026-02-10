@@ -70,7 +70,6 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
           <div className="min-w-0">
             <img src="/logo-cei.png" alt="Logo CEI" className="h-10 w-auto" />
           </div>
-          </div>
           {isMobile && (
             <button
               onClick={() => setSidebarOpen(false)}
