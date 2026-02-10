@@ -106,28 +106,40 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-[#F9FBFF] flex items-center justify-center p-4 safe-area-all">
-      <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+    <div className="min-h-screen min-h-[100dvh] bg-ricasa-white flex items-center justify-center p-3 sm:p-4 safe-area-all font-roboto">
+      <div className="w-full max-w-md bg-ricasa-white rounded-xl sm:rounded-2xl border border-gray-300 shadow-lg p-4 sm:p-6 md:p-8">
         {/* Header */}
-        <div className="text-center mb-6 md:mb-8">
-          <div className="mx-auto w-14 h-14 md:w-16 md:h-16 bg-[#d8010c] rounded-full flex items-center justify-center mb-4">
-            <span className="text-white text-xl md:text-2xl font-bold">CEI</span>
+        <div className="text-center mb-4 sm:mb-6 md:mb-8">
+          <div className="mx-auto mb-4 sm:mb-6 flex flex-col items-center justify-center gap-2 sm:gap-3">
+            <img 
+              src="/logo-ricasa-pro.png" 
+              alt="Ricasa Pro Logo" 
+              className="h-6 sm:h-8 md:h-10 w-auto object-contain"
+            />
+            <div className="w-16 sm:w-20 md:w-24 h-px bg-gray-300"></div>
+            <img 
+              src="/logo-cei.png" 
+              alt="CEI Logo" 
+              className="h-8 sm:h-11 md:h-14 w-auto object-contain"
+            />
           </div>
-          <h1 className="text-xl md:text-2xl font-bold text-gray-900">
-            {showResetPassword ? "Recupera Password" : "Admin Dashboard"}
-          </h1>
-          <p className="text-sm md:text-base font-light text-gray-600 mt-1">
-            {showResetPassword
-              ? "Inserisci la tua email per ricevere il link di reset"
-              : "Accedi al pannello di controllo"}
-          </p>
+          {showResetPassword && (
+            <>
+              <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-ricasa-black">
+                Recupera Password
+              </h1>
+              <p className="text-xs sm:text-sm md:text-base font-normal text-gray-700 mt-1">
+                Inserisci la tua email per ricevere il link di reset
+              </p>
+            </>
+          )}
         </div>
 
         {showResetPassword ? (
           /* Reset Password Form */
-          <form onSubmit={handleResetPassword} className="space-y-4 md:space-y-5">
+          <form onSubmit={handleResetPassword} className="space-y-3 sm:space-y-4 md:space-y-5">
             <div>
-              <label htmlFor="resetEmail" className="block text-sm font-semibold text-gray-900 mb-1.5">
+              <label htmlFor="resetEmail" className="block text-xs sm:text-sm font-medium text-ricasa-black mb-1 sm:mb-1.5">
                 Email
               </label>
               <input
@@ -140,13 +152,13 @@ const AdminLogin = () => {
                 disabled={isResetting}
                 autoComplete="email"
                 inputMode="email"
-                className="w-full bg-white border border-gray-200 rounded-xl h-11 md:h-10 px-4 text-base md:text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none disabled:opacity-50"
+                className="w-full bg-ricasa-white border border-gray-300 rounded-lg sm:rounded-xl h-10 sm:h-11 md:h-10 px-3 sm:px-4 text-sm sm:text-base md:text-sm placeholder:text-gray-400 focus:border-ricasa-orange focus:ring-2 focus:ring-ricasa-orange/20 transition-colors outline-none disabled:opacity-50"
               />
             </div>
             <button
               type="submit"
               disabled={isResetting}
-              className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-6 py-3 md:py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:bg-[#f5b7b1] disabled:cursor-not-allowed text-base md:text-sm"
+              className="w-full bg-ricasa-orange hover:bg-ricasa-orange-dark text-ricasa-white font-medium rounded-lg sm:rounded-xl px-6 py-2.5 sm:py-3 md:py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:bg-ricasa-orange-light disabled:cursor-not-allowed text-sm sm:text-base md:text-sm"
             >
               {isResetting ? "Invio in corso..." : "Invia link di reset"}
             </button>
@@ -157,18 +169,18 @@ const AdminLogin = () => {
                 setResetEmail("");
               }}
               disabled={isResetting}
-              className="w-full flex items-center justify-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 text-xs sm:text-sm font-medium text-gray-700 hover:text-ricasa-black transition-colors disabled:opacity-50"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               Torna al login
             </button>
           </form>
         ) : (
           /* Login Form */
           <>
-            <form onSubmit={handleLogin} className="space-y-4 md:space-y-5">
+            <form onSubmit={handleLogin} className="space-y-3 sm:space-y-4 md:space-y-5">
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-1.5">
+                <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-ricasa-black mb-1 sm:mb-1.5">
                   Email
                 </label>
                 <input
@@ -181,11 +193,11 @@ const AdminLogin = () => {
                   disabled={isLoading}
                   autoComplete="email"
                   inputMode="email"
-                  className="w-full bg-white border border-gray-200 rounded-xl h-11 md:h-10 px-4 text-base md:text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none disabled:opacity-50"
+                  className="w-full bg-ricasa-white border border-gray-300 rounded-lg sm:rounded-xl h-10 sm:h-11 md:h-10 px-3 sm:px-4 text-sm sm:text-base md:text-sm placeholder:text-gray-400 focus:border-ricasa-orange focus:ring-2 focus:ring-ricasa-orange/20 transition-colors outline-none disabled:opacity-50"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-gray-900 mb-1.5">
+                <label htmlFor="password" className="block text-xs sm:text-sm font-medium text-ricasa-black mb-1 sm:mb-1.5">
                   Password
                 </label>
                 <input
@@ -197,24 +209,24 @@ const AdminLogin = () => {
                   required
                   disabled={isLoading}
                   autoComplete="current-password"
-                  className="w-full bg-white border border-gray-200 rounded-xl h-11 md:h-10 px-4 text-base md:text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none disabled:opacity-50"
+                  className="w-full bg-ricasa-white border border-gray-300 rounded-lg sm:rounded-xl h-10 sm:h-11 md:h-10 px-3 sm:px-4 text-sm sm:text-base md:text-sm placeholder:text-gray-400 focus:border-ricasa-orange focus:ring-2 focus:ring-ricasa-orange/20 transition-colors outline-none disabled:opacity-50"
                 />
               </div>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-6 py-3 md:py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:bg-[#f5b7b1] disabled:cursor-not-allowed text-base md:text-sm"
+                className="w-full bg-ricasa-orange hover:bg-ricasa-orange-dark text-ricasa-white font-medium rounded-lg sm:rounded-xl px-6 py-2.5 sm:py-3 md:py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:bg-ricasa-orange-light disabled:cursor-not-allowed text-sm sm:text-base md:text-sm"
               >
                 {isLoading ? "Accesso in corso..." : "Accedi"}
               </button>
             </form>
-            <div className="mt-4 text-center">
+            <div className="mt-3 sm:mt-4 text-center">
               <button
                 type="button"
                 onClick={() => setShowResetPassword(true)}
-                className="text-sm text-[#d8010c] hover:text-[#b8000a] font-medium transition-colors flex items-center justify-center gap-1.5 mx-auto"
+                className="text-xs sm:text-sm text-ricasa-orange hover:text-ricasa-orange-dark font-medium transition-colors flex items-center justify-center gap-1.5 mx-auto"
               >
-                <Mail className="h-4 w-4" />
+                <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Password dimenticata?
               </button>
             </div>

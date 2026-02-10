@@ -85,18 +85,19 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
       >
         {/* Logo */}
         <div 
-          className="px-5 border-b border-gray-200 flex items-center justify-between"
+          className="px-3 sm:px-5 border-b border-gray-200 flex items-center justify-between"
           style={{
             height: isMobile ? '3.5rem' : '4rem',
           }}
         >
-          <div className={`min-w-0 transition-opacity duration-300 ${sidebarCollapsed && !isMobile ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
-            <img src="/logo-cei.png" alt="Logo CEI" className="h-10 w-auto" />
+          <div className={`min-w-0 transition-opacity duration-300 flex flex-col items-center gap-1 ${sidebarCollapsed && !isMobile ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
+            <img src="/logo-ricasa-pro.png" alt="Logo Ricasa Pro" className="h-4 sm:h-5 w-auto" />
+            <img src="/logo-cei.png" alt="Logo CEI" className="h-6 sm:h-8 w-auto" />
           </div>
           {isMobile ? (
             <button
               onClick={() => setSidebarOpen(false)}
-              className="p-2 rounded-xl hover:bg-[#F9FBFF] transition-colors"
+              className="p-2 rounded-xl hover:bg-gray-50 transition-colors"
             >
               <X className="h-5 w-5 text-gray-500" />
             </button>
@@ -131,10 +132,10 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
                       sidebarCollapsed && !isMobile 
                         ? "justify-center px-2" 
                         : "gap-3 px-4"
-                    } py-2.5 rounded-xl text-sm transition-all ${
+                    } py-2.5 rounded-xl text-sm transition-all font-roboto ${
                       isActive
-                        ? "bg-[#d8010c] text-white font-semibold shadow-sm"
-                        : "text-gray-600 hover:bg-[#F9FBFF] hover:text-gray-900 font-medium"
+                        ? "bg-ricasa-orange text-ricasa-white font-semibold shadow-sm"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium"
                     }`}
                     title={sidebarCollapsed && !isMobile ? item.label : undefined}
                   >
@@ -162,7 +163,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
                 sidebarCollapsed && !isMobile 
                   ? "justify-center px-2" 
                   : "gap-3 px-4"
-              } py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#F9FBFF] hover:text-gray-900 transition-colors`}
+              } py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors font-roboto`}
               title={sidebarCollapsed && !isMobile ? "Logout" : undefined}
             >
               <LogOut className="h-5 w-5 flex-shrink-0" />
@@ -182,7 +183,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
           <div className="p-2 border-t border-gray-200 safe-area-bottom">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center justify-center p-2 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#F9FBFF] hover:text-gray-900 transition-colors"
+              className="w-full flex items-center justify-center p-2 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors font-roboto"
               title="Logout"
             >
               <LogOut className="h-5 w-5" />
@@ -212,7 +213,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
 
           {/* Centered Ricasa logo */}
           <div className={isMobile ? "absolute left-1/2 -translate-x-1/2" : "flex-1 flex justify-center"}>
-            <img src="/logo-ricasa.png" alt="Ricasa Pro" className="h-8 w-auto" />
+            <img src="/logo-ricasa-pro.png" alt="Ricasa Pro" className="h-8 w-auto" />
           </div>
 
           {/* Desktop: right-aligned logout. Mobile: placeholder for balanced layout */}
@@ -220,7 +221,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
             {!isMobile && (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-4 py-2 font-medium text-sm transition-colors"
+                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors font-roboto"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
@@ -254,14 +255,14 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
                 <button
                   key={item.path}
                   onClick={() => navigate(item.path)}
-                  className={`flex flex-col items-center gap-1 py-1 px-6 rounded-xl transition-colors ${
+                  className={`flex flex-col items-center gap-1 py-1 px-6 rounded-xl transition-colors font-roboto ${
                     isActive
-                      ? "text-[#d8010c]"
+                      ? "text-ricasa-orange"
                       : "text-gray-400"
                   }`}
                 >
                   <item.icon className={`h-5 w-5 ${isActive ? "stroke-[2.5]" : ""}`} />
-                  <span className={`text-xs ${isActive ? "font-semibold" : "font-medium"}`}>
+                  <span className={`text-xs ${isActive ? "font-semibold" : "font-medium"} font-roboto`}>
                     {item.label}
                   </span>
                 </button>
@@ -269,10 +270,10 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
             })}
             <button
               onClick={handleLogout}
-              className="flex flex-col items-center gap-1 py-1 px-6 rounded-xl transition-colors text-gray-400"
+              className="flex flex-col items-center gap-1 py-1 px-6 rounded-xl transition-colors text-gray-400 font-roboto"
             >
               <LogOut className="h-5 w-5" />
-              <span className="text-xs font-medium">Esci</span>
+              <span className="text-xs font-medium font-roboto">Esci</span>
             </button>
           </div>
           {/* Safe area spacer for home indicator */}

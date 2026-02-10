@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { leadStates, convertDatabaseLeadToLead } from "@/types/lead";
 import { fetchLeads } from "@/services/leadService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { RefreshCw, AlertCircle, ChevronDown, Users, BarChart3 } from "lucide-react";
+import { RefreshCw, AlertCircle, ChevronDown, Users, BarChart3, TrendingUp } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -12,9 +12,9 @@ type TimeFrame = 'oggi' | 'settimana' | 'mese' | 'anno';
 
 const timeFrameLabels: Record<TimeFrame, string> = {
   oggi: 'Oggi',
-  settimana: 'Questa settimana',
-  mese: 'Questo mese',
-  anno: "Quest'anno",
+  settimana: 'Settimana',
+  mese: 'Mese',
+  anno: 'Anno',
 };
 
 const AdminDashboard = () => {
@@ -27,7 +27,6 @@ const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Carica i lead dal database
   const loadLeads = async () => {
     setIsLoading(true);
     setError(null);
@@ -47,7 +46,6 @@ const AdminDashboard = () => {
     loadLeads();
   }, []);
 
-  // Funzione per ricaricare manualmente i dati
   const handleRefresh = () => {
     loadLeads();
   };
@@ -90,19 +88,16 @@ const AdminDashboard = () => {
       totalValue,
       avgValue,
       acquired,
-      comparison: { total: 'N/A', value: 'N/A', avg: 'N/A', acquired: 'N/A' },
-      benchmark: `negli ultimi ${timeFrame === 'oggi' ? 'oggi' : timeFrame === 'settimana' ? '7 giorni' : timeFrame === 'mese' ? '30 giorni' : '365 giorni'}`
     };
   };
 
   const data = getKPIData(timeFrame);
 
-  // Fixed leadsByState with proper null checks
   const leadsByState = Object.keys(leadStates).map(state => ({
     stato: leadStates[state as keyof typeof leadStates].label,
     count: leads.filter(lead => lead.stato === state).length,
     color: leadStates[state as keyof typeof leadStates].color
-  })).filter(item => item.count > 0); // Only show states that have leads
+  })).filter(item => item.count > 0);
 
   const recentLeads = leads
     .sort((a, b) => new Date(b.dataRichiesta).getTime() - new Date(a.dataRichiesta).getTime())
@@ -113,8 +108,8 @@ const AdminDashboard = () => {
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-gray-400" />
-            <p className="text-gray-500">Caricamento dashboard...</p>
+            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-ricasa-orange" />
+            <p className="text-gray-600 font-roboto">Caricamento...</p>
           </div>
         </div>
       </AdminLayout>
@@ -122,20 +117,20 @@ const AdminDashboard = () => {
   }
 
   if (!isAdmin) {
-    return null; // useAdminAuth will redirect
+    return null;
   }
 
   if (error) {
     return (
       <AdminLayout>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center px-4">
+        <div className="flex items-center justify-center h-64 px-4">
+          <div className="text-center">
             <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Errore nel caricamento</h2>
-            <p className="text-gray-600 mb-4">{error}</p>
+            <h2 className="text-lg font-bold text-ricasa-black mb-2 font-roboto">Errore</h2>
+            <p className="text-sm text-gray-600 mb-4 font-roboto">{error}</p>
             <button
               onClick={handleRefresh}
-              className="bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-6 py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+              className="bg-ricasa-orange hover:bg-ricasa-orange-dark text-ricasa-white font-medium rounded-xl px-6 py-2.5 shadow-sm transition-all active:scale-[0.98] text-sm font-roboto"
             >
               Riprova
             </button>
@@ -147,87 +142,78 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-3 md:space-y-4 w-full pb-20 md:pb-0">
-        {/* Header box */}
-        <div className="bg-[#F9FBFF] rounded-2xl md:rounded-3xl p-4 md:px-8 md:py-6">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div className="space-y-3 sm:space-y-4 w-full pb-20 sm:pb-0">
+        {/* Header */}
+        <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm p-3 sm:p-4 md:p-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
-              <p className="text-sm md:text-base font-light text-gray-600 mt-1">
-                Panoramica generale dei preventivi (<span className="font-nums">{leads.length}</span> totali)
-                {leads.length === 0 && (
-                  <span className="text-amber-600 ml-2">
-                    ⚠️ Nessun lead
-                  </span>
-                )}
+              <h1 className="text-xl sm:text-2xl font-bold text-ricasa-black font-roboto">Dashboard</h1>
+              <p className="text-xs sm:text-sm text-gray-600 mt-1 font-roboto">
+                <span className="font-nums">{leads.length}</span> preventivi totali
               </p>
             </div>
-          <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-            <button 
-              onClick={handleRefresh}
-              disabled={isLoading}
-              className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors"
-            >
-              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-              {!isMobile && "Aggiorna"}
-            </button>
-
-            {/* Custom dropdown for time frame */}
-            <div className="relative">
-              <button
-                onClick={() => setTimeFrameOpen(!timeFrameOpen)}
-                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors min-w-[130px] md:min-w-[160px] justify-between"
+            <div className="flex items-center gap-2 flex-wrap">
+              <button 
+                onClick={handleRefresh}
+                disabled={isLoading}
+                className="flex items-center gap-1.5 sm:gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 font-medium text-xs sm:text-sm transition-colors font-roboto"
               >
-                <span className="truncate">{timeFrameLabels[timeFrame]}</span>
-                <ChevronDown className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                <RefreshCw className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${isLoading ? 'animate-spin' : ''}`} />
+                {!isMobile && "Aggiorna"}
               </button>
-              {timeFrameOpen && (
-                <>
-                  {/* Backdrop to close dropdown on mobile */}
-                  <div className="fixed inset-0 z-10" onClick={() => setTimeFrameOpen(false)} />
-                  <div className="absolute right-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-md z-20 overflow-hidden">
-                    {(Object.keys(timeFrameLabels) as TimeFrame[]).map((tf) => (
-                      <button
-                        key={tf}
-                        onClick={() => { setTimeFrame(tf); setTimeFrameOpen(false); }}
-                        className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
-                          tf === timeFrame ? 'bg-[#F9FBFF] text-[#d8010c] font-semibold' : 'text-gray-700 hover:bg-[#F9FBFF]'
-                        }`}
-                      >
-                        {timeFrameLabels[tf]}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
 
-            <button 
-              onClick={() => navigate("/admin/leads")}
-              className="bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-4 md:px-6 py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-sm whitespace-nowrap"
-            >
-              {isMobile ? "Leads" : "Gestisci Leads"}
-            </button>
+              {/* Time frame dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setTimeFrameOpen(!timeFrameOpen)}
+                  className="flex items-center gap-1.5 sm:gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 font-medium text-xs sm:text-sm transition-colors min-w-[100px] sm:min-w-[120px] justify-between font-roboto"
+                >
+                  <span className="truncate">{timeFrameLabels[timeFrame]}</span>
+                  <ChevronDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-400 flex-shrink-0" />
+                </button>
+                {timeFrameOpen && (
+                  <>
+                    <div className="fixed inset-0 z-10" onClick={() => setTimeFrameOpen(false)} />
+                    <div className="absolute right-0 mt-1 w-full bg-white border border-gray-200 rounded-lg sm:rounded-xl shadow-lg z-20 overflow-hidden">
+                      {(Object.keys(timeFrameLabels) as TimeFrame[]).map((tf) => (
+                        <button
+                          key={tf}
+                          onClick={() => { setTimeFrame(tf); setTimeFrameOpen(false); }}
+                          className={`w-full text-left px-3 sm:px-4 py-2 text-xs sm:text-sm transition-colors font-roboto ${
+                            tf === timeFrame ? 'bg-ricasa-orange/10 text-ricasa-orange font-semibold' : 'text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          {timeFrameLabels[tf]}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <button 
+                onClick={() => navigate("/admin/leads")}
+                className="bg-ricasa-orange hover:bg-ricasa-orange-dark text-ricasa-white font-medium rounded-lg sm:rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-xs sm:text-sm whitespace-nowrap font-roboto"
+              >
+                {isMobile ? "Leads" : "Gestisci Leads"}
+              </button>
+            </div>
           </div>
         </div>
-        </div>{/* end header box */}
 
-        {/* Content box */}
-        <div className="bg-[#F9FBFF] rounded-2xl md:rounded-3xl p-4 md:p-8 space-y-4 md:space-y-6">
-
-        {/* Debug info per sviluppatori */}
+        {/* Empty state */}
         {leads.length === 0 && (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-5">
+          <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-5">
             <div className="flex items-start gap-3">
               <AlertCircle className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
               <div>
-                <h3 className="font-semibold text-gray-800">Database vuoto</h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  Per testare la dashboard, completa il configuratore sul sito principale per generare dei lead di esempio.
+                <h3 className="font-semibold text-ricasa-black text-sm sm:text-base font-roboto">Nessun lead</h3>
+                <p className="text-xs sm:text-sm text-gray-500 mt-1 font-roboto">
+                  Completa il configuratore per generare dei lead di esempio.
                 </p>
                 <button 
                   onClick={() => navigate("/")}
-                  className="mt-2 bg-white border border-gray-200 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-4 py-1.5 text-sm font-medium transition-colors"
+                  className="mt-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-lg sm:rounded-xl px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium transition-colors font-roboto"
                 >
                   Vai al configuratore
                 </button>
@@ -236,56 +222,64 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-          {[
-            { label: "Lead Totali", value: data.totalLeads.toString(), sub: `${data.comparison.total} ${data.benchmark}` },
-            { label: "Valore Totale", value: `€${data.totalValue.toLocaleString()}`, sub: `${data.comparison.value} ${data.benchmark}` },
-            { label: "Valore Medio", value: `€${Math.round(data.avgValue).toLocaleString()}`, sub: `${data.comparison.avg} ${data.benchmark}` },
-            { label: "Acquisiti", value: data.acquired.toString(), sub: `${data.comparison.acquired} ${data.benchmark}` },
-          ].map((stat) => (
-            <div key={stat.label} className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
-              <p className="text-xs md:text-sm font-medium text-gray-500 truncate">{stat.label}</p>
-              <p className="text-xl md:text-3xl font-bold text-gray-900 mt-1 md:mt-2 truncate font-nums">{stat.value}</p>
-              <p className="text-[10px] md:text-xs text-gray-400 mt-1 truncate">{stat.sub}</p>
-            </div>
-          ))}
+        {/* KPI Cards - Mobile: 2 columns, Desktop: 4 columns */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+          <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm p-3 sm:p-4 md:p-5">
+            <p className="text-[10px] sm:text-xs font-medium text-gray-500 truncate font-roboto">Lead Totali</p>
+            <p className="text-lg sm:text-2xl md:text-3xl font-bold text-ricasa-black mt-1 sm:mt-2 truncate font-nums">{data.totalLeads}</p>
+          </div>
+          <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm p-3 sm:p-4 md:p-5">
+            <p className="text-[10px] sm:text-xs font-medium text-gray-500 truncate font-roboto">Valore Totale</p>
+            <p className="text-lg sm:text-2xl md:text-3xl font-bold text-ricasa-black mt-1 sm:mt-2 truncate font-nums">€{data.totalValue.toLocaleString()}</p>
+          </div>
+          <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm p-3 sm:p-4 md:p-5">
+            <p className="text-[10px] sm:text-xs font-medium text-gray-500 truncate font-roboto">Valore Medio</p>
+            <p className="text-lg sm:text-2xl md:text-3xl font-bold text-ricasa-black mt-1 sm:mt-2 truncate font-nums">€{Math.round(data.avgValue).toLocaleString()}</p>
+          </div>
+          <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm p-3 sm:p-4 md:p-5">
+            <p className="text-[10px] sm:text-xs font-medium text-gray-500 truncate font-roboto">Acquisiti</p>
+            <p className="text-lg sm:text-2xl md:text-3xl font-bold text-ricasa-black mt-1 sm:mt-2 truncate font-nums">{data.acquired}</p>
+          </div>
         </div>
 
-        {/* Charts and Recent Leads */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        {/* Charts and Recent Leads - Mobile: stacked, Desktop: side by side */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
           {/* Chart */}
-          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6 flex flex-col lg:min-h-[420px]">
-            <h2 className="text-base md:text-lg font-bold text-gray-900 mb-4">Lead per Stato</h2>
-            <div className="flex-1 min-h-[220px] md:min-h-[300px]">
+          <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm p-3 sm:p-4 md:p-6 flex flex-col min-h-[280px] sm:min-h-[320px] md:min-h-[400px]">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+              <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-ricasa-orange" />
+              <h2 className="text-sm sm:text-base md:text-lg font-bold text-ricasa-black font-roboto">Lead per Stato</h2>
+            </div>
+            <div className="flex-1 min-h-[200px] sm:min-h-[240px] md:min-h-[320px]">
               {leadsByState.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={leadsByState}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                     <XAxis 
                       dataKey="stato" 
-                      tick={{ fontSize: isMobile ? 10 : 12, fill: '#6B7280' }} 
+                      tick={{ fontSize: isMobile ? 9 : 11, fill: '#6B7280' }} 
                       angle={isMobile ? -45 : 0}
                       textAnchor={isMobile ? "end" : "middle"}
-                      height={isMobile ? 60 : 30}
+                      height={isMobile ? 70 : 40}
                     />
-                    <YAxis tick={{ fontSize: 12, fill: '#6B7280' }} width={30} />
+                    <YAxis tick={{ fontSize: isMobile ? 9 : 11, fill: '#6B7280' }} width={isMobile ? 30 : 40} />
                     <Tooltip
                       contentStyle={{
-                        borderRadius: '0.75rem',
+                        borderRadius: '0.5rem',
                         border: '1px solid #E5E7EB',
                         boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
-                        fontSize: '0.875rem',
+                        fontSize: isMobile ? '0.75rem' : '0.875rem',
+                        fontFamily: 'Roboto, sans-serif',
                       }}
                     />
-                    <Bar dataKey="count" fill="#d8010c" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="count" fill="#FF7F07" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-400">
                   <div className="text-center">
-                    <BarChart3 className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">Nessun dato disponibile</p>
+                    <BarChart3 className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-2 opacity-50" />
+                    <p className="text-xs sm:text-sm font-roboto">Nessun dato disponibile</p>
                   </div>
                 </div>
               )}
@@ -293,32 +287,35 @@ const AdminDashboard = () => {
           </div>
 
           {/* Recent Leads */}
-          <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6 flex flex-col lg:min-h-[420px]">
-            <h2 className="text-base md:text-lg font-bold text-gray-900 mb-4">Ultimi Lead</h2>
-            <div className="flex-1">
+          <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm p-3 sm:p-4 md:p-6 flex flex-col min-h-[280px] sm:min-h-[320px] md:min-h-[400px]">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+              <Users className="h-4 w-4 sm:h-5 sm:w-5 text-ricasa-orange" />
+              <h2 className="text-sm sm:text-base md:text-lg font-bold text-ricasa-black font-roboto">Ultimi Lead</h2>
+            </div>
+            <div className="flex-1 overflow-y-auto">
               {recentLeads.length > 0 ? (
-                <div>
+                <div className="space-y-2 sm:space-y-3">
                   {recentLeads.map((lead, index) => {
                     const leadStateInfo = leadStates[lead.stato as keyof typeof leadStates];
                     return (
                       <div 
                         key={lead.id} 
-                        className={`flex items-center justify-between py-3 gap-2 ${
+                        className={`flex items-center justify-between py-2 sm:py-3 gap-2 ${
                           index < recentLeads.length - 1 ? 'border-b border-gray-100' : ''
                         }`}
                       >
                         <div className="min-w-0 flex-1">
-                          <p className="font-semibold text-gray-900 text-sm md:text-base truncate">
+                          <p className="font-semibold text-ricasa-black text-xs sm:text-sm md:text-base truncate font-roboto">
                             {lead.nome} {lead.cognome}
                           </p>
-                          <p className="text-xs md:text-sm text-gray-500 truncate">{lead.citta}</p>
+                          <p className="text-[10px] sm:text-xs md:text-sm text-gray-500 truncate font-roboto">{lead.citta}</p>
                         </div>
-                        <div className="text-right flex items-center gap-2 md:gap-3 flex-shrink-0">
-                          <p className="font-bold text-[#d8010c] text-sm md:text-base font-nums">
+                        <div className="text-right flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                          <p className="font-bold text-ricasa-orange text-xs sm:text-sm md:text-base font-nums">
                             €{lead.stimaMax.toLocaleString()}
                           </p>
                           {leadStateInfo && !isMobile && (
-                            <span className="inline-block bg-yellow-400 text-gray-900 rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap">
+                            <span className="inline-block bg-ricasa-orange/10 text-ricasa-orange rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold whitespace-nowrap font-roboto">
                               {leadStateInfo.label}
                             </span>
                           )}
@@ -330,15 +327,14 @@ const AdminDashboard = () => {
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-400">
                   <div className="text-center">
-                    <Users className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">Nessun lead recente</p>
+                    <Users className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-2 opacity-50" />
+                    <p className="text-xs sm:text-sm font-roboto">Nessun lead recente</p>
                   </div>
                 </div>
               )}
             </div>
           </div>
         </div>
-        </div>{/* end content box */}
       </div>
     </AdminLayout>
   );

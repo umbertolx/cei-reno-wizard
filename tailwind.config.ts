@@ -32,6 +32,16 @@ export default {
 					'Arial',
 					'sans-serif',
 				],
+				roboto: [
+					'Roboto',
+					'ui-sans-serif',
+					'system-ui',
+					'-apple-system',
+					'BlinkMacSystemFont',
+					'"Segoe UI"',
+					'Arial',
+					'sans-serif',
+				],
 				nums: [
 					'"Inter"',
 					'system-ui',
@@ -50,6 +60,13 @@ export default {
 				'cei-yellow': '#fbe12e',
 				'cei-black': '#1c1c1c',
 				'cei-pink': '#d8797a',
+				
+				// Colori Ricasa
+				'ricasa-orange': '#FF7F07',
+				'ricasa-orange-dark': '#E66F06',
+				'ricasa-orange-light': '#FFB366',
+				'ricasa-white': '#ffffff',
+				'ricasa-black': '#000000',
 				
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
