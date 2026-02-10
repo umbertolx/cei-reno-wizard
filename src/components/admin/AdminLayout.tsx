@@ -141,13 +141,13 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
             </button>
           )}
 
-          {/* Mobile centered logo */}
-          {isMobile && (
-            <img src="/logo-ricasa.png" alt="Ricasa Pro" className="h-6 w-auto" />
-          )}
+          {/* Centered Ricasa logo */}
+          <div className={isMobile ? "absolute left-1/2 -translate-x-1/2" : "flex-1 flex justify-center"}>
+            <img src="/logo-ricasa.png" alt="Ricasa" className="h-7 w-auto" />
+          </div>
 
           {/* Desktop: right-aligned logout. Mobile: placeholder for balanced layout */}
-          <div className={isMobile ? "w-9" : "ml-auto"}>
+          <div className={isMobile ? "w-9" : ""}>
             {!isMobile && (
               <button
                 onClick={handleLogout}
