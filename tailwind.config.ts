@@ -57,6 +57,8 @@ export default {
 				'cei-white': '#ffffff',
 				'cei-gray': '#f4f4f4',
 				'cei-red': '#d8010c',
+				'cei-red-dark': '#b5010a',
+				'cei-red-light': '#e8333d',
 				'cei-yellow': '#fbe12e',
 				'cei-black': '#1c1c1c',
 				'cei-pink': '#d8797a',

@@ -108,7 +108,7 @@ const AdminDashboard = () => {
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-ricasa-orange" />
+            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-cei-red" />
             <p className="text-gray-600 font-roboto">Caricamento...</p>
           </div>
         </div>
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
             <p className="text-sm text-gray-600 mb-4 font-roboto">{error}</p>
             <button
               onClick={handleRefresh}
-              className="bg-ricasa-orange hover:bg-ricasa-orange-dark text-ricasa-white font-medium rounded-xl px-6 py-2.5 shadow-sm transition-all active:scale-[0.98] text-sm font-roboto"
+              className="bg-cei-red hover:bg-cei-red-dark text-ricasa-white font-medium rounded-xl px-6 py-2.5 shadow-sm transition-all active:scale-[0.98] text-sm font-roboto"
             >
               Riprova
             </button>
@@ -180,7 +180,7 @@ const AdminDashboard = () => {
                           key={tf}
                           onClick={() => { setTimeFrame(tf); setTimeFrameOpen(false); }}
                           className={`w-full text-left px-3 sm:px-4 py-2 text-xs sm:text-sm transition-colors font-roboto ${
-                            tf === timeFrame ? 'bg-ricasa-orange/10 text-ricasa-orange font-semibold' : 'text-gray-700 hover:bg-gray-50'
+                            tf === timeFrame ? 'bg-cei-red/10 text-cei-red font-semibold' : 'text-gray-700 hover:bg-gray-50'
                           }`}
                         >
                           {timeFrameLabels[tf]}
@@ -193,7 +193,7 @@ const AdminDashboard = () => {
 
               <button 
                 onClick={() => navigate("/admin/leads")}
-                className="bg-ricasa-orange hover:bg-ricasa-orange-dark text-ricasa-white font-medium rounded-lg sm:rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-xs sm:text-sm whitespace-nowrap font-roboto"
+                className="bg-cei-red hover:bg-cei-red-dark text-ricasa-white font-medium rounded-lg sm:rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-xs sm:text-sm whitespace-nowrap font-roboto"
               >
                 {isMobile ? "Leads" : "Gestisci Leads"}
               </button>
@@ -247,7 +247,7 @@ const AdminDashboard = () => {
           {/* Chart */}
           <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm p-3 sm:p-4 md:p-6 flex flex-col min-h-[280px] sm:min-h-[320px] md:min-h-[400px]">
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-ricasa-orange" />
+              <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-cei-red" />
               <h2 className="text-sm sm:text-base md:text-lg font-bold text-ricasa-black font-roboto">Lead per Stato</h2>
             </div>
             <div className="flex-1 min-h-[200px] sm:min-h-[240px] md:min-h-[320px]">
@@ -272,7 +272,7 @@ const AdminDashboard = () => {
                         fontFamily: 'Roboto, sans-serif',
                       }}
                     />
-                    <Bar dataKey="count" fill="#FF7F07" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="count" fill="#d8010c" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
@@ -289,8 +289,8 @@ const AdminDashboard = () => {
           {/* Recent Leads */}
           <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm p-3 sm:p-4 md:p-6 flex flex-col min-h-[280px] sm:min-h-[320px] md:min-h-[400px]">
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <Users className="h-4 w-4 sm:h-5 sm:w-5 text-ricasa-orange" />
-              <h2 className="text-sm sm:text-base md:text-lg font-bold text-ricasa-black font-roboto">Ultimi Lead</h2>
+              <Users className="h-4 w-4 sm:h-5 sm:w-5 text-cei-red" />
+              <h2 className="text-base sm:text-lg md:text-xl font-bold text-ricasa-black font-roboto">Ultimi Lead</h2>
             </div>
             <div className="flex-1 overflow-y-auto">
               {recentLeads.length > 0 ? (
@@ -305,17 +305,17 @@ const AdminDashboard = () => {
                         }`}
                       >
                         <div className="min-w-0 flex-1">
-                          <p className="font-semibold text-ricasa-black text-xs sm:text-sm md:text-base truncate font-roboto">
+                          <p className="font-semibold text-ricasa-black text-sm sm:text-base md:text-lg truncate font-roboto">
                             {lead.nome} {lead.cognome}
                           </p>
-                          <p className="text-[10px] sm:text-xs md:text-sm text-gray-500 truncate font-roboto">{lead.citta}</p>
+                          <p className="text-[11px] sm:text-sm md:text-base text-gray-500 truncate font-roboto">{lead.citta}</p>
                         </div>
                         <div className="text-right flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                          <p className="font-bold text-ricasa-orange text-xs sm:text-sm md:text-base font-nums">
+                          <p className="font-bold text-cei-red text-sm sm:text-base md:text-lg font-nums">
                             €{lead.stimaMax.toLocaleString()}
                           </p>
                           {leadStateInfo && !isMobile && (
-                            <span className="inline-block bg-ricasa-orange/10 text-ricasa-orange rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold whitespace-nowrap font-roboto">
+                            <span className="inline-block bg-cei-red/10 text-cei-red rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-sm font-semibold whitespace-nowrap font-roboto">
                               {leadStateInfo.label}
                             </span>
                           )}

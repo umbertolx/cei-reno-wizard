@@ -90,8 +90,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
             height: isMobile ? '3.5rem' : '4rem',
           }}
         >
-          <div className={`min-w-0 transition-opacity duration-300 flex flex-col items-center gap-1 ${sidebarCollapsed && !isMobile ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
-            <img src="/logo-ricasa-pro.png" alt="Logo Ricasa Pro" className="h-4 sm:h-5 w-auto" />
+          <div className={`min-w-0 transition-opacity duration-300 flex items-center justify-center ${sidebarCollapsed && !isMobile ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
             <img src="/logo-cei.png" alt="Logo CEI" className="h-6 sm:h-8 w-auto" />
           </div>
           {isMobile ? (
@@ -134,7 +133,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
                         : "gap-3 px-4"
                     } py-2.5 rounded-xl text-sm transition-all font-roboto ${
                       isActive
-                        ? "bg-ricasa-orange text-ricasa-white font-semibold shadow-sm"
+                        ? "bg-cei-red text-ricasa-white font-semibold shadow-sm"
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium"
                     }`}
                     title={sidebarCollapsed && !isMobile ? item.label : undefined}
@@ -257,7 +256,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
                   onClick={() => navigate(item.path)}
                   className={`flex flex-col items-center gap-1 py-1 px-6 rounded-xl transition-colors font-roboto ${
                     isActive
-                      ? "text-ricasa-orange"
+                      ? "text-cei-red"
                       : "text-gray-400"
                   }`}
                 >

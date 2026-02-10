@@ -106,11 +106,11 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-ricasa-white flex items-center justify-center p-3 sm:p-4 safe-area-all font-roboto">
-      <div className="w-full max-w-md bg-ricasa-white rounded-xl sm:rounded-2xl border border-gray-300 shadow-lg p-4 sm:p-6 md:p-8">
+    <div className="min-h-screen min-h-[100dvh] bg-ricasa-white flex items-center justify-center px-6 py-8 sm:px-4 sm:py-6 md:px-6 md:py-8 safe-area-all font-roboto">
+      <div className="w-full max-w-md bg-ricasa-white rounded-xl sm:rounded-2xl border border-gray-300 shadow-lg px-6 py-6 sm:px-6 sm:py-6 md:px-8 md:py-8">
         {/* Header */}
-        <div className="text-center mb-4 sm:mb-6 md:mb-8">
-          <div className="mx-auto mb-4 sm:mb-6 flex flex-col items-center justify-center gap-2 sm:gap-3">
+        <div className="text-center mb-6 sm:mb-6 md:mb-8">
+          <div className="mx-auto mb-5 sm:mb-6 flex flex-col items-center justify-center gap-3 sm:gap-3">
             <img 
               src="/logo-ricasa-pro.png" 
               alt="Ricasa Pro Logo" 
@@ -137,7 +137,7 @@ const AdminLogin = () => {
 
         {showResetPassword ? (
           /* Reset Password Form */
-          <form onSubmit={handleResetPassword} className="space-y-3 sm:space-y-4 md:space-y-5">
+          <form onSubmit={handleResetPassword} className="space-y-4 sm:space-y-4 md:space-y-5">
             <div>
               <label htmlFor="resetEmail" className="block text-xs sm:text-sm font-medium text-ricasa-black mb-1 sm:mb-1.5">
                 Email
@@ -152,13 +152,13 @@ const AdminLogin = () => {
                 disabled={isResetting}
                 autoComplete="email"
                 inputMode="email"
-                className="w-full bg-ricasa-white border border-gray-300 rounded-lg sm:rounded-xl h-10 sm:h-11 md:h-10 px-3 sm:px-4 text-sm sm:text-base md:text-sm placeholder:text-gray-400 focus:border-ricasa-orange focus:ring-2 focus:ring-ricasa-orange/20 transition-colors outline-none disabled:opacity-50"
+                className="w-full bg-ricasa-white border border-gray-300 rounded-lg sm:rounded-xl h-11 sm:h-11 md:h-10 px-4 sm:px-4 text-sm sm:text-base md:text-sm placeholder:text-gray-400 focus:border-cei-red focus:ring-2 focus:ring-cei-red/20 transition-colors outline-none disabled:opacity-50"
               />
             </div>
             <button
               type="submit"
               disabled={isResetting}
-              className="w-full bg-ricasa-orange hover:bg-ricasa-orange-dark text-ricasa-white font-medium rounded-lg sm:rounded-xl px-6 py-2.5 sm:py-3 md:py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:bg-ricasa-orange-light disabled:cursor-not-allowed text-sm sm:text-base md:text-sm"
+              className="w-full bg-cei-red hover:bg-cei-red-dark text-ricasa-white font-medium rounded-lg sm:rounded-xl px-6 py-2.5 sm:py-3 md:py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:bg-cei-red-light disabled:cursor-not-allowed text-sm sm:text-base md:text-sm"
             >
               {isResetting ? "Invio in corso..." : "Invia link di reset"}
             </button>
@@ -178,7 +178,7 @@ const AdminLogin = () => {
         ) : (
           /* Login Form */
           <>
-            <form onSubmit={handleLogin} className="space-y-3 sm:space-y-4 md:space-y-5">
+            <form onSubmit={handleLogin} className="space-y-4 sm:space-y-4 md:space-y-5">
               <div>
                 <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-ricasa-black mb-1 sm:mb-1.5">
                   Email
@@ -193,7 +193,7 @@ const AdminLogin = () => {
                   disabled={isLoading}
                   autoComplete="email"
                   inputMode="email"
-                  className="w-full bg-ricasa-white border border-gray-300 rounded-lg sm:rounded-xl h-10 sm:h-11 md:h-10 px-3 sm:px-4 text-sm sm:text-base md:text-sm placeholder:text-gray-400 focus:border-ricasa-orange focus:ring-2 focus:ring-ricasa-orange/20 transition-colors outline-none disabled:opacity-50"
+                  className="w-full bg-ricasa-white border border-gray-300 rounded-lg sm:rounded-xl h-11 sm:h-11 md:h-10 px-4 sm:px-4 text-sm sm:text-base md:text-sm placeholder:text-gray-400 focus:border-cei-red focus:ring-2 focus:ring-cei-red/20 transition-colors outline-none disabled:opacity-50"
                 />
               </div>
               <div>
@@ -209,22 +209,22 @@ const AdminLogin = () => {
                   required
                   disabled={isLoading}
                   autoComplete="current-password"
-                  className="w-full bg-ricasa-white border border-gray-300 rounded-lg sm:rounded-xl h-10 sm:h-11 md:h-10 px-3 sm:px-4 text-sm sm:text-base md:text-sm placeholder:text-gray-400 focus:border-ricasa-orange focus:ring-2 focus:ring-ricasa-orange/20 transition-colors outline-none disabled:opacity-50"
+                  className="w-full bg-ricasa-white border border-gray-300 rounded-lg sm:rounded-xl h-11 sm:h-11 md:h-10 px-4 sm:px-4 text-sm sm:text-base md:text-sm placeholder:text-gray-400 focus:border-cei-red focus:ring-2 focus:ring-cei-red/20 transition-colors outline-none disabled:opacity-50"
                 />
               </div>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-ricasa-orange hover:bg-ricasa-orange-dark text-ricasa-white font-medium rounded-lg sm:rounded-xl px-6 py-2.5 sm:py-3 md:py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:bg-ricasa-orange-light disabled:cursor-not-allowed text-sm sm:text-base md:text-sm"
+                className="w-full bg-cei-red hover:bg-cei-red-dark text-ricasa-white font-medium rounded-lg sm:rounded-xl px-6 py-2.5 sm:py-3 md:py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:bg-cei-red-light disabled:cursor-not-allowed text-sm sm:text-base md:text-sm"
               >
                 {isLoading ? "Accesso in corso..." : "Accedi"}
               </button>
             </form>
-            <div className="mt-3 sm:mt-4 text-center">
+            <div className="mt-5 sm:mt-4 text-center">
               <button
                 type="button"
                 onClick={() => setShowResetPassword(true)}
-                className="text-xs sm:text-sm text-ricasa-orange hover:text-ricasa-orange-dark font-medium transition-colors flex items-center justify-center gap-1.5 mx-auto"
+                className="text-xs sm:text-sm text-cei-red hover:text-cei-red-dark font-medium transition-colors flex items-center justify-center gap-1.5 mx-auto"
               >
                 <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 Password dimenticata?
