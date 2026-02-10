@@ -80,7 +80,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 md:top-4 md:right-4 z-10 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white border border-gray-200 hover:bg-gray-50 shadow-sm flex items-center justify-center transition-colors"
+          className="absolute top-3 right-3 md:top-4 md:right-4 z-10 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white border border-gray-200 hover:bg-[#F9FBFF] shadow-sm flex items-center justify-center transition-colors"
         >
           <X className="h-4 w-4 md:h-5 md:w-5 text-gray-500" />
         </button>
@@ -100,7 +100,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 truncate">{lead.nome} {lead.cognome}</h2>
               <div className="flex items-center gap-2 md:gap-3 mt-1 flex-wrap">
                 {stateInfo && (
-                  <span className="bg-gray-100 text-gray-700 border border-gray-200 rounded-full px-3 py-1 text-xs font-semibold">
+                  <span className="bg-yellow-400 text-gray-900 rounded-full px-3 py-1 text-xs font-semibold">
                     {stateInfo.label}
                   </span>
                 )}
@@ -147,10 +147,10 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
                       disabled={isCurrentColumn}
                       className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl mb-1 transition-colors ${
                         isCurrentColumn
-                          ? 'bg-gray-50 text-gray-400 cursor-not-allowed'
+                          ? 'bg-[#F9FBFF] text-gray-400 cursor-not-allowed'
                           : isSelected
                             ? 'bg-[#d8010c]/10 border-2 border-[#d8010c] text-[#d8010c] font-semibold'
-                            : 'bg-white text-gray-700 hover:bg-gray-50 active:bg-gray-100 border-2 border-transparent'
+                            : 'bg-white text-gray-700 hover:bg-[#F9FBFF] active:bg-[#F9FBFF] border-2 border-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -174,7 +174,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               <div className="px-4 py-4 border-t border-gray-100 flex gap-3 pb-safe">
                 <button
                   onClick={handleCloseMovePanel}
-                  className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl py-3 text-sm font-semibold transition-colors"
+                  className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl py-3 text-sm font-semibold transition-colors"
                 >
                   Annulla
                 </button>
@@ -243,15 +243,15 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
             
             {/* 3 stat cards */}
             <div className="grid grid-cols-3 gap-2 md:gap-4">
-              <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
+              <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-4 text-center">
                 <div className="text-xl md:text-2xl font-bold text-gray-900 font-nums">{lead.superficie}</div>
                 <div className="text-[10px] md:text-xs text-gray-500">mq totali</div>
               </div>
-              <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
+              <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-4 text-center">
                 <div className="text-xl md:text-2xl font-bold text-gray-900 font-nums">{getTotalRooms()}</div>
                 <div className="text-[10px] md:text-xs text-gray-500">stanze totali</div>
               </div>
-              <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
+              <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-4 text-center">
                 <div className="text-sm md:text-2xl font-bold text-gray-900 capitalize leading-tight">
                   {lead.tipologiaAbitazione}
                 </div>
@@ -271,7 +271,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
                   { key: "bagni", label: "Bagno" },
                   { key: "altro", label: "Altro" },
                 ].map(({ key, label }) => (
-                  <div key={key} className="bg-gray-50 rounded-xl p-2 md:p-3 text-center">
+                  <div key={key} className="bg-[#F9FBFF] rounded-xl p-2 md:p-3 text-center">
                     <div className="text-base md:text-lg font-bold text-gray-900 font-nums">
                       {(lead.composizione as any)[key] || 0}
                     </div>
@@ -293,19 +293,19 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-              <div className="bg-gray-50 rounded-xl p-4 md:p-5 text-center">
+              <div className="bg-[#F9FBFF] rounded-xl p-4 md:p-5 text-center">
                 <span className="inline-block bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
                 <div className="text-xs md:text-sm text-gray-500">Preventivo Minimo</div>
                 <div className="text-xl md:text-2xl font-bold text-gray-900 mt-1 font-nums">€{lead.stimaMin?.toLocaleString("it-IT")}</div>
               </div>
               
-              <div className="bg-gray-50 rounded-xl p-4 md:p-5 text-center border border-gray-200">
+              <div className="bg-[#F9FBFF] rounded-xl p-4 md:p-5 text-center border border-gray-200">
                 <span className="inline-block bg-[#d8010c] text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Stima Ricasa</span>
                 <div className="text-xs md:text-sm text-gray-500">Valore Medio</div>
                 <div className="text-xl md:text-2xl font-bold text-[#d8010c] mt-1 font-nums">€{stimaMedia?.toLocaleString("it-IT")}</div>
               </div>
               
-              <div className="bg-gray-50 rounded-xl p-4 md:p-5 text-center">
+              <div className="bg-[#F9FBFF] rounded-xl p-4 md:p-5 text-center">
                 <span className="inline-block bg-gray-200 text-gray-700 rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
                 <div className="text-xs md:text-sm text-gray-500">Preventivo Massimo</div>
                 <div className="text-xl md:text-2xl font-bold text-gray-900 mt-1 font-nums">€{lead.stimaMax?.toLocaleString("it-IT")}</div>

@@ -60,7 +60,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
   ];
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-gray-50 flex w-full overflow-hidden">
+    <div className="min-h-screen min-h-[100dvh] bg-[#F9FBFF] flex w-full overflow-hidden">
       {/* Mobile Overlay */}
       {isMobile && sidebarOpen && (
         <div
@@ -96,14 +96,14 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
           {isMobile ? (
             <button
               onClick={() => setSidebarOpen(false)}
-              className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-xl hover:bg-[#F9FBFF] transition-colors"
             >
               <X className="h-5 w-5 text-gray-500" />
             </button>
           ) : (
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="p-2 rounded-xl hover:bg-gray-100 transition-colors flex-shrink-0"
+              className="p-2 rounded-xl hover:bg-[#F9FBFF] transition-colors flex-shrink-0"
               title={sidebarCollapsed ? "Espandi menu" : "Collassa menu"}
             >
               {sidebarCollapsed ? (
@@ -134,7 +134,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
                     } py-2.5 rounded-xl text-sm transition-all ${
                       isActive
                         ? "bg-[#d8010c] text-white font-semibold shadow-sm"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium"
+                        : "text-gray-600 hover:bg-[#F9FBFF] hover:text-gray-900 font-medium"
                     }`}
                     title={sidebarCollapsed && !isMobile ? item.label : undefined}
                   >
@@ -162,7 +162,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
                 sidebarCollapsed && !isMobile 
                   ? "justify-center px-2" 
                   : "gap-3 px-4"
-              } py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors`}
+              } py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#F9FBFF] hover:text-gray-900 transition-colors`}
               title={sidebarCollapsed && !isMobile ? "Logout" : undefined}
             >
               <LogOut className="h-5 w-5 flex-shrink-0" />
@@ -182,7 +182,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
           <div className="p-2 border-t border-gray-200 safe-area-bottom">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center justify-center p-2 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+              className="w-full flex items-center justify-center p-2 rounded-xl text-sm font-medium text-gray-600 hover:bg-[#F9FBFF] hover:text-gray-900 transition-colors"
               title="Logout"
             >
               <LogOut className="h-5 w-5" />
@@ -204,7 +204,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
           {isMobile && (
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 -ml-2 rounded-xl hover:bg-gray-100 transition-colors"
+              className="p-2 -ml-2 rounded-xl hover:bg-[#F9FBFF] transition-colors"
             >
               <Menu className="h-5 w-5 text-gray-700" />
             </button>
@@ -220,7 +220,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
             {!isMobile && (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
+                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-4 py-2 font-medium text-sm transition-colors"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>

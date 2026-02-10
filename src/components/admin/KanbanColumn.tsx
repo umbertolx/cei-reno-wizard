@@ -140,13 +140,13 @@ export const KanbanColumn = ({
                 />
                 <button
                   onClick={handleSaveTitle}
-                  className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
+                  className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-[#F9FBFF] transition-colors flex-shrink-0"
                 >
                   <Check className="h-3 w-3 text-gray-500" />
                 </button>
                 <button
                   onClick={handleCancelEdit}
-                  className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
+                  className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-[#F9FBFF] transition-colors flex-shrink-0"
                 >
                   <X className="h-3 w-3 text-gray-500" />
                 </button>
@@ -172,7 +172,7 @@ export const KanbanColumn = ({
                     setEditedColor(counterColor);
                     setIsEditingTitle(true);
                   }}
-                  className="p-1 hover:bg-gray-100 rounded-xl transition-colors flex-shrink-0"
+                  className="p-1 hover:bg-[#F9FBFF] rounded-xl transition-colors flex-shrink-0"
                 >
                   <Pencil className="h-3.5 w-3.5 text-gray-400 hover:text-gray-600" />
                 </button>
@@ -196,7 +196,7 @@ export const KanbanColumn = ({
         {/* Column body */}
         <div
           ref={setNodeRef}
-          className={`rounded-xl md:rounded-2xl p-3 md:p-4 flex-1 overflow-y-auto kanban-col-scroll transition-all duration-300 min-h-32 ${dragOverClass} ${!isDragActive ? 'bg-gray-50/50' : ''}`}
+          className={`rounded-xl md:rounded-2xl p-3 md:p-4 flex-1 overflow-y-auto kanban-col-scroll transition-all duration-300 min-h-32 ${dragOverClass} ${!isDragActive ? 'bg-[#F9FBFF]/50' : ''}`}
           style={{ maxHeight: 'calc(100vh - 320px)' }}
         >
           <SortableContext

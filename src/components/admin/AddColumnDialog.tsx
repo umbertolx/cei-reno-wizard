@@ -41,7 +41,7 @@ export const AddColumnDialog = ({ isOpen, onClose, onAdd, existingColumns }: Add
       <div className="relative bg-white rounded-2xl shadow-xl max-w-md w-full mx-4 p-6">
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-gray-50 flex items-center justify-center transition-colors"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-[#F9FBFF] flex items-center justify-center transition-colors"
         >
           <X className="h-4 w-4 text-gray-500" />
         </button>
@@ -81,7 +81,7 @@ export const AddColumnDialog = ({ isOpen, onClose, onAdd, existingColumns }: Add
           <div className="flex justify-end gap-3 pt-4">
             <button
               onClick={handleClose}
-              className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
+              className="bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-4 py-2 font-medium text-sm transition-colors"
             >
               Annulla
             </button>

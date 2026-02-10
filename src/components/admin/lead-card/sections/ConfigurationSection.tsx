@@ -29,9 +29,9 @@ const fmtEuro = (val: number | undefined | null): string => {
 
 /** Main stat card — label on top, large value below */
 const InfoCard = ({ label, value, accent = false }: { label: string; value: React.ReactNode; accent?: boolean }) => (
-  <div className="bg-gray-50 rounded-xl p-4 md:p-5">
-    <p className="text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wide">{label}</p>
-    <p className={`text-base md:text-lg font-semibold mt-1.5 font-nums ${accent ? "text-[#d8010c]" : "text-gray-900"}`}>
+  <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-5">
+    <p className="text-[10px] md:text-sm font-medium text-gray-500 uppercase tracking-wide">{label}</p>
+    <p className={`text-sm md:text-lg font-semibold mt-1 md:mt-1.5 font-nums ${accent ? "text-[#d8010c]" : "text-gray-900"}`}>
       {value}
     </p>
   </div>
@@ -54,7 +54,7 @@ const SubHeading = ({ children }: { children: React.ReactNode }) => (
 
 /** Badge pill */
 const Badge = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
-  <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium ${className}`}>
+  <span className={`inline-flex items-center gap-1 md:gap-1.5 rounded-full px-2.5 md:px-3 py-1 md:py-1.5 text-xs md:text-sm font-medium ${className}`}>
     {children}
   </span>
 );
@@ -65,7 +65,7 @@ const BadgeGroup = ({ label, badges }: { label: string; badges: { text: string; 
     <SubHeading>{label}</SubHeading>
     <div className="flex flex-wrap gap-2">
       {badges.map((b, i) => (
-        <Badge key={i} className={b.className || "bg-gray-100 text-gray-800"}>
+        <Badge key={i} className={b.className || "bg-yellow-400 text-gray-900"}>
           {b.text}
         </Badge>
       ))}
@@ -84,7 +84,7 @@ const livelloImpiantoLabels: Record<string, string> = {
 };
 
 const tipoInterventoLabels: Record<string, string> = {
-  rifacimento_completo: "Rifacimento Completo",
+  rifacimento_completo: "Nuovo Impianto",
   intervento_parziale: "Intervento Parziale",
 };
 
@@ -192,7 +192,7 @@ const ElettricoSection = ({ data }: { data: Record<string, any> }) => {
         }
         funzioniAttive.push({
           text: funzioniDomoticheLabels[key] + extra,
-          className: "bg-gray-100 text-gray-700 border border-gray-200",
+          className: "bg-yellow-400 text-gray-900",
         });
       }
     });
@@ -211,7 +211,7 @@ const ElettricoSection = ({ data }: { data: Record<string, any> }) => {
         }
         interventiSelezionati.push({
           text: interventiParzialiLabels[key] + extra,
-          className: "bg-gray-100 text-gray-700 border border-gray-200",
+          className: "bg-yellow-400 text-gray-900",
         });
       }
     });
@@ -220,13 +220,13 @@ const ElettricoSection = ({ data }: { data: Record<string, any> }) => {
   const stanzeCoivolte = parziale?.stanze_coinvolte as string[] | undefined;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 md:p-6">
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
       {/* Header */}
-      <h3 className="flex items-center gap-2.5 text-lg md:text-xl font-bold text-[#d8010c] mb-5">
-        <Zap className="h-5 w-5 md:h-6 md:w-6" />
-        <span>Impianto Elettrico</span>
+      <h3 className="flex flex-wrap items-center gap-2 md:gap-2.5 text-base md:text-xl font-bold text-[#d8010c] mb-4 md:mb-5">
+        <Zap className="h-5 w-5 md:h-6 md:w-6 flex-shrink-0" />
+        <span className="min-w-0">Impianto Elettrico</span>
         {tipoIntervento && (
-          <Badge className="bg-gray-100 text-gray-800 ml-auto text-xs">
+          <Badge className="bg-yellow-400 text-gray-900 ml-auto text-xs whitespace-nowrap flex-shrink-0">
             {tipoInterventoLabels[tipoIntervento] || tipoIntervento}
           </Badge>
         )}
@@ -258,7 +258,7 @@ const ElettricoSection = ({ data }: { data: Record<string, any> }) => {
 
         {/* Impianto obsoleto */}
         {parziale?.impianto_obsoleto && (
-          <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <div className="flex items-center gap-3 p-4 bg-[#F9FBFF] rounded-xl border border-gray-200">
             <AlertCircle className="h-5 w-5 text-[#d8010c] flex-shrink-0" />
             <span className="text-sm md:text-base text-gray-800 font-medium">Impianto segnalato come obsoleto</span>
           </div>
@@ -270,7 +270,7 @@ const ElettricoSection = ({ data }: { data: Record<string, any> }) => {
             label="Stanze Coinvolte"
             badges={stanzeCoivolte.map((s) => ({
               text: s.replace(/([A-Z])/g, " $1").replace(/-\d+$/, "").replace(/[-_]/g, " ").trim(),
-              className: "bg-gray-100 text-gray-700",
+              className: "bg-yellow-400 text-gray-900",
             }))}
           />
         )}
@@ -302,12 +302,12 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
     : [];
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 md:p-6">
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
       {/* Header */}
-      <h3 className="flex items-center gap-2.5 text-lg md:text-xl font-bold text-[#d8010c] mb-5">
-        <Sun className="h-5 w-5 md:h-6 md:w-6" />
-        <span>Impianto Fotovoltaico</span>
-        <Badge className="bg-gray-100 text-gray-800 ml-auto text-xs">
+      <h3 className="flex flex-wrap items-center gap-2 md:gap-2.5 text-base md:text-xl font-bold text-[#d8010c] mb-4 md:mb-5">
+        <Sun className="h-5 w-5 md:h-6 md:w-6 flex-shrink-0" />
+        <span className="min-w-0">Impianto Fotovoltaico</span>
+        <Badge className="bg-yellow-400 text-gray-900 ml-auto text-xs whitespace-nowrap flex-shrink-0">
           {tipoIntervento === "ampliamento" ? "Ampliamento" : "Nuovo Impianto"}
         </Badge>
       </h3>
@@ -330,7 +330,7 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
         {/* Dettagli tetto */}
         <div>
           <SubHeading>Dettagli Tetto</SubHeading>
-          <div className="bg-gray-50 rounded-xl divide-y divide-gray-100">
+          <div className="bg-[#F9FBFF] rounded-xl divide-y divide-gray-100">
             {tetto.tipologia && (
               <DetailRow label="Tipologia" value={tettoTipologiaLabels[tetto.tipologia] || tetto.tipologia} />
             )}
@@ -347,7 +347,7 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
               <DetailRow
                 label="Qualità Forniture"
                 value={
-                  <Badge className="bg-gray-100 text-gray-700 border border-gray-200 text-xs">
+                  <Badge className="bg-yellow-400 text-gray-900 text-xs">
                     {qualita.charAt(0).toUpperCase() + qualita.slice(1)}
                   </Badge>
                 }
@@ -360,7 +360,7 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
         {(consumi.dichiarati !== undefined || consumi.kwh_anno || consumi.spesa_mensile) && (
           <div>
             <SubHeading>{consumi.dichiarati ? "Consumi Dichiarati" : "Consumi Stimati"}</SubHeading>
-            <div className="bg-gray-50 rounded-xl divide-y divide-gray-100">
+            <div className="bg-[#F9FBFF] rounded-xl divide-y divide-gray-100">
               <DetailRow
                 label="Consumo"
                 value={
@@ -385,7 +385,7 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
             label="Consumi Aggiuntivi"
             badges={aggiuntiviEntries.map(([key, val]: [string, any]) => ({
               text: `${consumiAggiuntiviLabels[key] || key.replace(/_/g, " ")}${typeof val === "object" && val.valore ? ` (${fmtInt(val.valore)})` : ""}`,
-              className: "bg-gray-100 text-gray-700 border border-gray-200",
+              className: "bg-yellow-400 text-gray-900",
             }))}
           />
         )}
@@ -394,7 +394,7 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
         {distribuzioneGiorno !== undefined && distribuzioneGiorno !== null && (
           <div>
             <SubHeading>Distribuzione Consumi</SubHeading>
-            <div className="bg-gray-50 rounded-xl p-4">
+            <div className="bg-[#F9FBFF] rounded-xl p-4">
               <div className="flex justify-between items-center mb-2.5">
                 <span className="text-sm text-gray-500">Giorno</span>
                 <span className="text-sm font-semibold text-gray-900 font-nums">{distribuzioneGiorno}% giorno / {100 - distribuzioneGiorno}% sera</span>
@@ -412,7 +412,7 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
 
         {/* PVGIS */}
         {pvgis && (
-          <div className="bg-gray-50 rounded-xl divide-y divide-gray-100">
+          <div className="bg-[#F9FBFF] rounded-xl divide-y divide-gray-100">
             <DetailRow label="PVGIS — Energia Annua" value={`${fmtInt(pvgis.energia_annua_kwh)} kWh/anno`} />
             {pvgis.kwh_per_kwp && (
               <DetailRow label="PVGIS — Resa per kWp" value={`${fmtInt(pvgis.kwh_per_kwp)} kWh/kWp`} />
@@ -476,13 +476,13 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
   const notifiche = data.notifiche;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 md:p-6">
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
       {/* Header */}
-      <h3 className="flex items-center gap-2.5 text-lg md:text-xl font-bold text-[#d8010c] mb-5">
-        <Shield className="h-5 w-5 md:h-6 md:w-6" />
-        <span>Impianto di Sicurezza</span>
+      <h3 className="flex flex-wrap items-center gap-2 md:gap-2.5 text-base md:text-xl font-bold text-[#d8010c] mb-4 md:mb-5">
+        <Shield className="h-5 w-5 md:h-6 md:w-6 flex-shrink-0" />
+        <span className="min-w-0">Impianto di Sicurezza</span>
         {sistema && (
-          <Badge className="bg-gray-100 text-gray-800 ml-auto text-xs">
+          <Badge className="bg-yellow-400 text-gray-900 ml-auto text-xs whitespace-nowrap flex-shrink-0">
             {sistema === "wireless" ? "Wireless" : "Filare"}
           </Badge>
         )}
@@ -500,7 +500,7 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
               value={
                 <span className="flex flex-wrap gap-1.5 mt-0.5">
                   {aree.map((area) => (
-                    <Badge key={area} className="bg-gray-100 text-gray-700 border border-gray-200 capitalize text-xs px-2.5 py-1">{area}</Badge>
+                    <Badge key={area} className="bg-yellow-400 text-gray-900 capitalize text-xs px-2.5 py-1">{area}</Badge>
                   ))}
                 </span>
               }
@@ -510,7 +510,7 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
             <InfoCard
               label="Qualità"
               value={
-                <Badge className="bg-gray-100 text-gray-700 border border-gray-200 text-xs px-2.5 py-1">
+                <Badge className="bg-yellow-400 text-gray-900 text-xs px-2.5 py-1">
                   {qualita.charAt(0).toUpperCase() + qualita.slice(1)}
                 </Badge>
               }
@@ -522,7 +522,7 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
         {interni && (
           <div>
             <SubHeading>Protezione Interni</SubHeading>
-            <div className="bg-gray-50 rounded-xl divide-y divide-gray-100">
+            <div className="bg-[#F9FBFF] rounded-xl divide-y divide-gray-100">
               {interni.tipo_rilevazione && (
                 <DetailRow
                   label="Tipo Rilevazione"
@@ -549,7 +549,7 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
                 <p className="text-sm font-medium text-gray-500 mb-2">Stanze Monitorate</p>
                 <div className="flex flex-wrap gap-2">
                   {(interni.stanze as string[]).map((s, i) => (
-                    <Badge key={i} className="bg-gray-100 text-gray-700">
+                    <Badge key={i} className="bg-yellow-400 text-gray-900">
                       {s.replace(/([A-Z])/g, " $1").replace(/-\d+$/, "").replace(/[-_]/g, " ").trim()}
                     </Badge>
                   ))}
@@ -563,7 +563,7 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
                 <p className="text-sm font-medium text-gray-500 mb-2">Finestre per Stanza</p>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(interni.finestre_per_stanza).map(([stanza, num]) => (
-                    <Badge key={stanza} className="bg-gray-100 text-gray-700">
+                    <Badge key={stanza} className="bg-yellow-400 text-gray-900">
                       {stanza.replace(/([A-Z])/g, " $1").replace(/-\d+$/, "").replace(/[-_]/g, " ").trim()}: {String(num)}
                     </Badge>
                   ))}
@@ -582,12 +582,12 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
             {esterni.spazi && esterni.spazi.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {(esterni.spazi as string[]).map((s, i) => (
-                  <Badge key={i} className="bg-gray-100 text-gray-700 capitalize">{s}</Badge>
+                  <Badge key={i} className="bg-yellow-400 text-gray-900 capitalize">{s}</Badge>
                 ))}
               </div>
             )}
 
-            <div className="bg-gray-50 rounded-xl divide-y divide-gray-100">
+            <div className="bg-[#F9FBFF] rounded-xl divide-y divide-gray-100">
               {esterni.balconi && (
                 <DetailRow
                   label="Balconi"
@@ -623,9 +623,9 @@ const SicurezzaSection = ({ data }: { data: Record<string, any> }) => {
             badges={[
               ...(notifiche.tipi || []).map((tipo: string) => ({
                 text: tipo.charAt(0).toUpperCase() + tipo.slice(1),
-                className: "bg-gray-100 text-gray-700 border border-gray-200",
+                className: "bg-yellow-400 text-gray-900",
               })),
-              ...(notifiche.backup_4g ? [{ text: "Backup 4G", className: "bg-gray-100 text-gray-700 border border-gray-200" }] : []),
+              ...(notifiche.backup_4g ? [{ text: "Backup 4G", className: "bg-yellow-400 text-gray-900" }] : []),
             ]}
           />
         )}

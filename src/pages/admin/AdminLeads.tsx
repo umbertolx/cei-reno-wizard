@@ -511,7 +511,7 @@ const AdminLeads = () => {
   const mobileColumnColor = customColors[mobileSelectedColumn]
     || counterColors[mobileSelectedColumn] 
     || customColumns.find(c => c.id === mobileSelectedColumn)?.color 
-    || "bg-gray-500";
+    || "bg-[#F9FBFF]0";
 
   // ── Available columns for move operation
   const availableColumnsForMove = allColumns.map(col => ({
@@ -535,7 +535,7 @@ const AdminLeads = () => {
             <button 
               onClick={() => loadLeads(true)}
               disabled={isRefreshing}
-              className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors"
+              className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors"
             >
               <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
               {!isMobile && "Aggiorna"}
@@ -546,7 +546,7 @@ const AdminLeads = () => {
               className={`flex items-center gap-2 border rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors relative ${
                 showFilters || activeFilterCount > 0
                   ? 'bg-[#d8010c] border-[#d8010c] text-white hover:bg-[#b8000a]'
-                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-[#F9FBFF]'
               }`}
             >
               <SlidersHorizontal className="h-4 w-4" />
@@ -566,7 +566,7 @@ const AdminLeads = () => {
               <div className="relative">
                 <button 
                   onClick={() => setShowMoreActions(!showMoreActions)}
-                  className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-3 py-2 font-medium text-sm transition-colors"
+                  className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-3 py-2 font-medium text-sm transition-colors"
                 >
                   <MoreHorizontal className="h-4 w-4" />
                 </button>
@@ -576,7 +576,7 @@ const AdminLeads = () => {
                     <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-20 overflow-hidden min-w-[180px]">
                       <button
                         onClick={() => { setIsAddColumnOpen(true); setShowMoreActions(false); }}
-                        className="w-full text-left flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        className="w-full text-left flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-[#F9FBFF] transition-colors"
                       >
                         <Plus className="h-4 w-4" />
                         Aggiungi Colonna
@@ -588,7 +588,7 @@ const AdminLeads = () => {
             ) : (
               <button 
                 onClick={() => setIsAddColumnOpen(true)}
-                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
+                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-4 py-2 font-medium text-sm transition-colors"
               >
                 <Plus className="h-4 w-4" />
                 Aggiungi Colonna
@@ -618,7 +618,7 @@ const AdminLeads = () => {
                 )}
                 <button
                   onClick={handleCloseFilters}
-                  className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+                  className="p-1 hover:bg-[#F9FBFF] rounded-lg transition-colors"
                 >
                   <XIcon className="h-4 w-4 text-gray-400" />
                 </button>
@@ -647,7 +647,7 @@ const AdminLeads = () => {
                           className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium border-2 transition-all duration-150 whitespace-nowrap ${
                             isActive
                               ? 'bg-[#d8010c]/10 border-[#d8010c] text-[#d8010c]'
-                              : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300'
+                              : 'bg-white border-gray-200 text-gray-600 hover:bg-[#F9FBFF] hover:border-gray-300'
                           }`}
                         >
                           <Icon className={`h-4 w-4 flex-shrink-0 ${isActive ? 'text-[#d8010c]' : 'text-gray-400'}`} />
@@ -668,7 +668,7 @@ const AdminLeads = () => {
                       placeholder="Cerca per nome..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-9 pr-3 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                      className="w-full bg-[#F9FBFF] border border-gray-200 rounded-lg h-9 pl-9 pr-3 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
                     />
                   </div>
                 </div>
@@ -685,7 +685,7 @@ const AdminLeads = () => {
                       value={filterDateFrom}
                       onChange={(e) => setFilterDateFrom(e.target.value)}
                       title="Da"
-                      className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                      className="flex-1 min-w-0 bg-[#F9FBFF] border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
                     />
                     <span className="text-gray-300 text-xs flex-shrink-0">→</span>
                     <input
@@ -693,7 +693,7 @@ const AdminLeads = () => {
                       value={filterDateTo}
                       onChange={(e) => setFilterDateTo(e.target.value)}
                       title="A"
-                      className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                      className="flex-1 min-w-0 bg-[#F9FBFF] border border-gray-200 rounded-lg h-9 px-2.5 text-sm text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
                     />
                   </div>
                 </div>
@@ -709,7 +709,7 @@ const AdminLeads = () => {
                         placeholder="Min"
                         value={filterPriceMin}
                         onChange={(e) => setFilterPriceMin(e.target.value)}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                        className="w-full bg-[#F9FBFF] border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
                       />
                     </div>
                     <span className="text-gray-300 text-xs flex-shrink-0">—</span>
@@ -720,7 +720,7 @@ const AdminLeads = () => {
                         placeholder="Max"
                         value={filterPriceMax}
                         onChange={(e) => setFilterPriceMax(e.target.value)}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
+                        className="w-full bg-[#F9FBFF] border border-gray-200 rounded-lg h-9 pl-8 pr-2 text-sm placeholder:text-gray-400 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none"
                       />
                     </div>
                   </div>
@@ -736,7 +736,7 @@ const AdminLeads = () => {
                   {filterImpianti.map(imp => (
                     <span
                       key={imp}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-yellow-400 text-gray-900"
                     >
                       {imp === 'elettrico' && <Zap className="h-3 w-3" />}
                       {imp === 'fotovoltaico' && <Sun className="h-3 w-3" />}
@@ -748,7 +748,7 @@ const AdminLeads = () => {
                     </span>
                   ))}
                   {filterDateFrom && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-yellow-400 text-gray-900">
                       <Calendar className="h-3 w-3 flex-shrink-0" /> Da: <span className="font-nums">{filterDateFrom}</span>
                       <button onClick={() => setFilterDateFrom("")} className="ml-0.5 hover:text-[#d8010c]">
                         <XIcon className="h-3 w-3" />
@@ -756,7 +756,7 @@ const AdminLeads = () => {
                     </span>
                   )}
                   {filterDateTo && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-yellow-400 text-gray-900">
                       <Calendar className="h-3 w-3 flex-shrink-0" /> A: <span className="font-nums">{filterDateTo}</span>
                       <button onClick={() => setFilterDateTo("")} className="ml-0.5 hover:text-[#d8010c]">
                         <XIcon className="h-3 w-3" />
@@ -764,7 +764,7 @@ const AdminLeads = () => {
                     </span>
                   )}
                   {filterPriceMin && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-yellow-400 text-gray-900">
                       <Euro className="h-3 w-3 flex-shrink-0" /> Min: <span className="font-nums">€{Number(filterPriceMin).toLocaleString()}</span>
                       <button onClick={() => setFilterPriceMin("")} className="ml-0.5 hover:text-[#d8010c]">
                         <XIcon className="h-3 w-3" />
@@ -772,7 +772,7 @@ const AdminLeads = () => {
                     </span>
                   )}
                   {filterPriceMax && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-yellow-400 text-gray-900">
                       <Euro className="h-3 w-3 flex-shrink-0" /> Max: <span className="font-nums">€{Number(filterPriceMax).toLocaleString()}</span>
                       <button onClick={() => setFilterPriceMax("")} className="ml-0.5 hover:text-[#d8010c]">
                         <XIcon className="h-3 w-3" />
@@ -817,7 +817,7 @@ const AdminLeads = () => {
               <div className="flex gap-3 pt-1">
                 <button
                   onClick={discardAndClose}
-                  className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl py-2.5 text-sm font-semibold transition-colors"
+                  className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl py-2.5 text-sm font-semibold transition-colors"
                 >
                   Annulla
                 </button>
@@ -841,7 +841,7 @@ const AdminLeads = () => {
             <div className="relative">
               <button
                 onClick={() => setMobileColumnDropdownOpen(!mobileColumnDropdownOpen)}
-                className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-xl px-4 py-3 shadow-sm transition-colors active:bg-gray-50"
+                className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-xl px-4 py-3 shadow-sm transition-colors active:bg-[#F9FBFF]"
               >
                 <div className="flex items-center gap-3">
                   <span className={`w-3 h-3 rounded-full flex-shrink-0 ${mobileColumnColor}`} />
@@ -862,7 +862,7 @@ const AdminLeads = () => {
                     {orderedColumns.map((col) => {
                       if (!col) return null;
                       const colLabel = getColumnLabel(col.id);
-                      const colColor = customColors[col.id] || counterColors[col.id] || (col.type === 'custom' ? col.column?.color : '') || "bg-gray-500";
+                      const colColor = customColors[col.id] || counterColors[col.id] || (col.type === 'custom' ? col.column?.color : '') || "bg-[#F9FBFF]0";
                       const colLeadsCount = (leadsByState[col.id] || []).length;
                       const isSelected = col.id === mobileSelectedColumn;
 
@@ -875,8 +875,8 @@ const AdminLeads = () => {
                           }}
                           className={`w-full flex items-center justify-between px-4 py-3 text-sm transition-colors ${
                             isSelected
-                              ? 'bg-gray-50 font-semibold text-[#d8010c]'
-                              : 'text-gray-700 hover:bg-gray-50'
+                              ? 'bg-[#F9FBFF] font-semibold text-[#d8010c]'
+                              : 'text-gray-700 hover:bg-[#F9FBFF]'
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -897,7 +897,7 @@ const AdminLeads = () => {
             {/* Full-width cards list */}
             {mobileLeads.length === 0 ? (
               <div className="text-center py-12 text-gray-400">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#F9FBFF] flex items-center justify-center">
                   <Search className="h-7 w-7 text-gray-300" />
                 </div>
                 <p className="text-sm font-medium">Nessun lead in "{mobileColumnLabel}"</p>
@@ -909,7 +909,7 @@ const AdminLeads = () => {
                   <div
                     key={lead.id}
                     onClick={() => handleViewDetails(lead)}
-                    className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 active:bg-gray-50 transition-colors cursor-pointer"
+                    className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 active:bg-[#F9FBFF] transition-colors cursor-pointer"
                   >
                     {/* Card header */}
                     <div className="flex items-center gap-3">

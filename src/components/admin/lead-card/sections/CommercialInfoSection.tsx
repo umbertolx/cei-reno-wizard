@@ -15,7 +15,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
       </h3>
       <div className="space-y-3 md:space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <div className="flex items-center gap-3 p-3 bg-[#F9FBFF] rounded-xl">
             <Calendar className="h-4 w-4 md:h-5 md:w-5 text-gray-400 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Data Richiesta</p>
@@ -23,7 +23,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
             </div>
           </div>
           
-          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <div className="flex items-center gap-3 p-3 bg-[#F9FBFF] rounded-xl">
             <Clock className="h-4 w-4 md:h-5 md:w-5 text-gray-400 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Ultimo Contatto</p>
@@ -42,7 +42,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
             </p>
             <div className="flex flex-wrap gap-1.5 md:gap-2">
               {lead.moduliSelezionati.map((modulo) => (
-                <span key={modulo} className="flex items-center gap-1 bg-gray-100 text-gray-800 rounded-full px-3 py-1.5 text-xs font-medium">
+                <span key={modulo} className="flex items-center gap-1 bg-yellow-400 text-gray-900 rounded-full px-3 py-1.5 text-xs font-medium">
                   <CheckCircle className="h-3 w-3" />
                   {modulo.charAt(0).toUpperCase() + modulo.slice(1)}
                 </span>
@@ -53,7 +53,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
 
         {/* Sopralluogo */}
         {lead.sopralluogoRichiesto && (
-          <div className="p-3 md:p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <div className="p-3 md:p-4 bg-[#F9FBFF] rounded-xl border border-gray-200">
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-gray-400 flex-shrink-0" />
               <div>

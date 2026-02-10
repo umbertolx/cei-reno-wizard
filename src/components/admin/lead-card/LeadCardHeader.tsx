@@ -42,7 +42,7 @@ export const LeadCardHeader = ({
       {forceExpanded === undefined && (
         <button
           onClick={onToggleExpansion}
-          className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
+          className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-[#F9FBFF] transition-colors flex-shrink-0"
         >
           <ChevronDown 
             className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${

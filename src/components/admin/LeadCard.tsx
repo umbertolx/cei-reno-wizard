@@ -89,7 +89,7 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
         <button
           onClick={handleViewDetails}
           type="button"
-          className="w-full bg-white border border-gray-200 rounded-xl py-2.5 md:py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors active:bg-gray-100"
+          className="w-full bg-white border border-gray-200 rounded-xl py-2.5 md:py-2 text-sm font-medium text-gray-700 hover:bg-[#F9FBFF] flex items-center justify-center gap-2 transition-colors active:bg-[#F9FBFF]"
         >
           <Eye className="h-4 w-4" />
           Dettagli Completi

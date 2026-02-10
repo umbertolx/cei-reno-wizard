@@ -41,7 +41,7 @@ export const DeleteColumnDialog = ({
       <div className="relative bg-white rounded-2xl shadow-xl max-w-md w-full mx-4 p-6">
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-gray-50 flex items-center justify-center transition-colors"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-[#F9FBFF] flex items-center justify-center transition-colors"
         >
           <X className="h-4 w-4 text-gray-500" />
         </button>
@@ -56,7 +56,7 @@ export const DeleteColumnDialog = ({
         </p>
 
         {leadCount > 0 && (
-          <div className="p-3 bg-gray-50 border border-gray-200 rounded-xl mb-4">
+          <div className="p-3 bg-[#F9FBFF] border border-gray-200 rounded-xl mb-4">
             <p className="text-gray-700 text-sm">
               ⚠️ Attenzione: Ci sono <strong className="font-nums">{leadCount} lead</strong> in questa colonna.
               Verranno spostati automaticamente in "Nuovo".
@@ -67,7 +67,7 @@ export const DeleteColumnDialog = ({
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium text-gray-700 block mb-1.5">
-              Per confermare, digita <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded-xl text-xs">DELETE</span>:
+              Per confermare, digita <span className="font-mono bg-[#F9FBFF] px-1.5 py-0.5 rounded-xl text-xs">DELETE</span>:
             </label>
             <input
               value={confirmText}
@@ -82,7 +82,7 @@ export const DeleteColumnDialog = ({
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={handleClose}
-            className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-2 font-medium text-sm transition-colors"
+            className="bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-4 py-2 font-medium text-sm transition-colors"
           >
             Annulla
           </button>

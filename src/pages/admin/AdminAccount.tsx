@@ -249,7 +249,7 @@ const AdminAccount = () => {
                   <button
                     onClick={handleCancelEditName}
                     disabled={isSavingName}
-                    className="flex items-center gap-1.5 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold rounded-xl px-5 py-2.5 md:py-2 text-sm transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1.5 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] font-semibold rounded-xl px-5 py-2.5 md:py-2 text-sm transition-colors disabled:opacity-50"
                   >
                     <X className="h-4 w-4" />
                     Annulla

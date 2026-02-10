@@ -27,12 +27,12 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
       <div className="space-y-4 md:space-y-6">
         {/* Dati principali - 3 stat cards */}
         <div className="grid grid-cols-3 gap-2 md:gap-4">
-          <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
+          <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-4 text-center">
             <div className="text-xl md:text-2xl font-bold text-gray-900 font-nums">{lead.superficie || 0}</div>
             <div className="text-[10px] md:text-xs text-gray-500">mq totali</div>
           </div>
 
-          <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
+          <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-4 text-center">
             <div className="text-xl md:text-2xl font-bold text-gray-900 font-nums">
               {Object.entries(lead.composizione)
                 .reduce((sum, [, val]) => sum + Number(val), 0)}
@@ -40,7 +40,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
             <div className="text-[10px] md:text-xs text-gray-500">stanze totali</div>
           </div>
 
-          <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
+          <div className="bg-[#F9FBFF] rounded-xl p-3 md:p-4 text-center">
             <div className="text-sm md:text-2xl font-bold text-gray-900 capitalize leading-tight">
               {lead.tipologiaAbitazione?.replace(/_/g, " ") || "N/D"}
             </div>
@@ -51,7 +51,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
         {/* Extra info row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
           {piano && (
-            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+            <div className="flex items-center gap-2 p-3 bg-[#F9FBFF] rounded-xl">
               <Layers className="h-4 w-4 text-gray-400 flex-shrink-0" />
               <div>
                 <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Piano</p>
@@ -60,7 +60,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
             </div>
           )}
 
-          <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+          <div className="flex items-center gap-2 p-3 bg-[#F9FBFF] rounded-xl">
             <Users className="h-4 w-4 text-gray-400 flex-shrink-0" />
             <div>
               <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Persone</p>
@@ -69,7 +69,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
           </div>
 
           {lead.tipoProprietà && (
-            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+            <div className="flex items-center gap-2 p-3 bg-[#F9FBFF] rounded-xl">
               <Home className="h-4 w-4 text-gray-400 flex-shrink-0" />
               <div>
                 <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Proprietà</p>
@@ -80,7 +80,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
         </div>
 
         {/* Indirizzo */}
-        <div className="flex items-start gap-3 p-3 md:p-4 bg-gray-50 rounded-xl">
+        <div className="flex items-start gap-3 p-3 md:p-4 bg-[#F9FBFF] rounded-xl">
           <MapPin className="h-4 w-4 md:h-5 md:w-5 text-gray-400 mt-0.5 flex-shrink-0" />
           <div className="min-w-0">
             <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Indirizzo</p>
@@ -105,7 +105,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
                 return (
                   <div
                     key={stanza}
-                    className="bg-gray-50 rounded-xl p-2 md:p-3 text-center"
+                    className="bg-[#F9FBFF] rounded-xl p-2 md:p-3 text-center"
                   >
                     <div className="text-base md:text-lg font-bold text-gray-900 font-nums">{count}</div>
                     <div className="text-[10px] md:text-xs text-gray-500">{roomLabels[stanza] || stanza}</div>

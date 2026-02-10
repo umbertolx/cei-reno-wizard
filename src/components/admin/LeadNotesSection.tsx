@@ -109,7 +109,7 @@ export const LeadNotesSection = ({ leadId }: LeadNotesSectionProps) => {
     return (
       <button
         onClick={() => setIsExpanded(true)}
-        className="w-full bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-5 flex items-center justify-between hover:bg-gray-50 transition-colors group"
+        className="w-full bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-5 flex items-center justify-between hover:bg-[#F9FBFF] transition-colors group"
       >
         <span className="flex items-center gap-2 text-base md:text-lg font-bold text-gray-900">
           <MessageSquarePlus className="h-5 w-5 text-gray-700" />
@@ -137,7 +137,7 @@ export const LeadNotesSection = ({ leadId }: LeadNotesSectionProps) => {
           placeholder="Scrivi una nota..."
           rows={2}
           disabled={isSending}
-          className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 resize-none focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none disabled:opacity-50"
+          className="flex-1 bg-[#F9FBFF] border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 resize-none focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none disabled:opacity-50"
         />
         <button
           onClick={handleSubmit}
@@ -145,7 +145,7 @@ export const LeadNotesSection = ({ leadId }: LeadNotesSectionProps) => {
           className={`flex-shrink-0 h-10 w-10 rounded-xl flex items-center justify-center transition-all active:scale-95 ${
             newNote.trim() && !isSending
               ? "bg-[#d8010c] text-white hover:bg-[#b8000a] shadow-sm"
-              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+              : "bg-[#F9FBFF] text-gray-400 cursor-not-allowed"
           }`}
         >
           {isSending ? (
@@ -174,7 +174,7 @@ export const LeadNotesSection = ({ leadId }: LeadNotesSectionProps) => {
                 <div className="absolute -left-[5px] top-1 w-2 h-2 rounded-full bg-[#d8010c]" />
 
                 {/* Note content */}
-                <div className="bg-gray-50 rounded-xl p-3">
+                <div className="bg-[#F9FBFF] rounded-xl p-3">
                   {/* Author & date header */}
                   <div className="flex items-center gap-2 mb-1.5">
                     <div className="w-6 h-6 rounded-full bg-[#d8010c] text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">

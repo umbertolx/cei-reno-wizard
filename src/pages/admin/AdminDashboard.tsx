@@ -165,7 +165,7 @@ const AdminDashboard = () => {
             <button 
               onClick={handleRefresh}
               disabled={isLoading}
-              className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors"
+              className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors"
             >
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
               {!isMobile && "Aggiorna"}
@@ -175,7 +175,7 @@ const AdminDashboard = () => {
             <div className="relative">
               <button
                 onClick={() => setTimeFrameOpen(!timeFrameOpen)}
-                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors min-w-[130px] md:min-w-[160px] justify-between"
+                className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors min-w-[130px] md:min-w-[160px] justify-between"
               >
                 <span className="truncate">{timeFrameLabels[timeFrame]}</span>
                 <ChevronDown className="h-4 w-4 text-gray-400 flex-shrink-0" />
@@ -190,7 +190,7 @@ const AdminDashboard = () => {
                         key={tf}
                         onClick={() => { setTimeFrame(tf); setTimeFrameOpen(false); }}
                         className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
-                          tf === timeFrame ? 'bg-gray-50 text-[#d8010c] font-semibold' : 'text-gray-700 hover:bg-gray-50'
+                          tf === timeFrame ? 'bg-[#F9FBFF] text-[#d8010c] font-semibold' : 'text-gray-700 hover:bg-[#F9FBFF]'
                         }`}
                       >
                         {timeFrameLabels[tf]}
@@ -222,7 +222,7 @@ const AdminDashboard = () => {
                 </p>
                 <button 
                   onClick={() => navigate("/")}
-                  className="mt-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl px-4 py-1.5 text-sm font-medium transition-colors"
+                  className="mt-2 bg-white border border-gray-200 text-gray-700 hover:bg-[#F9FBFF] rounded-xl px-4 py-1.5 text-sm font-medium transition-colors"
                 >
                   Vai al configuratore
                 </button>
@@ -313,7 +313,7 @@ const AdminDashboard = () => {
                             €{lead.stimaMax.toLocaleString()}
                           </p>
                           {leadStateInfo && !isMobile && (
-                            <span className="inline-block bg-gray-100 text-gray-700 border border-gray-200 rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap">
+                            <span className="inline-block bg-yellow-400 text-gray-900 rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap">
                               {leadStateInfo.label}
                             </span>
                           )}
