@@ -969,7 +969,7 @@ const AdminLeads = () => {
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
           >
-            <div className="flex overflow-x-auto kanban-scrollbar pb-4 divide-x divide-gray-200">
+            <div className="flex overflow-x-auto pb-4 divide-x divide-gray-200 kanban-h-scroll">
               <SortableContext
                 items={columnOrder}
                 strategy={horizontalListSortingStrategy}

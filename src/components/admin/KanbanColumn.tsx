@@ -9,21 +9,21 @@ import { GripVertical, Pencil, Check, X, Trash2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 
-// Maps counter bg-X-500 colors to very faded bg-X-50/60 for the header box
+// Maps counter bg-X-500 colors to faded bg-X-100/80 for the header box
 const fadedColorMap: Record<string, string> = {
-  "bg-green-500": "bg-green-50/60",
-  "bg-yellow-500": "bg-yellow-50/60",
-  "bg-red-500": "bg-red-50/60",
-  "bg-orange-500": "bg-orange-50/60",
-  "bg-cyan-500": "bg-cyan-50/60",
-  "bg-blue-500": "bg-blue-50/60",
-  "bg-purple-500": "bg-purple-50/60",
-  "bg-pink-500": "bg-pink-50/60",
-  "bg-indigo-500": "bg-indigo-50/60",
-  "bg-teal-500": "bg-teal-50/60",
-  "bg-lime-500": "bg-lime-50/60",
-  "bg-amber-500": "bg-amber-50/60",
-  "bg-gray-500": "bg-gray-100/60",
+  "bg-green-500": "bg-green-100/80",
+  "bg-yellow-500": "bg-yellow-100/80",
+  "bg-red-500": "bg-red-100/80",
+  "bg-orange-500": "bg-orange-100/80",
+  "bg-cyan-500": "bg-cyan-100/80",
+  "bg-blue-500": "bg-blue-100/80",
+  "bg-purple-500": "bg-purple-100/80",
+  "bg-pink-500": "bg-pink-100/80",
+  "bg-indigo-500": "bg-indigo-100/80",
+  "bg-teal-500": "bg-teal-100/80",
+  "bg-lime-500": "bg-lime-100/80",
+  "bg-amber-500": "bg-amber-100/80",
+  "bg-gray-500": "bg-gray-200/80",
 };
 
 interface KanbanColumnProps {
@@ -196,7 +196,7 @@ export const KanbanColumn = ({
         {/* Column body */}
         <div
           ref={setNodeRef}
-          className={`rounded-xl md:rounded-2xl p-3 md:p-4 flex-1 overflow-y-auto kanban-scrollbar transition-all duration-300 min-h-32 ${dragOverClass} ${!isDragActive ? 'bg-gray-50/50' : ''}`}
+          className={`rounded-xl md:rounded-2xl p-3 md:p-4 flex-1 overflow-y-auto kanban-col-scroll transition-all duration-300 min-h-32 ${dragOverClass} ${!isDragActive ? 'bg-gray-50/50' : ''}`}
           style={{ maxHeight: 'calc(100vh - 320px)' }}
         >
           <SortableContext
