@@ -33,23 +33,51 @@ export const SortableKanbanColumn = (props: SortableKanbanColumnProps) => {
     },
   });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
+  // Lock Y-axis: columns only move horizontally
+  const lockedTransform = transform
+    ? { ...transform, y: 0, scaleX: 1, scaleY: 1 }
+    : null;
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(lockedTransform),
+    transition: transition || 'transform 200ms cubic-bezier(0.25, 1, 0.5, 1)',
   };
+
+  // When dragging, render a full-height placeholder slot (no bottom border)
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        className="w-[80vw] md:w-[350px] flex-shrink-0 z-0 pointer-events-none"
+      >
+        <div
+          className="h-full min-h-[300px] rounded-t-2xl"
+          style={{
+            borderLeft: '2px dashed #cbd5e1',
+            borderRight: '2px dashed #cbd5e1',
+            borderTop: '2px dashed #cbd5e1',
+            borderBottom: 'none',
+            background: 'linear-gradient(180deg, #f1f5f9 0%, transparent 100%)',
+            opacity: 0.5,
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
       ref={setNodeRef}
       style={style}
       {...attributes}
-      {...listeners}
-      className={`w-[80vw] md:w-[350px] flex-shrink-0 ${isDragging ? 'z-50' : ''}`}
+      className="w-[80vw] md:w-[350px] flex-shrink-0 transition-shadow"
     >
       <KanbanColumn
         {...props}
         isDraggable={true}
+        dragListeners={listeners}
       />
     </div>
   );

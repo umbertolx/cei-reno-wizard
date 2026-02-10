@@ -23,6 +23,7 @@ import {
   DragOverEvent
 } from "@dnd-kit/core";
 import { LeadCard } from "@/components/admin/LeadCard";
+import { KanbanColumn } from "@/components/admin/KanbanColumn";
 import { 
   SortableContext, 
   arrayMove, 
@@ -45,8 +46,21 @@ const AdminLeads = () => {
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [showMoreActions, setShowMoreActions] = useState(false);
-  // Filters
+  // Filters – applied (committed) state
+  interface FilterState {
+    impianti: string[];
+    searchTerm: string;
+    dateFrom: string;
+    dateTo: string;
+    priceMin: string;
+    priceMax: string;
+  }
+  const emptyFilters: FilterState = { impianti: [], searchTerm: "", dateFrom: "", dateTo: "", priceMin: "", priceMax: "" };
+  const [appliedFilters, setAppliedFilters] = useState<FilterState>({ ...emptyFilters });
+
+  // Filters – draft (editing in panel)
   const [showFilters, setShowFilters] = useState(false);
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const [filterImpianti, setFilterImpianti] = useState<string[]>([]);
   const [filterDateFrom, setFilterDateFrom] = useState("");
   const [filterDateTo, setFilterDateTo] = useState("");
@@ -57,10 +71,12 @@ const AdminLeads = () => {
   const [mobileSelectedColumn, setMobileSelectedColumn] = useState<string>("nuovo");
   const [mobileColumnDropdownOpen, setMobileColumnDropdownOpen] = useState(false);
 
+  const [activeColumnId, setActiveColumnId] = useState<string | null>(null);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 3,
+        distance: 8,
       },
     }),
     useSensor(KeyboardSensor)
@@ -103,7 +119,8 @@ const AdminLeads = () => {
     }
   }, [customColumns, columnOrder.length]);
 
-  const activeFilterCount = [
+  // Draft filter count (shown in panel)
+  const draftFilterCount = [
     filterImpianti.length > 0,
     filterDateFrom !== "",
     filterDateTo !== "",
@@ -111,13 +128,87 @@ const AdminLeads = () => {
     filterPriceMax !== "",
   ].filter(Boolean).length;
 
+  // Applied filter count (shown on toolbar button)
+  const activeFilterCount = [
+    appliedFilters.impianti.length > 0,
+    appliedFilters.dateFrom !== "",
+    appliedFilters.dateTo !== "",
+    appliedFilters.priceMin !== "",
+    appliedFilters.priceMax !== "",
+  ].filter(Boolean).length;
+
+  // Check if draft differs from applied
+  const hasDraftChanges = () => {
+    return (
+      JSON.stringify(filterImpianti) !== JSON.stringify(appliedFilters.impianti) ||
+      searchTerm !== appliedFilters.searchTerm ||
+      filterDateFrom !== appliedFilters.dateFrom ||
+      filterDateTo !== appliedFilters.dateTo ||
+      filterPriceMin !== appliedFilters.priceMin ||
+      filterPriceMax !== appliedFilters.priceMax
+    );
+  };
+
+  // Load draft from applied (when opening panel)
+  const loadDraftFromApplied = () => {
+    setFilterImpianti([...appliedFilters.impianti]);
+    setSearchTerm(appliedFilters.searchTerm);
+    setFilterDateFrom(appliedFilters.dateFrom);
+    setFilterDateTo(appliedFilters.dateTo);
+    setFilterPriceMin(appliedFilters.priceMin);
+    setFilterPriceMax(appliedFilters.priceMax);
+  };
+
+  // Apply draft → committed
+  const applyFilters = () => {
+    setAppliedFilters({
+      impianti: [...filterImpianti],
+      searchTerm,
+      dateFrom: filterDateFrom,
+      dateTo: filterDateTo,
+      priceMin: filterPriceMin,
+      priceMax: filterPriceMax,
+    });
+    setShowFilters(false);
+  };
+
+  // Clear all – clears both draft and applied immediately
   const clearAllFilters = () => {
     setFilterImpianti([]);
+    setSearchTerm("");
     setFilterDateFrom("");
     setFilterDateTo("");
     setFilterPriceMin("");
     setFilterPriceMax("");
-    setSearchTerm("");
+    setAppliedFilters({ ...emptyFilters });
+  };
+
+  // Open filter panel
+  const openFilters = () => {
+    loadDraftFromApplied();
+    setShowFilters(true);
+  };
+
+  // Close filter panel (X button)
+  const handleCloseFilters = () => {
+    if (hasDraftChanges()) {
+      setShowCloseConfirm(true);
+    } else {
+      setShowFilters(false);
+    }
+  };
+
+  // Discard draft and close
+  const discardAndClose = () => {
+    loadDraftFromApplied();
+    setShowCloseConfirm(false);
+    setShowFilters(false);
+  };
+
+  // Save from confirmation popup
+  const saveAndClose = () => {
+    applyFilters();
+    setShowCloseConfirm(false);
   };
 
   const toggleImpianto = (imp: string) => {
@@ -126,10 +217,11 @@ const AdminLeads = () => {
     );
   };
 
+  // filteredLeads uses APPLIED filters (committed state)
   const filteredLeads = leads.filter(lead => {
-    // Text search (nome / cognome / email / città)
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
+    // Text search
+    if (appliedFilters.searchTerm) {
+      const term = appliedFilters.searchTerm.toLowerCase();
       const matchesSearch =
         lead.nome.toLowerCase().includes(term) ||
         lead.cognome.toLowerCase().includes(term) ||
@@ -139,27 +231,27 @@ const AdminLeads = () => {
     }
 
     // Impianto configurato
-    if (filterImpianti.length > 0) {
-      const hasMatch = filterImpianti.some(imp => lead.moduliSelezionati.includes(imp));
+    if (appliedFilters.impianti.length > 0) {
+      const hasMatch = appliedFilters.impianti.some(imp => lead.moduliSelezionati.includes(imp));
       if (!hasMatch) return false;
     }
 
     // Data range
-    if (filterDateFrom) {
+    if (appliedFilters.dateFrom) {
       const leadDate = new Date(lead.dataRichiesta).toISOString().split('T')[0];
-      if (leadDate < filterDateFrom) return false;
+      if (leadDate < appliedFilters.dateFrom) return false;
     }
-    if (filterDateTo) {
+    if (appliedFilters.dateTo) {
       const leadDate = new Date(lead.dataRichiesta).toISOString().split('T')[0];
-      if (leadDate > filterDateTo) return false;
+      if (leadDate > appliedFilters.dateTo) return false;
     }
 
     // Fascia di prezzo
-    if (filterPriceMin) {
-      if (lead.stimaMax < Number(filterPriceMin)) return false;
+    if (appliedFilters.priceMin) {
+      if (lead.stimaMax < Number(appliedFilters.priceMin)) return false;
     }
-    if (filterPriceMax) {
-      if (lead.stimaMin > Number(filterPriceMax)) return false;
+    if (appliedFilters.priceMax) {
+      if (lead.stimaMin > Number(appliedFilters.priceMax)) return false;
     }
 
     return true;
@@ -265,8 +357,10 @@ const AdminLeads = () => {
     const isColumn = orderedColumns.some(col => col?.id === activeId);
     if (isColumn) {
       setActiveId(null);
+      setActiveColumnId(activeId);
     } else {
       setActiveId(activeId);
+      setActiveColumnId(null);
     }
     setDragOverColumn(null);
   };
@@ -286,6 +380,7 @@ const AdminLeads = () => {
     const { active, over } = event;
     setDragOverColumn(null);
     setActiveId(null);
+    setActiveColumnId(null);
     if (!over || !active) return;
 
     const activeId = active.id as string;
@@ -376,6 +471,7 @@ const AdminLeads = () => {
   };
 
   const activeLead = activeId ? leads.find(lead => lead.id === activeId) : null;
+  const activeColumn = activeColumnId ? orderedColumns.find(col => col?.id === activeColumnId) : null;
 
   if (authLoading || isLoading) {
     return (
@@ -428,7 +524,7 @@ const AdminLeads = () => {
             </button>
 
             <button 
-              onClick={() => setShowFilters(!showFilters)}
+              onClick={() => showFilters ? handleCloseFilters() : openFilters()}
               className={`flex items-center gap-2 border rounded-xl px-3 md:px-4 py-2 font-medium text-sm transition-colors relative ${
                 showFilters || activeFilterCount > 0
                   ? 'bg-[#d8010c] border-[#d8010c] text-white hover:bg-[#b8000a]'
@@ -503,7 +599,7 @@ const AdminLeads = () => {
                   </button>
                 )}
                 <button
-                  onClick={() => setShowFilters(false)}
+                  onClick={handleCloseFilters}
                   className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <XIcon className="h-4 w-4 text-gray-400" />
@@ -665,6 +761,46 @@ const AdminLeads = () => {
                 </span>
               </div>
             )}
+
+            {/* Footer con bottone applica */}
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+              <span className="text-xs text-gray-400">
+                {leads.length} lead totali
+              </span>
+              <button
+                onClick={applyFilters}
+                className="bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl px-6 py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-sm"
+              >
+                Applica filtri
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Popup conferma chiusura filtri */}
+        {showCloseConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={discardAndClose} />
+            <div className="relative bg-white rounded-2xl shadow-xl p-5 md:p-6 w-[90vw] max-w-sm space-y-4 animate-in zoom-in-95 duration-200">
+              <h3 className="text-base font-semibold text-gray-900">Filtri non salvati</h3>
+              <p className="text-sm text-gray-500">
+                Hai modificato i filtri senza salvarli. Vuoi applicare le modifiche?
+              </p>
+              <div className="flex gap-3 pt-1">
+                <button
+                  onClick={discardAndClose}
+                  className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl py-2.5 text-sm font-semibold transition-colors"
+                >
+                  Annulla
+                </button>
+                <button
+                  onClick={saveAndClose}
+                  className="flex-1 bg-[#d8010c] hover:bg-[#b8000a] text-white font-semibold rounded-xl py-2.5 shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-sm"
+                >
+                  Salva
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -830,12 +966,37 @@ const AdminLeads = () => {
               </SortableContext>
             </div>
             
-            <DragOverlay>
+            <DragOverlay
+              dropAnimation={{
+                duration: 250,
+                easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+              }}
+            >
               {activeLead ? (
-                <div className="transform rotate-3 scale-105">
+                <div className="transform rotate-2 scale-[1.03]">
                   <LeadCard 
                     lead={activeLead} 
                     onViewDetails={() => {}} 
+                  />
+                </div>
+              ) : activeColumn ? (
+                <div
+                  className="w-[350px] opacity-95"
+                  style={{
+                    transform: 'rotate(1.5deg) scale(1.02)',
+                    boxShadow: '0 25px 60px -12px rgba(0,0,0,0.25), 0 10px 20px -5px rgba(0,0,0,0.1)',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <KanbanColumn
+                    stato={activeColumn.id}
+                    leads={leadsByState[activeColumn.id] || []}
+                    onViewDetails={() => {}}
+                    customTitle={customTitles[activeColumn.id]}
+                    customColumn={activeColumn.type === 'custom' ? activeColumn.column : undefined}
+                    isDefaultColumn={activeColumn.type === 'default'}
+                    isDraggable={true}
                   />
                 </div>
               ) : null}

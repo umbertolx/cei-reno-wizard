@@ -6,6 +6,21 @@ import { DeleteColumnDialog } from "./DeleteColumnDialog";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { GripVertical, Pencil, Check, X, Trash2 } from "lucide-react";
+import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
+
+// Maps counter bg-X-500 colors to very faded bg-X-50/60 for the header box
+const fadedColorMap: Record<string, string> = {
+  "bg-green-500": "bg-green-50/60",
+  "bg-yellow-500": "bg-yellow-50/60",
+  "bg-red-500": "bg-red-50/60",
+  "bg-orange-500": "bg-orange-50/60",
+  "bg-cyan-500": "bg-cyan-50/60",
+  "bg-blue-500": "bg-blue-50/60",
+  "bg-purple-500": "bg-purple-50/60",
+  "bg-pink-500": "bg-pink-50/60",
+  "bg-indigo-500": "bg-indigo-50/60",
+  "bg-gray-500": "bg-gray-100/60",
+};
 
 interface KanbanColumnProps {
   stato: string;
@@ -19,6 +34,7 @@ interface KanbanColumnProps {
   allCardsExpanded?: boolean;
   isDraggedOver?: boolean;
   isDraggable?: boolean;
+  dragListeners?: SyntheticListenerMap;
 }
 
 export const KanbanColumn = ({ 
@@ -32,7 +48,8 @@ export const KanbanColumn = ({
   isDefaultColumn = false,
   allCardsExpanded = false,
   isDraggedOver = false,
-  isDraggable = false
+  isDraggable = false,
+  dragListeners
 }: KanbanColumnProps) => {
   const { setNodeRef, isOver } = useDroppable({
     id: stato,
@@ -50,6 +67,7 @@ export const KanbanColumn = ({
   const stateInfo = customColumn || leadStates[stato as keyof typeof leadStates];
   const displayTitle = customTitle || customColumn?.label || stateInfo?.label || stato;
   const counterColor = counterColors[stato] || customColumn?.color || "bg-gray-500";
+  const headerBgColor = fadedColorMap[counterColor] || "bg-gray-100/60";
 
   const handleSaveTitle = () => {
     if (onTitleChange && editedTitle.trim()) {
@@ -82,9 +100,14 @@ export const KanbanColumn = ({
     <>
       <div className="min-w-[280px] md:min-w-[350px] w-[80vw] md:w-[350px] max-w-[350px] flex-shrink-0 flex flex-col snap-start">
         {/* Column Header */}
-        <div className="flex items-center gap-2 mb-3 md:mb-4">
+        <div className={`flex items-center gap-2 mb-3 md:mb-4 ${headerBgColor} rounded-xl px-3 py-2`}>
           {isDraggable && (
-            <GripVertical className="h-4 w-4 text-gray-400 cursor-grab hover:cursor-grabbing flex-shrink-0" />
+            <div
+              {...dragListeners}
+              className="flex items-center justify-center p-1 -ml-1 rounded-lg cursor-grab hover:bg-white/60 active:cursor-grabbing transition-colors touch-none"
+            >
+              <GripVertical className="h-4 w-4 text-gray-400" />
+            </div>
           )}
           
           {isEditingTitle ? (
