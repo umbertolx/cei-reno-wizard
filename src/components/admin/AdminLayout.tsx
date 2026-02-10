@@ -143,7 +143,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
 
           {/* Mobile centered logo */}
           {isMobile && (
-            <span className="text-[#d8010c] font-bold text-lg">Ricasa Pro</span>
+            <img src="/logo-ricasa.png" alt="Ricasa Pro" className="h-6 w-auto" />
           )}
 
           {/* Desktop: right-aligned logout. Mobile: placeholder for balanced layout */}
