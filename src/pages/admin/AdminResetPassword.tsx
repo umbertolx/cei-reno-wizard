@@ -108,7 +108,7 @@ const AdminResetPassword = () => {
 
   if (isVerifying) {
     return (
-      <div className="min-h-screen min-h-[100dvh] bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen min-h-[100dvh] bg-gray-50 flex items-center justify-center p-4 safe-area-all">
         <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
           <div className="text-center">
             <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-gray-400" />
@@ -120,7 +120,7 @@ const AdminResetPassword = () => {
   }
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 flex items-center justify-center p-4 safe-area-all">
       <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
         {/* Header */}
         <div className="text-center mb-6 md:mb-8">

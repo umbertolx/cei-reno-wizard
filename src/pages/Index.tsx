@@ -10,7 +10,7 @@ const Index = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="min-h-screen min-h-[100dvh] bg-background flex items-center justify-center safe-area-all">
       <p className="text-muted-foreground">Reindirizzamento in corso...</p>
     </div>
   );

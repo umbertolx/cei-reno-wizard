@@ -106,7 +106,7 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 flex items-center justify-center p-4 safe-area-all">
       <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
         {/* Header */}
         <div className="text-center mb-6 md:mb-8">

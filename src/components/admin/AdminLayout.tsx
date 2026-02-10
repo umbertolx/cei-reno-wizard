@@ -44,7 +44,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex w-full overflow-hidden">
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 flex w-full overflow-hidden">
       {/* Mobile Overlay */}
       {isMobile && sidebarOpen && (
         <div
@@ -62,7 +62,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
               }`
             : "w-56 flex-shrink-0 sticky top-0"
           }
-          bg-white border-r border-gray-200 flex flex-col h-screen
+          bg-white border-r border-gray-200 flex flex-col h-screen h-[100dvh] safe-area-top
         `}
       >
         {/* Logo */}
@@ -110,7 +110,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         {/* Logout button inside sidebar (mobile) */}
         {isMobile && (
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-gray-200 safe-area-bottom">
             <button
               onClick={handleLogout}
               className="w-full flex items-center gap-3 py-2.5 px-4 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
@@ -125,7 +125,12 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
       {/* Main area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Bar */}
-        <header className="h-14 md:h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 flex-shrink-0 sticky top-0 z-30">
+        <header
+          className="bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 flex-shrink-0 sticky top-0 z-30"
+          style={{
+            height: isMobile ? '3.5rem' : '4rem',
+          }}
+        >
           {/* Mobile hamburger */}
           {isMobile && (
             <button
@@ -157,7 +162,14 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         {/* Main Content */}
         <main className="flex-1 min-w-0 overflow-hidden">
-          <div className="h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] overflow-y-auto p-4 md:p-8">
+          <div
+            className="overflow-y-auto p-4 md:p-8"
+            style={{
+              height: isMobile
+                ? 'calc(100dvh - 3.5rem - env(safe-area-inset-bottom, 0px))'
+                : 'calc(100dvh - 4rem)',
+            }}
+          >
             {children}
           </div>
         </main>
@@ -165,8 +177,8 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
 
       {/* Mobile Bottom Navigation */}
       {isMobile && (
-        <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 safe-area-bottom">
-          <div className="flex items-center justify-around py-2 pb-safe">
+        <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200">
+          <div className="flex items-center justify-around py-2">
             {menuItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
@@ -194,6 +206,8 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
               <span className="text-xs font-medium">Esci</span>
             </button>
           </div>
+          {/* Safe area spacer for home indicator */}
+          <div className="pb-safe" />
         </nav>
       )}
     </div>

@@ -75,7 +75,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
       />
       
       {/* Content */}
-      <div className="relative bg-white w-full md:max-w-4xl md:mx-4 rounded-t-2xl md:rounded-2xl shadow-xl overflow-y-auto max-h-[95vh] md:max-h-[90vh]">
+      <div className="relative bg-white w-full md:max-w-4xl md:mx-4 rounded-t-2xl md:rounded-2xl shadow-xl overflow-y-auto max-h-[95vh] max-h-[95dvh] md:max-h-[90vh] md:max-h-[90dvh] safe-area-bottom">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -125,7 +125,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
         {showMovePanel && isMobile && onMoveLead && availableColumns && (
           <div className="fixed inset-0 z-[60] flex items-end justify-center">
             <div className="absolute inset-0 bg-black/40" onClick={handleCloseMovePanel} />
-            <div className="relative bg-white w-full rounded-t-2xl shadow-xl max-h-[75vh] flex flex-col">
+            <div className="relative bg-white w-full rounded-t-2xl shadow-xl max-h-[75vh] max-h-[75dvh] flex flex-col">
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 bg-gray-300 rounded-full" />
               </div>
@@ -170,7 +170,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
                   );
                 })}
               </div>
-              <div className="px-4 py-4 border-t border-gray-100 flex gap-3">
+              <div className="px-4 py-4 border-t border-gray-100 flex gap-3 pb-safe">
                 <button
                   onClick={handleCloseMovePanel}
                   className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl py-3 text-sm font-semibold transition-colors"
