@@ -68,7 +68,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
         {/* Logo */}
         <div className="px-5 py-5 border-b border-gray-200 flex items-center justify-between">
           <div className="min-w-0">
-            <div className="text-[#d8010c] font-bold text-xl leading-tight">Ricasa Pro</div>
+            <img src="/logo-ricasa.png" alt="Ricasa Pro" className="h-7 w-auto" />
             <img src="/logo-cei.png" alt="Logo CEI" className="h-6 w-auto mt-1" />
           </div>
           {isMobile && (
@@ -143,7 +143,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
 
           {/* Mobile centered logo */}
           {isMobile && (
-            <span className="text-[#d8010c] font-bold text-lg">Ricasa Pro</span>
+            <img src="/logo-ricasa.png" alt="Ricasa Pro" className="h-6 w-auto" />
           )}
 
           {/* Desktop: right-aligned logout. Mobile: placeholder for balanced layout */}
