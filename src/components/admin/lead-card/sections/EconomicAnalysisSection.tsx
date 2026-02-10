@@ -64,7 +64,7 @@ export const EconomicAnalysisSection = ({ lead }: EconomicAnalysisSectionProps) 
               Range Cliente
             </span>
             <div className="text-xs md:text-sm text-gray-600">Preventivo Minimo</div>
-            <p className="text-xl md:text-2xl font-bold text-green-600 mt-1">
+            <p className="text-xl md:text-2xl font-bold text-green-600 mt-1 font-nums">
               €{stimaMin?.toLocaleString("it-IT") || "N/D"}
             </p>
           </div>
@@ -74,7 +74,7 @@ export const EconomicAnalysisSection = ({ lead }: EconomicAnalysisSectionProps) 
               Stima Ricasa
             </span>
             <div className="text-xs md:text-sm text-gray-600">Valore Medio</div>
-            <p className="text-xl md:text-2xl font-bold text-blue-600 mt-1">
+            <p className="text-xl md:text-2xl font-bold text-blue-600 mt-1 font-nums">
               €{stimaMedia?.toLocaleString("it-IT") || "N/D"}
             </p>
           </div>
@@ -84,7 +84,7 @@ export const EconomicAnalysisSection = ({ lead }: EconomicAnalysisSectionProps) 
               Range Cliente
             </span>
             <div className="text-xs md:text-sm text-gray-600">Preventivo Massimo</div>
-            <p className="text-xl md:text-2xl font-bold text-green-600 mt-1">
+            <p className="text-xl md:text-2xl font-bold text-green-600 mt-1 font-nums">
               €{stimaMax?.toLocaleString("it-IT") || "N/D"}
             </p>
           </div>
@@ -103,7 +103,7 @@ export const EconomicAnalysisSection = ({ lead }: EconomicAnalysisSectionProps) 
                     {icon}
                     <span className="text-sm font-medium">{label}</span>
                   </div>
-                  <span className="font-semibold text-gray-900">€{costo.toLocaleString("it-IT")}</span>
+                  <span className="font-semibold text-gray-900 font-nums">€{costo.toLocaleString("it-IT")}</span>
                 </div>
               ))}
             </div>
@@ -119,7 +119,7 @@ export const EconomicAnalysisSection = ({ lead }: EconomicAnalysisSectionProps) 
                 IVA ({isPrimaCasa ? "10% ristrutturazione" : "22% standard"})
               </span>
             </div>
-            <span className="font-semibold text-gray-900">+€{iva.toLocaleString("it-IT")}</span>
+            <span className="font-semibold text-gray-900 font-nums">+€{iva.toLocaleString("it-IT")}</span>
           </div>
 
           <div className="flex items-center justify-between p-3 bg-green-50 rounded-xl">
@@ -129,7 +129,7 @@ export const EconomicAnalysisSection = ({ lead }: EconomicAnalysisSectionProps) 
                 Detrazione {detrazioneLabel}
               </span>
             </div>
-            <span className="font-semibold text-green-700">−€{detrazioneTotale.toLocaleString("it-IT")}</span>
+            <span className="font-semibold text-green-700 font-nums">−€{detrazioneTotale.toLocaleString("it-IT")}</span>
           </div>
         </div>
 
@@ -137,7 +137,7 @@ export const EconomicAnalysisSection = ({ lead }: EconomicAnalysisSectionProps) 
         <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-200">
           <PiggyBank className="h-4 w-4 text-blue-600 flex-shrink-0" />
           <p className="text-xs md:text-sm text-blue-700">
-            <span className="font-medium">Recupero annuo:</span> €{detrazioneAnno.toLocaleString("it-IT")}/anno per 10 anni
+            <span className="font-medium">Recupero annuo:</span> <span className="font-nums">€{detrazioneAnno.toLocaleString("it-IT")}/anno</span> per 10 anni
             {isPrimaCasa ? " (prima casa)" : " (seconda casa)"}
           </p>
         </div>

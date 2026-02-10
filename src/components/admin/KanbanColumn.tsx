@@ -188,7 +188,7 @@ export const KanbanColumn = ({
             </>
           )}
           
-          <span className={`ml-auto w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0 ${counterColor}`}>
+          <span className={`ml-auto w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0 font-nums ${counterColor}`}>
             {leads.length}
           </span>
         </div>

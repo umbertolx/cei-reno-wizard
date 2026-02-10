@@ -153,7 +153,7 @@ const AdminDashboard = () => {
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
             <p className="text-sm md:text-base font-light text-gray-600">
-              Panoramica generale dei preventivi ({leads.length} totali)
+              Panoramica generale dei preventivi (<span className="font-nums">{leads.length}</span> totali)
               {leads.length === 0 && (
                 <span className="text-amber-600 ml-2">
                   ⚠️ Nessun lead
@@ -241,7 +241,7 @@ const AdminDashboard = () => {
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
               <p className="text-xs md:text-sm font-medium text-gray-500 truncate">{stat.label}</p>
-              <p className="text-xl md:text-3xl font-bold text-gray-900 mt-1 md:mt-2 truncate">{stat.value}</p>
+              <p className="text-xl md:text-3xl font-bold text-gray-900 mt-1 md:mt-2 truncate font-nums">{stat.value}</p>
               <p className="text-[10px] md:text-xs text-gray-400 mt-1 truncate">{stat.sub}</p>
             </div>
           ))}
@@ -309,7 +309,7 @@ const AdminDashboard = () => {
                           <p className="text-xs md:text-sm text-gray-500 truncate">{lead.citta}</p>
                         </div>
                         <div className="text-right flex items-center gap-2 md:gap-3 flex-shrink-0">
-                          <p className="font-bold text-[#d8010c] text-sm md:text-base">
+                          <p className="font-bold text-[#d8010c] text-sm md:text-base font-nums">
                             €{lead.stimaMax.toLocaleString()}
                           </p>
                           {leadStateInfo && !isMobile && (

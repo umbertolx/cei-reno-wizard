@@ -104,7 +104,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
                   </span>
                 )}
                 <span className="text-xs text-gray-400 font-mono hidden md:inline">ID: {lead.id.substring(0, 8)}...</span>
-                <span className="text-xs md:text-sm text-gray-500">Richiesta: {formatDateTime(lead.dataRichiesta)}</span>
+                <span className="text-xs md:text-sm text-gray-500">Richiesta: <span className="font-nums">{formatDateTime(lead.dataRichiesta)}</span></span>
               </div>
             </div>
           </div>
@@ -214,7 +214,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                <a href={`tel:${lead.telefono}`} className="text-sm text-gray-900 hover:text-[#d8010c] transition-colors">
+                <a href={`tel:${lead.telefono}`} className="text-sm text-gray-900 hover:text-[#d8010c] transition-colors font-nums">
                   {lead.telefono}
                 </a>
               </div>
@@ -240,11 +240,11 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
             {/* 3 stat cards */}
             <div className="grid grid-cols-3 gap-2 md:gap-4">
               <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
-                <div className="text-xl md:text-2xl font-bold text-gray-900">{lead.superficie}</div>
+                <div className="text-xl md:text-2xl font-bold text-gray-900 font-nums">{lead.superficie}</div>
                 <div className="text-[10px] md:text-xs text-gray-500">mq totali</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
-                <div className="text-xl md:text-2xl font-bold text-gray-900">{getTotalRooms()}</div>
+                <div className="text-xl md:text-2xl font-bold text-gray-900 font-nums">{getTotalRooms()}</div>
                 <div className="text-[10px] md:text-xs text-gray-500">stanze totali</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
@@ -268,7 +268,7 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
                   { key: "altro", label: "Altro" },
                 ].map(({ key, label }) => (
                   <div key={key} className="bg-gray-50 rounded-xl p-2 md:p-3 text-center">
-                    <div className="text-base md:text-lg font-bold text-gray-900">
+                    <div className="text-base md:text-lg font-bold text-gray-900 font-nums">
                       {(lead.composizione as any)[key] || 0}
                     </div>
                     <div className="text-[10px] md:text-xs text-gray-500">{label}</div>
@@ -292,19 +292,19 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               <div className="border-2 border-green-200 bg-green-50/30 rounded-2xl p-4 md:p-5 text-center">
                 <span className="inline-block bg-green-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
                 <div className="text-xs md:text-sm text-gray-600">Preventivo Minimo</div>
-                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1">€{lead.stimaMin?.toLocaleString("it-IT")}</div>
+                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1 font-nums">€{lead.stimaMin?.toLocaleString("it-IT")}</div>
               </div>
               
               <div className="border-2 border-blue-200 bg-blue-50/30 rounded-2xl p-4 md:p-5 text-center">
                 <span className="inline-block bg-blue-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Stima Ricasa</span>
                 <div className="text-xs md:text-sm text-gray-600">Valore Medio</div>
-                <div className="text-xl md:text-2xl font-bold text-blue-600 mt-1">€{stimaMedia?.toLocaleString("it-IT")}</div>
+                <div className="text-xl md:text-2xl font-bold text-blue-600 mt-1 font-nums">€{stimaMedia?.toLocaleString("it-IT")}</div>
               </div>
               
               <div className="border-2 border-green-200 bg-green-50/30 rounded-2xl p-4 md:p-5 text-center">
                 <span className="inline-block bg-green-600 text-white rounded-full px-3 py-1 text-xs font-bold mb-2">Range Cliente</span>
                 <div className="text-xs md:text-sm text-gray-600">Preventivo Massimo</div>
-                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1">€{lead.stimaMax?.toLocaleString("it-IT")}</div>
+                <div className="text-xl md:text-2xl font-bold text-green-600 mt-1 font-nums">€{lead.stimaMax?.toLocaleString("it-IT")}</div>
               </div>
             </div>
           </div>
@@ -331,13 +331,13 @@ export const LeadDetails = ({ lead, isOpen, onClose, onMoveLead, availableColumn
               <div className="flex items-center justify-between py-3 pl-4 relative">
                 <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#d8010c]" />
                 <span className="text-sm text-gray-700">Richiesta inviata</span>
-                  <span className="text-xs md:text-sm text-gray-500">{formatDateTime(lead.dataRichiesta)}</span>
+                  <span className="text-xs md:text-sm text-gray-500 font-nums">{formatDateTime(lead.dataRichiesta)}</span>
               </div>
               {lead.dataUltimoContatto && (
                 <div className="flex items-center justify-between py-3 pl-4 relative">
                   <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-gray-400" />
                   <span className="text-sm text-gray-700">Ultimo contatto</span>
-                  <span className="text-xs md:text-sm text-gray-500">{formatDateTime(lead.dataUltimoContatto)}</span>
+                  <span className="text-xs md:text-sm text-gray-500 font-nums">{formatDateTime(lead.dataUltimoContatto)}</span>
                 </div>
               )}
             </div>

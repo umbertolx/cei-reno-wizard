@@ -28,12 +28,12 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
         {/* Dati principali - 3 stat cards */}
         <div className="grid grid-cols-3 gap-2 md:gap-4">
           <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
-            <div className="text-xl md:text-2xl font-bold text-gray-900">{lead.superficie || 0}</div>
+            <div className="text-xl md:text-2xl font-bold text-gray-900 font-nums">{lead.superficie || 0}</div>
             <div className="text-[10px] md:text-xs text-gray-500">mq totali</div>
           </div>
 
           <div className="bg-gray-50 rounded-xl p-3 md:p-4 text-center">
-            <div className="text-xl md:text-2xl font-bold text-gray-900">
+            <div className="text-xl md:text-2xl font-bold text-gray-900 font-nums">
               {Object.entries(lead.composizione)
                 .reduce((sum, [, val]) => sum + Number(val), 0)}
             </div>
@@ -55,7 +55,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
               <Layers className="h-4 w-4 text-gray-400 flex-shrink-0" />
               <div>
                 <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Piano</p>
-                <p className="font-semibold text-gray-900 text-sm">{piano}</p>
+                <p className="font-semibold text-gray-900 text-sm font-nums">{piano}</p>
               </div>
             </div>
           )}
@@ -64,7 +64,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
             <Users className="h-4 w-4 text-gray-400 flex-shrink-0" />
             <div>
               <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Persone</p>
-              <p className="font-semibold text-gray-900 text-sm">{lead.numeroPersone || 2}</p>
+              <p className="font-semibold text-gray-900 text-sm font-nums">{lead.numeroPersone || 2}</p>
             </div>
           </div>
 
@@ -107,7 +107,7 @@ export const PropertyDataSection = ({ lead }: PropertyDataSectionProps) => {
                     key={stanza}
                     className="bg-gray-50 rounded-xl p-2 md:p-3 text-center"
                   >
-                    <div className="text-base md:text-lg font-bold text-gray-900">{count}</div>
+                    <div className="text-base md:text-lg font-bold text-gray-900 font-nums">{count}</div>
                     <div className="text-[10px] md:text-xs text-gray-500">{roomLabels[stanza] || stanza}</div>
                   </div>
                 );

@@ -58,7 +58,7 @@ export const DeleteColumnDialog = ({
         {leadCount > 0 && (
           <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl mb-4">
             <p className="text-amber-800 text-sm">
-              ⚠️ Attenzione: Ci sono <strong>{leadCount} lead</strong> in questa colonna.
+              ⚠️ Attenzione: Ci sono <strong className="font-nums">{leadCount} lead</strong> in questa colonna.
               Verranno spostati automaticamente in "Nuovo".
             </p>
           </div>

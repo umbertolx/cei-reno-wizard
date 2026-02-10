@@ -526,7 +526,7 @@ const AdminLeads = () => {
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Gestione Lead</h1>
           <p className="text-sm md:text-base font-light text-gray-600">
-            Visualizza e gestisci tutti i preventivi richiesti ({leads.length} totali)
+            Visualizza e gestisci tutti i preventivi richiesti (<span className="font-nums">{leads.length}</span> totali)
           </p>
         </div>
 
@@ -552,7 +552,7 @@ const AdminLeads = () => {
               <SlidersHorizontal className="h-4 w-4" />
               {!isMobile && "Filtri"}
               {activeFilterCount > 0 && (
-                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold font-nums ${
                   showFilters || activeFilterCount > 0
                     ? 'bg-white text-[#d8010c]'
                     : 'bg-[#d8010c] text-white'
@@ -749,7 +749,7 @@ const AdminLeads = () => {
                   ))}
                   {filterDateFrom && (
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
-                      <Calendar className="h-3 w-3 flex-shrink-0" /> Da: {filterDateFrom}
+                      <Calendar className="h-3 w-3 flex-shrink-0" /> Da: <span className="font-nums">{filterDateFrom}</span>
                       <button onClick={() => setFilterDateFrom("")} className="ml-0.5 hover:text-[#d8010c]">
                         <XIcon className="h-3 w-3" />
                       </button>
@@ -757,7 +757,7 @@ const AdminLeads = () => {
                   )}
                   {filterDateTo && (
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
-                      <Calendar className="h-3 w-3 flex-shrink-0" /> A: {filterDateTo}
+                      <Calendar className="h-3 w-3 flex-shrink-0" /> A: <span className="font-nums">{filterDateTo}</span>
                       <button onClick={() => setFilterDateTo("")} className="ml-0.5 hover:text-[#d8010c]">
                         <XIcon className="h-3 w-3" />
                       </button>
@@ -765,7 +765,7 @@ const AdminLeads = () => {
                   )}
                   {filterPriceMin && (
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
-                      <Euro className="h-3 w-3 flex-shrink-0" /> Min: €{Number(filterPriceMin).toLocaleString()}
+                      <Euro className="h-3 w-3 flex-shrink-0" /> Min: <span className="font-nums">€{Number(filterPriceMin).toLocaleString()}</span>
                       <button onClick={() => setFilterPriceMin("")} className="ml-0.5 hover:text-[#d8010c]">
                         <XIcon className="h-3 w-3" />
                       </button>
@@ -773,7 +773,7 @@ const AdminLeads = () => {
                   )}
                   {filterPriceMax && (
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-700">
-                      <Euro className="h-3 w-3 flex-shrink-0" /> Max: €{Number(filterPriceMax).toLocaleString()}
+                      <Euro className="h-3 w-3 flex-shrink-0" /> Max: <span className="font-nums">€{Number(filterPriceMax).toLocaleString()}</span>
                       <button onClick={() => setFilterPriceMax("")} className="ml-0.5 hover:text-[#d8010c]">
                         <XIcon className="h-3 w-3" />
                       </button>
@@ -781,7 +781,7 @@ const AdminLeads = () => {
                   )}
                 </div>
                 <span className="text-xs text-gray-400 flex-shrink-0">
-                  {filteredLeads.length} / {leads.length} lead
+                  <span className="font-nums">{filteredLeads.length} / {leads.length}</span> lead
                 </span>
               </div>
             )}
@@ -790,9 +790,9 @@ const AdminLeads = () => {
             <div className="flex items-center justify-between pt-3 border-t border-gray-100">
               <span className="text-sm text-gray-500 font-medium">
                 {draftFilterCount > 0 ? (
-                  <><span className={draftFilteredCount < leads.length ? 'text-[#d8010c]' : ''}>{draftFilteredCount}</span> <span className="text-gray-400 font-normal">di {leads.length} lead</span></>
+                  <><span className={`font-nums ${draftFilteredCount < leads.length ? 'text-[#d8010c]' : ''}`}>{draftFilteredCount}</span> <span className="text-gray-400 font-normal">di <span className="font-nums">{leads.length}</span> lead</span></>
                 ) : (
-                  <>{leads.length} lead totali</>
+                  <><span className="font-nums">{leads.length}</span> lead totali</>
                 )}
               </span>
               <button
@@ -848,7 +848,7 @@ const AdminLeads = () => {
                   <span className="font-semibold text-gray-900">{mobileColumnLabel}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white ${mobileColumnColor}`}>
+                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white font-nums ${mobileColumnColor}`}>
                     {mobileLeads.length}
                   </span>
                   <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${mobileColumnDropdownOpen ? 'rotate-180' : ''}`} />
@@ -883,7 +883,7 @@ const AdminLeads = () => {
                             <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${colColor}`} />
                             <span>{colLabel}</span>
                           </div>
-                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white ${colColor}`}>
+                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white font-nums ${colColor}`}>
                             {colLeadsCount}
                           </span>
                         </button>
@@ -938,11 +938,11 @@ const AdminLeads = () => {
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5 text-sm text-gray-500 justify-center">
-                        <span>{lead.superficie} mq</span>
+                        <span className="font-nums">{lead.superficie} mq</span>
                       </div>
                       <div className="flex items-center gap-1.5 text-sm justify-end">
                         <Euro className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
-                        <span className="font-semibold text-[#d8010c] truncate">
+                        <span className="font-semibold text-[#d8010c] truncate font-nums">
                           €{lead.stimaMedia?.toLocaleString("it-IT") || "N/D"}
                         </span>
                       </div>
@@ -951,7 +951,7 @@ const AdminLeads = () => {
                     {/* Date */}
                     <div className="mt-2 flex items-center gap-1.5 text-xs text-gray-400">
                       <Calendar className="h-3 w-3" />
-                      <span>{formatDateShort(lead.dataRichiesta)}</span>
+                      <span className="font-nums">{formatDateShort(lead.dataRichiesta)}</span>
                     </div>
                   </div>
                 ))}

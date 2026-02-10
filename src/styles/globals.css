@@ -52,6 +52,12 @@
     font-weight: 500;
   }
 
+  /* Numeric font – optimized for reading money, dates, quantities, phone numbers */
+  .font-nums {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
   /* Prevent iOS zoom on input focus */
   input, select, textarea {
     font-size: 16px;

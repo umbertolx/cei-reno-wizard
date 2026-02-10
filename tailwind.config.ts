@@ -32,6 +32,15 @@ export default {
 					'Arial',
 					'sans-serif',
 				],
+				nums: [
+					'"Inter"',
+					'system-ui',
+					'-apple-system',
+					'BlinkMacSystemFont',
+					'"Segoe UI"',
+					'Roboto',
+					'sans-serif',
+				],
 			},
 			colors: {
 				// Colori CEI

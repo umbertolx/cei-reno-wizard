@@ -31,7 +31,7 @@ const fmtEuro = (val: number | undefined | null): string => {
 const InfoCard = ({ label, value, accent = false }: { label: string; value: React.ReactNode; accent?: boolean }) => (
   <div className="bg-gray-50 rounded-xl p-4 md:p-5">
     <p className="text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wide">{label}</p>
-    <p className={`text-base md:text-lg font-semibold mt-1.5 ${accent ? "text-[#d8010c]" : "text-gray-900"}`}>
+    <p className={`text-base md:text-lg font-semibold mt-1.5 font-nums ${accent ? "text-[#d8010c]" : "text-gray-900"}`}>
       {value}
     </p>
   </div>
@@ -41,7 +41,7 @@ const InfoCard = ({ label, value, accent = false }: { label: string; value: Reac
 const DetailRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <div className="flex items-center justify-between py-2.5 px-1 border-b border-gray-100 last:border-0">
     <span className="text-sm text-gray-500">{label}</span>
-    <span className="text-sm font-semibold text-gray-900 text-right">{value}</span>
+    <span className="text-sm font-semibold text-gray-900 text-right font-nums">{value}</span>
   </div>
 );
 
@@ -397,7 +397,7 @@ const FotovoltaicoSection = ({ data, pvgis }: { data: Record<string, any>; pvgis
             <div className="bg-gray-50 rounded-xl p-4">
               <div className="flex justify-between items-center mb-2.5">
                 <span className="text-sm text-gray-500">Giorno</span>
-                <span className="text-sm font-semibold text-gray-900">{distribuzioneGiorno}% giorno / {100 - distribuzioneGiorno}% sera</span>
+                <span className="text-sm font-semibold text-gray-900 font-nums">{distribuzioneGiorno}% giorno / {100 - distribuzioneGiorno}% sera</span>
                 <span className="text-sm text-gray-500">Sera</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2.5">

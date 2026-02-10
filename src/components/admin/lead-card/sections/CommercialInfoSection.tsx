@@ -19,7 +19,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
             <Calendar className="h-4 w-4 md:h-5 md:w-5 text-gray-400 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Data Richiesta</p>
-              <p className="font-medium text-gray-900 text-sm md:text-base truncate">{formatDateTime(lead.dataRichiesta)}</p>
+              <p className="font-medium text-gray-900 text-sm md:text-base truncate font-nums">{formatDateTime(lead.dataRichiesta)}</p>
             </div>
           </div>
           
@@ -27,7 +27,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
             <Clock className="h-4 w-4 md:h-5 md:w-5 text-gray-400 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Ultimo Contatto</p>
-              <p className="font-medium text-gray-900 text-sm md:text-base truncate">
+              <p className="font-medium text-gray-900 text-sm md:text-base truncate font-nums">
                 {lead.dataUltimoContatto ? formatDateTime(lead.dataUltimoContatto) : 'Mai contattato'}
               </p>
             </div>
@@ -59,7 +59,7 @@ export const CommercialInfoSection = ({ lead }: CommercialInfoSectionProps) => {
               <div>
                 <p className="font-medium text-orange-800 text-sm md:text-base">Sopralluogo Richiesto</p>
                 {lead.dataSopralluogo && (
-                  <p className="text-xs md:text-sm text-orange-600">
+                  <p className="text-xs md:text-sm text-orange-600 font-nums">
                     {lead.dataSopralluogo} {lead.orarioSopralluogo && `alle ${lead.orarioSopralluogo}`}
                   </p>
                 )}
