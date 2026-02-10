@@ -106,7 +106,7 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-ricasa-white flex items-center justify-center px-6 py-8 sm:px-4 sm:py-6 md:px-6 md:py-8 safe-area-all font-roboto">
+    <div className="min-h-screen min-h-[100dvh] bg-ricasa-white flex items-center justify-center px-16 py-20 sm:px-4 sm:py-6 md:px-6 md:py-8 safe-area-all font-roboto">
       <div className="w-full max-w-md bg-ricasa-white rounded-xl sm:rounded-2xl border border-gray-300 shadow-lg px-6 py-6 sm:px-6 sm:py-6 md:px-8 md:py-8">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-6 md:mb-8">
