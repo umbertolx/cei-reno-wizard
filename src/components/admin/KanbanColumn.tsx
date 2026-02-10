@@ -1,11 +1,12 @@
 
 import { useState } from "react";
-import { Lead, leadStates, CustomColumn, counterColors } from "@/types/lead";
+import { Lead, leadStates, CustomColumn, counterColors, availableColors } from "@/types/lead";
 import { LeadCard } from "./LeadCard";
 import { DeleteColumnDialog } from "./DeleteColumnDialog";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { GripVertical, Pencil, Check, X, Trash2 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 
 // Maps counter bg-X-500 colors to very faded bg-X-50/60 for the header box
@@ -19,6 +20,9 @@ const fadedColorMap: Record<string, string> = {
   "bg-purple-500": "bg-purple-50/60",
   "bg-pink-500": "bg-pink-50/60",
   "bg-indigo-500": "bg-indigo-50/60",
+  "bg-teal-500": "bg-teal-50/60",
+  "bg-lime-500": "bg-lime-50/60",
+  "bg-amber-500": "bg-amber-50/60",
   "bg-gray-500": "bg-gray-100/60",
 };
 
@@ -28,6 +32,8 @@ interface KanbanColumnProps {
   onViewDetails: (lead: Lead) => void;
   customTitle?: string;
   onTitleChange?: (stato: string, title: string) => void;
+  customColor?: string;
+  onColorChange?: (stato: string, color: string) => void;
   customColumn?: CustomColumn;
   onDeleteColumn?: (columnId: string) => void;
   isDefaultColumn?: boolean;
@@ -43,6 +49,8 @@ export const KanbanColumn = ({
   onViewDetails, 
   customTitle, 
   onTitleChange,
+  customColor,
+  onColorChange,
   customColumn,
   onDeleteColumn,
   isDefaultColumn = false,
@@ -51,6 +59,7 @@ export const KanbanColumn = ({
   isDraggable = false,
   dragListeners
 }: KanbanColumnProps) => {
+  const isMobile = useIsMobile();
   const { setNodeRef, isOver } = useDroppable({
     id: stato,
     data: {
@@ -66,18 +75,24 @@ export const KanbanColumn = ({
 
   const stateInfo = customColumn || leadStates[stato as keyof typeof leadStates];
   const displayTitle = customTitle || customColumn?.label || stateInfo?.label || stato;
-  const counterColor = counterColors[stato] || customColumn?.color || "bg-gray-500";
+  const counterColor = customColor || counterColors[stato] || customColumn?.color || "bg-gray-500";
   const headerBgColor = fadedColorMap[counterColor] || "bg-gray-100/60";
+
+  const [editedColor, setEditedColor] = useState(counterColor);
 
   const handleSaveTitle = () => {
     if (onTitleChange && editedTitle.trim()) {
       onTitleChange(stato, editedTitle.trim());
+    }
+    if (onColorChange && editedColor !== counterColor) {
+      onColorChange(stato, editedColor);
     }
     setIsEditingTitle(false);
   };
 
   const handleCancelEdit = () => {
     setEditedTitle(customTitle || customColumn?.label || stateInfo?.label || stato);
+    setEditedColor(counterColor);
     setIsEditingTitle(false);
   };
 
@@ -111,40 +126,58 @@ export const KanbanColumn = ({
           )}
           
           {isEditingTitle ? (
-            <div className="flex items-center gap-2 flex-1">
-              <input
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-                className="bg-white border border-gray-200 rounded-xl h-8 px-3 text-sm font-semibold text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none flex-1 min-w-0"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSaveTitle();
-                  if (e.key === 'Escape') handleCancelEdit();
-                }}
-                autoFocus
-              />
-              <button
-                onClick={handleSaveTitle}
-                className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
-              >
-                <Check className="h-3 w-3 text-gray-500" />
-              </button>
-              <button
-                onClick={handleCancelEdit}
-                className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
-              >
-                <X className="h-3 w-3 text-gray-500" />
-              </button>
+            <div className="flex flex-col gap-2 flex-1">
+              <div className="flex items-center gap-2">
+                <input
+                  value={editedTitle}
+                  onChange={(e) => setEditedTitle(e.target.value)}
+                  className="bg-white border border-gray-200 rounded-xl h-8 px-3 text-sm font-semibold text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none flex-1 min-w-0"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleSaveTitle();
+                    if (e.key === 'Escape') handleCancelEdit();
+                  }}
+                  autoFocus
+                />
+                <button
+                  onClick={handleSaveTitle}
+                  className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
+                >
+                  <Check className="h-3 w-3 text-gray-500" />
+                </button>
+                <button
+                  onClick={handleCancelEdit}
+                  className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition-colors flex-shrink-0"
+                >
+                  <X className="h-3 w-3 text-gray-500" />
+                </button>
+              </div>
+              <div className="flex items-center gap-1.5 px-1">
+                {availableColors.map((color) => (
+                  <button
+                    key={color}
+                    onClick={() => setEditedColor(color)}
+                    className={`w-5 h-5 rounded-full ${color} transition-all flex-shrink-0 ${
+                      editedColor === color ? 'ring-2 ring-gray-400 ring-offset-1 scale-110' : 'hover:scale-110'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           ) : (
             <>
               <span className="font-semibold text-gray-700 text-sm truncate">{displayTitle}</span>
-              <button
-                onClick={() => setIsEditingTitle(true)}
-                className="p-1 hover:bg-gray-100 rounded-xl transition-colors flex-shrink-0"
-              >
-                <Pencil className="h-3.5 w-3.5 text-gray-400 hover:text-gray-600" />
-              </button>
-              {customColumn && !isDefaultColumn && (
+              {!isMobile && (
+                <button
+                  onClick={() => {
+                    setEditedColor(counterColor);
+                    setIsEditingTitle(true);
+                  }}
+                  className="p-1 hover:bg-gray-100 rounded-xl transition-colors flex-shrink-0"
+                >
+                  <Pencil className="h-3.5 w-3.5 text-gray-400 hover:text-gray-600" />
+                </button>
+              )}
+              {!isMobile && customColumn && !isDefaultColumn && (
                 <button
                   onClick={handleDeleteClick}
                   className="p-1 hover:bg-red-50 rounded-xl transition-colors flex-shrink-0"

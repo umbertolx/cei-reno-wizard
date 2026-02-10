@@ -447,9 +447,18 @@ const AdminLeads = () => {
     }
   };
 
+  const [customColors, setCustomColors] = useState<Record<string, string>>({});
+
   const handleTitleChange = (stato: string, title: string) => {
     setCustomTitles(prev => ({ ...prev, [stato]: title }));
     toast.success("Titolo aggiornato", { description: `Titolo aggiornato a "${title}"` });
+  };
+
+  const handleColorChange = (stato: string, color: string) => {
+    setCustomColors(prev => ({ ...prev, [stato]: color }));
+    // Also update the custom column's color if it's a custom column
+    setCustomColumns(prev => prev.map(col => col.id === stato ? { ...col, color } : col));
+    toast.success("Colore aggiornato", { description: `Colore della colonna aggiornato` });
   };
 
   const handleAddColumn = (columnData: Omit<CustomColumn, 'id'>) => {
@@ -499,7 +508,8 @@ const AdminLeads = () => {
   // ── Mobile column leads
   const mobileLeads = leadsByState[mobileSelectedColumn] || [];
   const mobileColumnLabel = getColumnLabel(mobileSelectedColumn);
-  const mobileColumnColor = counterColors[mobileSelectedColumn] 
+  const mobileColumnColor = customColors[mobileSelectedColumn]
+    || counterColors[mobileSelectedColumn] 
     || customColumns.find(c => c.id === mobileSelectedColumn)?.color 
     || "bg-gray-500";
 
@@ -852,7 +862,7 @@ const AdminLeads = () => {
                     {orderedColumns.map((col) => {
                       if (!col) return null;
                       const colLabel = getColumnLabel(col.id);
-                      const colColor = counterColors[col.id] || (col.type === 'custom' ? col.column?.color : '') || "bg-gray-500";
+                      const colColor = customColors[col.id] || counterColors[col.id] || (col.type === 'custom' ? col.column?.color : '') || "bg-gray-500";
                       const colLeadsCount = (leadsByState[col.id] || []).length;
                       const isSelected = col.id === mobileSelectedColumn;
 
@@ -974,6 +984,8 @@ const AdminLeads = () => {
                       onViewDetails={handleViewDetails}
                       customTitle={customTitles[col.id]}
                       onTitleChange={handleTitleChange}
+                      customColor={customColors[col.id]}
+                      onColorChange={handleColorChange}
                       customColumn={col.type === 'custom' ? col.column : undefined}
                       onDeleteColumn={handleDeleteColumn}
                       isDefaultColumn={col.type === 'default'}
@@ -1012,6 +1024,7 @@ const AdminLeads = () => {
                     leads={leadsByState[activeColumn.id] || []}
                     onViewDetails={() => {}}
                     customTitle={customTitles[activeColumn.id]}
+                    customColor={customColors[activeColumn.id]}
                     customColumn={activeColumn.type === 'custom' ? activeColumn.column : undefined}
                     isDefaultColumn={activeColumn.type === 'default'}
                     isDraggable={true}

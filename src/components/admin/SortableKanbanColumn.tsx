@@ -10,6 +10,8 @@ interface SortableKanbanColumnProps {
   onViewDetails: (lead: Lead) => void;
   customTitle?: string;
   onTitleChange?: (stato: string, title: string) => void;
+  customColor?: string;
+  onColorChange?: (stato: string, color: string) => void;
   customColumn?: CustomColumn;
   onDeleteColumn?: (columnId: string) => void;
   isDefaultColumn?: boolean;
