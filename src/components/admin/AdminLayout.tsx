@@ -212,7 +212,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
 
           {/* Centered Ricasa logo */}
           <div className={isMobile ? "absolute left-1/2 -translate-x-1/2" : "flex-1 flex justify-center"}>
-            <img src="/logo-ricasa.png" alt="Ricasa" className="h-7 w-auto" />
+            <img src="/logo-ricasa.png" alt="Ricasa Pro" className="h-8 w-auto" />
           </div>
 
           {/* Desktop: right-aligned logout. Mobile: placeholder for balanced layout */}
