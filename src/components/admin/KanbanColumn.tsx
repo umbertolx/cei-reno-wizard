@@ -196,7 +196,7 @@ export const KanbanColumn = ({
         {/* Column body */}
         <div
           ref={setNodeRef}
-          className={`rounded-xl md:rounded-2xl p-3 md:p-4 flex-1 overflow-y-auto transition-all duration-300 min-h-32 ${dragOverClass} ${!isDragActive ? 'bg-gray-50/50' : ''}`}
+          className={`rounded-xl md:rounded-2xl p-3 md:p-4 flex-1 overflow-y-auto kanban-scrollbar transition-all duration-300 min-h-32 ${dragOverClass} ${!isDragActive ? 'bg-gray-50/50' : ''}`}
           style={{ maxHeight: 'calc(100vh - 320px)' }}
         >
           <SortableContext

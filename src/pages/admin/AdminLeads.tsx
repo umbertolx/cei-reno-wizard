@@ -969,7 +969,7 @@ const AdminLeads = () => {
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
           >
-            <div className="flex gap-6 overflow-x-auto pb-4">
+            <div className="flex overflow-x-auto kanban-scrollbar pb-4 divide-x divide-gray-200">
               <SortableContext
                 items={columnOrder}
                 strategy={horizontalListSortingStrategy}
@@ -977,20 +977,21 @@ const AdminLeads = () => {
                 {orderedColumns.map((col) => {
                   if (!col) return null;
                   return (
-                    <SortableKanbanColumn
-                      key={col.id}
-                      stato={col.id}
-                      leads={leadsByState[col.id] || []}
-                      onViewDetails={handleViewDetails}
-                      customTitle={customTitles[col.id]}
-                      onTitleChange={handleTitleChange}
-                      customColor={customColors[col.id]}
-                      onColorChange={handleColorChange}
-                      customColumn={col.type === 'custom' ? col.column : undefined}
-                      onDeleteColumn={handleDeleteColumn}
-                      isDefaultColumn={col.type === 'default'}
-                      isDraggedOver={dragOverColumn === col.id}
-                    />
+                    <div key={col.id} className="px-3 first:pl-0 last:pr-0">
+                      <SortableKanbanColumn
+                        stato={col.id}
+                        leads={leadsByState[col.id] || []}
+                        onViewDetails={handleViewDetails}
+                        customTitle={customTitles[col.id]}
+                        onTitleChange={handleTitleChange}
+                        customColor={customColors[col.id]}
+                        onColorChange={handleColorChange}
+                        customColumn={col.type === 'custom' ? col.column : undefined}
+                        onDeleteColumn={handleDeleteColumn}
+                        isDefaultColumn={col.type === 'default'}
+                        isDraggedOver={dragOverColumn === col.id}
+                      />
+                    </div>
                   );
                 })}
               </SortableContext>
