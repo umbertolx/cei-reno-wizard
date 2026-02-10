@@ -68,8 +68,8 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
         {/* Logo */}
         <div className="px-5 py-5 border-b border-gray-200 flex items-center justify-between">
           <div className="min-w-0">
-            <img src="/logo-ricasa.png" alt="Ricasa Pro" className="h-7 w-auto" />
-            <img src="/logo-cei.png" alt="Logo CEI" className="h-6 w-auto mt-1" />
+            <img src="/logo-cei.png" alt="Logo CEI" className="h-10 w-auto" />
+          </div>
           </div>
           {isMobile && (
             <button
