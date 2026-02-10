@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { MessageSquarePlus, MessageSquare, Send, Loader2, Trash2, ChevronDown } from "lucide-react";
+import { MessageSquarePlus, MessageSquare, Send, Loader2, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
 import { fetchLeadNotes, addLeadNote, deleteLeadNote, LeadNote } from "@/services/leadService";
 import { supabase } from "@/integrations/supabase/client";
@@ -102,6 +102,30 @@ export const LeadNotesSection = ({ leadId }: LeadNotesSectionProps) => {
     return name.substring(0, 2).toUpperCase();
   };
 
+  // Palette di colori distinti per gli avatar degli utenti
+  const avatarColors = [
+    "#d8010c", // rosso (brand)
+    "#2563eb", // blu
+    "#059669", // verde
+    "#d97706", // ambra
+    "#7c3aed", // viola
+    "#0891b2", // ciano
+    "#c026d3", // fucsia
+    "#4f46e5", // indaco
+    "#dc2626", // rosso chiaro
+    "#0d9488", // teal
+  ];
+
+  // Mappa stabile: assegna un colore unico a ogni user_id nell'ordine di apparizione
+  const userColorMap = (() => {
+    const map = new Map<string, string>();
+    const uniqueIds = [...new Set(notes.map((n) => n.user_id))];
+    uniqueIds.forEach((id, i) => {
+      map.set(id, avatarColors[i % avatarColors.length]);
+    });
+    return map;
+  })();
+
   const hasNotes = !isLoading && notes.length > 0;
 
   // Collapsed state: clickable bar to expand
@@ -122,10 +146,19 @@ export const LeadNotesSection = ({ leadId }: LeadNotesSectionProps) => {
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
-      <h3 className="flex items-center gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold text-gray-900">
-        <MessageSquare className="h-5 w-5 text-gray-700" />
-        {hasNotes ? "Note Interne" : "Aggiungi note e commenti"}
-      </h3>
+      <div className="flex items-center justify-between mb-3 md:mb-4">
+        <h3 className="flex items-center gap-2 text-base md:text-lg font-bold text-gray-900">
+          <MessageSquare className="h-5 w-5 text-gray-700" />
+          {hasNotes ? "Note Interne" : "Aggiungi note e commenti"}
+        </h3>
+        <button
+          onClick={() => setIsExpanded(false)}
+          className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded"
+          title="Collassa sezione"
+        >
+          <ChevronUp className="h-5 w-5" />
+        </button>
+      </div>
 
       {/* ── Input area ── */}
       <div className="flex gap-2 items-end mb-4">
@@ -171,21 +204,29 @@ export const LeadNotesSection = ({ leadId }: LeadNotesSectionProps) => {
             return (
               <div key={note.id} className="relative pl-5 pb-4 last:pb-0 group">
                 {/* Timeline dot */}
-                <div className="absolute -left-[5px] top-1 w-2 h-2 rounded-full bg-[#d8010c]" />
+                <div
+                  className="absolute -left-[5px] top-1 w-2 h-2 rounded-full"
+                  style={{ backgroundColor: userColorMap.get(note.user_id) || "#d8010c" }}
+                />
 
                 {/* Note content */}
                 <div className="bg-[#F9FBFF] rounded-xl p-3">
                   {/* Author & date header */}
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <div className="w-6 h-6 rounded-full bg-[#d8010c] text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                  <div className="flex items-start md:items-center gap-2 mb-1.5">
+                    <div
+                      className="w-7 h-7 md:w-6 md:h-6 rounded-full text-white text-[11px] md:text-[10px] font-bold flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: userColorMap.get(note.user_id) || "#d8010c" }}
+                    >
                       {getAuthorInitials(note.author_name)}
                     </div>
-                    <span className="text-xs font-semibold text-gray-700 truncate">
-                      {note.author_name}
-                    </span>
-                    <span className="text-[10px] md:text-xs text-gray-400 font-nums ml-auto flex-shrink-0">
-                      {formatNoteDate(note.created_at)}
-                    </span>
+                    <div className="flex-1 min-w-0 flex flex-col md:flex-row md:items-center gap-0.5 md:gap-2">
+                      <span className="text-base md:text-xs font-semibold text-gray-700 truncate">
+                        {note.author_name}
+                      </span>
+                      <span className="text-sm md:text-xs text-gray-400 font-nums md:ml-auto flex-shrink-0">
+                        {formatNoteDate(note.created_at)}
+                      </span>
+                    </div>
 
                     {/* Delete button — only for own notes */}
                     {isOwn && (
@@ -221,7 +262,7 @@ export const LeadNotesSection = ({ leadId }: LeadNotesSectionProps) => {
                   </div>
 
                   {/* Note text */}
-                  <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  <p className="text-base md:text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
                     {note.content}
                   </p>
                 </div>
