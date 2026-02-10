@@ -113,9 +113,9 @@ export const KanbanColumn = ({
 
   return (
     <>
-      <div className="min-w-[280px] md:min-w-[350px] w-[80vw] md:w-[350px] max-w-[350px] flex-shrink-0 flex flex-col snap-start">
+      <div className="min-w-[280px] md:min-w-[350px] w-[80vw] md:w-[350px] max-w-[350px] flex-shrink-0 flex flex-col snap-start bg-[#EDF2F7] rounded-2xl md:rounded-3xl p-3 md:p-4">
         {/* Column Header */}
-        <div className={`flex items-center gap-2 mb-3 md:mb-4 ${headerBgColor} rounded-xl px-3 py-2`}>
+        <div className={`flex items-center gap-2 mb-3 ${headerBgColor} rounded-xl px-3 py-2`}>
           {isDraggable && (
             <div
               {...dragListeners}
@@ -193,10 +193,10 @@ export const KanbanColumn = ({
           </span>
         </div>
 
-        {/* Column body */}
+        {/* Column body — scrollable div extends into column right padding via -mr so scrollbar sits at column edge */}
         <div
           ref={setNodeRef}
-          className={`rounded-xl md:rounded-2xl p-3 md:p-4 flex-1 overflow-y-auto kanban-col-scroll transition-all duration-300 min-h-32 ${dragOverClass} ${!isDragActive ? 'bg-[#F9FBFF]/50' : ''}`}
+          className={`-mr-3 md:-mr-4 rounded-l-xl md:rounded-l-2xl flex-1 overflow-y-auto kanban-col-scroll transition-all duration-300 min-h-32 ${dragOverClass}`}
           style={{ maxHeight: 'calc(100vh - 320px)' }}
         >
           <SortableContext
@@ -204,7 +204,7 @@ export const KanbanColumn = ({
             strategy={verticalListSortingStrategy}
           >
             {leads.length === 0 ? (
-              <div className="text-center text-gray-400 py-8 h-full flex flex-col justify-center">
+              <div className="text-center text-gray-400 py-8 h-full flex flex-col justify-center pr-3 md:pr-4">
                 <p className="text-sm mb-2">Nessun lead in questo stato</p>
                 {isDragActive && (
                   <div className="text-blue-600 font-medium text-sm animate-pulse bg-white/80 rounded-xl p-4 border-2 border-dashed border-blue-300">
@@ -214,7 +214,7 @@ export const KanbanColumn = ({
                 )}
               </div>
             ) : (
-              <div className="space-y-3 md:space-y-4">
+              <div className="space-y-3 md:space-y-4 pr-3 md:pr-4">
                 {leads.map((lead) => (
                   <LeadCard
                     key={lead.id}
@@ -224,7 +224,7 @@ export const KanbanColumn = ({
                   />
                 ))}
                 {isDragActive && (
-                  <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-xl bg-white/80 mx-2">
+                  <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-xl bg-white/80">
                     <p>🎯 Rilascia qui per aggiungere a "{displayTitle}"</p>
                   </div>
                 )}

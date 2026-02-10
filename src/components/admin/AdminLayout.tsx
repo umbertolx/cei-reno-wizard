@@ -60,7 +60,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
   ];
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-[#F9FBFF] flex w-full overflow-hidden">
+    <div className="min-h-screen min-h-[100dvh] bg-white flex w-full overflow-hidden">
       {/* Mobile Overlay */}
       {isMobile && sidebarOpen && (
         <div
@@ -232,7 +232,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
         {/* Main Content */}
         <main className="flex-1 min-w-0 overflow-hidden">
           <div
-            className="overflow-y-auto p-4 md:p-8"
+            className="overflow-y-auto p-3 md:p-6"
             style={{
               height: isMobile
                 ? 'calc(100dvh - 3.5rem - env(safe-area-inset-bottom, 0px))'

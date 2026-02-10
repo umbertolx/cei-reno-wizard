@@ -147,20 +147,21 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-4 md:space-y-6 w-full pb-20 md:pb-0">
-        {/* Header */}
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-sm md:text-base font-light text-gray-600">
-              Panoramica generale dei preventivi (<span className="font-nums">{leads.length}</span> totali)
-              {leads.length === 0 && (
-                <span className="text-amber-600 ml-2">
-                  ⚠️ Nessun lead
-                </span>
-              )}
-            </p>
-          </div>
+      <div className="space-y-3 md:space-y-4 w-full pb-20 md:pb-0">
+        {/* Header box */}
+        <div className="bg-[#F9FBFF] rounded-2xl md:rounded-3xl p-4 md:px-8 md:py-6">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard</h1>
+              <p className="text-sm md:text-base font-light text-gray-600 mt-1">
+                Panoramica generale dei preventivi (<span className="font-nums">{leads.length}</span> totali)
+                {leads.length === 0 && (
+                  <span className="text-amber-600 ml-2">
+                    ⚠️ Nessun lead
+                  </span>
+                )}
+              </p>
+            </div>
           <div className="flex items-center gap-2 md:gap-3 flex-wrap">
             <button 
               onClick={handleRefresh}
@@ -209,6 +210,10 @@ const AdminDashboard = () => {
             </button>
           </div>
         </div>
+        </div>{/* end header box */}
+
+        {/* Content box */}
+        <div className="bg-[#F9FBFF] rounded-2xl md:rounded-3xl p-4 md:p-8 space-y-4 md:space-y-6">
 
         {/* Debug info per sviluppatori */}
         {leads.length === 0 && (
@@ -333,6 +338,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
+        </div>{/* end content box */}
       </div>
     </AdminLayout>
   );

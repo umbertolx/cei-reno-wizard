@@ -511,7 +511,7 @@ const AdminLeads = () => {
   const mobileColumnColor = customColors[mobileSelectedColumn]
     || counterColors[mobileSelectedColumn] 
     || customColumns.find(c => c.id === mobileSelectedColumn)?.color 
-    || "bg-[#F9FBFF]0";
+    || "bg-gray-500";
 
   // ── Available columns for move operation
   const availableColumnsForMove = allColumns.map(col => ({
@@ -521,14 +521,17 @@ const AdminLeads = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-4 md:space-y-6 w-full pb-20 md:pb-0">
-        {/* Header */}
-        <div>
+      <div className="space-y-3 md:space-y-4 w-full pb-20 md:pb-0">
+        {/* Header box */}
+        <div className="bg-[#F9FBFF] rounded-2xl md:rounded-3xl p-4 md:px-8 md:py-6">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Gestione Lead</h1>
-          <p className="text-sm md:text-base font-light text-gray-600">
+          <p className="text-sm md:text-base font-light text-gray-600 mt-1">
             Visualizza e gestisci tutti i preventivi richiesti (<span className="font-nums">{leads.length}</span> totali)
           </p>
         </div>
+
+        {/* Content box */}
+        <div className="bg-[#F9FBFF] rounded-2xl md:rounded-3xl p-4 md:p-8 space-y-4 md:space-y-6">
 
         {/* Toolbar */}
         <div className="flex items-center gap-2 md:gap-3">
@@ -862,7 +865,7 @@ const AdminLeads = () => {
                     {orderedColumns.map((col) => {
                       if (!col) return null;
                       const colLabel = getColumnLabel(col.id);
-                      const colColor = customColors[col.id] || counterColors[col.id] || (col.type === 'custom' ? col.column?.color : '') || "bg-[#F9FBFF]0";
+                      const colColor = customColors[col.id] || counterColors[col.id] || (col.type === 'custom' ? col.column?.color : '') || "bg-gray-500";
                       const colLeadsCount = (leadsByState[col.id] || []).length;
                       const isSelected = col.id === mobileSelectedColumn;
 
@@ -1035,6 +1038,8 @@ const AdminLeads = () => {
             </DragOverlay>
           </DndContext>
         )}
+
+        </div>{/* end content box */}
 
         <LeadDetails
           lead={selectedLead}

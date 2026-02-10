@@ -171,14 +171,17 @@ const AdminAccount = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-4 md:space-y-6 w-full pb-20 md:pb-0">
-        {/* Header */}
-        <div>
+      <div className="space-y-3 md:space-y-4 w-full pb-20 md:pb-0">
+        {/* Header box */}
+        <div className="bg-[#F9FBFF] rounded-2xl md:rounded-3xl p-4 md:px-8 md:py-6">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Account</h1>
           <p className="text-sm md:text-base font-light text-gray-600 mt-1">
             Gestisci le informazioni del tuo account
           </p>
         </div>
+
+        {/* Content box */}
+        <div className="bg-[#F9FBFF] rounded-2xl md:rounded-3xl p-4 md:p-8 space-y-4 md:space-y-6">
 
         {/* User Info Card */}
         <div className="bg-white rounded-xl md:rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
@@ -431,6 +434,7 @@ const AdminAccount = () => {
             </button>
           </form>
         </div>
+        </div>{/* end content box */}
       </div>
     </AdminLayout>
   );
