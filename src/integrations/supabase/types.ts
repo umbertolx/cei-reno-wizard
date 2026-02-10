@@ -214,6 +214,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_lead_rate_limit: {
+        Args: { p_email: string; p_telefono: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
