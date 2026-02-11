@@ -113,124 +113,126 @@ export const KanbanColumn = ({
 
   return (
     <>
-      <div className="min-w-[280px] md:min-w-[350px] w-[80vw] md:w-[350px] max-w-[350px] flex-shrink-0 flex flex-col snap-start bg-[#EDF2F7] rounded-2xl md:rounded-3xl p-3 md:p-4">
-        {/* Column Header */}
-        <div className={`flex items-center gap-2 mb-3 ${headerBgColor} rounded-xl px-3 py-2`}>
-          {isDraggable && (
-            <div
-              {...dragListeners}
-              className="flex items-center justify-center p-1 -ml-1 rounded-lg cursor-grab hover:bg-white/60 active:cursor-grabbing transition-colors touch-none"
-            >
-              <GripVertical className="h-4 w-4 text-gray-400" />
-            </div>
-          )}
-          
-          {isEditingTitle ? (
-            <div className="flex flex-col gap-2 flex-1">
-              <div className="flex items-center gap-2">
-                <input
-                  value={editedTitle}
-                  onChange={(e) => setEditedTitle(e.target.value)}
-                  className="bg-white border border-gray-200 rounded-xl h-8 px-3 text-sm font-semibold text-gray-700 focus:border-[#d8010c] focus:ring-1 focus:ring-[#d8010c]/20 transition-colors outline-none flex-1 min-w-0"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleSaveTitle();
-                    if (e.key === 'Escape') handleCancelEdit();
-                  }}
-                  autoFocus
-                />
-                <button
-                  onClick={handleSaveTitle}
-                  className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-[#F9FBFF] transition-colors flex-shrink-0"
-                >
-                  <Check className="h-3 w-3 text-gray-500" />
-                </button>
-                <button
-                  onClick={handleCancelEdit}
-                  className="bg-white border border-gray-200 rounded-xl p-2 hover:bg-[#F9FBFF] transition-colors flex-shrink-0"
-                >
-                  <X className="h-3 w-3 text-gray-500" />
-                </button>
-              </div>
-              <div className="flex items-center gap-1.5 px-1">
-                {availableColors.map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => setEditedColor(color)}
-                    className={`w-5 h-5 rounded-full ${color} transition-all flex-shrink-0 ${
-                      editedColor === color ? 'ring-2 ring-gray-400 ring-offset-1 scale-110' : 'hover:scale-110'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <>
-              <span className="font-semibold text-gray-700 text-sm truncate">{displayTitle}</span>
-              {!isMobile && (
-                <button
-                  onClick={() => {
-                    setEditedColor(counterColor);
-                    setIsEditingTitle(true);
-                  }}
-                  className="p-1 hover:bg-[#F9FBFF] rounded-xl transition-colors flex-shrink-0"
-                >
-                  <Pencil className="h-3.5 w-3.5 text-gray-400 hover:text-gray-600" />
-                </button>
-              )}
-              {!isMobile && customColumn && !isDefaultColumn && (
-                <button
-                  onClick={handleDeleteClick}
-                  className="p-1 hover:bg-red-50 rounded-xl transition-colors flex-shrink-0"
-                >
-                  <Trash2 className="h-3.5 w-3.5 text-red-400 hover:text-red-600" />
-                </button>
-              )}
-            </>
-          )}
-          
-          <span className={`ml-auto w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0 font-nums ${counterColor}`}>
-            {leads.length}
-          </span>
-        </div>
-
-        {/* Column body — scrollable div extends into column right padding via -mr so scrollbar sits at column edge */}
-        <div
-          ref={setNodeRef}
-          className={`-mr-3 md:-mr-4 rounded-l-xl md:rounded-l-2xl flex-1 overflow-y-auto kanban-col-scroll transition-all duration-300 min-h-32 ${dragOverClass}`}
-          style={{ maxHeight: 'calc(100vh - 320px)' }}
-        >
-          <SortableContext
-            items={leads.map(lead => lead.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {leads.length === 0 ? (
-              <div className="text-center text-gray-400 py-8 h-full flex flex-col justify-center pr-3 md:pr-4">
-                <p className="text-sm mb-2">Nessun lead in questo stato</p>
-                {isDragActive && (
-                  <div className="text-blue-600 font-medium text-sm animate-pulse bg-white/80 rounded-xl p-4 border-2 border-dashed border-blue-300">
-                    <p>🎯 Rilascia qui per spostare il lead</p>
-                    <p className="text-xs mt-1">in "{displayTitle}"</p>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="space-y-3 md:space-y-4 pr-3 md:pr-4">
-                {leads.map((lead) => (
-                  <LeadCard
-                    key={lead.id}
-                    lead={lead}
-                    onViewDetails={() => onViewDetails(lead)}
-                    forceExpanded={allCardsExpanded}
-                  />
-                ))}
-                {isDragActive && (
-                  <div className="text-center text-blue-600 font-medium py-4 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-xl bg-white/80">
-                    <p>🎯 Rilascia qui per aggiungere a "{displayTitle}"</p>
-                  </div>
-                )}
+      <div className="w-[320px] md:w-[360px] flex-shrink-0 flex flex-col snap-start">
+        <div className="bg-[#EDF2F7] rounded-2xl md:rounded-3xl h-full flex flex-col overflow-hidden shadow-sm">
+          {/* Column Header */}
+          <div className={`flex items-center gap-2 px-4 py-3 ${headerBgColor} border-b border-gray-200/50`}>
+            {isDraggable && (
+              <div
+                {...dragListeners}
+                className="flex items-center justify-center p-1.5 -ml-1.5 rounded-lg cursor-grab hover:bg-white/60 active:cursor-grabbing transition-colors touch-none"
+              >
+                <GripVertical className="h-4 w-4 text-gray-500" />
               </div>
             )}
-          </SortableContext>
+            
+            {isEditingTitle ? (
+              <div className="flex flex-col gap-2.5 flex-1">
+                <div className="flex items-center gap-2">
+                  <input
+                    value={editedTitle}
+                    onChange={(e) => setEditedTitle(e.target.value)}
+                    className="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm font-semibold text-gray-800 focus:border-[#d8010c] focus:ring-2 focus:ring-[#d8010c]/20 transition-colors outline-none flex-1 min-w-0"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleSaveTitle();
+                      if (e.key === 'Escape') handleCancelEdit();
+                    }}
+                    autoFocus
+                  />
+                  <button
+                    onClick={handleSaveTitle}
+                    className="bg-green-500 hover:bg-green-600 text-white rounded-lg p-1.5 transition-colors flex-shrink-0"
+                  >
+                    <Check className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={handleCancelEdit}
+                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg p-1.5 transition-colors flex-shrink-0"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {availableColors.map((color) => (
+                    <button
+                      key={color}
+                      onClick={() => setEditedColor(color)}
+                      className={`w-6 h-6 rounded-full ${color} transition-all flex-shrink-0 shadow-sm ${
+                        editedColor === color ? 'ring-2 ring-gray-600 ring-offset-2 scale-110' : 'hover:scale-105'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <>
+                <span className="font-bold text-gray-800 text-sm md:text-base truncate flex-1">{displayTitle}</span>
+                {!isMobile && (
+                  <button
+                    onClick={() => {
+                      setEditedColor(counterColor);
+                      setIsEditingTitle(true);
+                    }}
+                    className="p-1.5 hover:bg-white/60 rounded-lg transition-colors flex-shrink-0"
+                  >
+                    <Pencil className="h-3.5 w-3.5 text-gray-500 hover:text-gray-700" />
+                  </button>
+                )}
+                {!isMobile && customColumn && !isDefaultColumn && (
+                  <button
+                    onClick={handleDeleteClick}
+                    className="p-1.5 hover:bg-red-100 rounded-lg transition-colors flex-shrink-0"
+                  >
+                    <Trash2 className="h-3.5 w-3.5 text-red-500 hover:text-red-700" />
+                  </button>
+                )}
+                <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0 font-nums shadow-sm ${counterColor}`}>
+                  {leads.length}
+                </span>
+              </>
+            )}
+          </div>
+
+          {/* Column Body - Scrollable */}
+          <div
+            ref={setNodeRef}
+            className={`flex-1 overflow-y-auto px-4 py-3 kanban-col-scroll transition-all duration-300 ${dragOverClass}`}
+            style={{ maxHeight: 'calc(100vh - 280px)' }}
+          >
+            <SortableContext
+              items={leads.map(lead => lead.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              {leads.length === 0 ? (
+                <div className="text-center text-gray-400 py-12 h-full flex flex-col justify-center">
+                  <p className="text-sm">Nessun lead in questo stato</p>
+                  {isDragActive && (
+                    <div className="text-blue-600 font-medium text-sm animate-pulse bg-white/90 rounded-xl p-4 mt-4 border-2 border-dashed border-blue-300 shadow-sm">
+                      <p className="text-base">🎯 Rilascia qui</p>
+                      <p className="text-xs mt-1 text-gray-600">per spostare in "{displayTitle}"</p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {leads.map((lead) => (
+                    <LeadCard
+                      key={lead.id}
+                      lead={lead}
+                      onViewDetails={() => onViewDetails(lead)}
+                      forceExpanded={allCardsExpanded}
+                    />
+                  ))}
+                  {isDragActive && (
+                    <div className="text-center text-blue-600 font-semibold py-3 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-xl bg-white/90 shadow-sm">
+                      <p>🎯 Rilascia qui per aggiungere</p>
+                      <p className="text-xs mt-0.5 text-gray-600">a "{displayTitle}"</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </SortableContext>
+          </div>
         </div>
       </div>
 
