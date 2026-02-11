@@ -52,7 +52,7 @@ export const SortableKanbanColumn = (props: SortableKanbanColumnProps) => {
         ref={setNodeRef}
         style={style}
         {...attributes}
-        className="w-[80vw] md:w-[350px] flex-shrink-0 z-0 pointer-events-none"
+        className="w-[80vw] md:w-[340px] flex-shrink-0 z-0 pointer-events-none"
       >
         <div
           className="h-full min-h-[300px] rounded-t-2xl"
@@ -74,7 +74,7 @@ export const SortableKanbanColumn = (props: SortableKanbanColumnProps) => {
       ref={setNodeRef}
       style={style}
       {...attributes}
-      className="w-[80vw] md:w-[350px] flex-shrink-0 transition-shadow"
+      className="w-[80vw] md:w-[340px] flex-shrink-0 transition-shadow"
     >
       <KanbanColumn
         {...props}

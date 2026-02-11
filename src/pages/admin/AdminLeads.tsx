@@ -986,7 +986,7 @@ const AdminLeads = () => {
                 {orderedColumns.map((col) => {
                   if (!col) return null;
                   return (
-                    <div key={col.id} className="px-3 first:pl-0 last:pr-0">
+                    <div key={col.id} className="px-3">
                       <SortableKanbanColumn
                         stato={col.id}
                         leads={leadsByState[col.id] || []}
@@ -1021,7 +1021,7 @@ const AdminLeads = () => {
                 </div>
               ) : activeColumn ? (
                 <div
-                  className="w-[350px] opacity-95"
+                  className="w-[340px] opacity-95"
                   style={{
                     transform: 'rotate(1.5deg) scale(1.02)',
                     boxShadow: '0 25px 60px -12px rgba(0,0,0,0.25), 0 10px 20px -5px rgba(0,0,0,0.1)',

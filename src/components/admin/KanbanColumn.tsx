@@ -113,7 +113,7 @@ export const KanbanColumn = ({
 
   return (
     <>
-      <div className="w-[320px] md:w-[360px] flex-shrink-0 flex flex-col snap-start">
+      <div className="w-[300px] md:w-[340px] flex-shrink-0 flex flex-col snap-start">
         <div className="bg-[#EDF2F7] rounded-2xl md:rounded-3xl h-full flex flex-col overflow-hidden shadow-sm">
           {/* Column Header */}
           <div className={`flex items-center gap-2 px-4 py-3 ${headerBgColor} border-b border-gray-200/50`}>
