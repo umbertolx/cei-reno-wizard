@@ -7,8 +7,6 @@ interface LeadCardHeaderProps {
   isExpanded: boolean;
   forceExpanded?: boolean;
   onToggleExpansion: (e: React.MouseEvent) => void;
-  attributes: any;
-  listeners: any;
 }
 
 export const LeadCardHeader = ({ 
@@ -16,22 +14,16 @@ export const LeadCardHeader = ({
   isExpanded, 
   forceExpanded, 
   onToggleExpansion, 
-  attributes, 
-  listeners 
 }: LeadCardHeaderProps) => {
   const cap = lead.indirizzoDettagli?.cap || "";
 
   return (
-    <div 
-      {...attributes}
-      {...listeners}
-      className="flex items-center gap-3 cursor-grab"
-    >
+    <div className="flex items-center gap-3">
       <div className="w-10 h-10 bg-[#d8010c] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
         {getInitials(lead.nome, lead.cognome)}
       </div>
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-gray-900 text-base truncate">
+        <h3 className="font-semibold text-gray-900 text-base truncate pr-6">
           {lead.nome} {lead.cognome}
         </h3>
         <p className="text-sm text-gray-500 flex items-center truncate">

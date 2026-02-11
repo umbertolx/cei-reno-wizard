@@ -108,7 +108,7 @@ export const KanbanColumn = ({
 
   const isDragActive = isOver || isDraggedOver;
   const dragOverClass = isDragActive
-    ? 'bg-blue-50 border-2 border-blue-300 border-dashed ring-2 ring-blue-200 ring-opacity-50 shadow-lg' 
+    ? 'bg-red-50/40 border-2 border-[#d8010c]/30 border-dashed ring-2 ring-[#d8010c]/10 ring-opacity-50 shadow-lg' 
     : '';
 
   return (
@@ -207,9 +207,9 @@ export const KanbanColumn = ({
                 <div className="text-center text-gray-400 py-12 h-full flex flex-col justify-center">
                   <p className="text-sm">Nessun lead in questo stato</p>
                   {isDragActive && (
-                    <div className="text-blue-600 font-medium text-sm animate-pulse bg-white/90 rounded-xl p-4 mt-4 border-2 border-dashed border-blue-300 shadow-sm">
-                      <p className="text-base">🎯 Rilascia qui</p>
-                      <p className="text-xs mt-1 text-gray-600">per spostare in "{displayTitle}"</p>
+                    <div className="font-medium text-sm bg-white rounded-2xl p-4 mt-4 border-2 border-dashed border-[#d8010c]/30 shadow-sm transition-all">
+                      <p className="text-sm font-semibold text-gray-700">Rilascia qui</p>
+                      <p className="text-xs mt-1 text-gray-500">per spostare in "{displayTitle}"</p>
                     </div>
                   )}
                 </div>
@@ -224,9 +224,9 @@ export const KanbanColumn = ({
                     />
                   ))}
                   {isDragActive && (
-                    <div className="text-center text-blue-600 font-semibold py-3 text-sm animate-pulse border-2 border-dashed border-blue-300 rounded-xl bg-white/90 shadow-sm">
-                      <p>🎯 Rilascia qui per aggiungere</p>
-                      <p className="text-xs mt-0.5 text-gray-600">a "{displayTitle}"</p>
+                    <div className="text-center py-3 text-sm border-2 border-dashed border-[#d8010c]/30 rounded-2xl bg-white shadow-sm transition-all">
+                      <p className="font-semibold text-gray-700">Rilascia qui per aggiungere</p>
+                      <p className="text-xs mt-0.5 text-gray-500">a "{displayTitle}"</p>
                     </div>
                   )}
                 </div>

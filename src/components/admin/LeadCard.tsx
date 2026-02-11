@@ -1,6 +1,6 @@
 
 import { Lead } from "@/types/lead";
-import { Eye } from "lucide-react";
+import { Eye, GripVertical } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useState, useEffect } from "react";
@@ -63,17 +63,24 @@ export const LeadCard = ({ lead, onViewDetails, forceExpanded = false }: LeadCar
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-white rounded-2xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer ${
+      className={`relative bg-white rounded-2xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer ${
         isDragging ? 'shadow-xl ring-2 ring-[#d8010c]/30 rotate-3' : ''
       }`}
     >
+      {/* Drag handle – top-right corner */}
+      <div
+        {...attributes}
+        {...listeners}
+        className="absolute top-2 right-2 flex items-center justify-center p-1.5 rounded-lg cursor-grab hover:bg-gray-100 active:cursor-grabbing transition-colors touch-none z-10"
+      >
+        <GripVertical className="h-4 w-4 text-gray-500" />
+      </div>
+
       <LeadCardHeader
         lead={lead}
         isExpanded={isExpanded}
         forceExpanded={forceExpanded}
         onToggleExpansion={toggleExpansion}
-        attributes={attributes}
-        listeners={listeners}
       />
 
       <LeadCardBasicInfo lead={lead} />

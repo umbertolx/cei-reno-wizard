@@ -337,7 +337,7 @@ const AdminLeads = () => {
       
       const displayName = getColumnLabel(targetColumnId);
       
-      toast.success("✅ Lead spostato", {
+      toast.success("Lead spostato", {
         description: `${leadToMove.nome} ${leadToMove.cognome} spostato in "${displayName}"`,
       });
 
@@ -354,7 +354,7 @@ const AdminLeads = () => {
           : lead
       ));
       
-      toast.error("❌ Errore", {
+      toast.error("Errore", {
         description: "Impossibile spostare il lead",
       });
     }
