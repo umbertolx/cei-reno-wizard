@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Mail } from "lucide-react";
+import { trackActivity } from "@/lib/trackActivity";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -65,6 +66,8 @@ const AdminLogin = () => {
           });
           return;
         }
+
+        trackActivity("login");
 
         toast.success("Login effettuato", {
           description: "Benvenuto nel dashboard admin!",

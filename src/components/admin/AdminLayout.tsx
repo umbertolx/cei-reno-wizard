@@ -1,9 +1,10 @@
 
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useRef } from "react";
 import { Home, Users, LogOut, Menu, X, UserCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
+import { trackActivity } from "@/lib/trackActivity";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -14,6 +15,15 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Traccia page view ad ogni cambio pagina
+  const lastTrackedPath = useRef("");
+  useEffect(() => {
+    if (location.pathname !== lastTrackedPath.current) {
+      lastTrackedPath.current = location.pathname;
+      trackActivity("page_view", location.pathname);
+    }
+  }, [location.pathname]);
   
   // Desktop sidebar collapse state (persisted in localStorage)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
